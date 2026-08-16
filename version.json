@@ -1,7 +1,12 @@
 {
-  "version": "1.0.11",
-  "last_updated": "2026-08-16 22:37:53",
+  "version": "1.0.12",
+  "last_updated": "2026-08-16 22:58:53",
   "history": [
+    {
+      "version": "1.0.12",
+      "timestamp": "2026-08-16 22:58:53",
+      "message": "緊急修復：補上 app.py 中缺少的 import json 模組以解決 NameError 執行期異常"
+    },
     {
       "version": "1.0.11",
       "timestamp": "2026-08-16 22:37:53",
