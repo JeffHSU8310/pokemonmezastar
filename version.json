@@ -1,7 +1,12 @@
 {
-  "version": "1.0.1",
-  "last_updated": "2026-08-16 21:57:42",
+  "version": "1.0.2",
+  "last_updated": "2026-08-16 21:57:49",
   "history": [
+    {
+      "version": "1.0.2",
+      "timestamp": "2026-08-16 21:57:49",
+      "message": "初始建立寶可夢 Mezastar 智慧對戰推薦系統與雲端卡匣庫"
+    },
     {
       "version": "1.0.1",
       "timestamp": "2026-08-16 21:57:42",

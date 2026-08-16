@@ -4,10 +4,18 @@ Handles local disk auto-commit, version incrementing, and pushing/merging to Git
 """
 
 from typing import Dict, List, Any, Optional, Tuple
+import sys
 import os
 import subprocess
 import json
 from datetime import datetime
+
+# 確保標準輸出編碼正常
+if sys.stdout.encoding != 'utf-8':
+    try:
+        sys.stdout.reconfigure(encoding='utf-8')
+    except Exception:
+        pass
 
 VERSION_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "version.json")
 
