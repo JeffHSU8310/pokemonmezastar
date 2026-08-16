@@ -436,32 +436,115 @@ with tabs[1]:
                 st.rerun()
 
 # ==============================================================================
-# TAB 3: 📖 全卡匣圖鑑庫 (Pokedex)
+# TAB 3: 📖 全卡匣圖鑑庫 (Pokedex) - 依彈別完整分類與數據檢視
 # ==============================================================================
 with tabs[2]:
-    st.markdown("#### 📖 全卡匣圖鑑完整數據")
+    st.markdown("#### 📖 寶可夢 Mezastar 全卡匣圖鑑庫")
     
-    df_all = pd.DataFrame([{
-        "編號": c.get("id"),
-        "名稱": c.get("name"),
-        "彈別": c.get("series"),
-        "星級": f"{c.get('star')}⭐",
-        "能量": c.get("energy", 100),
-        "屬性": "/".join(c.get("types", [])),
-        "招式": c.get("move_name"),
-        "招式屬性": c.get("move_type"),
-        "威力": c.get("move_power"),
-        "HP": c.get("hp"),
-        "物攻": c.get("atk"),
-        "物防": c.get("def"),
-        "特攻": c.get("sp_atk"),
-        "特防": c.get("sp_def"),
-        "速度": c.get("spd"),
-        "弱點": ", ".join(c.get("weaknesses", [])),
-        "機制": c.get("special", "無")
-    } for c in all_cards])
+    # 彈別快速分類選單
+    series_tab_options = ["🌟 全部系列"] + ALL_SERIES_LIST
+    selected_series = st.selectbox("📂 選擇分類彈別系列:", options=series_tab_options, index=0)
     
-    st.dataframe(df_all, use_container_width=True)
+    col_pk1, col_pk2 = st.columns([1, 1])
+    with col_pk1:
+        pokedex_star_filter = st.multiselect("⭐ 星級篩選:", options=[6, 5, 4, 3, 2, 1], default=[6, 5, 4, 3, 2, 1], key="pk_star_filter")
+    with col_pk2:
+        pokedex_search = st.text_input("🔍 搜尋寶可夢名稱/編號/屬性/招式:", value="", placeholder="例如: 蒼響, 4-2-001, 火, 巨獸斬...", key="pk_search")
+
+    # 檢視模式切換 (手機優化：圖鑑卡片模式 vs 數據表格模式)
+    view_mode = st.radio("檢視呈現方式:", options=["🗂️ 圖鑑卡片模式 (手機好讀)", "📊 完整數據表格模式"], horizontal=True)
+
+    # 篩選資料
+    pokedex_cards = []
+    for c in all_cards:
+        if selected_series != "🌟 全部系列" and c.get("series") != selected_series:
+            continue
+        if c.get("star", 5) not in pokedex_star_filter:
+            continue
+        if pokedex_search:
+            s_low = pokedex_search.lower()
+            n_match = s_low in c.get("name", "").lower()
+            id_match = s_low in c.get("id", "").lower()
+            type_match = any(s_low in t.lower() for t in c.get("types", []))
+            move_match = s_low in c.get("move_name", "").lower() or s_low in c.get("move_type", "").lower()
+            mech_match = any(s_low in m.lower() for m in c.get("special_mechanics", []))
+            if not (n_match or id_match or type_match or move_match or mech_match):
+                continue
+        pokedex_cards.append(c)
+
+    # 系列統計摘要橫幅
+    cur_series_cards = [c for c in all_cards if selected_series == "🌟 全部系列" or c.get("series") == selected_series]
+    s_star_6 = sum(1 for c in cur_series_cards if c.get("star") == 6)
+    s_star_5 = sum(1 for c in cur_series_cards if c.get("star") == 5)
+    s_star_4 = sum(1 for c in cur_series_cards if c.get("star") == 4)
+    s_star_3 = sum(1 for c in cur_series_cards if c.get("star") == 3)
+    s_star_2 = sum(1 for c in cur_series_cards if c.get("star") == 2)
+    s_star_1 = sum(1 for c in cur_series_cards if c.get("star") == 1)
+
+    st.markdown(f"""
+    <div style="background:#ECEFF1; border-radius:8px; padding:6px 10px; margin: 4px 0 10px 0; font-size:0.8rem;">
+        <b>📌 【{selected_series}】收錄統計：</b> 共 <b>{len(cur_series_cards)}</b> 款卡匣
+        <div style="margin-top:2px; color:#37474F;">
+            6星: <b>{s_star_6}</b> | 5星: <b>{s_star_5}</b> | 4星: <b>{s_star_4}</b> | 3星: <b>{s_star_3}</b> | 2星: <b>{s_star_2}</b> | 1星: <b>{s_star_1}</b>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.caption(f"目前顯示共 **{len(pokedex_cards)}** 款卡匣：")
+
+    if view_mode == "🗂️ 圖鑑卡片模式 (手機好讀)":
+        # 6.1 吋手機雙列卡片網格
+        pk_cols = st.columns(2)
+        for i, c in enumerate(pokedex_cards):
+            with pk_cols[i % 2]:
+                weak_str = ", ".join(c.get("weaknesses", []))
+                sec_m = c.get("second_move", {})
+                sec_text = f"<div style='font-size:0.7rem; color:#666;'>副招: {sec_m.get('name')} [{sec_m.get('power')}]</div>" if sec_m else ""
+                
+                st.markdown(f"""
+                <div class="card-box" style="border-top: 4px solid {TYPE_COLORS.get(c.get('move_type', '一般'), '#E53935')}; min-height: 250px; padding:8px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span class="star-badge">{'⭐'*c.get('star', 5)}</span>
+                        <span class="energy-badge">⚡{c.get('energy', 100)}</span>
+                    </div>
+                    <div style="text-align:center; margin: 4px 0;">
+                        <img src="{c.get('image', '')}" style="width: 55px; height: 55px; object-fit: contain;">
+                        <div style="font-weight: bold; font-size: 0.95rem; line-height:1.2;">{c.get('name')}</div>
+                        <div style="font-size: 0.7rem; color: #777;">{c.get('series')} • {c.get('id')}</div>
+                    </div>
+                    <div style="margin: 2px 0;">{render_types_html(c.get('types', []))}</div>
+                    <div style="font-size: 0.75rem;">⚔️ <b>{c.get('move_name')}</b> ({c.get('move_type')}) [威力: {c.get('move_power')}]</div>
+                    {sec_text}
+                    <div style="font-size: 0.7rem; color:#555; background:#F8F9FA; padding:3px; border-radius:4px; margin:3px 0;">
+                        HP {c.get('hp')} | 攻 {c.get('atk')} | 防 {c.get('def')} | 速 {c.get('spd')}
+                    </div>
+                    <div style="font-size: 0.7rem; color:#D32F2F;">🎯 弱點: {weak_str[:25] + ('...' if len(weak_str)>25 else '')}</div>
+                    <div style="font-size: 0.7rem; color:#0288D1;">✨ {c.get('special', '無')}</div>
+                </div>
+                """, unsafe_allow_html=True)
+    else:
+        df_all = pd.DataFrame([{
+            "編號": c.get("id"),
+            "名稱": c.get("name"),
+            "彈別": c.get("series"),
+            "星級": f"{c.get('star')}⭐",
+            "能量": c.get("energy", 100),
+            "屬性": "/".join(c.get("types", [])),
+            "招式": c.get("move_name"),
+            "招式屬性": c.get("move_type"),
+            "威力": c.get("move_power"),
+            "HP": c.get("hp"),
+            "物攻": c.get("atk"),
+            "物防": c.get("def"),
+            "特攻": c.get("sp_atk"),
+            "特防": c.get("sp_def"),
+            "速度": c.get("spd"),
+            "弱點屬性": ", ".join(c.get("weaknesses", [])),
+            "抵抗屬性": ", ".join(c.get("resistances", [])),
+            "特殊機制": ", ".join(c.get("special_mechanics", [c.get("special", "無")]))
+        } for c in pokedex_cards])
+        
+        st.dataframe(df_all, use_container_width=True)
 
 # ==============================================================================
 # TAB 4: 🌐 網路資料擴充與爬蟲
