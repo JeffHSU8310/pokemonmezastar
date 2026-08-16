@@ -85,7 +85,7 @@ render_html("""
         background: #ffffff;
         border: 1.5px solid #e2e8f0;
         box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        margin-bottom: 10px;
+        margin-bottom: 8px;
     }
     
     /* 屬性標籤適應手機尺寸 */
@@ -145,9 +145,9 @@ render_html("""
     .stButton > button {
         border-radius: 8px !important;
         font-weight: bold !important;
-        font-size: 0.85rem !important;
-        padding: 0.35rem 0.5rem !important;
-        min-height: 40px !important;
+        font-size: 0.82rem !important;
+        padding: 0.3rem 0.5rem !important;
+        min-height: 38px !important;
     }
 
     /* 頁籤在手機上的水平捲動與字級 */
@@ -176,6 +176,97 @@ if "owned_ids" not in st.session_state:
 
 # 載入卡匣資料
 all_cards = load_cards()
+
+# ==============================================================================
+# 🔍 卡匣詳細資訊與高清大圖彈跳視窗 (Card Detail Modal)
+# ==============================================================================
+def render_card_detail_content(c: Dict[str, Any]):
+    c_id = c["id"]
+    is_owned = c_id in st.session_state.owned_ids
+    
+    # 頂部星級與能量
+    render_html(f"""
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+        <span class="star-badge" style="font-size:1.15rem;">{'⭐'*c.get('star', 5)}</span>
+        <span class="energy-badge" style="font-size:0.85rem; padding:3px 8px;">⚡ 寶可能量 {c.get('energy', 100)}</span>
+    </div>
+    """)
+    
+    # 高清大圖展示 (置中且自適應大小)
+    if c.get("image"):
+        st.image(c.get("image"), caption=f"官方實體卡匣立繪 • {c.get('name')}", use_container_width=True)
+        
+    render_html(f"""
+    <div style="text-align:center; margin: 8px 0 12px 0;">
+        <div style="font-weight: 800; font-size: 1.35rem; color:#1A237E;">{c.get('name')}</div>
+        <div style="font-size: 0.85rem; color: #555; margin-top:2px;">
+            <b>{c.get('series')}</b> • 官方編號: <code style="font-weight:bold; color:#D32F2F;">{c.get('id')}</code>
+        </div>
+        <div style="margin-top:6px;">{render_types_html(c.get('types', []))}</div>
+    </div>
+    """)
+    
+    # 招式系統
+    st.markdown("##### ⚔️ 戰鬥招式")
+    sec_m = c.get("second_move", {})
+    sec_html = f"<div style='margin-top:4px; font-size:0.85rem; color:#455A64;'>🗡️ <b>副招式:</b> {sec_m.get('name')} ({sec_m.get('type')}) [威力: {sec_m.get('power')}]</div>" if sec_m else ""
+    
+    render_html(f"""
+    <div style="background:#FFF8E1; border:1px solid #FFE082; border-radius:8px; padding:8px 10px; margin-bottom:10px;">
+        <div style="font-size:0.85rem;">⚔️ <b>主招式:</b> <b>{c.get('move_name')}</b> ({c.get('move_type')}) [威力: <b>{c.get('move_power')}</b>]</div>
+        {sec_html}
+    </div>
+    """)
+    
+    # 六維體質能力值
+    st.markdown("##### 📊 六維體質能力值")
+    stat_c1, stat_c2, stat_c3 = st.columns(3)
+    stat_c1.metric("HP (生命)", c.get("hp", 150))
+    stat_c2.metric("攻擊 (Atk)", c.get("atk", 130))
+    stat_c3.metric("特攻 (Sp.A)", c.get("sp_atk", 130))
+    
+    stat_c4, stat_c5, stat_c6 = st.columns(3)
+    stat_c4.metric("防禦 (Def)", c.get("def", 120))
+    stat_c5.metric("特防 (Sp.D)", c.get("sp_def", 120))
+    stat_c6.metric("速度 (Spd)", c.get("spd", 120))
+    
+    # 相剋屬性防禦分析表
+    st.markdown("##### 🎯 弱點與抵抗屬性")
+    weak_str = ", ".join(c.get("weaknesses", [])) or "無特定弱點"
+    resist_str = ", ".join(c.get("resistances", [])) or "無特定抵抗"
+    immune_str = ", ".join(c.get("immunities", []))
+    
+    render_html(f"""
+    <div style="background:#F5F5F5; border-radius:8px; padding:8px 10px; font-size:0.8rem; margin-bottom:10px;">
+        <div style="color:#D32F2F; margin-bottom:4px;"><b>🎯 弱點 (受到傷害 2x / 4x):</b><br>{weak_str}</div>
+        <div style="color:#2E7D32; margin-bottom:4px;"><b>🛡️ 抵抗 (減免傷害 0.5x / 0.25x):</b><br>{resist_str}</div>
+        {f"<div style='color:#7B1FA2;'><b>🚫 免疫 (無效 0.0x):</b><br>{immune_str}</div>" if immune_str else ""}
+    </div>
+    """)
+    
+    # 特殊機制
+    mechs = c.get("special_mechanics", [])
+    if mechs:
+        st.markdown("##### ✨ 特殊機制")
+        tags_str = " ".join([f'<span class="tag-badge" style="background:#EDE7F6; color:#4A148C; font-weight:bold; font-size:0.8rem; padding:3px 8px;">{m}</span>' for m in mechs])
+        render_html(f"<div style='margin-bottom:12px;'>{tags_str}</div>")
+        
+    # 底部收藏切換按鈕
+    st.markdown("---")
+    btn_lbl = "✅ 已在我的收藏庫中 (點擊取消持有)" if is_owned else "➕ 加入我的收藏庫"
+    btn_tp = "primary" if is_owned else "secondary"
+    if st.button(btn_lbl, key=f"dlg_toggle_{c_id}", use_container_width=True, type=btn_tp):
+        st.session_state.owned_ids = toggle_card_ownership(c_id, st.session_state.owned_ids)
+        st.rerun()
+
+if hasattr(st, "dialog"):
+    @st.dialog("🔍 寶可夢 Mezastar 卡匣詳細資料")
+    def show_card_details_modal(c: Dict[str, Any]):
+        render_card_detail_content(c)
+else:
+    def show_card_details_modal(c: Dict[str, Any]):
+        with st.expander(f"🔍 【詳細數據】{c.get('name')} ({c.get('id')})", expanded=True):
+            render_card_detail_content(c)
 
 # 側邊欄：手機選單抽屜
 with st.sidebar:
@@ -314,6 +405,7 @@ with tabs[0]:
         
         for idx, rec in enumerate(result["recommended_team"]):
             c = rec["card"]
+            c_id = c["id"]
             sec_move = c.get("second_move", {})
             sec_move_html = f"<div style='font-size:0.75rem; color:#666;'>副招: {sec_move.get('name')} ({sec_move.get('type')}) [威力:{sec_move.get('power')}]</div>" if sec_move else ""
             tags_html = ' '.join([f'<span class="tag-badge">{t}</span>' for t in rec['tags']])
@@ -326,7 +418,7 @@ with tabs[0]:
                 </div>
                 
                 <div style="display:flex; align-items:center; margin: 6px 0;">
-                    <img src="{c.get('image', '')}" style="width: 60px; height: 60px; object-fit: contain; margin-right: 8px;">
+                    <img src="{c.get('image', '')}" style="width: 65px; height: 65px; object-fit: contain; margin-right: 8px;">
                     <div style="flex:1;">
                         <div style="font-weight: bold; font-size: 1.05rem;">{c.get('name')} <span class="star-badge">{'⭐'*c.get('star', 5)}</span></div>
                         <div style="font-size: 0.75rem; color: #777;">{c.get('series', '')} • {c.get('id', '')}</div>
@@ -358,6 +450,9 @@ with tabs[0]:
                 </div>
             </div>
             """)
+            
+            if st.button(f"🔍 查看 {c.get('name')} 詳細數據與大圖", key=f"btn_rec_detail_{idx}_{c_id}", use_container_width=True):
+                show_card_details_modal(c)
 
         with st.expander("💡 展開查看實戰策略指引"):
             for t_msg in result.get("tactics", []):
@@ -388,7 +483,7 @@ with tabs[1]:
     
     # 雲端同步狀態橫幅與一鍵備份按鈕
     cur_git_info = get_git_status()
-    st.markdown(f"""
+    render_html(f"""
     <div style="background:#E3F2FD; border:1px solid #90CAF9; border-radius:8px; padding:8px 10px; margin-bottom:8px; font-size:0.8rem;">
         <div style="display:flex; justify-content:space-between; align-items:center;">
             <span>☁️ <b>雲端儲存狀態:</b> 目前已記錄 <b>{len(st.session_state.owned_ids)}</b> 款卡匣</span>
@@ -398,7 +493,7 @@ with tabs[1]:
             🔗 GitHub 檔案位置: <a href="https://github.com/JeffHSU8310/pokemonmezastar/blob/main/data/my_collection.json" target="_blank"><b>data/my_collection.json (點此直達 GitHub 檢查/編輯)</b></a>
         </div>
     </div>
-    """, unsafe_allow_html=True)
+    """)
     
     col_sync_btn1, col_sync_btn2 = st.columns([1.2, 1])
     with col_sync_btn1:
@@ -440,8 +535,8 @@ with tabs[1]:
           "2-2-001",
           "2-2-002",
           "2-2-004",
-          "2-2-007",
-          "2-1-005",
+          "2-2-022",
+          "1-2-025",
           "1-4-001"
         ]
         ```
@@ -512,7 +607,7 @@ with tabs[1]:
                     <span class="energy-badge">⚡{c.get('energy', 100)}</span>
                 </div>
                 <div style="text-align:center; margin: 4px 0;">
-                    <img src="{c.get('image', '')}" style="width: 55px; height: 55px; object-fit: contain;">
+                    <img src="{c.get('image', '')}" style="width: 60px; height: 60px; object-fit: contain;">
                     <div style="font-weight: bold; font-size: 0.95rem; line-height:1.2;">{c.get('name')}</div>
                     <div style="font-size: 0.7rem; color: #777;">{c.get('id')}</div>
                 </div>
@@ -522,11 +617,16 @@ with tabs[1]:
             </div>
             """)
             
-            btn_label = "✅ 已擁有" if is_owned else "➕ 標記持有"
-            btn_type = "primary" if is_owned else "secondary"
-            if st.button(btn_label, key=f"btn_m_own_{c_id}", use_container_width=True, type=btn_type):
-                st.session_state.owned_ids = toggle_card_ownership(c_id, st.session_state.owned_ids)
-                st.rerun()
+            sub_c1, sub_c2 = st.columns(2)
+            with sub_c1:
+                if st.button("🔍 詳情", key=f"btn_det_{c_id}", use_container_width=True):
+                    show_card_details_modal(c)
+            with sub_c2:
+                btn_label = "✅ 擁有" if is_owned else "➕ 標記"
+                btn_type = "primary" if is_owned else "secondary"
+                if st.button(btn_label, key=f"btn_m_own_{c_id}", use_container_width=True, type=btn_type):
+                    st.session_state.owned_ids = toggle_card_ownership(c_id, st.session_state.owned_ids)
+                    st.rerun()
 
 # ==============================================================================
 # TAB 3: 📖 全卡匣圖鑑庫 (Pokedex) - 依彈別完整分類與數據檢視
@@ -589,6 +689,7 @@ with tabs[2]:
         # 6.1 吋手機雙列卡片網格
         pk_cols = st.columns(2)
         for i, c in enumerate(pokedex_cards):
+            c_id = c["id"]
             with pk_cols[i % 2]:
                 weak_str = ", ".join(c.get("weaknesses", []))
                 sec_m = c.get("second_move", {})
@@ -601,7 +702,7 @@ with tabs[2]:
                         <span class="energy-badge">⚡{c.get('energy', 100)}</span>
                     </div>
                     <div style="text-align:center; margin: 4px 0;">
-                        <img src="{c.get('image', '')}" style="width: 55px; height: 55px; object-fit: contain;">
+                        <img src="{c.get('image', '')}" style="width: 60px; height: 60px; object-fit: contain;">
                         <div style="font-weight: bold; font-size: 0.95rem; line-height:1.2;">{c.get('name')}</div>
                         <div style="font-size: 0.7rem; color: #777;">{c.get('series')} • {c.get('id')}</div>
                     </div>
@@ -615,6 +716,9 @@ with tabs[2]:
                     <div style="font-size: 0.7rem; color:#0288D1;">✨ {c.get('special', '無')}</div>
                 </div>
                 """)
+                
+                if st.button("🔍 放大看詳情", key=f"btn_pk_det_{i}_{c_id}", use_container_width=True):
+                    show_card_details_modal(c)
     else:
         df_all = pd.DataFrame([{
             "編號": c.get("id"),
@@ -697,7 +801,7 @@ with tabs[4]:
     g_info = get_git_status()
     st.caption(f"版次: `v{g_info['version']}` | 分支: `{g_info['branch']}`")
     
-    commit_summary = st.text_input("修改說明:", value="全面採用 st.html 原生渲染消除 HTML 洩漏問題，並加入雲端收藏狀態檢查")
+    commit_summary = st.text_input("修改說明:", value="新增點擊卡匣彈跳放大圖與完整詳細數據視窗功能")
     if st.button("🚀 立即建立版次並推送到 GitHub", use_container_width=True, type="primary"):
         with st.spinner("同步中..."):
             success, sync_msg = auto_commit_and_push(change_summary=commit_summary, branch="main")
