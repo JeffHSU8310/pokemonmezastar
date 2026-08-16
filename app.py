@@ -557,74 +557,102 @@ with tabs[1]:
             except Exception as e:
                 st.error(f"檔案格式錯誤: {e}")
 
-    with st.expander("🔍 點擊展開篩選條件", expanded=False):
+    # 取得使用者目前擁有的卡匣
+    my_owned_cards = [c for c in all_cards if c.get("id") in st.session_state.owned_ids]
+
+    if not my_owned_cards:
+        st.info("🎒 **您目前收藏庫中尚無卡匣！**\n\n請點擊下方 **【➕ 展開全圖鑑快速勾選卡匣】** 或至 **【📖 圖鑑庫】** 點擊「➕ 標記持有」加入您的實體卡匣！")
+    else:
+        # 已擁有卡匣的搜尋與星級篩選
         col_f1, col_f2 = st.columns(2)
         with col_f1:
-            star_filter = st.multiselect("星級:", options=[6, 5, 4, 3, 2, 1], default=[6, 5])
-            status_filter = st.selectbox("狀態:", options=["全部卡匣", "僅已擁有", "僅未擁有"], index=0)
+            my_star_filter = st.multiselect("⭐ 星級篩選:", options=[6, 5, 4, 3, 2, 1], default=[6, 5, 4, 3, 2, 1], key="my_star_flt")
         with col_f2:
-            all_series = [s for s in ALL_SERIES_LIST if any(c.get("series") == s for c in all_cards)]
-            series_filter = st.multiselect("彈別:", options=all_series, default=all_series)
-            keyword = st.text_input("搜尋:", value="", placeholder="名稱/編號/機制")
+            my_search = st.text_input("🔍 搜尋我擁有的卡匣:", value="", placeholder="名稱/編號/招式", key="my_search_kw")
 
-    # 篩選卡匣
-    filtered_cards = []
-    for c in all_cards:
-        if c.get("star", 5) not in star_filter:
-            continue
-        if c.get("series", "") not in series_filter:
-            continue
-        is_owned = c.get("id") in st.session_state.owned_ids
-        if status_filter == "僅已擁有" and not is_owned:
-            continue
-        if status_filter == "僅未擁有" and is_owned:
-            continue
-        if keyword:
-            k_lower = keyword.lower()
-            name_match = k_lower in c.get("name", "").lower()
-            id_match = k_lower in c.get("id", "").lower()
-            mech_match = any(k_lower in m.lower() for m in c.get("special_mechanics", []))
-            if not (name_match or id_match or mech_match):
+        # 篩選已持有卡匣
+        filtered_my_cards = []
+        for c in my_owned_cards:
+            if c.get("star", 5) not in my_star_filter:
                 continue
-        filtered_cards.append(c)
+            if my_search:
+                k_low = my_search.lower()
+                name_match = k_low in c.get("name", "").lower()
+                id_match = k_low in c.get("id", "").lower()
+                move_match = k_low in c.get("move_name", "").lower() or k_low in c.get("move_type", "").lower()
+                if not (name_match or id_match or move_match):
+                    continue
+            filtered_my_cards.append(c)
 
-    st.caption(f"共 {len(filtered_cards)} 款卡匣：")
+        st.caption(f"🎒 目前顯示已擁有卡匣共 **{len(filtered_my_cards)}** 款：")
 
-    # 針對 6.1" 手機：採用 2 列佈局 (每列 2 張卡片，剛剛好適合手機寬度且好點擊)
-    card_cols = st.columns(2)
-    for i, c in enumerate(filtered_cards):
-        c_id = c["id"]
-        is_owned = c_id in st.session_state.owned_ids
+        # 針對 6.1" 手機：採用 2 列直立卡片網格 (只顯示已擁有卡匣)
+        card_cols = st.columns(2)
+        for i, c in enumerate(filtered_my_cards):
+            c_id = c["id"]
+            with card_cols[i % 2]:
+                render_html(f"""
+                <div class="card-box" style="border: 2px solid #E53935; background-color: #FFF8F8; min-height: 220px; padding: 8px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span class="star-badge">{'⭐'*c.get('star', 5)}</span>
+                        <span class="energy-badge">⚡{c.get('energy', 100)}</span>
+                    </div>
+                    <div style="text-align:center; margin: 4px 0;">
+                        <img src="{c.get('image', '')}" style="width: 60px; height: 60px; object-fit: contain;">
+                        <div style="font-weight: bold; font-size: 0.95rem; line-height:1.2;">{c.get('name')}</div>
+                        <div style="font-size: 0.7rem; color: #777;">{c.get('series')} • {c.get('id')}</div>
+                    </div>
+                    <div style="margin: 2px 0;">{render_types_html(c.get('types', []))}</div>
+                    <div style="font-size: 0.75rem; color:#333;">⚔️ {c.get('move_name')} [{c.get('move_power')}]</div>
+                    <div style="font-size: 0.7rem; color:#0288D1;">✨ {c.get('special', '無')}</div>
+                </div>
+                """)
+                
+                sub_c1, sub_c2 = st.columns(2)
+                with sub_c1:
+                    if st.button("🔍 詳情", key=f"btn_my_det_{c_id}", use_container_width=True):
+                        show_card_details_modal(c)
+                with sub_c2:
+                    if st.button("🗑️ 移出", key=f"btn_my_del_{c_id}", use_container_width=True, type="secondary"):
+                        st.session_state.owned_ids = toggle_card_ownership(c_id, st.session_state.owned_ids)
+                        st.rerun()
+
+    # 展開從全圖鑑快速勾選卡匣
+    with st.expander("➕ 展開全圖鑑快速勾選/新增持有卡匣", expanded=False):
+        st.markdown("從全圖鑑點擊 **「➕ 加入」** 即可將卡匣加入到您的卡匣庫中：")
+        add_series_options = ["🌟 全部系列"] + ALL_SERIES_LIST
+        add_series_pick = st.selectbox("彈別篩選:", options=add_series_options, index=0, key="add_series_pick")
+        add_keyword = st.text_input("搜尋卡匣名稱/編號:", value="", placeholder="例如: 蒼響, 鐵轍跡...", key="add_kw_pick")
         
-        with card_cols[i % 2]:
-            border_color = "#E53935" if is_owned else "#E0E0E0"
-            bg_color = "#FFF8F8" if is_owned else "#FFFFFF"
+        cand_to_add = []
+        for c in all_cards:
+            if add_series_pick != "🌟 全部系列" and c.get("series") != add_series_pick:
+                continue
+            if add_keyword:
+                ak_low = add_keyword.lower()
+                if ak_low not in c.get("name", "").lower() and ak_low not in c.get("id", "").lower():
+                    continue
+            cand_to_add.append(c)
             
-            render_html(f"""
-            <div class="card-box" style="border: 2px solid {border_color}; background-color: {bg_color}; min-height: 220px; padding: 8px;">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span class="star-badge">{'⭐'*c.get('star', 5)}</span>
-                    <span class="energy-badge">⚡{c.get('energy', 100)}</span>
+        add_cols = st.columns(2)
+        for i, c in enumerate(cand_to_add[:40]):
+            c_id = c["id"]
+            is_owned = c_id in st.session_state.owned_ids
+            with add_cols[i % 2]:
+                border_color = "#E53935" if is_owned else "#E0E0E0"
+                bg_color = "#FFF8F8" if is_owned else "#FFFFFF"
+                render_html(f"""
+                <div class="card-box" style="border: 1.5px solid {border_color}; background-color: {bg_color}; padding: 6px; margin-bottom: 6px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-size:0.8rem;">{'⭐'*c.get('star', 5)}</span>
+                        <span style="font-size:0.7rem; color:#777;">{c.get('id')}</span>
+                    </div>
+                    <div style="font-weight:bold; font-size:0.85rem; margin:2px 0;">{c.get('name')} <span style="font-size:0.7rem; color:#888;">({c.get('series')})</span></div>
                 </div>
-                <div style="text-align:center; margin: 4px 0;">
-                    <img src="{c.get('image', '')}" style="width: 60px; height: 60px; object-fit: contain;">
-                    <div style="font-weight: bold; font-size: 0.95rem; line-height:1.2;">{c.get('name')}</div>
-                    <div style="font-size: 0.7rem; color: #777;">{c.get('id')}</div>
-                </div>
-                <div style="margin: 2px 0;">{render_types_html(c.get('types', []))}</div>
-                <div style="font-size: 0.75rem; color:#333;">⚔️ {c.get('move_name')} [{c.get('move_power')}]</div>
-                <div style="font-size: 0.7rem; color:#0288D1;">✨ {c.get('special', '無')}</div>
-            </div>
-            """)
-            
-            sub_c1, sub_c2 = st.columns(2)
-            with sub_c1:
-                if st.button("🔍 詳情", key=f"btn_det_{c_id}", use_container_width=True):
-                    show_card_details_modal(c)
-            with sub_c2:
-                btn_label = "✅ 擁有" if is_owned else "➕ 標記"
-                btn_type = "primary" if is_owned else "secondary"
-                if st.button(btn_label, key=f"btn_m_own_{c_id}", use_container_width=True, type=btn_type):
+                """)
+                btn_lbl = "✅ 已擁有" if is_owned else "➕ 加入收藏"
+                btn_tp = "primary" if is_owned else "secondary"
+                if st.button(btn_lbl, key=f"btn_add_tab_{c_id}", use_container_width=True, type=btn_tp):
                     st.session_state.owned_ids = toggle_card_ownership(c_id, st.session_state.owned_ids)
                     st.rerun()
 
@@ -717,8 +745,17 @@ with tabs[2]:
                 </div>
                 """)
                 
-                if st.button("🔍 放大看詳情", key=f"btn_pk_det_{i}_{c_id}", use_container_width=True):
-                    show_card_details_modal(c)
+                pk_btn_c1, pk_btn_c2 = st.columns(2)
+                with pk_btn_c1:
+                    if st.button("🔍 詳情", key=f"btn_pk_det_{i}_{c_id}", use_container_width=True):
+                        show_card_details_modal(c)
+                with pk_btn_c2:
+                    is_owned = c_id in st.session_state.owned_ids
+                    pk_lbl = "✅ 擁有" if is_owned else "➕ 加入"
+                    pk_tp = "primary" if is_owned else "secondary"
+                    if st.button(pk_lbl, key=f"btn_pk_own_{i}_{c_id}", use_container_width=True, type=pk_tp):
+                        st.session_state.owned_ids = toggle_card_ownership(c_id, st.session_state.owned_ids)
+                        st.rerun()
     else:
         df_all = pd.DataFrame([{
             "編號": c.get("id"),
