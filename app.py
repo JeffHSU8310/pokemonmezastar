@@ -7,6 +7,7 @@ import streamlit as st
 import pandas as pd
 from typing import List, Dict, Any, Set
 import os
+import textwrap
 
 from mezastar_data import (
     TYPES,
@@ -34,7 +35,7 @@ from github_sync import (
     load_version_info
 )
 
-# 設定頁面資訊 (針對手機與多終端自我調整寬度)
+# 設定頁面資訊
 st.set_page_config(
     page_title="寶可夢 Mezastar 對戰推薦",
     page_icon="⚡",
@@ -42,8 +43,12 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
+def render_html(html_str: str):
+    """安全輸出 HTML，消除縮排防止 markdown 解析為程式碼區塊"""
+    st.markdown(textwrap.dedent(html_str).strip(), unsafe_allow_html=True)
+
 # 針對 6.1 吋智慧型手機 (iPhone / Android) 深度調優的響應式 CSS 樣式
-st.markdown("""
+render_html("""
 <style>
     /* 頁面整體邊距微調，最大化手機可視空間 */
     .block-container {
@@ -151,7 +156,7 @@ st.markdown("""
         font-size: 0.85rem !important;
     }
 </style>
-""", unsafe_allow_html=True)
+""")
 
 def render_type_badge(t_name: str) -> str:
     color = TYPE_COLORS.get(t_name, "#888888")
@@ -204,8 +209,10 @@ with st.sidebar:
         st.success("✅ 雲端完全同步")
 
 # 主標題 (手機適配)
-st.markdown('<div class="mobile-title">⚡ Pokémon MEZASTAR 對戰助手</div>', unsafe_allow_html=True)
-st.markdown('<div class="mobile-subtitle">6.1" 手機介面優化 • 能量/體質/弱點/機制最佳隊伍推薦</div>', unsafe_allow_html=True)
+render_html("""
+<div class="mobile-title">⚡ Pokémon MEZASTAR 對戰助手</div>
+<div class="mobile-subtitle">6.1" 手機介面優化 • 能量/體質/弱點/機制最佳隊伍推薦</div>
+""")
 
 # 頁籤導覽 (精簡 Emoji 標籤適合手機單手滑動)
 tabs = st.tabs([
@@ -222,7 +229,7 @@ tabs = st.tabs([
 with tabs[0]:
     # 手機上採用卡片式下拉選單
     with st.container():
-        boss_options = ["🔍 自訂目標 Boss..."] + [f"{c['name']} ({c['series']}) ⚡{c.get('energy', 100)}" for c in all_cards]
+        boss_options = ["🔍 自訂目標 Boss..."] + [f"{c['name']} ({c['series']} - {c['id']}) ⚡{c.get('energy', 100)}" for c in all_cards]
         selected_boss_idx = st.selectbox("🎯 選擇對手 Boss:", options=range(len(boss_options)), format_func=lambda x: boss_options[x])
         
         if selected_boss_idx == 0:
@@ -259,7 +266,7 @@ with tabs[0]:
     resist = [k for k, v in full_chart.items() if 0.0 < v <= 0.5]
     immune = [k for k, v in full_chart.items() if v == 0.0]
     
-    st.markdown(f"""
+    render_html(f"""
     <div style="background:#FFF3E0; border:1px solid #FFE0B2; border-radius:8px; padding:8px; margin: 6px 0;">
         <div style="display:flex; justify-content:space-between; align-items:center;">
             <b>👾 對手：{boss_name}</b>
@@ -271,7 +278,7 @@ with tabs[0]:
             {('<br><b>🛡️ 抵抗:</b> ' + ''.join([render_type_badge(t) for t in resist[:4]])) if resist else ''}
         </div>
     </div>
-    """, unsafe_allow_html=True)
+    """)
 
     # 決定候選卡匣
     if "我的卡匣庫" in search_scope:
@@ -301,8 +308,9 @@ with tabs[0]:
             c = rec["card"]
             sec_move = c.get("second_move", {})
             sec_move_html = f"<div style='font-size:0.75rem; color:#666;'>副招: {sec_move.get('name')} ({sec_move.get('type')}) [威力:{sec_move.get('power')}]</div>" if sec_move else ""
+            tags_html = ' '.join([f'<span class="tag-badge">{t}</span>' for t in rec['tags']])
             
-            st.markdown(f"""
+            render_html(f"""
             <div class="card-box" style="border-left: 5px solid {TYPE_COLORS.get(rec['best_move_type'], '#E53935')};">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                     <span style="font-weight:bold; font-size:0.85rem; color:#D32F2F;">{role_badges[idx]}</span>
@@ -338,10 +346,10 @@ with tabs[0]:
                 </div>
 
                 <div style="margin-top: 3px;">
-                    {' '.join([f'<span class="tag-badge">{t}</span>' for t in rec['tags']])}
+                    {tags_html}
                 </div>
             </div>
-            """, unsafe_allow_html=True)
+            """)
 
         with st.expander("💡 展開查看實戰策略指引"):
             for t_msg in result.get("tactics", []):
@@ -356,6 +364,7 @@ with tabs[0]:
                     "卡匣": c.get("name"),
                     "星級": f"{c.get('star')}⭐",
                     "能量": c.get("energy", 100),
+                    "編號": f"{c.get('series')} {c.get('id')}",
                     "招式": f"{rec['best_move_name']} ({rec['best_move_type']})",
                     "剋制": f"{rec['type_mult']}x",
                     "機制": c.get("special", "無"),
@@ -412,7 +421,7 @@ with tabs[1]:
             border_color = "#E53935" if is_owned else "#E0E0E0"
             bg_color = "#FFF8F8" if is_owned else "#FFFFFF"
             
-            st.markdown(f"""
+            render_html(f"""
             <div class="card-box" style="border: 2px solid {border_color}; background-color: {bg_color}; min-height: 220px; padding: 8px;">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                     <span class="star-badge">{'⭐'*c.get('star', 5)}</span>
@@ -427,7 +436,7 @@ with tabs[1]:
                 <div style="font-size: 0.75rem; color:#333;">⚔️ {c.get('move_name')} [{c.get('move_power')}]</div>
                 <div style="font-size: 0.7rem; color:#0288D1;">✨ {c.get('special', '無')}</div>
             </div>
-            """, unsafe_allow_html=True)
+            """)
             
             btn_label = "✅ 已擁有" if is_owned else "➕ 標記持有"
             btn_type = "primary" if is_owned else "secondary"
@@ -449,7 +458,7 @@ with tabs[2]:
     with col_pk1:
         pokedex_star_filter = st.multiselect("⭐ 星級篩選:", options=[6, 5, 4, 3, 2, 1], default=[6, 5, 4, 3, 2, 1], key="pk_star_filter")
     with col_pk2:
-        pokedex_search = st.text_input("🔍 搜尋寶可夢名稱/編號/屬性/招式:", value="", placeholder="例如: 蒼響, 4-2-001, 火, 巨獸斬...", key="pk_search")
+        pokedex_search = st.text_input("🔍 搜尋名稱/編號/屬性/招式:", value="", placeholder="例如: 蒼響, 2-2-001, 鋼...", key="pk_search")
 
     # 檢視模式切換 (手機優化：圖鑑卡片模式 vs 數據表格模式)
     view_mode = st.radio("檢視呈現方式:", options=["🗂️ 圖鑑卡片模式 (手機好讀)", "📊 完整數據表格模式"], horizontal=True)
@@ -481,14 +490,14 @@ with tabs[2]:
     s_star_2 = sum(1 for c in cur_series_cards if c.get("star") == 2)
     s_star_1 = sum(1 for c in cur_series_cards if c.get("star") == 1)
 
-    st.markdown(f"""
+    render_html(f"""
     <div style="background:#ECEFF1; border-radius:8px; padding:6px 10px; margin: 4px 0 10px 0; font-size:0.8rem;">
         <b>📌 【{selected_series}】收錄統計：</b> 共 <b>{len(cur_series_cards)}</b> 款卡匣
         <div style="margin-top:2px; color:#37474F;">
             6星: <b>{s_star_6}</b> | 5星: <b>{s_star_5}</b> | 4星: <b>{s_star_4}</b> | 3星: <b>{s_star_3}</b> | 2星: <b>{s_star_2}</b> | 1星: <b>{s_star_1}</b>
         </div>
     </div>
-    """, unsafe_allow_html=True)
+    """)
 
     st.caption(f"目前顯示共 **{len(pokedex_cards)}** 款卡匣：")
 
@@ -501,7 +510,7 @@ with tabs[2]:
                 sec_m = c.get("second_move", {})
                 sec_text = f"<div style='font-size:0.7rem; color:#666;'>副招: {sec_m.get('name')} [{sec_m.get('power')}]</div>" if sec_m else ""
                 
-                st.markdown(f"""
+                render_html(f"""
                 <div class="card-box" style="border-top: 4px solid {TYPE_COLORS.get(c.get('move_type', '一般'), '#E53935')}; min-height: 250px; padding:8px;">
                     <div style="display:flex; justify-content:space-between; align-items:center;">
                         <span class="star-badge">{'⭐'*c.get('star', 5)}</span>
@@ -521,7 +530,7 @@ with tabs[2]:
                     <div style="font-size: 0.7rem; color:#D32F2F;">🎯 弱點: {weak_str[:25] + ('...' if len(weak_str)>25 else '')}</div>
                     <div style="font-size: 0.7rem; color:#0288D1;">✨ {c.get('special', '無')}</div>
                 </div>
-                """, unsafe_allow_html=True)
+                """)
     else:
         df_all = pd.DataFrame([{
             "編號": c.get("id"),
@@ -564,7 +573,7 @@ with tabs[3]:
 
     with st.expander("➕ 2. 新增卡匣至資料庫", expanded=True):
         with st.form("add_card_form"):
-            f_id = st.text_input("卡匣編號 (例: 4-2-001):", value="4-2-001")
+            f_id = st.text_input("卡匣編號 (例: 2-2-001):", value="2-2-001")
             f_name = st.text_input("寶可夢名稱:", value="蒼響")
             f_series = st.selectbox("彈別:", options=ALL_SERIES_LIST, index=0)
             f_star = st.slider("星級:", min_value=1, max_value=6, value=6)
@@ -604,7 +613,7 @@ with tabs[4]:
     g_info = get_git_status()
     st.caption(f"版次: `v{g_info['version']}` | 分支: `{g_info['branch']}`")
     
-    commit_summary = st.text_input("修改說明:", value="手機 6.1 吋介面深度優化與響應式排版調整")
+    commit_summary = st.text_input("修改說明:", value="修正卡片編碼 (銀河二彈2-2-xxx) 並修復 HTML 程式碼洩漏問題")
     if st.button("🚀 立即建立版次並推送到 GitHub", use_container_width=True, type="primary"):
         with st.spinner("同步中..."):
             success, sync_msg = auto_commit_and_push(change_summary=commit_summary, branch="main")

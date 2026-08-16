@@ -1,6 +1,6 @@
 [
   {
-    "id": "4-2-001",
+    "id": "2-2-001",
     "name": "蒼響",
     "series": "銀河第2彈",
     "star": 6,
@@ -59,7 +59,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/zacian.png"
   },
   {
-    "id": "4-2-002",
+    "id": "2-2-002",
     "name": "藏瑪然特",
     "series": "銀河第2彈",
     "star": 6,
@@ -117,7 +117,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/zamazenta.png"
   },
   {
-    "id": "4-2-003",
+    "id": "2-2-003",
     "name": "鋁鋼龍",
     "series": "銀河第2彈",
     "star": 6,
@@ -170,7 +170,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/duraludon.png"
   },
   {
-    "id": "4-2-004",
+    "id": "2-2-004",
     "name": "噴火龍",
     "series": "銀河第2彈",
     "star": 6,
@@ -221,7 +221,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/charizard.png"
   },
   {
-    "id": "4-2-005",
+    "id": "2-2-005",
     "name": "薩戮德",
     "series": "銀河第2彈",
     "star": 6,
@@ -277,7 +277,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/zarude.png"
   },
   {
-    "id": "4-2-006",
+    "id": "2-2-006",
     "name": "路卡利歐",
     "series": "銀河第2彈",
     "star": 6,
@@ -331,7 +331,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/lucario.png"
   },
   {
-    "id": "4-2-007",
+    "id": "2-2-007",
     "name": "烈空坐",
     "series": "銀河第2彈",
     "star": 6,
@@ -383,7 +383,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/rayquaza.png"
   },
   {
-    "id": "4-2-008",
+    "id": "2-2-008",
     "name": "拉帝亞斯",
     "series": "銀河第2彈",
     "star": 6,
@@ -436,7 +436,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/latias.png"
   },
   {
-    "id": "4-2-009",
+    "id": "2-2-009",
     "name": "拉帝歐斯",
     "series": "銀河第2彈",
     "star": 6,
@@ -489,7 +489,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/latios.png"
   },
   {
-    "id": "4-2-010",
+    "id": "2-2-010",
     "name": "四顎針龍",
     "series": "銀河第2彈",
     "star": 6,
@@ -541,7 +541,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/naganadel.png"
   },
   {
-    "id": "4-2-011",
+    "id": "2-2-011",
     "name": "多龍巴魯托",
     "series": "銀河第2彈",
     "star": 5,
@@ -593,7 +593,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/dragapult.png"
   },
   {
-    "id": "4-2-012",
+    "id": "2-2-012",
     "name": "長毛巨魔",
     "series": "銀河第2彈",
     "star": 5,
@@ -641,7 +641,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/grimmsnarl.png"
   },
   {
-    "id": "4-2-013",
+    "id": "2-2-013",
     "name": "布莉姆溫",
     "series": "銀河第2彈",
     "star": 5,
@@ -688,7 +688,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/hatterene.png"
   },
   {
-    "id": "4-2-014",
+    "id": "2-2-014",
     "name": "列陣兵",
     "series": "銀河第2彈",
     "star": 5,
@@ -734,7 +734,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/falinks.png"
   },
   {
-    "id": "4-2-015",
+    "id": "2-2-015",
     "name": "蘋裹龍",
     "series": "銀河第2彈",
     "star": 5,
@@ -784,7 +784,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/flapple.png"
   },
   {
-    "id": "4-2-016",
+    "id": "2-2-016",
     "name": "豐蜜龍",
     "series": "銀河第2彈",
     "star": 5,
@@ -834,7 +834,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/appletun.png"
   },
   {
-    "id": "4-2-017",
+    "id": "2-2-017",
     "name": "死神板",
     "series": "銀河第2彈",
     "star": 5,
@@ -884,7 +884,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/runerigus.png"
   },
   {
-    "id": "4-2-018",
+    "id": "2-2-018",
     "name": "莫魯貝可",
     "series": "銀河第2彈",
     "star": 5,
@@ -933,7 +933,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/morpeko.png"
   },
   {
-    "id": "4-2-019",
+    "id": "2-2-019",
     "name": "大王銅象",
     "series": "銀河第2彈",
     "star": 5,
@@ -987,7 +987,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/copperajah.png"
   },
   {
-    "id": "4-2-020",
+    "id": "2-2-020",
     "name": "魔牆人偶 (伽勒爾)",
     "series": "銀河第2彈",
     "star": 5,
@@ -1033,7 +1033,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/mr-mime-galar.png"
   },
   {
-    "id": "4-2-021",
+    "id": "2-2-021",
     "name": "巨炭山",
     "series": "銀河第2彈",
     "star": 5,
@@ -1084,7 +1084,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/coalossal.png"
   },
   {
-    "id": "4-2-022",
+    "id": "2-2-022",
     "name": "暴噬龜",
     "series": "銀河第2彈",
     "star": 5,
@@ -1133,7 +1133,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/drednaw.png"
   },
   {
-    "id": "4-2-023",
+    "id": "2-2-023",
     "name": "鋼鎧鴉",
     "series": "銀河第2彈",
     "star": 5,
@@ -1186,7 +1186,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/corviknight.png"
   },
   {
-    "id": "4-2-024",
+    "id": "2-2-024",
     "name": "白蓬蓬",
     "series": "銀河第2彈",
     "star": 5,
@@ -1232,7 +1232,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/eldegoss.png"
   },
   {
-    "id": "4-2-025",
+    "id": "2-2-025",
     "name": "逐電犬",
     "series": "銀河第2彈",
     "star": 5,
@@ -1273,7 +1273,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/boltund.png"
   },
   {
-    "id": "4-2-026",
+    "id": "2-2-026",
     "name": "多龍奇",
     "series": "銀河第2彈",
     "star": 4,
@@ -1325,7 +1325,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/drakloak.png"
   },
   {
-    "id": "4-2-027",
+    "id": "2-2-027",
     "name": "詐唬魔",
     "series": "銀河第2彈",
     "star": 4,
@@ -1371,7 +1371,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/morgrem.png"
   },
   {
-    "id": "4-2-028",
+    "id": "2-2-028",
     "name": "提布莉姆",
     "series": "銀河第2彈",
     "star": 4,
@@ -1413,7 +1413,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/hattrem.png"
   },
   {
-    "id": "4-2-029",
+    "id": "2-2-029",
     "name": "裹蜜蟲",
     "series": "銀河第2彈",
     "star": 4,
@@ -1461,7 +1461,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/dipplin.png"
   },
   {
-    "id": "4-2-030",
+    "id": "2-2-030",
     "name": "大炭車",
     "series": "銀河第2彈",
     "star": 4,
@@ -1510,7 +1510,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/carkol.png"
   },
   {
-    "id": "4-2-031",
+    "id": "2-2-031",
     "name": "暴噬龜 (中)",
     "series": "銀河第2彈",
     "star": 4,
@@ -1557,7 +1557,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/drednaw.png"
   },
   {
-    "id": "4-2-032",
+    "id": "2-2-032",
     "name": "藍鴉",
     "series": "銀河第2彈",
     "star": 4,
@@ -1602,7 +1602,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/corvisquire.png"
   },
   {
-    "id": "4-2-033",
+    "id": "2-2-033",
     "name": "來電汪",
     "series": "銀河第2彈",
     "star": 4,
@@ -1643,7 +1643,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/yamper.png"
   },
   {
-    "id": "4-2-034",
+    "id": "2-2-034",
     "name": "利歐路",
     "series": "銀河第2彈",
     "star": 4,
@@ -1686,7 +1686,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/riolu.png"
   },
   {
-    "id": "4-2-035",
+    "id": "2-2-035",
     "name": "毒貝比",
     "series": "銀河第2彈",
     "star": 4,
@@ -1730,7 +1730,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/poipole.png"
   },
   {
-    "id": "4-2-036",
+    "id": "2-2-036",
     "name": "沙基拉斯",
     "series": "銀河第2彈",
     "star": 4,
@@ -1781,7 +1781,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/pupitar.png"
   },
   {
-    "id": "4-2-037",
+    "id": "2-2-037",
     "name": "火恐龍",
     "series": "銀河第2彈",
     "star": 4,
@@ -1827,7 +1827,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/charmeleon.png"
   },
   {
-    "id": "4-2-038",
+    "id": "2-2-038",
     "name": "卡咪龜",
     "series": "銀河第2彈",
     "star": 4,
@@ -1870,7 +1870,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/wartortle.png"
   },
   {
-    "id": "4-2-039",
+    "id": "2-2-039",
     "name": "妙蛙草",
     "series": "銀河第2彈",
     "star": 4,
@@ -1917,7 +1917,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/ivysaur.png"
   },
   {
-    "id": "4-2-040",
+    "id": "2-2-040",
     "name": "踏冰人偶",
     "series": "銀河第2彈",
     "star": 4,
@@ -1963,7 +1963,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/mr-rime.png"
   },
   {
-    "id": "4-2-041",
+    "id": "2-2-041",
     "name": "小火龍",
     "series": "銀河第2彈",
     "star": 3,
@@ -2009,7 +2009,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/charmander.png"
   },
   {
-    "id": "4-2-042",
+    "id": "2-2-042",
     "name": "傑尼龜",
     "series": "銀河第2彈",
     "star": 3,
@@ -2052,7 +2052,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/squirtle.png"
   },
   {
-    "id": "4-2-043",
+    "id": "2-2-043",
     "name": "妙蛙種子",
     "series": "銀河第2彈",
     "star": 3,
@@ -2099,7 +2099,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/bulbasaur.png"
   },
   {
-    "id": "4-2-044",
+    "id": "2-2-044",
     "name": "皮卡丘",
     "series": "銀河第2彈",
     "star": 3,
@@ -2140,7 +2140,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/pikachu.png"
   },
   {
-    "id": "4-2-045",
+    "id": "2-2-045",
     "name": "稚山雀",
     "series": "銀河第2彈",
     "star": 3,
@@ -2185,7 +2185,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/rookidee.png"
   },
   {
-    "id": "4-2-046",
+    "id": "2-2-046",
     "name": "貪心栗鼠",
     "series": "銀河第2彈",
     "star": 3,
@@ -2224,7 +2224,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/skwovet.png"
   },
   {
-    "id": "4-2-047",
+    "id": "2-2-047",
     "name": "小炭仔",
     "series": "銀河第2彈",
     "star": 3,
@@ -2270,7 +2270,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/rolycoly.png"
   },
   {
-    "id": "4-2-048",
+    "id": "2-2-048",
     "name": "啃果蟲",
     "series": "銀河第2彈",
     "star": 3,
@@ -2318,7 +2318,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/applin.png"
   },
   {
-    "id": "4-2-049",
+    "id": "2-2-049",
     "name": "刺頭稚兒",
     "series": "銀河第2彈",
     "star": 3,
@@ -2364,7 +2364,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/impidimp.png"
   },
   {
-    "id": "4-2-050",
+    "id": "2-2-050",
     "name": "迷布莉姆",
     "series": "銀河第2彈",
     "star": 3,
@@ -2406,7 +2406,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/hattena.png"
   },
   {
-    "id": "4-2-051",
+    "id": "2-2-051",
     "name": "銅象",
     "series": "銀河第2彈",
     "star": 3,
@@ -2458,7 +2458,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/cufant.png"
   },
   {
-    "id": "4-2-052",
+    "id": "2-2-052",
     "name": "哭哭面具",
     "series": "銀河第2彈",
     "star": 3,
@@ -2508,7 +2508,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/yamask-galar.png"
   },
   {
-    "id": "4-2-053",
+    "id": "2-2-053",
     "name": "多龍梅西亞",
     "series": "銀河第2彈",
     "star": 3,
@@ -2560,7 +2560,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/dreepy.png"
   },
   {
-    "id": "4-2-054",
+    "id": "2-2-054",
     "name": "幼棉棉",
     "series": "銀河第2彈",
     "star": 3,
@@ -2606,7 +2606,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/gossifleur.png"
   },
   {
-    "id": "4-2-055",
+    "id": "2-2-055",
     "name": "幼基拉斯",
     "series": "銀河第2彈",
     "star": 3,
@@ -2657,7 +2657,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/larvitar.png"
   },
   {
-    "id": "4-2-056",
+    "id": "2-2-056",
     "name": "毛辮羊",
     "series": "銀河第2彈",
     "star": 2,
@@ -2696,7 +2696,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/wooloo.png"
   },
   {
-    "id": "4-2-057",
+    "id": "2-2-057",
     "name": "咬咬龜",
     "series": "銀河第2彈",
     "star": 2,
@@ -2739,7 +2739,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/chewtle.png"
   },
   {
-    "id": "4-2-058",
+    "id": "2-2-058",
     "name": "稚山雀 (小)",
     "series": "銀河第2彈",
     "star": 2,
@@ -2784,7 +2784,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/rookidee.png"
   },
   {
-    "id": "4-2-059",
+    "id": "2-2-059",
     "name": "小炭仔 (小)",
     "series": "銀河第2彈",
     "star": 2,
@@ -2830,7 +2830,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/rolycoly.png"
   },
   {
-    "id": "4-2-060",
+    "id": "2-2-060",
     "name": "貪心栗鼠 (小)",
     "series": "銀河第2彈",
     "star": 2,
@@ -2869,7 +2869,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/skwovet.png"
   },
   {
-    "id": "4-2-061",
+    "id": "2-2-061",
     "name": "綠毛蟲",
     "series": "銀河第2彈",
     "star": 1,
@@ -2912,7 +2912,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/caterpie.png"
   },
   {
-    "id": "4-2-062",
+    "id": "2-2-062",
     "name": "獨角蟲",
     "series": "銀河第2彈",
     "star": 1,
@@ -2959,7 +2959,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/weedle.png"
   },
   {
-    "id": "4-2-063",
+    "id": "2-2-063",
     "name": "波波",
     "series": "銀河第2彈",
     "star": 1,
@@ -3005,7 +3005,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/pidgey.png"
   },
   {
-    "id": "4-2-064",
+    "id": "2-2-064",
     "name": "小拉達",
     "series": "銀河第2彈",
     "star": 1,
@@ -3044,7 +3044,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/rattata.png"
   },
   {
-    "id": "4-2-065",
+    "id": "2-2-065",
     "name": "喇叭芽",
     "series": "銀河第2彈",
     "star": 1,
@@ -3091,7 +3091,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/bellsprout.png"
   },
   {
-    "id": "4-2-066",
+    "id": "2-2-066",
     "name": "地鼠",
     "series": "銀河第2彈",
     "star": 1,
@@ -3135,7 +3135,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/diglett.png"
   },
   {
-    "id": "4-2-067",
+    "id": "2-2-067",
     "name": "喵喵",
     "series": "銀河第2彈",
     "star": 1,
@@ -3174,7 +3174,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/meowth.png"
   },
   {
-    "id": "4-2-068",
+    "id": "2-2-068",
     "name": "可達鴨",
     "series": "銀河第2彈",
     "star": 1,
@@ -3217,7 +3217,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/psyduck.png"
   },
   {
-    "id": "4-2-069",
+    "id": "2-2-069",
     "name": "猴怪",
     "series": "銀河第2彈",
     "star": 1,
@@ -3260,7 +3260,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/mankey.png"
   },
   {
-    "id": "4-2-070",
+    "id": "2-2-070",
     "name": "蚊香蝌蚪",
     "series": "銀河第2彈",
     "star": 1,
@@ -3303,7 +3303,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/poliwag.png"
   },
   {
-    "id": "4-1-001",
+    "id": "2-1-001",
     "name": "轟擂金剛猩",
     "series": "銀河第1彈",
     "star": 6,
@@ -3351,7 +3351,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/rillaboom.png"
   },
   {
-    "id": "4-1-002",
+    "id": "2-1-002",
     "name": "雷公",
     "series": "銀河第1彈",
     "star": 6,
@@ -3399,7 +3399,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/raikou.png"
   },
   {
-    "id": "4-1-003",
+    "id": "2-1-003",
     "name": "索羅雅克 (洗翠樣貌)",
     "series": "銀河第1彈",
     "star": 6,
@@ -3447,7 +3447,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/zoroark-hisui.png"
   },
   {
-    "id": "4-1-004",
+    "id": "2-1-004",
     "name": "水君",
     "series": "銀河第1彈",
     "star": 6,
@@ -3497,7 +3497,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/suicune.png"
   },
   {
-    "id": "4-1-005",
+    "id": "2-1-005",
     "name": "皮卡丘",
     "series": "銀河第1彈",
     "star": 6,
@@ -3540,7 +3540,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/pikachu.png"
   },
   {
-    "id": "4-1-006",
+    "id": "2-1-006",
     "name": "炎帝",
     "series": "銀河第1彈",
     "star": 6,
@@ -3593,7 +3593,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/entei.png"
   },
   {
-    "id": "4-1-007",
+    "id": "2-1-007",
     "name": "閃焰王牌",
     "series": "銀河第1彈",
     "star": 6,
@@ -3641,7 +3641,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/cinderace.png"
   },
   {
-    "id": "4-1-008",
+    "id": "2-1-008",
     "name": "千面避役",
     "series": "銀河第1彈",
     "star": 6,
@@ -3686,7 +3686,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/inteleon.png"
   },
   {
-    "id": "4-1-009",
+    "id": "2-1-009",
     "name": "超夢",
     "series": "銀河第1彈",
     "star": 6,
@@ -3730,7 +3730,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/mewtwo.png"
   },
   {
-    "id": "4-1-010",
+    "id": "2-1-010",
     "name": "夢幻",
     "series": "銀河第1彈",
     "star": 6,
@@ -3779,7 +3779,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/mew.png"
   },
   {
-    "id": "4-1-011",
+    "id": "2-1-011",
     "name": "索羅亞克",
     "series": "銀河第1彈",
     "star": 5,
@@ -3823,7 +3823,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/zoroark.png"
   },
   {
-    "id": "4-1-012",
+    "id": "2-1-012",
     "name": "轟擂金剛猩 (極巨)",
     "series": "銀河第1彈",
     "star": 5,
@@ -3871,7 +3871,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/rillaboom.png"
   },
   {
-    "id": "4-1-013",
+    "id": "2-1-013",
     "name": "閃焰王牌 (極巨)",
     "series": "銀河第1彈",
     "star": 5,
@@ -3919,7 +3919,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/cinderace.png"
   },
   {
-    "id": "4-1-014",
+    "id": "2-1-014",
     "name": "千面避役 (極巨)",
     "series": "銀河第1彈",
     "star": 5,
@@ -3964,7 +3964,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/inteleon.png"
   },
   {
-    "id": "4-1-015",
+    "id": "2-1-015",
     "name": "耿鬼",
     "series": "銀河第1彈",
     "star": 5,
@@ -4015,7 +4015,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/gengar.png"
   },
   {
-    "id": "4-1-016",
+    "id": "2-1-016",
     "name": "怪力",
     "series": "銀河第1彈",
     "star": 5,
@@ -4060,7 +4060,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/machamp.png"
   },
   {
-    "id": "4-1-017",
+    "id": "2-1-017",
     "name": "巴大蝶",
     "series": "銀河第1彈",
     "star": 5,
@@ -4110,7 +4110,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/butterfree.png"
   },
   {
-    "id": "4-1-018",
+    "id": "2-1-018",
     "name": "沙奈朵",
     "series": "銀河第1彈",
     "star": 5,
@@ -4158,7 +4158,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/gardevoir.png"
   },
   {
-    "id": "4-1-019",
+    "id": "2-1-019",
     "name": "艾路雷朵",
     "series": "銀河第1彈",
     "star": 5,
@@ -4204,7 +4204,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/gallade.png"
   },
   {
-    "id": "4-1-020",
+    "id": "2-1-020",
     "name": "班基拉斯",
     "series": "銀河第1彈",
     "star": 5,
@@ -4260,7 +4260,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/tyranitar.png"
   },
   {
-    "id": "4-1-021",
+    "id": "2-1-021",
     "name": "啪咚猴",
     "series": "銀河第1彈",
     "star": 4,
@@ -4306,7 +4306,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/thwackey.png"
   },
   {
-    "id": "4-1-022",
+    "id": "2-1-022",
     "name": "騰蹴小將",
     "series": "銀河第1彈",
     "star": 4,
@@ -4352,7 +4352,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/raboot.png"
   },
   {
-    "id": "4-1-023",
+    "id": "2-1-023",
     "name": "變澀蜥",
     "series": "銀河第1彈",
     "star": 4,
@@ -4395,7 +4395,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/drizzile.png"
   },
   {
-    "id": "4-1-024",
+    "id": "2-1-024",
     "name": "鬼斯通",
     "series": "銀河第1彈",
     "star": 4,
@@ -4444,7 +4444,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/haunter.png"
   },
   {
-    "id": "4-1-025",
+    "id": "2-1-025",
     "name": "豪力",
     "series": "銀河第1彈",
     "star": 4,
@@ -4487,7 +4487,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/machoke.png"
   },
   {
-    "id": "4-1-026",
+    "id": "2-1-026",
     "name": "敲音猴",
     "series": "銀河第1彈",
     "star": 3,
@@ -4533,7 +4533,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/grookey.png"
   },
   {
-    "id": "4-1-027",
+    "id": "2-1-027",
     "name": "炎兔兒",
     "series": "銀河第1彈",
     "star": 3,
@@ -4579,7 +4579,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/scorbunny.png"
   },
   {
-    "id": "4-1-028",
+    "id": "2-1-028",
     "name": "淚眼蜥",
     "series": "銀河第1彈",
     "star": 3,
@@ -4622,7 +4622,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/sobble.png"
   },
   {
-    "id": "4-1-029",
+    "id": "2-1-029",
     "name": "索羅亞 (洗翠)",
     "series": "銀河第1彈",
     "star": 3,
@@ -4667,7 +4667,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/zorua-hisui.png"
   },
   {
-    "id": "4-1-030",
+    "id": "2-1-030",
     "name": "鬼斯",
     "series": "銀河第1彈",
     "star": 3,
@@ -4716,7 +4716,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/gastly.png"
   },
   {
-    "id": "4-1-031",
+    "id": "2-1-031",
     "name": "腕力",
     "series": "銀河第1彈",
     "star": 3,
@@ -4759,7 +4759,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/machop.png"
   },
   {
-    "id": "4-1-032",
+    "id": "2-1-032",
     "name": "鐵甲蛹",
     "series": "銀河第1彈",
     "star": 3,
@@ -4802,7 +4802,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/metapod.png"
   },
   {
-    "id": "4-1-056",
+    "id": "2-1-056",
     "name": "毛辮羊",
     "series": "銀河第1彈",
     "star": 2,
@@ -4841,7 +4841,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/wooloo.png"
   },
   {
-    "id": "4-1-057",
+    "id": "2-1-057",
     "name": "貪心栗鼠",
     "series": "銀河第1彈",
     "star": 2,
@@ -4880,7 +4880,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/skwovet.png"
   },
   {
-    "id": "4-1-058",
+    "id": "2-1-058",
     "name": "稚山雀",
     "series": "銀河第1彈",
     "star": 2,
@@ -4925,7 +4925,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/rookidee.png"
   },
   {
-    "id": "4-1-059",
+    "id": "2-1-059",
     "name": "小拳石",
     "series": "銀河第1彈",
     "star": 2,
@@ -4976,7 +4976,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/geodude.png"
   },
   {
-    "id": "4-1-065",
+    "id": "2-1-065",
     "name": "綠毛蟲",
     "series": "銀河第1彈",
     "star": 1,
@@ -5019,7 +5019,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/caterpie.png"
   },
   {
-    "id": "4-1-066",
+    "id": "2-1-066",
     "name": "獨角蟲",
     "series": "銀河第1彈",
     "star": 1,
@@ -5066,7 +5066,7 @@
     "image": "https://img.pokemondb.net/sprites/home/normal/weedle.png"
   },
   {
-    "id": "4-1-070",
+    "id": "2-1-070",
     "name": "波波",
     "series": "銀河第1彈",
     "star": 1,
