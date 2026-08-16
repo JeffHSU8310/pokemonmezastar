@@ -159,12 +159,20 @@ def calculate_type_effectiveness(attack_type: str, defender_types: List[str]) ->
             multiplier *= TYPE_CHART[attack_type][def_t]
     return multiplier
 
-def get_weaknesses(defender_types: List[str]) -> Dict[str, float]:
-    """計算守方受到 18 種屬性攻擊時的倍率列表"""
-    results = {}
+def get_weaknesses(defender_types: List[str]) -> List[str]:
+    """回傳剋制守方的弱點屬性列表 (倍率 >= 2.0)"""
+    weak_list = []
     for atk_t in TYPES:
         mult = calculate_type_effectiveness(atk_t, defender_types)
-        results[atk_t] = mult
+        if mult >= 2.0:
+            weak_list.append(f"{atk_t} ({mult}x)")
+    return weak_list
+
+def get_full_type_chart_for_defender(defender_types: List[str]) -> Dict[str, float]:
+    """計算守方受到 18 種屬性攻擊時的完整倍率字典"""
+    results = {}
+    for atk_t in TYPES:
+        results[atk_t] = calculate_type_effectiveness(atk_t, defender_types)
     return results
 
 

@@ -89,5 +89,34 @@ class TestPokemonMezastar(unittest.TestCase):
         self.assertEqual(increment_version("1.0.5", "minor"), "1.1.0")
         self.assertEqual(increment_version("1.2.3", "major"), "2.0.0")
 
+    def test_card_full_schema_and_mechanics(self):
+        cards = load_cards()
+        self.assertGreater(len(cards), 200)
+        
+        for c in cards:
+            # 必備數值檢查
+            self.assertIn("energy", c)
+            self.assertGreater(c["energy"], 0)
+            self.assertIn("hp", c)
+            self.assertIn("atk", c)
+            self.assertIn("def", c)
+            self.assertIn("sp_atk", c)
+            self.assertIn("sp_def", c)
+            self.assertIn("spd", c)
+            self.assertIn("move_name", c)
+            self.assertIn("move_type", c)
+            self.assertIn("move_power", c)
+            self.assertIn("weaknesses", c)
+            self.assertIn("resistances", c)
+            self.assertIn("special_mechanics", c)
+            
+            # 機制旗標存在性檢查
+            self.assertIn("has_mega", c)
+            self.assertIn("has_z_move", c)
+            self.assertIn("has_dynamax", c)
+            self.assertIn("has_gigantamax", c)
+            self.assertIn("has_double_attack", c)
+            self.assertIn("has_chain_attack", c)
+
 if __name__ == "__main__":
     unittest.main()
