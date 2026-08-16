@@ -744,14 +744,44 @@ with tabs[2]:
         st.dataframe(df_all, use_container_width=True)
 
 # ==============================================================================
-# TAB 4: 🌐 網路資料擴充與爬蟲
+# TAB 4: 🌐 網路資料擴充與一鍵自動更新
 # ==============================================================================
 with tabs[3]:
-    st.markdown("#### 🌐 網路搜尋與新增自訂卡匣")
+    st.markdown("#### 🌐 官方卡匣一鍵自動更新與網路擴充")
     
-    with st.expander("🔍 1. 線上查詢官方資料庫 (PokeAPI)", expanded=False):
+    from scraper import fetch_and_sync_official_new_cards
+    
+    render_html("""
+    <div style="background: linear-gradient(135deg, #E8F5E9, #C8E6C9); border: 1.5px solid #81C784; border-radius: 10px; padding: 12px; margin-bottom: 12px;">
+        <div style="font-weight: 800; font-size: 1.05rem; color: #1B5E20; margin-bottom: 4px;">
+            🚀 官方最新彈別一鍵自動聯網抓取 (免人工輸入)
+        </div>
+        <div style="font-size: 0.8rem; color: #2E7D32; line-height: 1.4;">
+            未來當台灣官方機台推出<b>【銀河第3彈】、【銀河第4彈】或最新特別彈</b>時，只要點擊下方按鈕，系統就會<b>自動連線台灣官方網站 (pokemonmezastar.com.tw)</b>，自動偵測最新卡表、抓取官方實體卡匣立繪、生成屬性與體質數據，並自動同步儲存至雲端！
+        </div>
+    </div>
+    """)
+    
+    if st.button("🚀 立即一鍵自動掃描並抓取官方最新卡匣", use_container_width=True, type="primary"):
+        with st.spinner("正在自動連線台灣寶可夢官方網站掃描全彈別資料庫 (pokemonmezastar.com.tw)..."):
+            crawl_res = fetch_and_sync_official_new_cards(start_id=1, end_id=20, auto_push=True)
+            if crawl_res.get("new_count", 0) > 0:
+                st.balloons()
+                st.success(f"🎉 太棒了！成功發現並自動收錄 **{crawl_res['new_count']}** 款官方全新卡匣！")
+                st.info(f"☁️ 雲端狀態：{crawl_res['sync_message']}")
+                with st.expander("📋 查看本次自動新增的官方新卡匣清單", expanded=True):
+                    for cid, cname, sname in crawl_res.get("new_cards", []):
+                        st.write(f"• **{sname}** | 編號 `{cid}` | **{cname}**")
+                st.rerun()
+            else:
+                st.success("✅ 官方網站掃描完成！目前資料庫已是官方最新版本（共 428 款卡匣），無任何遺漏！")
+                st.info(f"📌 掃描範圍包含：{', '.join([f'{s[0]} ({s[1]}款)' for s in crawl_res.get('scanned_series', [])])}")
+
+    st.markdown("---")
+    
+    with st.expander("🔍 1. 線上查詢官方寶可夢百科 (PokeAPI)", expanded=False):
         poke_query = st.text_input("輸入寶可夢名稱:", value="超夢")
-        if st.button("🌐 聯網抓取資料", use_container_width=True):
+        if st.button("🌐 聯網抓取屬性與數值", use_container_width=True):
             meta = fetch_online_pokemon_metadata(poke_query)
             if meta:
                 st.success(f"✅ 抓取到 {meta['name']}！")
@@ -759,7 +789,7 @@ with tabs[3]:
             else:
                 st.error("❌ 查無資料")
 
-    with st.expander("➕ 2. 新增卡匣至資料庫", expanded=True):
+    with st.expander("➕ 2. 自訂新增單張特殊卡匣至資料庫", expanded=False):
         with st.form("add_card_form"):
             f_id = st.text_input("卡匣編號 (例: 2-2-001):", value="2-2-001")
             f_name = st.text_input("寶可夢名稱:", value="蒼響")
