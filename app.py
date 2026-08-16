@@ -390,28 +390,76 @@ with tabs[1]:
     st.markdown(f"""
     <div style="background:#E3F2FD; border:1px solid #90CAF9; border-radius:8px; padding:8px 10px; margin-bottom:8px; font-size:0.8rem;">
         <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span>☁️ <b>雲端儲存狀態:</b> 已記錄 {len(st.session_state.owned_ids)} 張卡匣</span>
+            <span>☁️ <b>雲端儲存狀態:</b> 目前已記錄 <b>{len(st.session_state.owned_ids)}</b> 款卡匣</span>
             <span>版次: <b>v{cur_git_info['version']}</b></span>
         </div>
         <div style="margin-top:4px; font-size:0.75rem;">
-            🔗 雲端檔案路徑: <a href="https://github.com/JeffHSU8310/pokemonmezastar/blob/main/data/my_collection.json" target="_blank"><b>data/my_collection.json (點此直接在 GitHub 檢查確認)</b></a>
+            🔗 GitHub 檔案位置: <a href="https://github.com/JeffHSU8310/pokemonmezastar/blob/main/data/my_collection.json" target="_blank"><b>data/my_collection.json (點此直達 GitHub 檢查/編輯)</b></a>
         </div>
     </div>
     """, unsafe_allow_html=True)
     
-    col_sync_btn1, col_sync_btn2 = st.columns([1.5, 1])
+    col_sync_btn1, col_sync_btn2 = st.columns([1.2, 1])
     with col_sync_btn1:
+        gh_token = st.secrets.get("GITHUB_TOKEN", None) if hasattr(st, "secrets") else None
         if st.button("🚀 立即上傳/備份收藏至 GitHub 雲端", use_container_width=True, type="primary"):
             with st.spinner("正在自動記錄版次並同步至 GitHub main..."):
-                ok, sync_res = auto_commit_and_push(change_summary=f"更新個人收藏庫 (共 {len(st.session_state.owned_ids)} 張卡匣)", branch="main")
+                ok, sync_res = auto_commit_and_push(
+                    change_summary=f"更新個人收藏庫 (共 {len(st.session_state.owned_ids)} 張卡匣)",
+                    branch="main",
+                    github_token=gh_token
+                )
                 if ok:
-                    st.success("✅ 您的卡匣已 100% 成功備份儲存至 GitHub 雲端！")
+                    st.success("✅ 您的卡匣已成功記錄並備份！")
                     st.rerun()
                 else:
-                    st.error(f"❌ 同步異常: {sync_res}")
+                    st.error(f"❌ 同步提示: {sync_res}")
 
     with col_sync_btn2:
-        st.caption("每次修改卡匣後點擊左側按鈕即可同步至 GitHub 永久保存！")
+        # JSON 匯出下載按鈕
+        collection_json_str = json.dumps(sorted(list(st.session_state.owned_ids)), ensure_ascii=False, indent=2)
+        st.download_button(
+            label="📥 下載/備份卡匣 JSON 檔",
+            data=collection_json_str,
+            file_name="my_collection.json",
+            mime="application/json",
+            use_container_width=True
+        )
+
+    # GitHub 網頁直接編輯與備份教學抽屜
+    with st.expander("💡 如何直接在 GitHub 網頁上修改或儲存卡匣？（圖文教學）", expanded=False):
+        st.markdown("""
+        **如果您想直接在 GitHub 網頁上一次新增或編輯擁有的所有卡匣：**
+        
+        1. 點擊開啟：[👉 GitHub 上的 my_collection.json 檔案](https://github.com/JeffHSU8310/pokemonmezastar/blob/main/data/my_collection.json)
+        2. 點擊右上角的 **「鉛筆圖示 ✏️ (Edit this file)」**。
+        3. 在中括號 `[` `]` 內填入您擁有的卡匣編號清單（用雙引號與逗號分隔），例如：
+        ```json
+        [
+          "2-2-001",
+          "2-2-002",
+          "2-2-004",
+          "2-2-007",
+          "2-1-005",
+          "1-4-001"
+        ]
+        ```
+        4. 點擊右上角綠色按鈕 **「Commit changes...」** ➔ 再次點擊 **「Commit changes」**。
+        5. 完成！回到手機或瀏覽器重新整理 Streamlit 網頁，系統就會自動載入您在 GitHub 上儲存的最新卡匣清單！
+        """)
+
+    with st.expander("📤 匯入/恢復卡匣 JSON 備份檔", expanded=False):
+        uploaded_file = st.file_uploader("上傳先前下載的 my_collection.json 檔案:", type=["json"])
+        if uploaded_file is not None:
+            try:
+                imported_ids = set(json.load(uploaded_file))
+                if st.button(f"確認匯入 {len(imported_ids)} 張卡匣", type="primary"):
+                    st.session_state.owned_ids = imported_ids
+                    save_user_collection_ids(st.session_state.owned_ids)
+                    st.success(f"✅ 成功匯入 {len(imported_ids)} 張卡匣！")
+                    st.rerun()
+            except Exception as e:
+                st.error(f"檔案格式錯誤: {e}")
 
     with st.expander("🔍 點擊展開篩選條件", expanded=False):
         col_f1, col_f2 = st.columns(2)

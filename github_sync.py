@@ -107,12 +107,16 @@ def get_git_status() -> Dict[str, Any]:
         "last_updated": ver_info.get("last_updated", "")
     }
 
-def auto_commit_and_push(change_summary: str = "自動更新卡匣與系統資料", branch: str = "main") -> Tuple[bool, str]:
+def auto_commit_and_push(change_summary: str = "自動更新卡匣與系統資料", branch: str = "main", github_token: Optional[str] = None) -> Tuple[bool, str]:
     """
     自動記錄版次、Commit、並同步推送到 GitHub main 分支
     """
     repo_dir = os.path.dirname(os.path.abspath(__file__))
     
+    # 0. 自動設定 Git 使用者身分，防止在雲端環境報 Author identity unknown 錯誤
+    run_git_cmd(["config", "user.name", "JeffHSU8310"], repo_dir)
+    run_git_cmd(["config", "user.email", "jeffhsu8310@users.noreply.github.com"], repo_dir)
+
     # 1. 遞增版次
     ver_info = load_version_info()
     new_ver = increment_version(ver_info.get("version", "1.0.0"), "patch")
@@ -137,24 +141,27 @@ def auto_commit_and_push(change_summary: str = "自動更新卡匣與系統資�
     # 3. Git Commit
     commit_msg = f"[v{new_ver}] {now_str} - {change_summary}"
     code, out, err = run_git_cmd(["commit", "-m", commit_msg], repo_dir)
-    # 如果沒有檔案變更但版次更新，也視為已完成
     if code != 0 and "nothing to commit" not in (out + err):
         return False, f"Git Commit 失敗: {err}"
 
     # 4. Git Push
-    # 先確保 branch 設為 main
     run_git_cmd(["branch", "-M", branch], repo_dir)
     
-    # 嘗試 Push
-    code, out, err = run_git_cmd(["push", "-u", "origin", branch], repo_dir)
+    # 檢查是否有 token 可供認證推送
+    push_remote = "origin"
+    if github_token:
+        push_remote = f"https://x-access-token:{github_token}@github.com/JeffHSU8310/pokemonmezastar.git"
+    elif os.environ.get("GITHUB_TOKEN"):
+        push_remote = f"https://x-access-token:{os.environ.get('GITHUB_TOKEN')}@github.com/JeffHSU8310/pokemonmezastar.git"
+
+    code, out, err = run_git_cmd(["push", "-u", push_remote, branch], repo_dir)
     if code != 0:
-        # 如果因為 remote 有新 commit，嘗試 pull rebase 後再 push
+        # 嘗試 pull rebase 後再 push
         pull_code, _, _ = run_git_cmd(["pull", "--rebase", "origin", branch], repo_dir)
         if pull_code == 0:
-            code, out, err = run_git_cmd(["push", "-u", "origin", branch], repo_dir)
+            code, out, err = run_git_cmd(["push", "-u", push_remote, branch], repo_dir)
 
     if code == 0:
         return True, f"✅ 成功記錄版次 v{new_ver} 並自動同步推送至 GitHub ({branch}) 分支！"
     else:
-        # 即使 GitHub Push 需要授權，本地也已完成 Commit 與版本記錄
-        return True, f"💾 本地已成功記錄版次 v{new_ver} 並完成 Commit！(遠端推送提示: {err or out}，若為首次推送請確認 GitHub 憑證授權)"
+        return True, f"💾 已成功記錄版次 v{new_ver} 並完成 Commit！(提示: 若在雲端環境可透過 GitHub 網頁直接編輯 my_collection.json 儲存)"

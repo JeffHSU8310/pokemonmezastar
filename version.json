@@ -1,7 +1,12 @@
 {
-  "version": "1.0.10",
-  "last_updated": "2026-08-16 22:35:24",
+  "version": "1.0.11",
+  "last_updated": "2026-08-16 22:37:53",
   "history": [
+    {
+      "version": "1.0.11",
+      "timestamp": "2026-08-16 22:37:53",
+      "message": "自動設定 Git 使用者身分避免雲端提交異常，並提供 GitHub 網頁直接編輯 my_collection.json 教學與 JSON 備份功能"
+    },
     {
       "version": "1.0.10",
       "timestamp": "2026-08-16 22:35:24",
