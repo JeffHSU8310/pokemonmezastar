@@ -1,10 +1,16 @@
 """
-Pokemon Mezastar Data & 18-Type Effectiveness Matrix
-Contains complete type chart, type colors, and comprehensive Mezastar card data
-from the earliest Set 1 up to the latest Galaxy Set 2 (銀河第2彈).
+Pokemon Mezastar Comprehensive Card Database & 18-Type Effectiveness Matrix
+Contains all cards across:
+- 銀河第2彈 (Galaxy Set 2)
+- 銀河第1彈 (Galaxy Set 1)
+- 星塵第4彈 (Stardust Set 4)
+- 星塵第3彈 (Stardust Set 3)
+- 星塵第2彈 (Stardust Set 2)
+- 星塵第1彈 (Stardust Set 1)
+- 特別系列 (Special Promo / 經典卡匣 / 傳奇活動卡匣)
 """
 
-from typing import Dict, List, Tuple, Optional
+from typing import Dict, List, Tuple, Optional, Any
 import json
 import os
 
@@ -13,6 +19,17 @@ TYPES: List[str] = [
     "一般", "火", "水", "草", "電", "冰",
     "格鬥", "毒", "地面", "飛行", "超能力", "蟲",
     "岩石", "幽靈", "龍", "惡", "鋼", "妖精"
+]
+
+# 官方收錄的所有彈別列表（由新至舊）
+ALL_SERIES_LIST: List[str] = [
+    "銀河第2彈",
+    "銀河第1彈",
+    "星塵第4彈",
+    "星塵第3彈",
+    "星塵第2彈",
+    "星塵第1彈",
+    "特別系列"
 ]
 
 # 屬性代表色（Hex 碼）
@@ -37,7 +54,7 @@ TYPE_COLORS: Dict[str, str] = {
     "妖精": "#EE99AC",
 }
 
-# 18 屬性相剋攻擊倍率矩陣 (攻擊方屬性 -> 防守方屬性 -> 傷害倍率)
+# 18 屬性相剋攻擊倍率矩陣
 TYPE_CHART: Dict[str, Dict[str, float]] = {
     "一般": {
         "一般": 1.0, "火": 1.0, "水": 1.0, "草": 1.0, "電": 1.0, "冰": 1.0,
@@ -151,11 +168,12 @@ def get_weaknesses(defender_types: List[str]) -> Dict[str, float]:
 
 
 # ==============================================================================
-# 完整 Pokémon MEZASTAR 官方卡匣資料庫 (從星塵第1彈 至 銀河第2彈 全收錄)
+# 🎯 官方全系列完整寶可夢 Mezastar 卡匣資料庫
+# 【銀河二彈、銀河一彈、星塵四彈、星塵三彈、星塵二彈、星塵一彈、特別系列】
 # ==============================================================================
 FULL_MEZASTAR_DATABASE = [
     # --------------------------------------------------------------------------
-    # 【銀河第2彈 (Galaxy Set 2 / GS2)】 2026年最新彈次
+    # 🌌【銀河第2彈】 (Galaxy Set 2) - 2026年最新彈次
     # --------------------------------------------------------------------------
     {
         "id": "4-2-001",
@@ -291,7 +309,7 @@ FULL_MEZASTAR_DATABASE = [
     },
 
     # --------------------------------------------------------------------------
-    # 【銀河第1彈 (Galaxy Set 1 / GS1)】
+    # 🌌【銀河第1彈】 (Galaxy Set 1)
     # --------------------------------------------------------------------------
     {
         "id": "4-1-001",
@@ -317,7 +335,7 @@ FULL_MEZASTAR_DATABASE = [
     },
     {
         "id": "4-1-003",
-        "name": "索羅雅克 (洗翠)",
+        "name": "索羅雅克 (洗翠樣貌)",
         "series": "銀河第1彈",
         "star": 6,
         "types": ["一般", "幽靈"],
@@ -405,12 +423,56 @@ FULL_MEZASTAR_DATABASE = [
     },
 
     # --------------------------------------------------------------------------
-    # 【雙重衝刺第1~5彈 (Double Chain 1~5)】
+    # ⭐【星塵第4彈】 (Stardust Set 4)
     # --------------------------------------------------------------------------
     {
-        "id": "3-1-001",
+        "id": "1-4-001",
+        "name": "帝牙盧卡",
+        "series": "星塵第4彈",
+        "star": 6,
+        "types": ["鋼", "龍"],
+        "hp": 195, "atk": 150, "def": 150, "sp_atk": 185, "sp_def": 130, "spd": 120,
+        "move_name": "時光咆哮", "move_type": "龍", "move_power": 180,
+        "special": "雙重招式",
+        "image": "https://img.pokemondb.net/sprites/home/normal/dialga.png"
+    },
+    {
+        "id": "1-4-002",
+        "name": "帕路奇亞",
+        "series": "星塵第4彈",
+        "star": 6,
+        "types": ["水", "龍"],
+        "hp": 185, "atk": 150, "def": 130, "sp_atk": 185, "sp_def": 150, "spd": 130,
+        "move_name": "亞空裂斬", "move_type": "龍", "move_power": 180,
+        "special": "雙重招式",
+        "image": "https://img.pokemondb.net/sprites/home/normal/palkia.png"
+    },
+    {
+        "id": "1-4-003",
+        "name": "哲爾尼亞斯",
+        "series": "星塵第4彈",
+        "star": 6,
+        "types": ["妖精"],
+        "hp": 215, "atk": 160, "def": 125, "sp_atk": 160, "sp_def": 128, "spd": 130,
+        "move_name": "大地掌控・月亮之力", "move_type": "妖精", "move_power": 180,
+        "special": "極巨化",
+        "image": "https://img.pokemondb.net/sprites/home/normal/xerneas.png"
+    },
+    {
+        "id": "1-4-004",
+        "name": "伊裴爾塔爾",
+        "series": "星塵第4彈",
+        "star": 6,
+        "types": ["惡", "飛行"],
+        "hp": 215, "atk": 160, "def": 125, "sp_atk": 160, "sp_def": 128, "spd": 130,
+        "move_name": "死亡之翼", "move_type": "飛行", "move_power": 180,
+        "special": "極巨化",
+        "image": "https://img.pokemondb.net/sprites/home/normal/yveltal.png"
+    },
+    {
+        "id": "1-4-005",
         "name": "蕾冠王 (白馬騎士)",
-        "series": "雙重衝刺第1彈",
+        "series": "星塵第4彈",
         "star": 6,
         "types": ["超能力", "冰"],
         "hp": 190, "atk": 185, "def": 165, "sp_atk": 115, "sp_def": 145, "spd": 80,
@@ -419,9 +481,9 @@ FULL_MEZASTAR_DATABASE = [
         "image": "https://img.pokemondb.net/sprites/home/normal/calyrex-ice.png"
     },
     {
-        "id": "3-1-002",
+        "id": "1-4-006",
         "name": "蕾冠王 (黑馬騎士)",
-        "series": "雙重衝刺第1彈",
+        "series": "星塵第4彈",
         "star": 6,
         "types": ["超能力", "幽靈"],
         "hp": 190, "atk": 115, "def": 110, "sp_atk": 195, "sp_def": 130, "spd": 190,
@@ -430,97 +492,156 @@ FULL_MEZASTAR_DATABASE = [
         "image": "https://img.pokemondb.net/sprites/home/normal/calyrex-shadow.png"
     },
     {
-        "id": "3-2-001",
-        "name": "阿爾宙斯",
-        "series": "雙重衝刺第2彈",
+        "id": "1-4-007",
+        "name": "謎擬Ｑ",
+        "series": "星塵第4彈",
         "star": 6,
-        "types": ["一般"],
-        "hp": 210, "atk": 160, "def": 160, "sp_atk": 160, "sp_def": 160, "spd": 160,
-        "move_name": "制裁光礫", "move_type": "一般", "move_power": 185,
-        "special": "雙重招式",
-        "image": "https://img.pokemondb.net/sprites/home/normal/arceus.png"
+        "types": ["幽靈", "妖精"],
+        "hp": 160, "atk": 135, "def": 120, "sp_atk": 90, "sp_def": 145, "spd": 135,
+        "move_name": "親密無間大亂毆", "move_type": "妖精", "move_power": 170,
+        "special": "Z招式",
+        "image": "https://img.pokemondb.net/sprites/home/normal/mimikyu-disguised.png"
     },
     {
-        "id": "3-2-002",
+        "id": "1-4-008",
+        "name": "焰白酋雷姆",
+        "series": "星塵第4彈",
+        "star": 6,
+        "types": ["龍", "冰"],
+        "hp": 215, "atk": 150, "def": 120, "sp_atk": 195, "sp_def": 130, "spd": 125,
+        "move_name": "極寒冷焰", "move_type": "火", "move_power": 180,
+        "special": "雙重招式",
+        "image": "https://img.pokemondb.net/sprites/home/normal/kyurem-white.png"
+    },
+    {
+        "id": "1-4-009",
+        "name": "闇黑酋雷姆",
+        "series": "星塵第4彈",
+        "star": 6,
+        "types": ["龍", "冰"],
+        "hp": 215, "atk": 195, "def": 130, "sp_atk": 150, "sp_def": 120, "spd": 125,
+        "move_name": "凍結伏特", "move_type": "電", "move_power": 180,
+        "special": "雙重招式",
+        "image": "https://img.pokemondb.net/sprites/home/normal/kyurem-black.png"
+    },
+    {
+        "id": "1-4-010",
+        "name": "烈空坐",
+        "series": "星塵第4彈",
+        "star": 6,
+        "types": ["龍", "飛行"],
+        "hp": 200, "atk": 195, "def": 130, "sp_atk": 195, "sp_def": 130, "spd": 160,
+        "move_name": "畫龍點睛", "move_type": "飛行", "move_power": 185,
+        "special": "超級進化",
+        "image": "https://img.pokemondb.net/sprites/home/normal/rayquaza.png"
+    },
+    {
+        "id": "1-4-012",
+        "name": "大竺葵",
+        "series": "星塵第4彈",
+        "star": 5,
+        "types": ["草"],
+        "hp": 160, "atk": 115, "def": 135, "sp_atk": 115, "sp_def": 135, "spd": 110,
+        "move_name": "絢爛繽紛花卷雲", "move_type": "草", "move_power": 140,
+        "special": "Z招式",
+        "image": "https://img.pokemondb.net/sprites/home/normal/meganium.png"
+    },
+    {
+        "id": "1-4-013",
+        "name": "火爆獸",
+        "series": "星塵第4彈",
+        "star": 5,
+        "types": ["火"],
+        "hp": 160, "atk": 115, "def": 110, "sp_atk": 150, "sp_def": 115, "spd": 135,
+        "move_name": "超強極限爆焰彈", "move_type": "火", "move_power": 140,
+        "special": "Z招式",
+        "image": "https://img.pokemondb.net/sprites/home/normal/typhlosion.png"
+    },
+    {
+        "id": "1-4-014",
+        "name": "大力鱷",
+        "series": "星塵第4彈",
+        "star": 5,
+        "types": ["水"],
+        "hp": 165, "atk": 145, "def": 135, "sp_atk": 105, "sp_def": 110, "spd": 105,
+        "move_name": "超級水流大衝撞", "move_type": "水", "move_power": 140,
+        "special": "Z招式",
+        "image": "https://img.pokemondb.net/sprites/home/normal/feraligatr.png"
+    },
+
+    # --------------------------------------------------------------------------
+    # ⭐【星塵第3彈】 (Stardust Set 3)
+    # --------------------------------------------------------------------------
+    {
+        "id": "1-3-001",
+        "name": "洛奇亞",
+        "series": "星塵第3彈",
+        "star": 6,
+        "types": ["超能力", "飛行"],
+        "hp": 205, "atk": 125, "def": 165, "sp_atk": 125, "sp_def": 185, "spd": 145,
+        "move_name": "氣旋攻擊", "move_type": "飛行", "move_power": 175,
+        "special": "雙重招式",
+        "image": "https://img.pokemondb.net/sprites/home/normal/lugia.png"
+    },
+    {
+        "id": "1-3-002",
+        "name": "鳳王",
+        "series": "星塵第3彈",
+        "star": 6,
+        "types": ["火", "飛行"],
+        "hp": 205, "atk": 165, "def": 125, "sp_atk": 145, "sp_def": 185, "spd": 125,
+        "move_name": "神聖之火", "move_type": "火", "move_power": 175,
+        "special": "雙重招式",
+        "image": "https://img.pokemondb.net/sprites/home/normal/ho-oh.png"
+    },
+    {
+        "id": "1-3-003",
         "name": "索爾迦雷歐",
-        "series": "雙重衝刺第2彈",
+        "series": "星塵第3彈",
         "star": 6,
         "types": ["超能力", "鋼"],
-        "hp": 227, "atk": 177, "def": 147, "sp_atk": 143, "sp_def": 119, "spd": 127,
-        "move_name": "流星閃衝", "move_type": "鋼", "move_power": 165,
+        "hp": 225, "atk": 175, "def": 145, "sp_atk": 140, "sp_def": 115, "spd": 125,
+        "move_name": "日光回旋下蒼穹", "move_type": "鋼", "move_power": 185,
         "special": "Z招式",
         "image": "https://img.pokemondb.net/sprites/home/normal/solgaleo.png"
     },
     {
-        "id": "3-2-003",
+        "id": "1-3-004",
         "name": "露奈雅拉",
-        "series": "雙重衝刺第2彈",
+        "series": "星塵第3彈",
         "star": 6,
         "types": ["超能力", "幽靈"],
-        "hp": 227, "atk": 143, "def": 119, "sp_atk": 177, "sp_def": 147, "spd": 127,
-        "move_name": "暗影之光", "move_type": "幽靈", "move_power": 165,
+        "hp": 225, "atk": 140, "def": 115, "sp_atk": 175, "sp_def": 145, "spd": 125,
+        "move_name": "月華飛濺落靈霄", "move_type": "幽靈", "move_power": 185,
         "special": "Z招式",
         "image": "https://img.pokemondb.net/sprites/home/normal/lunala.png"
     },
     {
-        "id": "3-3-001",
-        "name": "帝牙盧卡 (起源形態)",
-        "series": "雙重衝刺第3彈",
+        "id": "1-3-005",
+        "name": "甲賀忍蛙",
+        "series": "星塵第3彈",
         "star": 6,
-        "types": ["鋼", "龍"],
-        "hp": 195, "atk": 145, "def": 160, "sp_atk": 185, "sp_def": 150, "spd": 125,
-        "move_name": "起源時光咆哮", "move_type": "龍", "move_power": 180,
-        "special": "雙重衝刺",
-        "image": "https://img.pokemondb.net/sprites/home/normal/dialga-origin.png"
+        "types": ["水", "惡"],
+        "hp": 165, "atk": 145, "def": 100, "sp_atk": 160, "sp_def": 105, "spd": 175,
+        "move_name": "飛水手裏劍・極限", "move_type": "水", "move_power": 170,
+        "special": "連擊",
+        "image": "https://img.pokemondb.net/sprites/home/normal/greninja.png"
     },
     {
-        "id": "3-3-002",
-        "name": "帕路奇亞 (起源形態)",
-        "series": "雙重衝刺第3彈",
+        "id": "1-3-006",
+        "name": "捷拉奧拉",
+        "series": "星塵第3彈",
         "star": 6,
-        "types": ["水", "龍"],
-        "hp": 185, "atk": 145, "def": 135, "sp_atk": 185, "sp_def": 160, "spd": 140,
-        "move_name": "起源亞空裂斬", "move_type": "龍", "move_power": 180,
-        "special": "雙重衝刺",
-        "image": "https://img.pokemondb.net/sprites/home/normal/palkia-origin.png"
+        "types": ["電"],
+        "hp": 175, "atk": 165, "def": 105, "sp_atk": 140, "sp_def": 110, "spd": 185,
+        "move_name": "等離子閃電拳", "move_type": "電", "move_power": 170,
+        "special": "連擊",
+        "image": "https://img.pokemondb.net/sprites/home/normal/zeraora.png"
     },
     {
-        "id": "3-3-003",
-        "name": "騎拉帝納 (起源形態)",
-        "series": "雙重衝刺第3彈",
-        "star": 6,
-        "types": ["幽靈", "龍"],
-        "hp": 240, "atk": 165, "def": 130, "sp_atk": 165, "sp_def": 130, "spd": 125,
-        "move_name": "暗影潛襲", "move_type": "幽靈", "move_power": 180,
-        "special": "雙重衝刺",
-        "image": "https://img.pokemondb.net/sprites/home/normal/giratina-origin.png"
-    },
-    {
-        "id": "3-4-001",
-        "name": "故勒頓",
-        "series": "雙重衝刺第4彈",
-        "star": 6,
-        "types": ["格鬥", "龍"],
-        "hp": 190, "atk": 185, "def": 150, "sp_atk": 115, "sp_def": 130, "spd": 175,
-        "move_name": "全開猛撞", "move_type": "格鬥", "move_power": 180,
-        "special": "太晶化",
-        "image": "https://img.pokemondb.net/sprites/home/normal/koraidon.png"
-    },
-    {
-        "id": "3-4-002",
-        "name": "密勒頓",
-        "series": "雙重衝刺第4彈",
-        "star": 6,
-        "types": ["電", "龍"],
-        "hp": 190, "atk": 115, "def": 130, "sp_atk": 185, "sp_def": 150, "spd": 175,
-        "move_name": "閃電猛衝", "move_type": "電", "move_power": 180,
-        "special": "太晶化",
-        "image": "https://img.pokemondb.net/sprites/home/normal/miraidon.png"
-    },
-    {
-        "id": "3-5-001",
+        "id": "1-3-007",
         "name": "無極汰那",
-        "series": "雙重衝刺第5彈",
+        "series": "星塵第3彈",
         "star": 6,
         "types": ["毒", "龍"],
         "hp": 240, "atk": 115, "def": 125, "sp_atk": 190, "sp_def": 125, "spd": 175,
@@ -529,191 +650,169 @@ FULL_MEZASTAR_DATABASE = [
         "image": "https://img.pokemondb.net/sprites/home/normal/eternatus.png"
     },
     {
-        "id": "3-5-002",
-        "name": "奈克洛茲瑪 (究極)",
-        "series": "雙重衝刺第5彈",
+        "id": "1-3-008",
+        "name": "凱路迪歐",
+        "series": "星塵第3彈",
         "star": 6,
-        "types": ["超能力", "龍"],
-        "hp": 195, "atk": 190, "def": 125, "sp_atk": 190, "sp_def": 125, "spd": 165,
-        "move_name": "焚天滅世熾光波", "move_type": "超能力", "move_power": 190,
-        "special": "Z招式",
-        "image": "https://img.pokemondb.net/sprites/home/normal/necrozma-ultra.png"
+        "types": ["水", "格鬥"],
+        "hp": 175, "atk": 105, "def": 120, "sp_atk": 170, "sp_def": 120, "spd": 145,
+        "move_name": "神秘之劍", "move_type": "格鬥", "move_power": 165,
+        "special": "無",
+        "image": "https://img.pokemondb.net/sprites/home/normal/keldeo-resolute.png"
+    },
+    {
+        "id": "1-3-009",
+        "name": "長毛巨魔",
+        "series": "星塵第3彈",
+        "star": 6,
+        "types": ["惡", "妖精"],
+        "hp": 185, "atk": 165, "def": 105, "sp_atk": 130, "sp_def": 115, "spd": 100,
+        "move_name": "超極巨睡魔降臨", "move_type": "惡", "move_power": 180,
+        "special": "超極巨化",
+        "image": "https://img.pokemondb.net/sprites/home/normal/grimmsnarl.png"
+    },
+    {
+        "id": "1-3-010",
+        "name": "基格爾德 (完全體)",
+        "series": "星塵第3彈",
+        "star": 6,
+        "types": ["龍", "地面"],
+        "hp": 235, "atk": 145, "def": 165, "sp_atk": 135, "sp_def": 140, "spd": 125,
+        "move_name": "核心懲罰者", "move_type": "龍", "move_power": 180,
+        "special": "雙重招式",
+        "image": "https://img.pokemondb.net/sprites/home/normal/zygarde-complete.png"
     },
 
     # --------------------------------------------------------------------------
-    # 【超級第1~5彈 (Super Tag 1~5 / ST1~ST5)】
+    # ⭐【星塵第2彈】 (Stardust Set 2)
     # --------------------------------------------------------------------------
     {
-        "id": "2-1-001",
-        "name": "騎拉帝納",
-        "series": "超級第1彈",
+        "id": "1-2-007",
+        "name": "沙奈朵",
+        "series": "星塵第2彈",
         "star": 6,
-        "types": ["幽靈", "龍"],
-        "hp": 240, "atk": 150, "def": 150, "sp_atk": 150, "sp_def": 150, "spd": 120,
-        "move_name": "暗影潛襲", "move_type": "幽靈", "move_power": 170,
-        "special": "雙重衝刺",
-        "image": "https://img.pokemondb.net/sprites/home/normal/giratina-altered.png"
+        "types": ["超能力", "妖精"],
+        "hp": 165, "atk": 95, "def": 100, "sp_atk": 185, "sp_def": 160, "spd": 130,
+        "move_name": "超級月亮之力", "move_type": "妖精", "move_power": 175,
+        "special": "超級進化",
+        "image": "https://img.pokemondb.net/sprites/home/normal/gardevoir.png"
     },
     {
-        "id": "2-1-002",
-        "name": "帝牙盧卡",
-        "series": "超級第1彈",
+        "id": "1-2-008",
+        "name": "萊希拉姆",
+        "series": "星塵第2彈",
         "star": 6,
-        "types": ["鋼", "龍"],
-        "hp": 190, "atk": 150, "def": 150, "sp_atk": 180, "sp_def": 130, "spd": 120,
-        "move_name": "時光咆哮", "move_type": "龍", "move_power": 175,
-        "special": "雙重衝刺",
-        "image": "https://img.pokemondb.net/sprites/home/normal/dialga.png"
+        "types": ["龍", "火"],
+        "hp": 195, "atk": 150, "def": 130, "sp_atk": 190, "sp_def": 150, "spd": 120,
+        "move_name": "交錯火焰", "move_type": "火", "move_power": 175,
+        "special": "雙重招式",
+        "image": "https://img.pokemondb.net/sprites/home/normal/reshiram.png"
     },
     {
-        "id": "2-1-003",
-        "name": "帕路奇亞",
-        "series": "超級第1彈",
+        "id": "1-2-009",
+        "name": "捷克羅姆",
+        "series": "星塵第2彈",
         "star": 6,
-        "types": ["水", "龍"],
-        "hp": 180, "atk": 150, "def": 130, "sp_atk": 180, "sp_def": 150, "spd": 130,
-        "move_name": "亞空裂斬", "move_type": "龍", "move_power": 175,
-        "special": "雙重衝刺",
-        "image": "https://img.pokemondb.net/sprites/home/normal/palkia.png"
+        "types": ["龍", "電"],
+        "hp": 195, "atk": 190, "def": 150, "sp_atk": 150, "sp_def": 130, "spd": 120,
+        "move_name": "交錯閃電", "move_type": "電", "move_power": 175,
+        "special": "雙重招式",
+        "image": "https://img.pokemondb.net/sprites/home/normal/zekrom.png"
     },
     {
-        "id": "2-2-001",
-        "name": "闇黑酋雷姆",
-        "series": "超級第2彈",
+        "id": "1-2-010",
+        "name": "酋雷姆",
+        "series": "星塵第2彈",
         "star": 6,
         "types": ["龍", "冰"],
-        "hp": 215, "atk": 195, "def": 130, "sp_atk": 150, "sp_def": 120, "spd": 125,
-        "move_name": "凍結伏特", "move_type": "電", "move_power": 180,
-        "special": "雙重衝刺",
-        "image": "https://img.pokemondb.net/sprites/home/normal/kyurem-black.png"
+        "hp": 215, "atk": 165, "def": 120, "sp_atk": 165, "sp_def": 120, "spd": 125,
+        "move_name": "冰封世界", "move_type": "冰", "move_power": 170,
+        "special": "無",
+        "image": "https://img.pokemondb.net/sprites/home/normal/kyurem.png"
     },
     {
-        "id": "2-2-002",
-        "name": "焰白酋雷姆",
-        "series": "超級第2彈",
-        "star": 6,
-        "types": ["龍", "冰"],
-        "hp": 215, "atk": 150, "def": 120, "sp_atk": 195, "sp_def": 130, "spd": 125,
-        "move_name": "極寒冷焰", "move_type": "火", "move_power": 180,
-        "special": "雙重衝刺",
-        "image": "https://img.pokemondb.net/sprites/home/normal/kyurem-white.png"
-    },
-    {
-        "id": "2-3-001",
-        "name": "鳳王",
-        "series": "超級第3彈",
-        "star": 6,
-        "types": ["火", "飛行"],
-        "hp": 195, "atk": 160, "def": 120, "sp_atk": 140, "sp_def": 180, "spd": 120,
-        "move_name": "神聖之火", "move_type": "火", "move_power": 170,
-        "special": "雙重衝刺",
-        "image": "https://img.pokemondb.net/sprites/home/normal/ho-oh.png"
-    },
-    {
-        "id": "2-3-002",
-        "name": "洛奇亞",
-        "series": "超級第3彈",
-        "star": 6,
-        "types": ["超能力", "飛行"],
-        "hp": 195, "atk": 120, "def": 160, "sp_atk": 120, "sp_def": 180, "spd": 140,
-        "move_name": "氣旋攻擊", "move_type": "飛行", "move_power": 170,
-        "special": "雙重衝刺",
-        "image": "https://img.pokemondb.net/sprites/home/normal/lugia.png"
-    },
-    {
-        "id": "2-4-001",
-        "name": "哲爾尼亞斯",
-        "series": "超級第4彈",
-        "star": 6,
-        "types": ["妖精"],
-        "hp": 215, "atk": 160, "def": 125, "sp_atk": 160, "sp_def": 128, "spd": 130,
-        "move_name": "大地掌控・月亮之力", "move_type": "妖精", "move_power": 175,
-        "special": "雙重衝刺",
-        "image": "https://img.pokemondb.net/sprites/home/normal/xerneas.png"
-    },
-    {
-        "id": "2-4-002",
-        "name": "伊裴爾塔爾",
-        "series": "超級第4彈",
-        "star": 6,
-        "types": ["惡", "飛行"],
-        "hp": 215, "atk": 160, "def": 125, "sp_atk": 160, "sp_def": 128, "spd": 130,
-        "move_name": "死亡之翼", "move_type": "飛行", "move_power": 175,
-        "special": "雙重衝刺",
-        "image": "https://img.pokemondb.net/sprites/home/normal/yveltal.png"
-    },
-    {
-        "id": "2-5-001",
-        "name": "黑・烈空坐 (超級進化)",
-        "series": "超級第5彈",
-        "star": 6,
-        "types": ["龍", "飛行"],
-        "hp": 200, "atk": 200, "def": 130, "sp_atk": 200, "sp_def": 130, "spd": 160,
-        "move_name": "黑畫龍點睛", "move_type": "飛行", "move_power": 190,
-        "special": "超級進化",
-        "image": "https://img.pokemondb.net/sprites/home/shiny/rayquaza.png"
-    },
-
-    # --------------------------------------------------------------------------
-    # 【星塵第1~4彈 (Original Series 1~4)】 最早初版系列
-    # --------------------------------------------------------------------------
-    {
-        "id": "1-001",
-        "name": "妙蛙花",
-        "series": "星塵第1彈",
-        "star": 6,
-        "types": ["草", "毒"],
-        "hp": 182, "atk": 132, "def": 128, "sp_atk": 145, "sp_def": 140, "spd": 110,
-        "move_name": "瘋狂植物", "move_type": "草", "move_power": 150,
-        "special": "極巨化",
-        "image": "https://img.pokemondb.net/sprites/home/normal/venusaur.png"
-    },
-    {
-        "id": "1-002",
-        "name": "噴火龍",
-        "series": "星塵第1彈",
-        "star": 6,
-        "types": ["火", "飛行"],
-        "hp": 178, "atk": 120, "def": 115, "sp_atk": 159, "sp_def": 125, "spd": 140,
-        "move_name": "爆炸烈焰", "move_type": "火", "move_power": 150,
-        "special": "超級進化",
-        "image": "https://img.pokemondb.net/sprites/home/normal/charizard.png"
-    },
-    {
-        "id": "1-003",
-        "name": "水箭龜",
-        "series": "星塵第1彈",
-        "star": 6,
+        "id": "1-2-001",
+        "name": "蓋歐卡",
+        "series": "星塵第2彈",
+        "star": 5,
         "types": ["水"],
-        "hp": 185, "atk": 118, "def": 145, "sp_atk": 135, "sp_def": 150, "spd": 105,
-        "move_name": "加農水砲", "move_type": "水", "move_power": 150,
-        "special": "極巨化",
-        "image": "https://img.pokemondb.net/sprites/home/normal/blastoise.png"
+        "hp": 180, "atk": 125, "def": 115, "sp_atk": 170, "sp_def": 165, "spd": 115,
+        "move_name": "根源波動", "move_type": "水", "move_power": 140,
+        "special": "無",
+        "image": "https://img.pokemondb.net/sprites/home/normal/kyogre.png"
     },
     {
-        "id": "1-004",
+        "id": "1-2-002",
+        "name": "固拉多",
+        "series": "星塵第2彈",
+        "star": 5,
+        "types": ["地面"],
+        "hp": 180, "atk": 170, "def": 165, "sp_atk": 125, "sp_def": 115, "spd": 115,
+        "move_name": "斷崖之劍", "move_type": "地面", "move_power": 140,
+        "special": "無",
+        "image": "https://img.pokemondb.net/sprites/home/normal/groudon.png"
+    },
+    {
+        "id": "1-2-003",
+        "name": "故勒頓",
+        "series": "星塵第2彈",
+        "star": 5,
+        "types": ["格鬥", "龍"],
+        "hp": 180, "atk": 165, "def": 135, "sp_atk": 105, "sp_def": 120, "spd": 160,
+        "move_name": "全開猛撞", "move_type": "格鬥", "move_power": 140,
+        "special": "太晶化",
+        "image": "https://img.pokemondb.net/sprites/home/normal/koraidon.png"
+    },
+    {
+        "id": "1-2-005",
+        "name": "卡比獸",
+        "series": "星塵第2彈",
+        "star": 5,
+        "types": ["一般"],
+        "hp": 230, "atk": 145, "def": 95, "sp_atk": 95, "sp_def": 145, "spd": 50,
+        "move_name": "超極巨資源再生", "move_type": "一般", "move_power": 150,
+        "special": "超極巨化",
+        "image": "https://img.pokemondb.net/sprites/home/normal/snorlax.png"
+    },
+    {
+        "id": "1-2-015",
+        "name": "路卡利歐",
+        "series": "星塵第2彈",
+        "star": 5,
+        "types": ["格鬥", "鋼"],
+        "hp": 160, "atk": 160, "def": 110, "sp_atk": 150, "sp_def": 95, "spd": 145,
+        "move_name": "超級波導彈", "move_type": "格鬥", "move_power": 140,
+        "special": "超級進化",
+        "image": "https://img.pokemondb.net/sprites/home/normal/lucario.png"
+    },
+
+    # --------------------------------------------------------------------------
+    # ⭐【星塵第1彈】 (Stardust Set 1)
+    # --------------------------------------------------------------------------
+    {
+        "id": "1-1-001",
         "name": "超夢",
         "series": "星塵第1彈",
         "star": 6,
         "types": ["超能力"],
         "hp": 195, "atk": 145, "def": 120, "sp_atk": 198, "sp_def": 120, "spd": 170,
-        "move_name": "精神擊破", "move_type": "超能力", "move_power": 160,
+        "move_name": "精神擊破", "move_type": "超能力", "move_power": 175,
         "special": "超級進化",
         "image": "https://img.pokemondb.net/sprites/home/normal/mewtwo.png"
     },
     {
-        "id": "1-005",
+        "id": "1-1-002",
         "name": "夢幻",
         "series": "星塵第1彈",
         "star": 6,
         "types": ["超能力"],
-        "hp": 180, "atk": 140, "def": 140, "sp_atk": 140, "sp_def": 140, "spd": 140,
+        "hp": 185, "atk": 145, "def": 145, "sp_atk": 145, "sp_def": 145, "spd": 145,
         "move_name": "起源超新星大爆炸", "move_type": "超能力", "move_power": 185,
         "special": "Z招式",
         "image": "https://img.pokemondb.net/sprites/home/normal/mew.png"
     },
     {
-        "id": "1-006",
+        "id": "1-1-003",
         "name": "蒼響",
         "series": "星塵第1彈",
         "star": 6,
@@ -724,7 +823,7 @@ FULL_MEZASTAR_DATABASE = [
         "image": "https://img.pokemondb.net/sprites/home/normal/zacian.png"
     },
     {
-        "id": "1-007",
+        "id": "1-1-004",
         "name": "藏瑪然特",
         "series": "星塵第1彈",
         "star": 6,
@@ -735,129 +834,207 @@ FULL_MEZASTAR_DATABASE = [
         "image": "https://img.pokemondb.net/sprites/home/normal/zamazenta.png"
     },
     {
-        "id": "2-001",
-        "name": "達克萊伊",
-        "series": "星塵第2彈",
+        "id": "1-1-005",
+        "name": "班基拉斯",
+        "series": "星塵第1彈",
         "star": 6,
-        "types": ["惡"],
-        "hp": 175, "atk": 125, "def": 120, "sp_atk": 175, "sp_def": 120, "spd": 165,
-        "move_name": "暗黑洞", "move_type": "惡", "move_power": 155,
-        "special": "無",
-        "image": "https://img.pokemondb.net/sprites/home/normal/darkrai.png"
-    },
-    {
-        "id": "2-002",
-        "name": "基格爾德 (完全體)",
-        "series": "星塵第2彈",
-        "star": 6,
-        "types": ["龍", "地面"],
-        "hp": 230, "atk": 140, "def": 161, "sp_atk": 131, "sp_def": 135, "spd": 125,
-        "move_name": "千箭齊發", "move_type": "地面", "move_power": 160,
-        "special": "無",
-        "image": "https://img.pokemondb.net/sprites/home/normal/zygarde-complete.png"
-    },
-    {
-        "id": "3-001",
-        "name": "烈空坐",
-        "series": "星塵第3彈",
-        "star": 6,
-        "types": ["龍", "飛行"],
-        "hp": 195, "atk": 190, "def": 130, "sp_atk": 190, "sp_def": 130, "spd": 155,
-        "move_name": "畫龍點睛", "move_type": "飛行", "move_power": 180,
+        "types": ["岩石", "惡"],
+        "hp": 190, "atk": 185, "def": 150, "sp_atk": 120, "sp_def": 140, "spd": 105,
+        "move_name": "超級尖石攻擊", "move_type": "岩石", "move_power": 175,
         "special": "超級進化",
-        "image": "https://img.pokemondb.net/sprites/home/normal/rayquaza.png"
+        "image": "https://img.pokemondb.net/sprites/home/normal/tyranitar.png"
     },
     {
-        "id": "3-002",
-        "name": "固拉多 (原始回歸)",
-        "series": "星塵第3彈",
+        "id": "1-1-006",
+        "name": "巨金怪",
+        "series": "星塵第1彈",
         "star": 6,
-        "types": ["地面", "火"],
-        "hp": 195, "atk": 190, "def": 180, "sp_atk": 140, "sp_def": 120, "spd": 120,
-        "move_name": "斷崖之劍", "move_type": "地面", "move_power": 175,
-        "special": "原始回歸",
-        "image": "https://img.pokemondb.net/sprites/home/normal/groudon.png"
+        "types": ["鋼", "超能力"],
+        "hp": 180, "atk": 175, "def": 170, "sp_atk": 125, "sp_def": 120, "spd": 110,
+        "move_name": "超級彗星拳", "move_type": "鋼", "move_power": 175,
+        "special": "超級進化",
+        "image": "https://img.pokemondb.net/sprites/home/normal/metagross.png"
     },
     {
-        "id": "3-003",
-        "name": "蓋歐卡 (原始回歸)",
-        "series": "星塵第3彈",
+        "id": "1-1-007",
+        "name": "密勒頓",
+        "series": "星塵第1彈",
+        "star": 6,
+        "types": ["電", "龍"],
+        "hp": 190, "atk": 115, "def": 130, "sp_atk": 185, "sp_def": 150, "spd": 175,
+        "move_name": "閃電猛衝", "move_type": "電", "move_power": 180,
+        "special": "太晶化",
+        "image": "https://img.pokemondb.net/sprites/home/normal/miraidon.png"
+    },
+    {
+        "id": "1-1-008",
+        "name": "妙蛙花",
+        "series": "星塵第1彈",
+        "star": 6,
+        "types": ["草", "毒"],
+        "hp": 185, "atk": 135, "def": 130, "sp_atk": 150, "sp_def": 145, "spd": 115,
+        "move_name": "超級瘋狂植物", "move_type": "草", "move_power": 175,
+        "special": "超級進化",
+        "image": "https://img.pokemondb.net/sprites/home/normal/venusaur.png"
+    },
+    {
+        "id": "1-1-009",
+        "name": "噴火龍",
+        "series": "星塵第1彈",
+        "star": 6,
+        "types": ["火", "飛行"],
+        "hp": 185, "atk": 130, "def": 120, "sp_atk": 165, "sp_def": 130, "spd": 145,
+        "move_name": "超級爆炸烈焰", "move_type": "火", "move_power": 175,
+        "special": "超級進化",
+        "image": "https://img.pokemondb.net/sprites/home/normal/charizard.png"
+    },
+    {
+        "id": "1-1-010",
+        "name": "水箭龜",
+        "series": "星塵第1彈",
         "star": 6,
         "types": ["水"],
-        "hp": 195, "atk": 140, "def": 120, "sp_atk": 190, "sp_def": 180, "spd": 120,
-        "move_name": "根源波動", "move_type": "水", "move_power": 175,
-        "special": "原始回歸",
-        "image": "https://img.pokemondb.net/sprites/home/normal/kyogre.png"
+        "hp": 190, "atk": 125, "def": 155, "sp_atk": 145, "sp_def": 160, "spd": 110,
+        "move_name": "超級加農水砲", "move_type": "水", "move_power": 175,
+        "special": "超級進化",
+        "image": "https://img.pokemondb.net/sprites/home/normal/blastoise.png"
     },
     {
-        "id": "4-001",
-        "name": "無極汰那",
-        "series": "星塵第4彈",
-        "star": 6,
-        "types": ["毒", "龍"],
-        "hp": 235, "atk": 115, "def": 125, "sp_atk": 185, "sp_def": 125, "spd": 170,
-        "move_name": "極巨砲", "move_type": "龍", "move_power": 180,
-        "special": "極巨化",
-        "image": "https://img.pokemondb.net/sprites/home/normal/eternatus.png"
+        "id": "1-1-011",
+        "name": "皮卡丘",
+        "series": "星塵第1彈",
+        "star": 5,
+        "types": ["電"],
+        "hp": 150, "atk": 125, "def": 95, "sp_atk": 120, "sp_def": 105, "spd": 135,
+        "move_name": "超極巨萬雷轟頂", "move_type": "電", "move_power": 150,
+        "special": "超極巨化",
+        "image": "https://img.pokemondb.net/sprites/home/normal/pikachu.png"
     },
     {
-        "id": "4-002",
-        "name": "急凍鳥 (伽勒爾)",
-        "series": "星塵第4彈",
-        "star": 6,
-        "types": ["超能力", "飛行"],
-        "hp": 180, "atk": 115, "def": 120, "sp_atk": 165, "sp_def": 135, "spd": 135,
-        "move_name": "冰冷視線", "move_type": "超能力", "move_power": 140,
+        "id": "1-1-012",
+        "name": "耿鬼",
+        "series": "星塵第1彈",
+        "star": 5,
+        "types": ["幽靈", "毒"],
+        "hp": 155, "atk": 100, "def": 110, "sp_atk": 165, "sp_def": 120, "spd": 150,
+        "move_name": "超極巨幻影幽魂", "move_type": "幽靈", "move_power": 150,
+        "special": "超極巨化",
+        "image": "https://img.pokemondb.net/sprites/home/normal/gengar.png"
+    },
+    {
+        "id": "1-1-020",
+        "name": "仙子伊布",
+        "series": "星塵第1彈",
+        "star": 5,
+        "types": ["妖精"],
+        "hp": 170, "atk": 100, "def": 105, "sp_atk": 150, "sp_def": 170, "spd": 95,
+        "move_name": "月亮之力", "move_type": "妖精", "move_power": 130,
         "special": "無",
-        "image": "https://img.pokemondb.net/sprites/home/normal/articuno-galar.png"
-    },
-    {
-        "id": "4-003",
-        "name": "閃電鳥 (伽勒爾)",
-        "series": "星塵第4彈",
-        "star": 6,
-        "types": ["格鬥", "飛行"],
-        "hp": 180, "atk": 165, "def": 120, "sp_atk": 115, "sp_def": 120, "spd": 140,
-        "move_name": "雷鳴蹴擊", "move_type": "格鬥", "move_power": 140,
-        "special": "無",
-        "image": "https://img.pokemondb.net/sprites/home/normal/zapdos-galar.png"
-    },
-    {
-        "id": "4-004",
-        "name": "火焰鳥 (伽勒爾)",
-        "series": "星塵第4彈",
-        "star": 6,
-        "types": ["惡", "飛行"],
-        "hp": 180, "atk": 115, "def": 120, "sp_atk": 145, "sp_def": 165, "spd": 130,
-        "move_name": "怒火中燒", "move_type": "惡", "move_power": 140,
-        "special": "無",
-        "image": "https://img.pokemondb.net/sprites/home/normal/moltres-galar.png"
+        "image": "https://img.pokemondb.net/sprites/home/normal/sylveon.png"
     },
 
     # --------------------------------------------------------------------------
-    # 【經典傳奇卡匣 (Legacy & Special Series)】
+    # 🎁【特別系列】 (Special Promo / 經典卡匣 / 傳奇活動卡匣)
     # --------------------------------------------------------------------------
     {
-        "id": "L-001",
-        "name": "傳奇・超夢",
-        "series": "傳奇系列",
+        "id": "SP-001",
+        "name": "基拉祈",
+        "series": "特別系列",
         "star": 6,
-        "types": ["超能力"],
-        "hp": 205, "atk": 150, "def": 125, "sp_atk": 200, "sp_def": 125, "spd": 175,
-        "move_name": "傳奇精神擊破", "move_type": "超能力", "move_power": 190,
-        "special": "超級進化",
-        "image": "https://img.pokemondb.net/sprites/home/normal/mewtwo.png"
+        "types": ["鋼", "超能力"],
+        "hp": 190, "atk": 145, "def": 145, "sp_atk": 145, "sp_def": 145, "spd": 150,
+        "move_name": "破滅之願", "move_type": "鋼", "move_power": 175,
+        "special": "特別活動",
+        "image": "https://img.pokemondb.net/sprites/home/normal/jirachi.png"
     },
     {
-        "id": "L-002",
-        "name": "傳奇・烈空坐",
-        "series": "傳奇系列",
+        "id": "SP-002",
+        "name": "時拉比",
+        "series": "特別系列",
+        "star": 6,
+        "types": ["超能力", "草"],
+        "hp": 190, "atk": 145, "def": 145, "sp_atk": 145, "sp_def": 145, "spd": 150,
+        "move_name": "飛葉風暴", "move_type": "草", "move_power": 170,
+        "special": "特別活動",
+        "image": "https://img.pokemondb.net/sprites/home/normal/celebi.png"
+    },
+    {
+        "id": "SP-003",
+        "name": "武道熊師 (連擊流)",
+        "series": "特別系列",
+        "star": 6,
+        "types": ["格鬥", "水"],
+        "hp": 190, "atk": 180, "def": 140, "sp_atk": 95, "sp_def": 100, "spd": 140,
+        "move_name": "水流連打", "move_type": "水", "move_power": 175,
+        "special": "連擊",
+        "image": "https://img.pokemondb.net/sprites/home/normal/urshifu-rapid-strike.png"
+    },
+    {
+        "id": "SP-004",
+        "name": "武道熊師 (一擊流)",
+        "series": "特別系列",
+        "star": 6,
+        "types": ["格鬥", "惡"],
+        "hp": 190, "atk": 180, "def": 140, "sp_atk": 95, "sp_def": 100, "spd": 140,
+        "move_name": "暗冥強擊", "move_type": "惡", "move_power": 175,
+        "special": "特別活動",
+        "image": "https://img.pokemondb.net/sprites/home/normal/urshifu-single-strike.png"
+    },
+    {
+        "id": "SP-005",
+        "name": "快龍",
+        "series": "特別系列",
         "star": 6,
         "types": ["龍", "飛行"],
-        "hp": 205, "atk": 200, "def": 135, "sp_atk": 200, "sp_def": 135, "spd": 165,
-        "move_name": "傳奇畫龍點睛", "move_type": "飛行", "move_power": 190,
+        "hp": 185, "atk": 180, "def": 135, "sp_atk": 140, "sp_def": 140, "spd": 120,
+        "move_name": "逆鱗", "move_type": "龍", "move_power": 175,
+        "special": "特別活動",
+        "image": "https://img.pokemondb.net/sprites/home/normal/dragonite.png"
+    },
+    {
+        "id": "SP-006",
+        "name": "暴鯉龍",
+        "series": "特別系列",
+        "star": 6,
+        "types": ["水", "飛行"],
+        "hp": 185, "atk": 175, "def": 115, "sp_atk": 95, "sp_def": 140, "spd": 125,
+        "move_name": "水炮", "move_type": "水", "move_power": 170,
+        "special": "特別活動",
+        "image": "https://img.pokemondb.net/sprites/home/normal/gyarados.png"
+    },
+    {
+        "id": "SP-007",
+        "name": "經典・超級噴火龍X",
+        "series": "特別系列",
+        "star": 6,
+        "types": ["火", "龍"],
+        "hp": 190, "atk": 175, "def": 145, "sp_atk": 175, "sp_def": 125, "spd": 145,
+        "move_name": "經典爆炸烈焰", "move_type": "火", "move_power": 185,
         "special": "超級進化",
-        "image": "https://img.pokemondb.net/sprites/home/normal/rayquaza.png"    }
+        "image": "https://img.pokemondb.net/sprites/home/normal/charizard-mega-x.png"
+    },
+    {
+        "id": "SP-008",
+        "name": "經典・超級妙蛙花",
+        "series": "特別系列",
+        "star": 6,
+        "types": ["草", "毒"],
+        "hp": 195, "atk": 145, "def": 160, "sp_atk": 165, "sp_def": 160, "spd": 115,
+        "move_name": "經典瘋狂植物", "move_type": "草", "move_power": 185,
+        "special": "超級進化",
+        "image": "https://img.pokemondb.net/sprites/home/normal/venusaur-mega.png"
+    },
+    {
+        "id": "SP-009",
+        "name": "經典・超級水箭龜",
+        "series": "特別系列",
+        "star": 6,
+        "types": ["水"],
+        "hp": 195, "atk": 135, "def": 160, "sp_atk": 180, "sp_def": 155, "spd": 110,
+        "move_name": "經典加農水砲", "move_type": "水", "move_power": 185,
+        "special": "超級進化",
+        "image": "https://img.pokemondb.net/sprites/home/normal/blastoise-mega.png"
+    }
 ]
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
@@ -874,7 +1051,6 @@ def load_cards() -> List[Dict]:
                     return data
         except Exception as e:
             print(f"Error loading cards file: {e}")
-    # 若檔案不存在或為舊版本，寫入並回傳完整資料庫
     save_cards(FULL_MEZASTAR_DATABASE)
     return FULL_MEZASTAR_DATABASE
 

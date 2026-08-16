@@ -11,6 +11,7 @@ import os
 from mezastar_data import (
     TYPES,
     TYPE_COLORS,
+    ALL_SERIES_LIST,
     calculate_type_effectiveness,
     get_weaknesses,
     load_cards,
@@ -331,7 +332,7 @@ with tabs[1]:
     with col_f1:
         star_filter = st.multiselect("星級篩選:", options=[6, 5, 4, 3, 2], default=[6, 5])
     with col_f2:
-        all_series = sorted(list({c.get("series", "") for c in all_cards}))
+        all_series = [s for s in ALL_SERIES_LIST if any(c.get("series") == s for c in all_cards)]
         series_filter = st.multiselect("彈別篩選:", options=all_series, default=all_series)
     with col_f3:
         status_filter = st.selectbox("擁有狀態:", options=["全部卡匣", "僅顯示已擁有", "僅顯示未擁有"], index=0)
@@ -444,14 +445,7 @@ with tabs[3]:
         with st.form("add_card_form"):
             f_id = st.text_input("卡匣編號 (ID，例: 4-2-001):", value="4-2-001")
             f_name = st.text_input("寶可夢名稱:", value="蒼響")
-            series_list = [
-                "銀河第2彈", "銀河第1彈",
-                "雙重衝刺第5彈", "雙重衝刺第4彈", "雙重衝刺第3彈", "雙重衝刺第2彈", "雙重衝刺第1彈",
-                "超級第5彈", "超級第4彈", "超級第3彈", "超級第2彈", "超級第1彈",
-                "星塵第4彈", "星塵第3彈", "星塵第2彈", "星塵第1彈",
-                "傳奇系列", "特別活動卡"
-            ]
-            f_series = st.selectbox("彈別:", options=series_list, index=0)
+            f_series = st.selectbox("彈別:", options=ALL_SERIES_LIST, index=0)
             f_star = st.slider("星級:", min_value=2, max_value=6, value=6)
             f_t1 = st.selectbox("第一屬性:", options=TYPES, index=17)
             f_t2 = st.selectbox("第二屬性 (若無選無):", options=["無"] + TYPES, index=17)
