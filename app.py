@@ -442,17 +442,24 @@ with tabs[3]:
     with col_net2:
         st.markdown("#### ➕ 2. 新增 / 更新自訂卡匣至資料庫")
         with st.form("add_card_form"):
-            f_id = st.text_input("卡匣編號 (ID，例: GS3-001):", value="GS3-001")
-            f_name = st.text_input("寶可夢名稱:", value="超夢")
-            f_series = st.selectbox("彈別:", options=["第1彈", "第2彈", "第3彈", "第4彈", "超級第1彈", "超級第2彈", "雙重衝刺第1彈", "雙重衝刺第2彈", "GS第1彈", "GS第2彈", "GS第3彈", "特別活動卡"])
+            f_id = st.text_input("卡匣編號 (ID，例: 4-2-001):", value="4-2-001")
+            f_name = st.text_input("寶可夢名稱:", value="蒼響")
+            series_list = [
+                "銀河第2彈", "銀河第1彈",
+                "雙重衝刺第5彈", "雙重衝刺第4彈", "雙重衝刺第3彈", "雙重衝刺第2彈", "雙重衝刺第1彈",
+                "超級第5彈", "超級第4彈", "超級第3彈", "超級第2彈", "超級第1彈",
+                "星塵第4彈", "星塵第3彈", "星塵第2彈", "星塵第1彈",
+                "傳奇系列", "特別活動卡"
+            ]
+            f_series = st.selectbox("彈別:", options=series_list, index=0)
             f_star = st.slider("星級:", min_value=2, max_value=6, value=6)
-            f_t1 = st.selectbox("第一屬性:", options=TYPES, index=10)
-            f_t2 = st.selectbox("第二屬性 (若無選無):", options=["無"] + TYPES, index=0)
-            f_move = st.text_input("招式名稱:", value="精神擊破")
-            f_mtype = st.selectbox("招式屬性:", options=TYPES, index=10)
-            f_mpower = st.number_input("招式威力:", min_value=50, max_value=250, value=170)
-            f_special = st.selectbox("特殊機制:", options=["無", "極巨化", "超級進化", "Z招式", "太晶化", "雙重衝刺", "雙重招式", "原始回歸"])
-            f_img = st.text_input("卡片圖片 URL (可選):", value="https://img.pokemondb.net/sprites/home/normal/mewtwo.png")
+            f_t1 = st.selectbox("第一屬性:", options=TYPES, index=17)
+            f_t2 = st.selectbox("第二屬性 (若無選無):", options=["無"] + TYPES, index=17)
+            f_move = st.text_input("招式名稱:", value="巨獸斬")
+            f_mtype = st.selectbox("招式屬性:", options=TYPES, index=16)
+            f_mpower = st.number_input("招式威力:", min_value=50, max_value=250, value=175)
+            f_special = st.selectbox("特殊機制:", options=["無", "超極巨化", "極巨化", "超級進化", "Z招式", "太晶化", "雙重衝刺", "雙重招式", "連擊", "原始回歸"])
+            f_img = st.text_input("卡片圖片 URL (可選):", value="https://img.pokemondb.net/sprites/home/normal/zacian.png")
             
             submitted = st.form_submit_button("💾 儲存並加入卡匣庫", use_container_width=True)
             if submitted:
