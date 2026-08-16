@@ -1,7 +1,12 @@
 {
-  "version": "1.0.9",
-  "last_updated": "2026-08-16 22:31:31",
+  "version": "1.0.10",
+  "last_updated": "2026-08-16 22:35:24",
   "history": [
+    {
+      "version": "1.0.10",
+      "timestamp": "2026-08-16 22:35:24",
+      "message": "全面改用 Streamlit 原生 st.html 渲染徹底解決 Markdown 程式碼區塊外洩問題，並在我的卡匣頁面新增雲端同步狀態與 GitHub 直連驗證"
+    },
     {
       "version": "1.0.9",
       "timestamp": "2026-08-16 22:31:31",

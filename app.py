@@ -44,33 +44,37 @@ st.set_page_config(
 )
 
 def render_html(html_str: str):
-    """安全輸出 HTML，消除縮排防止 markdown 解析為程式碼區塊"""
-    st.markdown(textwrap.dedent(html_str).strip(), unsafe_allow_html=True)
+    """安全輸出純 HTML，壓平所有縮排與換行，徹底防止 Streamlit Markdown 解析為程式碼區塊"""
+    clean_html = " ".join(line.strip() for line in html_str.splitlines() if line.strip())
+    if hasattr(st, "html"):
+        st.html(clean_html)
+    else:
+        st.markdown(clean_html, unsafe_allow_html=True)
 
 # 針對 6.1 吋智慧型手機 (iPhone / Android) 深度調優的響應式 CSS 樣式
 render_html("""
 <style>
     /* 頁面整體邊距微調，最大化手機可視空間 */
     .block-container {
-        padding-top: 1rem !important;
+        padding-top: 0.8rem !important;
         padding-bottom: 2rem !important;
-        padding-left: 0.6rem !important;
-        padding-right: 0.6rem !important;
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
         max-width: 100% !important;
     }
     
     /* 標題在手機螢幕上的字級適配 */
     .mobile-title {
-        font-size: 1.5rem;
+        font-size: 1.45rem;
         font-weight: 800;
         color: #E53935;
         margin-bottom: 0.1rem;
-        line-height: 1.25;
+        line-height: 1.2;
     }
     .mobile-subtitle {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
         color: #666;
-        margin-bottom: 0.8rem;
+        margin-bottom: 0.6rem;
     }
 
     /* 手機卡匣卡片樣式 */
@@ -203,6 +207,7 @@ with st.sidebar:
     st.markdown("#### 🌐 雲端連線狀態")
     git_info = get_git_status()
     st.write(f"🌿 分支: `{git_info['branch']}`")
+    st.markdown("[🔗 開啟 GitHub 雲端資料庫檔案](https://github.com/JeffHSU8310/pokemonmezastar/blob/main/data/my_collection.json)")
     if git_info["has_changes"]:
         st.warning(f"⚠️ {len(git_info['changed_files'])} 處變更待同步")
     else:
@@ -266,6 +271,10 @@ with tabs[0]:
     resist = [k for k, v in full_chart.items() if 0.0 < v <= 0.5]
     immune = [k for k, v in full_chart.items() if v == 0.0]
     
+    w4_html = f"<b>💥 4倍弱點:</b> {''.join([render_type_badge(t) for t in weak_4x])} " if weak_4x else ""
+    w2_html = f"<b>🎯 2倍弱點:</b> {''.join([render_type_badge(t) for t in weak_2x])} " if weak_2x else ""
+    rst_html = f"<br><b>🛡️ 抵抗:</b> {''.join([render_type_badge(t) for t in resist[:4]])}" if resist else ""
+
     render_html(f"""
     <div style="background:#FFF3E0; border:1px solid #FFE0B2; border-radius:8px; padding:8px; margin: 6px 0;">
         <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -273,9 +282,7 @@ with tabs[0]:
             <span>{render_types_html(boss_types)}</span>
         </div>
         <div style="font-size:0.8rem; margin-top:4px;">
-            {'<b>💥 4倍弱點:</b> ' + ''.join([render_type_badge(t) for t in weak_4x]) if weak_4x else ''}
-            {'<b>🎯 2倍弱點:</b> ' + ''.join([render_type_badge(t) for t in weak_2x]) if weak_2x else ''}
-            {('<br><b>🛡️ 抵抗:</b> ' + ''.join([render_type_badge(t) for t in resist[:4]])) if resist else ''}
+            {w4_html} {w2_html} {rst_html}
         </div>
     </div>
     """)
@@ -373,11 +380,39 @@ with tabs[0]:
             st.dataframe(pd.DataFrame(rank_data), use_container_width=True)
 
 # ==============================================================================
-# TAB 2: 🎒 我的卡匣庫 (My Collection) - 手機直立 2 列極簡卡片
+# TAB 2: 🎒 我的卡匣庫 (My Collection) - 支援一鍵備份與雲端驗證
 # ==============================================================================
 with tabs[1]:
     st.markdown("#### 🎒 我的卡匣庫存標記")
     
+    # 雲端同步狀態橫幅與一鍵備份按鈕
+    cur_git_info = get_git_status()
+    st.markdown(f"""
+    <div style="background:#E3F2FD; border:1px solid #90CAF9; border-radius:8px; padding:8px 10px; margin-bottom:8px; font-size:0.8rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span>☁️ <b>雲端儲存狀態:</b> 已記錄 {len(st.session_state.owned_ids)} 張卡匣</span>
+            <span>版次: <b>v{cur_git_info['version']}</b></span>
+        </div>
+        <div style="margin-top:4px; font-size:0.75rem;">
+            🔗 雲端檔案路徑: <a href="https://github.com/JeffHSU8310/pokemonmezastar/blob/main/data/my_collection.json" target="_blank"><b>data/my_collection.json (點此直接在 GitHub 檢查確認)</b></a>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    col_sync_btn1, col_sync_btn2 = st.columns([1.5, 1])
+    with col_sync_btn1:
+        if st.button("🚀 立即上傳/備份收藏至 GitHub 雲端", use_container_width=True, type="primary"):
+            with st.spinner("正在自動記錄版次並同步至 GitHub main..."):
+                ok, sync_res = auto_commit_and_push(change_summary=f"更新個人收藏庫 (共 {len(st.session_state.owned_ids)} 張卡匣)", branch="main")
+                if ok:
+                    st.success("✅ 您的卡匣已 100% 成功備份儲存至 GitHub 雲端！")
+                    st.rerun()
+                else:
+                    st.error(f"❌ 同步異常: {sync_res}")
+
+    with col_sync_btn2:
+        st.caption("每次修改卡匣後點擊左側按鈕即可同步至 GitHub 永久保存！")
+
     with st.expander("🔍 點擊展開篩選條件", expanded=False):
         col_f1, col_f2 = st.columns(2)
         with col_f1:
@@ -613,7 +648,7 @@ with tabs[4]:
     g_info = get_git_status()
     st.caption(f"版次: `v{g_info['version']}` | 分支: `{g_info['branch']}`")
     
-    commit_summary = st.text_input("修改說明:", value="修正卡片編碼 (銀河二彈2-2-xxx) 並修復 HTML 程式碼洩漏問題")
+    commit_summary = st.text_input("修改說明:", value="全面採用 st.html 原生渲染消除 HTML 洩漏問題，並加入雲端收藏狀態檢查")
     if st.button("🚀 立即建立版次並推送到 GitHub", use_container_width=True, type="primary"):
         with st.spinner("同步中..."):
             success, sync_msg = auto_commit_and_push(change_summary=commit_summary, branch="main")
