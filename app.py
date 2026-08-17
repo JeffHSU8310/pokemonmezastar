@@ -76,16 +76,16 @@ def render_html(html_str: str):
 # 針對 6.1 吋智慧型手機 (iPhone / Android) 與電腦深度調優的響應式 CSS 樣式
 st.markdown("""
 <style>
-    /* 頁面整體邊距微調，最大化手機與電腦可視空間 */
+    /* 頁面整體邊距微調：預留頂部 header 空間，確保標題 100% 完整顯示絕不被遮擋 */
     .block-container {
-        padding-top: 0.8rem !important;
+        padding-top: 3.8rem !important;
         padding-bottom: 2rem !important;
-        padding-left: 0.5rem !important;
-        padding-right: 0.5rem !important;
+        padding-left: 0.8rem !important;
+        padding-right: 0.8rem !important;
         max-width: 100% !important;
     }
     
-    /* 標題在手機螢幕上的字級適配 */
+    /* 標題在手機與電腦螢幕上的字級適配 */
     .mobile-title {
         font-size: 1.45rem;
         font-weight: 800;
@@ -183,20 +183,18 @@ st.markdown("""
         font-size: 0.85rem !important;
     }
 
-    /* 確保 Streamlit 主滾動容器 100% 正常順暢滾動 */
-    section[data-testid="stMain"], .main {
-        overflow-y: auto !important;
-    }
-
     /* 📌 頂部分頁導覽列固定吸頂 (Sticky Tabs) */
-    div[data-testid="stTabs"] > div:first-child {
+    div[data-testid="stTabs"] > div:first-child,
+    div[data-baseweb="tab-list"],
+    .stTabs [data-baseweb="tab-list"] {
         position: -webkit-sticky !important;
         position: sticky !important;
-        top: 0px !important;
+        top: 2.875rem !important;
         z-index: 999 !important;
         background-color: #FFFFFF !important;
-        padding: 4px 0 !important;
+        padding: 6px 4px !important;
         border-bottom: 2px solid #E0E0E0 !important;
+        box-shadow: 0 4px 6px -2px rgba(0, 0, 0, 0.08) !important;
     }
 </style>
 """, unsafe_allow_html=True)
