@@ -318,10 +318,10 @@ def auto_commit_and_push(change_summary: str = "自動更新卡匣與系統資�
         subprocess.run(["git", "config", "user.name", "JeffHSU8310"], check=False)
         subprocess.run(["git", "config", "user.email", "jeffn8310@gmail.com"], check=False)
         subprocess.run(["git", "add", "."], check=False)
-        subprocess.run(["git", "commit", "-m", f"v{new_ver}: {change_summary}"], capture_output=True, text=True, check=False)
-        push_res = subprocess.run(["git", "push", "origin", branch], capture_output=True, text=True, check=False)
+        subprocess.run(["git", "commit", "-m", f"v{new_ver}: {change_summary}"], capture_output=True, encoding="utf-8", errors="ignore", check=False)
+        push_res = subprocess.run(["git", "push", "origin", branch], capture_output=True, encoding="utf-8", errors="ignore", check=False)
         if push_res.returncode == 0:
-            return True, f"✅ 成功記錄版次 v{new_ver} 並自動同步推送至 GitHub ({branch}) 分支！"
+            return True, f"成功記錄版次 v{new_ver} 並自動同步推送至 GitHub ({branch}) 分支！"
     except Exception as e:
         print(f"Git CLI error: {e}")
         
