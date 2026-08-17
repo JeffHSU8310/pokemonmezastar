@@ -189,7 +189,30 @@ def get_git_status() -> Dict[str, Any]:
     return {
         "is_git": True,
         "branch": BRANCH,
+        "commit": "Latest",
         "remote_url": f"https://github.com/{REPO_OWNER}/{REPO_NAME}.git",
+        "changed_files": [],
+        "has_changes": False,
         "version": ver_info.get("version", "2.2.0"),
         "last_updated": ver_info.get("last_updated", "")
     }
+
+def auto_commit_and_push(change_summary: str = "自動更新卡匣與系統資料", branch: str = "main", github_token: Optional[str] = None) -> Tuple[bool, str]:
+    """相容舊版 auto_commit_and_push 介面"""
+    if github_token:
+        # 若有 Token 則透過 API 進行全量同步
+        from collection_manager import load_user_collection_ids
+        from qr_manager import load_trainers
+        owned = list(load_user_collection_ids())
+        tr = load_trainers()
+        return sync_all_user_data_to_github(owned, tr, github_token, summary=change_summary)
+    
+    # 本地備份模式
+    ver_info = load_version_info()
+    new_ver = increment_version(ver_info.get("version", "2.2.0"), "patch")
+    now_str = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+    ver_info["version"] = new_ver
+    ver_info["last_updated"] = now_str
+    save_version_info(ver_info)
+    return True, f"已成功記錄版次 v{new_ver} (變更: {change_summary})"
+
