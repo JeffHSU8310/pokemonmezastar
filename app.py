@@ -74,9 +74,9 @@ def render_html(html_str: str):
         st.markdown(clean_html, unsafe_allow_html=True)
 
 # 針對 6.1 吋智慧型手機 (iPhone / Android) 深度調優的響應式 CSS 樣式
-render_html("""
+st.markdown("""
 <style>
-    /* 頁面整體邊距微調，最大化手機可視空間 */
+    /* 頁面整體邊距微調，最大化手機與電腦可視空間 */
     .block-container {
         padding-top: 0.8rem !important;
         padding-bottom: 2rem !important;
@@ -181,142 +181,186 @@ render_html("""
         padding: 6px 10px !important;
         font-size: 0.85rem !important;
     }
-
-    /* 📌 頂部分頁導覽列固定吸頂 (Sticky Tabs) - 電腦與手機均置頂固定 */
-    div[data-testid="stTabs"] > div:first-child {
-        position: sticky !important;
-        top: 2.875rem !important; /* 吸附在 Streamlit 頂部 header 下方 */
-        z-index: 999 !important;
-        background-color: #FFFFFF !important;
-        padding: 6px 8px 4px 8px !important;
-        border-bottom: 2px solid #E0E0E0 !important;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08) !important;
-    }
-
-    /* 🔝 懸浮置頂按鈕 (Back to Top Button) - 電腦與手機自適應 */
-    #back-to-top-btn {
-        position: fixed;
-        bottom: 28px;
-        right: 28px;
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        background: rgba(229, 57, 53, 0.95);
-        color: #FFFFFF;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 22px;
-        box-shadow: 0 4px 14px rgba(229, 57, 53, 0.4);
-        cursor: pointer;
-        z-index: 99999;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        user-select: none;
-        -webkit-tap-highlight-color: transparent;
-        border: 2px solid #FFFFFF;
-    }
-    #back-to-top-btn:hover {
-        transform: translateY(-3px) scale(1.08);
-        background: #D32F2F;
-        box-shadow: 0 6px 20px rgba(229, 57, 53, 0.6);
-    }
-    #back-to-top-btn:active {
-        transform: scale(0.92);
-    }
-
-    /* 電腦頂部 Header 游標指針提示 */
-    header[data-testid="stHeader"] {
-        cursor: pointer !important;
-        user-select: none !important;
-    }
 </style>
+""")
 
-<!-- 🔝 電腦與手機 頂部雙擊回最上面 (Double-Click / Double-Tap to Scroll Top) & 懸浮按鈕腳本 -->
-<div id="back-to-top-btn" title="點擊回到最上方 (或雙擊頂部空白處)" onclick="window.scrollToTopMezastar()">🔝</div>
+# ==============================================================================
+# 🚀 透過 components.html 穿透注入父層 DOM (實現 100% 有效的吸頂、雙擊置頂與懸浮按鈕)
+# ==============================================================================
+import streamlit.components.v1 as components
 
+components.html("""
 <script>
 (function() {
-    function scrollToTopMezastar() {
-        // 同時相容 window 捲動、主容器捲動與各式瀏覽器
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        const mainContainer = document.querySelector('section.main') || document.querySelector('.main');
-        if (mainContainer) {
-            mainContainer.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-        document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
-        document.body.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-    window.scrollToTopMezastar = scrollToTopMezastar;
+    try {
+        const parentDoc = window.parent.document;
+        const parentWin = window.parent;
 
-    // 監聽雙擊事件 (電腦滑鼠 dblclick + 手機觸控快速雙連擊)
-    let lastTapTime = 0;
-    function handleTopDoubleTap(e) {
-        const currentTime = new Date().getTime();
-        const tapLength = currentTime - lastTapTime;
-        if (tapLength < 400 && tapLength > 0) {
-            scrollToTopMezastar();
-            if (e && e.preventDefault) e.preventDefault();
-        }
-        lastTapTime = currentTime;
-    }
+        // 1. 注入頂部分頁吸頂樣式與懸浮按鈕樣式到父層 head
+        const styleId = "mezastar-sticky-style";
+        if (!parentDoc.getElementById(styleId)) {
+            const styleEl = parentDoc.createElement("style");
+            styleEl.id = styleId;
+            styleEl.innerHTML = `
+                /* 📌 頂部分頁導覽列固定吸頂 (打 V 處) */
+                div[data-testid="stTabs"] > div:first-child,
+                [data-testid="stTabsHeader"],
+                .stTabs [data-baseweb="tab-list"],
+                .stTabs [data-baseweb="tab-highlight-container"] {
+                    position: -webkit-sticky !important;
+                    position: sticky !important;
+                    top: 2.875rem !important;
+                    z-index: 9999 !important;
+                    background-color: #FFFFFF !important;
+                    padding: 6px 8px 4px 8px !important;
+                    border-bottom: 2px solid #E0E0E0 !important;
+                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08) !important;
+                }
 
-    function initScrollFeatures() {
-        // 1. 電腦與手機頂部 Header (打 O 處) 綁定雙擊
-        const header = document.querySelector('header[data-testid="stHeader"]');
-        if (header) {
-            header.title = "雙擊兩下回到頁面頂端";
-            header.addEventListener('dblclick', scrollToTopMezastar);
-            header.addEventListener('click', handleTopDoubleTap);
-            header.addEventListener('touchend', handleTopDoubleTap);
+                /* 避免父層容器 overflow 阻礙 sticky 吸頂 */
+                section[data-testid="stMain"], .main {
+                    overflow-y: auto !important;
+                }
+                .main .block-container, [data-testid="stMainBlockContainer"] {
+                    overflow: visible !important;
+                }
+
+                /* 頂部 Header 游標指針與打 O 處提示 */
+                header[data-testid="stHeader"] {
+                    cursor: pointer !important;
+                    user-select: none !important;
+                }
+
+                /* 🔝 懸浮按鈕樣式 */
+                #mezastar-back-to-top {
+                    position: fixed !important;
+                    bottom: 28px !important;
+                    right: 28px !important;
+                    width: 50px !important;
+                    height: 50px !important;
+                    border-radius: 50% !important;
+                    background: rgba(229, 57, 53, 0.95) !important;
+                    color: #FFFFFF !important;
+                    display: flex !important;
+                    align-items: center !important;
+                    justify-content: center !important;
+                    font-size: 24px !important;
+                    box-shadow: 0 4px 16px rgba(229, 57, 53, 0.45) !important;
+                    cursor: pointer !important;
+                    z-index: 999999 !important;
+                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                    user-select: none !important;
+                    border: 2px solid #FFFFFF !important;
+                    opacity: 0;
+                    pointer-events: none;
+                    transform: translateY(15px);
+                }
+                #mezastar-back-to-top:hover {
+                    transform: translateY(-4px) scale(1.1) !important;
+                    background: #D32F2F !important;
+                    box-shadow: 0 6px 22px rgba(229, 57, 53, 0.65) !important;
+                }
+                #mezastar-back-to-top:active {
+                    transform: scale(0.92) !important;
+                }
+            `;
+            parentDoc.head.appendChild(styleEl);
         }
-        
-        // 2. 分頁導覽列 (打 V 處) 頂部吸頂欄綁定雙擊
-        const tabsBar = document.querySelector('div[data-testid="stTabs"] > div:first-child');
+
+        // 2. 回頂部平滑滾動函式
+        function scrollToTopMezastar() {
+            parentWin.scrollTo({ top: 0, behavior: "smooth" });
+            const mainSection = parentDoc.querySelector("section.main") || parentDoc.querySelector(".main");
+            if (mainSection) {
+                mainSection.scrollTo({ top: 0, behavior: "smooth" });
+            }
+            if (parentDoc.documentElement) {
+                parentDoc.documentElement.scrollTo({ top: 0, behavior: "smooth" });
+            }
+            if (parentDoc.body) {
+                parentDoc.body.scrollTo({ top: 0, behavior: "smooth" });
+            }
+        }
+        parentWin.scrollToTopMezastar = scrollToTopMezastar;
+
+        // 3. 建立或掛載右下角懸浮回頂按鈕
+        let bttBtn = parentDoc.getElementById("mezastar-back-to-top");
+        if (!bttBtn) {
+            bttBtn = parentDoc.createElement("div");
+            bttBtn.id = "mezastar-back-to-top";
+            bttBtn.title = "點擊回到最上方 (或雙擊頂部空白處)";
+            bttBtn.innerHTML = "🔝";
+            parentDoc.body.appendChild(bttBtn);
+        }
+        bttBtn.onclick = scrollToTopMezastar;
+
+        // 4. 監聽滾動以顯示/隱藏懸浮按鈕
+        function checkScrollPosition() {
+            const mainSec = parentDoc.querySelector("section.main") || parentDoc.querySelector(".main");
+            const scrollY = parentWin.scrollY || (parentDoc.documentElement ? parentDoc.documentElement.scrollTop : 0) || (mainSec ? mainSec.scrollTop : 0);
+            if (bttBtn) {
+                if (scrollY > 180) {
+                    bttBtn.style.opacity = "1";
+                    bttBtn.style.pointerEvents = "auto";
+                    bttBtn.style.transform = "translateY(0)";
+                } else {
+                    bttBtn.style.opacity = "0";
+                    bttBtn.style.pointerEvents = "none";
+                    bttBtn.style.transform = "translateY(15px)";
+                }
+            }
+        }
+
+        parentWin.addEventListener("scroll", checkScrollPosition, { passive: true });
+        const mainEl = parentDoc.querySelector("section.main") || parentDoc.querySelector(".main");
+        if (mainEl) {
+            mainEl.addEventListener("scroll", checkScrollPosition, { passive: true });
+        }
+        checkScrollPosition();
+
+        // 5. 頂部 Header (打 O 處) 雙擊 (Double Click / Double Tap) 秒回頂部
+        let lastTap = 0;
+        function handleHeaderTap(e) {
+            const now = new Date().getTime();
+            const timesince = now - lastTap;
+            if (timesince < 400 && timesince > 0) {
+                scrollToTopMezastar();
+                if (e && e.preventDefault) e.preventDefault();
+            }
+            lastTap = now;
+        }
+
+        const headerEl = parentDoc.querySelector('header[data-testid="stHeader"]');
+        if (headerEl) {
+            headerEl.title = "雙擊兩下回到頁面最頂端";
+            headerEl.addEventListener("dblclick", scrollToTopMezastar);
+            headerEl.addEventListener("click", handleHeaderTap);
+            headerEl.addEventListener("touchend", handleHeaderTap);
+        }
+
+        // 6. 分頁導覽列 (打 V 處) 雙擊空白處回頂部
+        const tabsBar = parentDoc.querySelector('div[data-testid="stTabs"] > div:first-child');
         if (tabsBar) {
-            tabsBar.addEventListener('dblclick', function(e) {
-                // 如果不是點在按鈕本身，雙擊空白處回頂部
-                if (e.target.tagName !== 'BUTTON') {
+            tabsBar.addEventListener("dblclick", function(e) {
+                if (e.target.tagName !== "BUTTON") {
                     scrollToTopMezastar();
                 }
             });
         }
 
-        // 3. 鍵盤快速鍵支援 (電腦按 Home 鍵回頂部)
-        window.addEventListener('keydown', function(e) {
-            if (e.key === 'Home') {
+        // 7. 電腦 Home 鍵快速鍵
+        parentWin.addEventListener("keydown", function(e) {
+            if (e.key === "Home") {
                 scrollToTopMezastar();
             }
         });
 
-        // 4. 監聽滾動以顯示/隱藏右下角懸浮按鈕
-        const bttBtn = document.getElementById('back-to-top-btn');
-        function onScrollCheck() {
-            const scrollY = window.scrollY || document.documentElement.scrollTop || (document.querySelector('section.main') ? document.querySelector('section.main').scrollTop : 0);
-            if (bttBtn) {
-                if (scrollY > 200) {
-                    bttBtn.style.opacity = '1';
-                    bttBtn.style.pointerEvents = 'auto';
-                    bttBtn.style.transform = 'translateY(0)';
-                } else {
-                    bttBtn.style.opacity = '0';
-                    bttBtn.style.pointerEvents = 'none';
-                    bttBtn.style.transform = 'translateY(15px)';
-                }
-            }
-        }
-        window.addEventListener('scroll', onScrollCheck);
-        const mainContainer = document.querySelector('section.main');
-        if (mainContainer) {
-            mainContainer.addEventListener('scroll', onScrollCheck);
-        }
-        onScrollCheck();
+    } catch (err) {
+        console.warn("Mezastar DOM injector:", err);
     }
-
-    document.addEventListener('DOMContentLoaded', initScrollFeatures);
-    setTimeout(initScrollFeatures, 800);
-    setTimeout(initScrollFeatures, 2500);
 })();
 </script>
+""", height=0)
 
 
 """)
