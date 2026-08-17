@@ -1,4 +1,4 @@
-﻿"""
+"""
 Pokemon Mezastar Mobile App (Flet / Flutter Engine)
 寶可夢 Mezastar 手機專用原生跨平台 APP
 100% 純 Python 打造，支援 Android APK / iOS 打包與離線運作。
@@ -18,7 +18,8 @@ from mezastar_data import (
     calculate_type_effectiveness,
     get_weaknesses,
     get_full_type_chart_for_defender,
-    load_cards
+    load_cards,
+    sort_cards_chronological
 )
 from recommender import recommend_best_lineup
 from collection_manager import (

@@ -19,7 +19,8 @@ from mezastar_data import (
     get_full_type_chart_for_defender,
     load_cards,
     save_cards,
-    DEFAULT_MEZASTAR_CARDS
+    DEFAULT_MEZASTAR_CARDS,
+    sort_cards_chronological
 )
 from recommender import recommend_best_lineup, evaluate_card_performance
 from collection_manager import (
@@ -659,8 +660,8 @@ with tabs[1]:
         5. 完成！回到手機或瀏覽器重新整理 Streamlit 網頁，系統就會自動載入您在 GitHub 上儲存的最新卡匣清單！
         """)
 
-    # 取得使用者目前擁有的卡匣
-    my_owned_cards = [c for c in all_cards if c.get("id") in st.session_state.owned_ids]
+    # 取得使用者目前擁有的卡匣 (依照最新發行彈別與編號排序)
+    my_owned_cards = sort_cards_chronological(get_user_cards(st.session_state.owned_ids))
 
     if not my_owned_cards:
         st.info("🎒 **您目前收藏庫中尚無卡匣！**\n\n請點擊下方 **【➕ 展開全圖鑑快速勾選卡匣】** 或至 **【📖 圖鑑庫】** 點擊「➕ 標記持有」加入您的實體卡匣！")
@@ -987,6 +988,9 @@ with tabs[4]:
             if not (n_match or id_match or type_match or move_match or mech_match):
                 continue
         pokedex_cards.append(c)
+
+    # 確保圖鑑庫依照【最新發行時間 (銀河二彈在最前) ➔ 卡匣編號】排列
+    pokedex_cards = sort_cards_chronological(pokedex_cards)
 
     # 系列統計摘要橫幅
     cur_series_cards = [c for c in all_cards if selected_series == "🌟 全部系列" or c.get("series") == selected_series]

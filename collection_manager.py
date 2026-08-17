@@ -11,7 +11,7 @@ import io
 import csv
 import base64
 import time
-from mezastar_data import load_cards, DATA_DIR
+from mezastar_data import load_cards, DATA_DIR, sort_cards_chronological
 
 COLLECTION_FILE = os.path.join(DATA_DIR, "my_collection.json")
 
@@ -79,7 +79,7 @@ def get_user_cards(owned_ids: Set[str] | None = None) -> List[Dict[str, Any]]:
                 matched_cards.append(card)
                 seen_card_ids.add(card["id"])
                 
-    return matched_cards
+    return sort_cards_chronological(matched_cards)
 
 def toggle_card_ownership(card_id: str, owned_ids: Set[str]) -> Set[str]:
     """切換卡匣擁有狀態並自動存檔"""

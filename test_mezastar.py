@@ -214,8 +214,27 @@ class TestPokemonMezastar(unittest.TestCase):
         # 清理測試資料
         qr_manager.delete_trainer("UNITTEST-TR-001")
 
+    def test_chronological_sorting(self):
+        """測試圖鑑與卡庫排序：最新發行 (銀河第2彈) 排在最前面，內部按卡號由小到大"""
+        from mezastar_data import load_cards, sort_cards_chronological
+        cards = load_cards()
+        self.assertGreater(len(cards), 0)
+
+        # 第 1 張卡匣必須屬於最新發行的【銀河第2彈】
+        first_card = cards[0]
+        self.assertEqual(first_card.get("series"), "銀河第2彈")
+        self.assertEqual(first_card.get("id"), "2-2-001")
+
+        # 驗證前 10 張卡匣均為銀河第2彈且編號依序遞增
+        for i in range(10):
+            c = cards[i]
+            self.assertEqual(c.get("series"), "銀河第2彈")
+            expected_id = f"2-2-{i+1:03d}"
+            self.assertEqual(c.get("id"), expected_id)
+
 if __name__ == "__main__":
     unittest.main()
+
 
 
 

@@ -186,18 +186,97 @@ DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 DEFAULT_MEZASTAR_CARDS = FULL_MEZASTAR_DATABASE
 CARDS_FILE = os.path.join(DATA_DIR, "mezastar_cards.json")
 
-def load_cards() -> List[Dict]:
-    """載入所有卡匣資料"""
+def get_series_order_rank(series_name: str) -> int:
+    """取得彈別系列的時間權重 (數值越小代表越新發行，銀河第2彈排第 1 位)"""
+    if not series_name:
+        return 999
+    # 建立彈別發行時間順序映射 (由最新至最舊)
+    chronological_order = [
+        "銀河第2彈",
+        "銀河第1彈",
+        "雙重衝刺第5彈",
+        "雙重衝刺第4彈",
+        "雙重衝刺第3彈",
+        "雙重衝刺第2彈",
+        "雙重衝刺第1彈",
+        "星塵第4彈",
+        "星塵第3彈",
+        "星塵第2彈",
+        "星塵第1彈",
+        "超級第4彈",
+        "超級第3彈",
+        "超級第2彈",
+        "超級第1彈",
+        "第4彈",
+        "第3彈",
+        "第2彈",
+        "第1彈",
+        "特別系列",
+        "官方限定活動"
+    ]
+    for idx, s in enumerate(chronological_order):
+        if s in series_name:
+            return idx
+    return 500
+
+def parse_card_id_for_sort(card_id: str) -> Tuple[int, int, str]:
+    """解析卡匣編號以供精準排序 (例如 '2-2-001' -> (2, 2, 1))"""
+    if not card_id:
+        return (999, 999, "")
+    try:
+        parts = card_id.split("-")
+        if len(parts) == 3:
+            s_major = int(parts[0]) if parts[0].isdigit() else 99
+            s_minor = int(parts[1]) if parts[1].isdigit() else 99
+            num = int(parts[2]) if parts[2].isdigit() else 999
+            # 因為銀河是 2-2，星塵是 1-x，所以 major/minor 反向或配合 series rank
+            return (s_major, s_minor, num)
+        elif len(parts) == 2:
+            s_num = int(parts[0]) if parts[0].isdigit() else 99
+            num = int(parts[1]) if parts[1].isdigit() else 999
+            return (s_num, 0, num)
+    except Exception:
+        pass
+    return (999, 999, card_id)
+
+def sort_cards_chronological(cards: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """
+    將卡匣清單依照【發行時間順序 (從最新發行的銀河第2彈開始) ➔ 卡匣編號順序】進行排序。
+    """
+    def sort_key(c: Dict[str, Any]):
+        series = c.get("series", "")
+        series_rank = get_series_order_rank(series)
+        
+        # 解析卡匣編號末尾數字 (001, 002...)
+        cid = c.get("id", "")
+        parts = cid.split("-")
+        card_num = 999
+        if parts and parts[-1].isdigit():
+            try:
+                card_num = int(parts[-1])
+            except Exception:
+                card_num = 999
+        
+        # 輔助：若無編號則按星級由大到小 (6星在前面)
+        star = c.get("star", 5)
+        
+        return (series_rank, card_num, -star, cid)
+
+    return sorted(cards, key=sort_key)
+
+def load_cards() -> List[Dict[str, Any]]:
+    """載入所有卡匣資料 (預設依照最新發行順序排列)"""
     if os.path.exists(CARDS_FILE):
         try:
             with open(CARDS_FILE, "r", encoding="utf-8") as f:
                 data = json.load(f)
                 if data and len(data) > 0:
-                    return data
+                    return sort_cards_chronological(data)
         except Exception as e:
             print(f"Error loading cards file: {e}")
-    save_cards(FULL_MEZASTAR_DATABASE)
-    return FULL_MEZASTAR_DATABASE
+    sorted_db = sort_cards_chronological(FULL_MEZASTAR_DATABASE)
+    save_cards(sorted_db)
+    return sorted_db
 
 def save_cards(cards: List[Dict]) -> bool:
     """儲存卡匣資料至 JSON 檔案"""
