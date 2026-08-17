@@ -11,3 +11,7 @@ venv/
 *.log
 .DS_Store
 Thumbs.db
+
+# 使用者個人資料 - 不隨程式碼更新覆蓋 (由 GitHub API 直接同步)
+data/user_config.json
+.streamlit/secrets.toml
