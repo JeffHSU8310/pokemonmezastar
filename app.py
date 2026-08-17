@@ -362,9 +362,6 @@ components.html("""
 </script>
 """, height=0)
 
-
-""")
-
 def render_type_badge(t_name: str) -> str:
     color = TYPE_COLORS.get(t_name, "#888888")
     return f'<span class="type-badge" style="background-color: {color};">{t_name}</span>'
@@ -375,6 +372,30 @@ def render_types_html(types: List[str]) -> str:
 # 初始化 Session State
 if "owned_ids" not in st.session_state:
     st.session_state.owned_ids = load_user_collection_ids()
+
+# 🚀 程式開啟/伺服器 Reboot 時自動自 GitHub 雲端拉取最新資料 (確保永遠讀取 GitHub 最新存檔)
+if "github_auto_synced" not in st.session_state:
+    st.session_state.github_auto_synced = True
+    auto_token = get_saved_github_token()
+    if not auto_token and hasattr(st, "secrets"):
+        auto_token = st.secrets.get("GITHUB_TOKEN", None)
+    
+    if auto_token:
+        try:
+            # 1. 自動從 GitHub 抓取最新卡匣庫
+            ok_c, content_c, _ = pull_file_from_github_api("data/my_collection.json", token=auto_token)
+            if ok_c and content_c:
+                imp_ok, _, new_ids = import_collection_from_json(content_c, mode="overwrite")
+                if imp_ok:
+                    st.session_state.owned_ids = new_ids
+            # 2. 自動從 GitHub 抓取最新訓練家 ID 與 QR Code
+            ok_t, content_t, _ = pull_file_from_github_api("data/trainers.json", token=auto_token)
+            if ok_t and content_t:
+                parsed_trainers = json.loads(content_t)
+                if isinstance(parsed_trainers, list):
+                    save_trainers(parsed_trainers)
+        except Exception:
+            pass
 
 # 載入卡匣資料
 all_cards = load_cards()
