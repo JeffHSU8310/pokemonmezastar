@@ -176,10 +176,31 @@ st.markdown("""
         gap: 4px !important;
         overflow-x: auto !important;
         white-space: nowrap !important;
+        background-color: #FFFFFF !important;
     }
     .stTabs [data-baseweb="tab"] {
         padding: 6px 10px !important;
         font-size: 0.85rem !important;
+    }
+
+    /* 📌 核心：頂部分頁導覽列固定吸頂 (Sticky Tabs) - 滾輪滾動時永遠固定在最上方 */
+    [data-testid="stTabs"] > div:first-child,
+    .stTabs [data-baseweb="tab-list"],
+    div[data-baseweb="tab-list"] {
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top: 2.875rem !important;
+        z-index: 9999 !important;
+        background-color: #FFFFFF !important;
+        padding-top: 6px !important;
+        padding-bottom: 6px !important;
+        border-bottom: 2px solid #E0E0E0 !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08) !important;
+    }
+
+    /* 確保主容器 overflow 不會阻擋 sticky 吸頂 */
+    .main, section[data-testid="stMain"], .block-container, [data-testid="stMainBlockContainer"] {
+        overflow: visible !important;
     }
 </style>
 """, unsafe_allow_html=True)
