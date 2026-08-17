@@ -579,31 +579,36 @@ with tabs[1]:
             if uploaded_file is not None:
                 try:
                     file_str = uploaded_file.getvalue().decode("utf-8")
-                    if st.button("確認從檔案匯入", type="primary", key="btn_imp_file"):
-                        ok, msg, new_ids = import_collection_from_json(file_str, mode=mode_val)
-                        if ok:
-                            st.session_state.owned_ids = new_ids
-                            st.success(f"✅ {msg}")
+                    # 預先解析預覽
+                    temp_ok, temp_msg, parsed_ids = import_collection_from_json(file_str, mode=mode_val)
+                    if temp_ok:
+                        preview_cards = get_user_cards(parsed_ids)
+                        st.info(f"📋 檔案解析成功！內含 **{len(parsed_ids)}** 張卡匣（成功匹配 **{len(preview_cards)}** 款圖鑑卡匣）")
+                        if st.button("🚀 確認匯入並套用至我的卡庫", type="primary", key="btn_apply_file", use_container_width=True):
+                            st.session_state.owned_ids = parsed_ids
+                            save_user_collection_ids(parsed_ids)
+                            st.success(f"✅ {temp_msg}")
                             st.rerun()
-                        else:
-                            st.error(f"❌ {msg}")
+                    else:
+                        st.error(f"❌ {temp_msg}")
                 except Exception as e:
                     st.error(f"讀取錯誤: {e}")
 
         with imp_col2:
             st.markdown("**方式 2：貼上卡匣分享代碼或編號清單**")
-            code_input = st.text_area("貼上 MEZASTAR 分享代碼或卡匣編號 (支援逗號或換行分隔):", height=100, placeholder="例如: MEZASTAR-V1:... 或 1-002, 1-004, 3-001")
-            if st.button("確認代碼匯入", type="primary", key="btn_imp_code"):
-                if code_input.strip():
-                    ok, msg, new_ids = import_collection_from_share_code(code_input, mode=mode_val)
-                    if ok:
-                        st.session_state.owned_ids = new_ids
-                        st.success(f"✅ {msg}")
+            code_input = st.text_area("貼上 MEZASTAR 分享代碼或卡匣編號 (支援逗號或換行分隔):", height=80, placeholder="例如: MEZASTAR-V1:... 或 1-002, 1-004, 2-2-001", key="input_share_code")
+            if code_input.strip():
+                temp_ok, temp_msg, parsed_ids = import_collection_from_share_code(code_input, mode=mode_val)
+                if temp_ok:
+                    preview_cards = get_user_cards(parsed_ids)
+                    st.info(f"📋 代碼解析成功！包含 **{len(parsed_ids)}** 張卡匣（成功匹配 **{len(preview_cards)}** 款圖鑑卡匣）")
+                    if st.button("🚀 確認代碼匯入並套用", type="primary", key="btn_apply_code", use_container_width=True):
+                        st.session_state.owned_ids = parsed_ids
+                        save_user_collection_ids(parsed_ids)
+                        st.success(f"✅ {temp_msg}")
                         st.rerun()
-                    else:
-                        st.error(f"❌ {msg}")
                 else:
-                    st.warning("請先輸入代碼！")
+                    st.error(f"❌ {temp_msg}")
 
     # GitHub 網頁直接編輯與備份教學抽屜
     with st.expander("💡 如何直接在 GitHub 網頁上修改或儲存卡匣？（圖文教學）", expanded=False):

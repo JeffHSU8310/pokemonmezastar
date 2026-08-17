@@ -46,11 +46,40 @@ def save_user_collection_ids(owned_ids: Set[str]) -> bool:
         return False
 
 def get_user_cards(owned_ids: Set[str] | None = None) -> List[Dict[str, Any]]:
-    """取得使用者目前所持有的所有卡匣完整資訊"""
+    """取得使用者目前所持有的所有卡匣完整資訊 (支援各版本卡匣 ID 智能模糊匹配)"""
     if owned_ids is None:
         owned_ids = load_user_collection_ids()
     all_cards = load_cards()
-    return [card for card in all_cards if card.get("id") in owned_ids]
+    
+    # 建立多維度快速查詢映射
+    id_map = {c.get("id"): c for c in all_cards}
+    
+    # 建立簡短 ID 與尾碼映射 (如 '1-001' 或 '001' 可對應至 '1-1-001')
+    suffix_map: Dict[str, Dict[str, Any]] = {}
+    for c in all_cards:
+        cid = c.get("id", "")
+        parts = cid.split("-")
+        if len(parts) >= 2:
+            suffix_map[f"{parts[0]}-{parts[-1]}"] = c
+            suffix_map[parts[-1]] = c
+    
+    matched_cards: List[Dict[str, Any]] = []
+    seen_card_ids: Set[str] = set()
+
+    for oid in owned_ids:
+        oid_clean = str(oid).strip()
+        if oid_clean in id_map:
+            card = id_map[oid_clean]
+            if card["id"] not in seen_card_ids:
+                matched_cards.append(card)
+                seen_card_ids.add(card["id"])
+        elif oid_clean in suffix_map:
+            card = suffix_map[oid_clean]
+            if card["id"] not in seen_card_ids:
+                matched_cards.append(card)
+                seen_card_ids.add(card["id"])
+                
+    return matched_cards
 
 def toggle_card_ownership(card_id: str, owned_ids: Set[str]) -> Set[str]:
     """切換卡匣擁有狀態並自動存檔"""
