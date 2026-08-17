@@ -183,30 +183,26 @@ st.markdown("""
         font-size: 0.85rem !important;
     }
 
-    /* 📌 核心：頂部分頁導覽列固定吸頂 (Sticky Tabs) - 滾輪滾動時永遠固定在最上方 */
-    [data-testid="stTabs"] > div:first-child,
-    .stTabs [data-baseweb="tab-list"],
-    div[data-baseweb="tab-list"] {
-        position: -webkit-sticky !important;
-        position: sticky !important;
-        top: 2.875rem !important;
-        z-index: 9999 !important;
-        background-color: #FFFFFF !important;
-        padding-top: 6px !important;
-        padding-bottom: 6px !important;
-        border-bottom: 2px solid #E0E0E0 !important;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08) !important;
+    /* 確保 Streamlit 主滾動容器 100% 正常順暢滾動 */
+    section[data-testid="stMain"], .main {
+        overflow-y: auto !important;
     }
 
-    /* 確保主容器 overflow 不會阻擋 sticky 吸頂 */
-    .main, section[data-testid="stMain"], .block-container, [data-testid="stMainBlockContainer"] {
-        overflow: visible !important;
+    /* 📌 頂部分頁導覽列固定吸頂 (Sticky Tabs) */
+    div[data-testid="stTabs"] > div:first-child {
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top: 0px !important;
+        z-index: 999 !important;
+        background-color: #FFFFFF !important;
+        padding: 4px 0 !important;
+        border-bottom: 2px solid #E0E0E0 !important;
     }
 </style>
 """, unsafe_allow_html=True)
 
 # ==============================================================================
-# 🚀 透過 components.html 穿透注入父層 DOM (實現 100% 強制 Fixed 吸頂、雙擊置頂與懸浮按鈕)
+# 🚀 輕量穿透注入 (雙擊頂部回最上面 & 懸浮按鈕，完全不干擾滾輪)
 # ==============================================================================
 import streamlit.components.v1 as components
 
@@ -217,158 +213,86 @@ components.html("""
         const parentDoc = window.parent.document;
         const parentWin = window.parent;
 
-        // 1. 注入懸浮按鈕樣式到父層 head
-        const styleId = "mezastar-btt-style";
+        // 1. 注入懸浮按鈕樣式
+        const styleId = "mezastar-btt-pure-style";
         if (!parentDoc.getElementById(styleId)) {
             const styleEl = parentDoc.createElement("style");
             styleEl.id = styleId;
             styleEl.innerHTML = `
                 header[data-testid="stHeader"] {
                     cursor: pointer !important;
-                    user-select: none !important;
                 }
                 #mezastar-back-to-top {
                     position: fixed !important;
-                    bottom: 28px !important;
-                    right: 28px !important;
-                    width: 50px !important;
-                    height: 50px !important;
+                    bottom: 24px !important;
+                    right: 24px !important;
+                    width: 48px !important;
+                    height: 48px !important;
                     border-radius: 50% !important;
-                    background: rgba(229, 57, 53, 0.95) !important;
+                    background: #E53935 !important;
                     color: #FFFFFF !important;
                     display: flex !important;
                     align-items: center !important;
                     justify-content: center !important;
-                    font-size: 24px !important;
-                    box-shadow: 0 4px 16px rgba(229, 57, 53, 0.45) !important;
+                    font-size: 22px !important;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.25) !important;
                     cursor: pointer !important;
                     z-index: 999999 !important;
-                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
                     user-select: none !important;
                     border: 2px solid #FFFFFF !important;
-                    opacity: 0;
-                    pointer-events: none;
-                    transform: translateY(15px);
+                    transition: transform 0.2s ease !important;
                 }
                 #mezastar-back-to-top:hover {
-                    transform: translateY(-4px) scale(1.1) !important;
-                    background: #D32F2F !important;
-                    box-shadow: 0 6px 22px rgba(229, 57, 53, 0.65) !important;
-                }
-                #mezastar-back-to-top:active {
-                    transform: scale(0.92) !important;
+                    transform: scale(1.1) !important;
                 }
             `;
             parentDoc.head.appendChild(styleEl);
         }
 
-        // 2. 回頂部平滑滾動函式
+        // 2. 平滑回頂部
         function scrollToTopMezastar() {
             parentWin.scrollTo({ top: 0, behavior: "smooth" });
-            const mainSection = parentDoc.querySelector("section.main") || parentDoc.querySelector(".main") || parentDoc.querySelector('[data-testid="stMain"]');
-            if (mainSection) {
-                mainSection.scrollTo({ top: 0, behavior: "smooth" });
-            }
-            if (parentDoc.documentElement) {
-                parentDoc.documentElement.scrollTo({ top: 0, behavior: "smooth" });
-            }
-            if (parentDoc.body) {
-                parentDoc.body.scrollTo({ top: 0, behavior: "smooth" });
+            const mainSec = parentDoc.querySelector("section.main") || parentDoc.querySelector('[data-testid="stMain"]');
+            if (mainSec) {
+                mainSec.scrollTo({ top: 0, behavior: "smooth" });
             }
         }
-        parentWin.scrollToTopMezastar = scrollToTopMezastar;
 
-        // 3. 掛載右下角懸浮回頂按鈕
+        // 3. 掛載懸浮回頂按鈕
         let bttBtn = parentDoc.getElementById("mezastar-back-to-top");
         if (!bttBtn) {
             bttBtn = parentDoc.createElement("div");
             bttBtn.id = "mezastar-back-to-top";
-            bttBtn.title = "點擊回到最上方 (或雙擊頂部空白處)";
+            bttBtn.title = "點擊回到最上方";
             bttBtn.innerHTML = "🔝";
+            bttBtn.onclick = scrollToTopMezastar;
             parentDoc.body.appendChild(bttBtn);
         }
-        bttBtn.onclick = scrollToTopMezastar;
 
-        // 4. 動態 Fixed 吸頂與懸浮按鈕滾動監聽 (100% 絕對固定導覽列)
-        function onPageScroll() {
-            const mainSec = parentDoc.querySelector("section.main") || parentDoc.querySelector(".main") || parentDoc.querySelector('[data-testid="stMain"]');
-            const scrollY = parentWin.scrollY || (parentDoc.documentElement ? parentDoc.documentElement.scrollTop : 0) || (mainSec ? mainSec.scrollTop : 0);
-            
-            // 懸浮按鈕顯示/隱藏
-            if (bttBtn) {
-                if (scrollY > 150) {
-                    bttBtn.style.opacity = "1";
-                    bttBtn.style.pointerEvents = "auto";
-                    bttBtn.style.transform = "translateY(0)";
-                } else {
-                    bttBtn.style.opacity = "0";
-                    bttBtn.style.pointerEvents = "none";
-                    bttBtn.style.transform = "translateY(15px)";
-                }
-            }
-
-            // 📌 核心：動態將 Tab 導覽列設為 Fixed 吸頂
-            const tabsHeader = parentDoc.querySelector('div[data-testid="stTabs"] > div:first-child') || parentDoc.querySelector('[data-testid="stTabsHeader"]');
-            if (tabsHeader) {
-                if (scrollY > 85) {
-                    tabsHeader.style.position = "fixed";
-                    tabsHeader.style.top = "2.875rem";
-                    tabsHeader.style.left = "0";
-                    tabsHeader.style.width = "100%";
-                    tabsHeader.style.zIndex = "99999";
-                    tabsHeader.style.backgroundColor = "#FFFFFF";
-                    tabsHeader.style.boxShadow = "0 4px 12px rgba(0,0,0,0.12)";
-                    tabsHeader.style.padding = "6px 12px 4px 12px";
-                    tabsHeader.style.transition = "box-shadow 0.2s ease";
-                } else {
-                    tabsHeader.style.position = "relative";
-                    tabsHeader.style.top = "0";
-                    tabsHeader.style.left = "auto";
-                    tabsHeader.style.width = "100%";
-                    tabsHeader.style.zIndex = "auto";
-                    tabsHeader.style.backgroundColor = "transparent";
-                    tabsHeader.style.boxShadow = "none";
-                    tabsHeader.style.padding = "0";
-                }
-            }
-        }
-
-        parentWin.addEventListener("scroll", onPageScroll, { passive: true });
-        const mainEl = parentDoc.querySelector("section.main") || parentDoc.querySelector(".main") || parentDoc.querySelector('[data-testid="stMain"]');
-        if (mainEl) {
-            mainEl.addEventListener("scroll", onPageScroll, { passive: true });
-        }
-        onPageScroll();
-
-        // 5. 頂部 Header (打 O 處) 雙擊 (Double Click / Double Tap) 秒回頂部
+        // 4. 頂部 Header 雙擊秒回頂部
         let lastTap = 0;
-        function handleHeaderTap(e) {
+        function onHeaderDoubleTap(e) {
             const now = new Date().getTime();
-            const timesince = now - lastTap;
-            if (timesince < 400 && timesince > 0) {
+            if (now - lastTap < 400 && now - lastTap > 0) {
                 scrollToTopMezastar();
-                if (e && e.preventDefault) e.preventDefault();
             }
             lastTap = now;
         }
 
         const headerEl = parentDoc.querySelector('header[data-testid="stHeader"]');
         if (headerEl) {
-            headerEl.title = "雙擊兩下回到頁面最頂端";
             headerEl.addEventListener("dblclick", scrollToTopMezastar);
-            headerEl.addEventListener("click", handleHeaderTap);
-            headerEl.addEventListener("touchend", handleHeaderTap);
+            headerEl.addEventListener("click", onHeaderDoubleTap);
+            headerEl.addEventListener("touchend", onHeaderDoubleTap);
         }
 
-        // 6. 電腦 Home 鍵快速鍵
+        // 5. 鍵盤 Home 鍵回頂部
         parentWin.addEventListener("keydown", function(e) {
-            if (e.key === "Home") {
-                scrollToTopMezastar();
-            }
+            if (e.key === "Home") scrollToTopMezastar();
         });
 
     } catch (err) {
-        console.warn("Mezastar DOM injector:", err);
+        console.warn(err);
     }
 })();
 </script>
