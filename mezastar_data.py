@@ -30,6 +30,7 @@ ALL_SERIES_LIST: List[str] = [
     "星塵第3彈",
     "星塵第2彈",
     "星塵第1彈",
+    "常規卡匣 (Regular Tags)",
     "特別系列"
 ]
 

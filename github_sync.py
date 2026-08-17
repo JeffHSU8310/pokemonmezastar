@@ -31,6 +31,14 @@ def load_version_info() -> Dict[str, Any]:
         "history": []
     }
 
+def save_version_info(info: Dict[str, Any]) -> None:
+    """儲存版本資訊至 version.json"""
+    try:
+        with open(VERSION_FILE, "w", encoding="utf-8") as f:
+            json.dump(info, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        print(f"Error saving version file: {e}")
+
 def increment_version(current_ver: str, part: str = "patch") -> str:
     """遞增版本號 (major.minor.patch)"""
     parts = current_ver.split(".")
@@ -288,7 +296,7 @@ def get_git_status() -> Dict[str, Any]:
     }
 
 def auto_commit_and_push(change_summary: str = "自動更新卡匣與系統資料", branch: str = "main", github_token: Optional[str] = None) -> Tuple[bool, str]:
-    """相容舊版 auto_commit_and_push 介面"""
+    """相容舊版 auto_commit_and_push 介面，支援本機 Git 與 GitHub API"""
     if github_token:
         # 若有 Token 則透過 API 進行全量同步
         from collection_manager import load_user_collection_ids
@@ -297,12 +305,25 @@ def auto_commit_and_push(change_summary: str = "自動更新卡匣與系統資�
         tr = load_trainers()
         return sync_all_user_data_to_github(owned, tr, github_token, summary=change_summary)
     
-    # 本地備份模式
+    # 嘗試本地 Git 提交與推送
     ver_info = load_version_info()
     new_ver = increment_version(ver_info.get("version", "2.2.0"), "patch")
     now_str = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
     ver_info["version"] = new_ver
     ver_info["last_updated"] = now_str
     save_version_info(ver_info)
+    
+    try:
+        import subprocess
+        subprocess.run(["git", "config", "user.name", "JeffHSU8310"], check=False)
+        subprocess.run(["git", "config", "user.email", "jeffn8310@gmail.com"], check=False)
+        subprocess.run(["git", "add", "."], check=False)
+        subprocess.run(["git", "commit", "-m", f"v{new_ver}: {change_summary}"], capture_output=True, text=True, check=False)
+        push_res = subprocess.run(["git", "push", "origin", branch], capture_output=True, text=True, check=False)
+        if push_res.returncode == 0:
+            return True, f"✅ 成功記錄版次 v{new_ver} 並自動同步推送至 GitHub ({branch}) 分支！"
+    except Exception as e:
+        print(f"Git CLI error: {e}")
+        
     return True, f"已成功記錄版次 v{new_ver} (變更: {change_summary})"
 

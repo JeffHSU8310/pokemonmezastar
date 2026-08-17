@@ -382,9 +382,11 @@ def render_card_detail_content(c: Dict[str, Any]):
     if c.get("image"):
         st.image(c.get("image"), caption=f"官方實體卡匣立繪 • {c.get('name')}", use_container_width=True)
         
+    name_en_str = f"<div style='font-size: 0.9rem; color: #555; font-weight: bold;'>{c.get('name_en')}</div>" if c.get('name_en') and c.get('name_en') != c.get('name') else ""
     render_html(f"""
     <div style="text-align:center; margin: 8px 0 12px 0;">
         <div style="font-weight: 800; font-size: 1.35rem; color:#1A237E;">{c.get('name')}</div>
+        {name_en_str}
         <div style="font-size: 0.85rem; color: #555; margin-top:2px;">
             <b>{c.get('series')}</b> • 官方編號: <code style="font-weight:bold; color:#D32F2F;">{c.get('id')}</code>
         </div>
@@ -722,9 +724,10 @@ with tabs[1]:
             if my_search:
                 k_low = my_search.lower()
                 name_match = k_low in c.get("name", "").lower()
+                name_en_match = k_low in c.get("name_en", "").lower()
                 id_match = k_low in c.get("id", "").lower()
                 move_match = k_low in c.get("move_name", "").lower() or k_low in c.get("move_type", "").lower()
-                if not (name_match or id_match or move_match):
+                if not (name_match or name_en_match or id_match or move_match):
                     continue
             filtered_my_cards.append(c)
 
@@ -775,7 +778,7 @@ with tabs[1]:
                 continue
             if add_keyword:
                 ak_low = add_keyword.lower()
-                if ak_low not in c.get("name", "").lower() and ak_low not in c.get("id", "").lower():
+                if ak_low not in c.get("name", "").lower() and ak_low not in c.get("name_en", "").lower() and ak_low not in c.get("id", "").lower():
                     continue
             cand_to_add.append(c)
             
@@ -1027,11 +1030,12 @@ with tabs[4]:
         if pokedex_search:
             s_low = pokedex_search.lower()
             n_match = s_low in c.get("name", "").lower()
+            n_en_match = s_low in c.get("name_en", "").lower()
             id_match = s_low in c.get("id", "").lower()
             type_match = any(s_low in t.lower() for t in c.get("types", []))
             move_match = s_low in c.get("move_name", "").lower() or s_low in c.get("move_type", "").lower()
             mech_match = any(s_low in m.lower() for m in c.get("special_mechanics", []))
-            if not (n_match or id_match or type_match or move_match or mech_match):
+            if not (n_match or n_en_match or id_match or type_match or move_match or mech_match):
                 continue
         pokedex_cards.append(c)
 
@@ -1107,6 +1111,7 @@ with tabs[4]:
         df_all = pd.DataFrame([{
             "編號": c.get("id"),
             "名稱": c.get("name"),
+            "英文名稱": c.get("name_en", c.get("name")),
             "彈別": c.get("series"),
             "星級": f"{c.get('star')}⭐",
             "能量": c.get("energy", 100),
