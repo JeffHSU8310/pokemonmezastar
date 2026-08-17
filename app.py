@@ -27,7 +27,12 @@ from collection_manager import (
     save_user_collection_ids,
     get_user_cards,
     toggle_card_ownership,
-    get_collection_stats
+    get_collection_stats,
+    export_collection_json,
+    export_collection_share_code,
+    export_collection_csv,
+    import_collection_from_json,
+    import_collection_from_share_code
 )
 from scraper import add_custom_card, fetch_online_pokemon_metadata, batch_import_cards
 from github_sync import (
@@ -513,14 +518,80 @@ with tabs[1]:
 
     with col_sync_btn2:
         # JSON 匯出下載按鈕
-        collection_json_str = json.dumps(sorted(list(st.session_state.owned_ids)), ensure_ascii=False, indent=2)
+        collection_json_str = export_collection_json(st.session_state.owned_ids)
         st.download_button(
             label="📥 下載/備份卡匣 JSON 檔",
             data=collection_json_str,
-            file_name="my_collection.json",
+            file_name="my_mezastar_collection.json",
             mime="application/json",
             use_container_width=True
         )
+
+    # 匯出與分享抽屜
+    with st.expander("📤 匯出我的卡匣庫 (支援 JSON 備份 / LINE 複製代碼 / CSV 試算表)", expanded=False):
+        export_tab1, export_tab2, export_tab3 = st.tabs(["💬 複製 LINE/訊息分享代碼", "📊 下載 CSV (Excel 試算表)", "📄 完整 JSON 備份檔"])
+        
+        with export_tab1:
+            share_code = export_collection_share_code(st.session_state.owned_ids)
+            st.text_area("📋 卡匣分享代碼 (可直接複製並透過 LINE / 訊息傳送給朋友或在其他手機貼上匯入):", value=share_code, height=90)
+            st.caption(f"💡 此代碼包含您目前收藏的 {len(st.session_state.owned_ids)} 張卡匣。")
+            
+        with export_tab2:
+            csv_data = export_collection_csv(st.session_state.owned_ids)
+            st.download_button(
+                label="📊 下載卡匣清單 CSV 檔 (可在 Excel / Google 試算表開啟)",
+                data=csv_data.encode('utf-8-sig'),
+                file_name="mezastar_my_collection.csv",
+                mime="text/csv",
+                use_container_width=True
+            )
+            
+        with export_tab3:
+            st.download_button(
+                label="📄 下載完整結構化 JSON 備份檔",
+                data=export_collection_json(st.session_state.owned_ids),
+                file_name="my_mezastar_backup.json",
+                mime="application/json",
+                use_container_width=True
+            )
+
+    # 匯入與還原抽屜
+    with st.expander("📥 匯入與還原卡匣 (支援上傳 JSON 檔案或直接貼上代碼)", expanded=False):
+        import_mode = st.radio("匯入模式:", ["合併加入 (保留現有卡匣並加入新卡匣)", "完全覆蓋 (以此清單取代現有卡匣)"], horizontal=True)
+        mode_val = "merge" if "合併" in import_mode else "overwrite"
+        
+        imp_col1, imp_col2 = st.columns(2)
+        with imp_col1:
+            st.markdown("**方式 1：上傳 JSON 備份檔**")
+            uploaded_file = st.file_uploader("選擇 my_collection.json 檔案:", type=["json"], key="uploader_json")
+            if uploaded_file is not None:
+                try:
+                    file_str = uploaded_file.getvalue().decode("utf-8")
+                    if st.button("確認從檔案匯入", type="primary", key="btn_imp_file"):
+                        ok, msg, new_ids = import_collection_from_json(file_str, mode=mode_val)
+                        if ok:
+                            st.session_state.owned_ids = new_ids
+                            st.success(f"✅ {msg}")
+                            st.rerun()
+                        else:
+                            st.error(f"❌ {msg}")
+                except Exception as e:
+                    st.error(f"讀取錯誤: {e}")
+
+        with imp_col2:
+            st.markdown("**方式 2：貼上卡匣分享代碼或編號清單**")
+            code_input = st.text_area("貼上 MEZASTAR 分享代碼或卡匣編號 (支援逗號或換行分隔):", height=100, placeholder="例如: MEZASTAR-V1:... 或 1-002, 1-004, 3-001")
+            if st.button("確認代碼匯入", type="primary", key="btn_imp_code"):
+                if code_input.strip():
+                    ok, msg, new_ids = import_collection_from_share_code(code_input, mode=mode_val)
+                    if ok:
+                        st.session_state.owned_ids = new_ids
+                        st.success(f"✅ {msg}")
+                        st.rerun()
+                    else:
+                        st.error(f"❌ {msg}")
+                else:
+                    st.warning("請先輸入代碼！")
 
     # GitHub 網頁直接編輯與備份教學抽屜
     with st.expander("💡 如何直接在 GitHub 網頁上修改或儲存卡匣？（圖文教學）", expanded=False):
@@ -543,19 +614,6 @@ with tabs[1]:
         4. 點擊右上角綠色按鈕 **「Commit changes...」** ➔ 再次點擊 **「Commit changes」**。
         5. 完成！回到手機或瀏覽器重新整理 Streamlit 網頁，系統就會自動載入您在 GitHub 上儲存的最新卡匣清單！
         """)
-
-    with st.expander("📤 匯入/恢復卡匣 JSON 備份檔", expanded=False):
-        uploaded_file = st.file_uploader("上傳先前下載的 my_collection.json 檔案:", type=["json"])
-        if uploaded_file is not None:
-            try:
-                imported_ids = set(json.load(uploaded_file))
-                if st.button(f"確認匯入 {len(imported_ids)} 張卡匣", type="primary"):
-                    st.session_state.owned_ids = imported_ids
-                    save_user_collection_ids(st.session_state.owned_ids)
-                    st.success(f"✅ 成功匯入 {len(imported_ids)} 張卡匣！")
-                    st.rerun()
-            except Exception as e:
-                st.error(f"檔案格式錯誤: {e}")
 
     # 取得使用者目前擁有的卡匣
     my_owned_cards = [c for c in all_cards if c.get("id") in st.session_state.owned_ids]

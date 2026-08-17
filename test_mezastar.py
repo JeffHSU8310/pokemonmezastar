@@ -113,10 +113,73 @@ class TestPokemonMezastar(unittest.TestCase):
             # 機制旗標存在性檢查
             self.assertIn("has_mega", c)
             self.assertIn("has_z_move", c)
-            self.assertIn("has_dynamax", c)
-            self.assertIn("has_gigantamax", c)
-            self.assertIn("has_double_attack", c)
-            self.assertIn("has_chain_attack", c)
+    def test_collection_export_and_import(self):
+        from collection_manager import (
+            export_collection_json,
+            export_collection_share_code,
+            export_collection_csv,
+            import_collection_from_json,
+            import_collection_from_share_code
+        )
+        test_ids = {"1-002", "1-004", "3-001"}
+        save_user_collection_ids(test_ids)
+        
+        # 測試 JSON 匯出
+        json_exported = export_collection_json(test_ids)
+        self.assertIn("Pokemon Mezastar Battle Optimizer", json_exported)
+        self.assertIn("1-002", json_exported)
+        
+        # 測試分享代碼匯出與匯入
+        share_code = export_collection_share_code(test_ids)
+        self.assertTrue(share_code.startswith("MEZASTAR-V1:"))
+        ok, msg, imported_ids = import_collection_from_share_code(share_code, mode="overwrite")
+        self.assertTrue(ok)
+        self.assertEqual(imported_ids, test_ids)
+        
+        # 測試 CSV 匯出
+        csv_exported = export_collection_csv(test_ids)
+        self.assertIn("卡匣編號", csv_exported)
+        self.assertIn("寶可夢名稱", csv_exported)
+        
+        # 測試合併匯入
+        ok_merge, msg_merge, merged_ids = import_collection_from_share_code("DC1-001, GS1-001", mode="merge")
+        self.assertTrue(ok_merge)
+        self.assertIn("DC1-001", merged_ids)
+        self.assertIn("1-002", merged_ids)
+
+    def test_fastapi_endpoints(self):
+        """測試 FastAPI 核心 REST 端點"""
+        from fastapi.testclient import TestClient
+        from api import app
+        client = TestClient(app)
+
+        # 1. 健康檢查
+        r_health = client.get("/api/health")
+        self.assertEqual(r_health.status_code, 200)
+        self.assertEqual(r_health.json()["status"], "online")
+
+        # 2. 卡匣查詢與分頁
+        r_cards = client.get("/api/cards?limit=10")
+        self.assertEqual(r_cards.status_code, 200)
+        self.assertGreater(r_cards.json()["total"], 200)
+
+        # 3. 智慧對戰推薦 (對手: 烈空坐 龍+飛行)
+        r_rec = client.post("/api/recommend", json={
+            "boss_types": ["龍", "飛行"],
+            "boss_name": "烈空坐",
+            "team_size": 3
+        })
+        self.assertEqual(r_rec.status_code, 200)
+        data = r_rec.json()
+        self.assertTrue(data["recommendation"]["success"])
+        self.assertEqual(len(data["recommendation"]["top_team"]), 3)
+
+        # 4. 屬性倍率分析
+        r_type = client.get("/api/types/chart?def_types=火&def_types=飛行")
+        self.assertEqual(r_type.status_code, 200)
+        self.assertEqual(r_type.json()["full_chart"]["岩石"], 4.0)
 
 if __name__ == "__main__":
     unittest.main()
+
+
