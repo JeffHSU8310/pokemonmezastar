@@ -1791,19 +1791,19 @@
     "name": "蒂蕾喵",
     "series": "銀河第2彈",
     "star": 4,
-    "energy": 94,
+    "energy": 84,
     "types": [
       "草"
     ],
-    "hp": 130,
-    "atk": 100,
-    "def": 85,
-    "sp_atk": 100,
-    "sp_def": 85,
-    "spd": 95,
+    "hp": 103,
+    "atk": 72,
+    "def": 57,
+    "sp_atk": 55,
+    "sp_def": 55,
+    "spd": 74,
     "move_name": "魔法葉",
     "move_type": "草",
-    "move_power": 105,
+    "move_power": 60,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -1832,9 +1832,19 @@
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/cb326b1db7492ad8751c8debe421c4a6cd1e9dbb0686c311194855f0f288485c.png",
     "name_en": "Floragato",
-    "move_category": "物理",
-    "move_accuracy": 100,
-    "move_damage": 10500
+    "move_category": "特殊",
+    "move_accuracy": "必中",
+    "move_damage": 3300,
+    "moves": [
+      {
+        "name": "魔法葉",
+        "type": "草",
+        "category": "特殊",
+        "power": 60,
+        "accuracy": "必中",
+        "damage": 3300
+      }
+    ]
   },
   {
     "id": "2-2-027",
@@ -1910,19 +1920,19 @@
     "name": "炙燙鱷",
     "series": "銀河第2彈",
     "star": 4,
-    "energy": 94,
+    "energy": 84,
     "types": [
       "火"
     ],
-    "hp": 130,
-    "atk": 100,
-    "def": 85,
-    "sp_atk": 100,
-    "sp_def": 85,
-    "spd": 95,
-    "move_name": "蓄能焰襲",
+    "hp": 120,
+    "atk": 51,
+    "def": 70,
+    "sp_atk": 80,
+    "sp_def": 51,
+    "spd": 46,
+    "move_name": "燒盡",
     "move_type": "火",
-    "move_power": 105,
+    "move_power": 60,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -1951,9 +1961,19 @@
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/923887b8ce4e590f09cad59402dfb638b2ccfd9be32a9e29f4b3da13999e5ff6.png",
     "name_en": "Crocalor",
-    "move_category": "物理",
+    "move_category": "特殊",
     "move_accuracy": 100,
-    "move_damage": 10500
+    "move_damage": 4800,
+    "moves": [
+      {
+        "name": "燒盡",
+        "type": "火",
+        "category": "特殊",
+        "power": 60,
+        "accuracy": 100,
+        "damage": 4800
+      }
+    ]
   },
   {
     "id": "2-2-029",
@@ -2029,19 +2049,19 @@
     "name": "湧躍鴨",
     "series": "銀河第2彈",
     "star": 4,
-    "energy": 94,
+    "energy": 84,
     "types": [
       "水"
     ],
-    "hp": 130,
-    "atk": 100,
-    "def": 85,
-    "sp_atk": 100,
-    "sp_def": 85,
-    "spd": 95,
-    "move_name": "水流裂破",
+    "hp": 110,
+    "atk": 76,
+    "def": 59,
+    "sp_atk": 59,
+    "sp_def": 55,
+    "spd": 59,
+    "move_name": "水之波動",
     "move_type": "水",
-    "move_power": 105,
+    "move_power": 60,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -2067,9 +2087,19 @@
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/ed3393cffcd8610ad00187cb242805cd3a67d249a2a49709e6ee55d40a8cc9f5.png",
     "name_en": "Quaxwell",
-    "move_category": "物理",
+    "move_category": "特殊",
     "move_accuracy": 100,
-    "move_damage": 10500
+    "move_damage": 3540,
+    "moves": [
+      {
+        "name": "水之波動",
+        "type": "水",
+        "category": "特殊",
+        "power": 60,
+        "accuracy": 100,
+        "damage": 3540
+      }
+    ]
   },
   {
     "id": "2-2-031",
@@ -2192,19 +2222,19 @@
     "name": "青藤蛇",
     "series": "銀河第2彈",
     "star": 4,
-    "energy": 94,
+    "energy": 84,
     "types": [
       "草"
     ],
-    "hp": 130,
-    "atk": 100,
-    "def": 85,
-    "sp_atk": 100,
-    "sp_def": 85,
-    "spd": 95,
-    "move_name": "飛葉快刀",
+    "hp": 102,
+    "atk": 55,
+    "def": 68,
+    "sp_atk": 55,
+    "sp_def": 68,
+    "spd": 74,
+    "move_name": "超級吸取",
     "move_type": "草",
-    "move_power": 95,
+    "move_power": 40,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -2233,9 +2263,19 @@
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/8d4dbd178cd4537c9f58760dd3a929f2efc69dc5e14f5b678a03a123038a50d8.png",
     "name_en": "Servine",
-    "move_category": "物理",
+    "move_category": "特殊",
     "move_accuracy": 100,
-    "move_damage": 9500
+    "move_damage": 2200,
+    "moves": [
+      {
+        "name": "超級吸取",
+        "type": "草",
+        "category": "特殊",
+        "power": 40,
+        "accuracy": 100,
+        "damage": 2200
+      }
+    ]
   },
   {
     "id": "2-2-034",
@@ -2352,20 +2392,20 @@
     "name": "炒炒豬",
     "series": "銀河第2彈",
     "star": 4,
-    "energy": 94,
+    "energy": 86,
     "types": [
       "火",
       "格鬥"
     ],
-    "hp": 130,
-    "atk": 100,
-    "def": 85,
-    "sp_atk": 100,
-    "sp_def": 85,
-    "spd": 95,
+    "hp": 127,
+    "atk": 83,
+    "def": 51,
+    "sp_atk": 63,
+    "sp_def": 51,
+    "spd": 51,
     "move_name": "蓄能焰襲",
     "move_type": "火",
-    "move_power": 95,
+    "move_power": 50,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -2397,7 +2437,17 @@
     "name_en": "Pignite",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 9500
+    "move_damage": 4150,
+    "moves": [
+      {
+        "name": "蓄能焰襲",
+        "type": "火",
+        "category": "物理",
+        "power": 50,
+        "accuracy": 100,
+        "damage": 4150
+      }
+    ]
   },
   {
     "id": "2-2-037",
@@ -2513,19 +2563,19 @@
     "name": "雙刃丸",
     "series": "銀河第2彈",
     "star": 4,
-    "energy": 94,
+    "energy": 84,
     "types": [
       "水"
     ],
-    "hp": 130,
-    "atk": 100,
-    "def": 85,
-    "sp_atk": 100,
-    "sp_def": 85,
-    "spd": 95,
-    "move_name": "貝殼刃",
+    "hp": 115,
+    "atk": 68,
+    "def": 55,
+    "sp_atk": 74,
+    "sp_def": 55,
+    "spd": 55,
+    "move_name": "水之波動",
     "move_type": "水",
-    "move_power": 95,
+    "move_power": 60,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -2551,9 +2601,19 @@
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/6920efefec98ff06eb4e77711576ae10b2433c933c7be1cc655d34c6df9ce07f.png",
     "name_en": "Dewott",
-    "move_category": "物理",
+    "move_category": "特殊",
     "move_accuracy": 100,
-    "move_damage": 9500
+    "move_damage": 4440,
+    "moves": [
+      {
+        "name": "水之波動",
+        "type": "水",
+        "category": "特殊",
+        "power": 60,
+        "accuracy": 100,
+        "damage": 4440
+      }
+    ]
   },
   {
     "id": "2-2-040",
@@ -2664,19 +2724,19 @@
     "name": "蚊香君",
     "series": "銀河第2彈",
     "star": 3,
-    "energy": 68,
+    "energy": 74,
     "types": [
       "水"
     ],
-    "hp": 110,
-    "atk": 75,
-    "def": 70,
-    "sp_atk": 75,
-    "sp_def": 70,
+    "hp": 99,
+    "atk": 55,
+    "def": 55,
+    "sp_atk": 44,
+    "sp_def": 44,
     "spd": 75,
-    "move_name": "水之波動",
+    "move_name": "泡沫光線",
     "move_type": "水",
-    "move_power": 85,
+    "move_power": 65,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -2702,9 +2762,19 @@
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/9814d0d69a4aa7ae4371315f500d000140a0cb00439dbbabb60ea6ae57e9b27b.png",
     "name_en": "Poliwhirl",
-    "move_category": "物理",
+    "move_category": "特殊",
     "move_accuracy": 100,
-    "move_damage": 6375
+    "move_damage": 2860,
+    "moves": [
+      {
+        "name": "泡沫光線",
+        "type": "水",
+        "category": "特殊",
+        "power": 65,
+        "accuracy": 100,
+        "damage": 2860
+      }
+    ]
   },
   {
     "id": "2-2-043",
@@ -2924,19 +2994,19 @@
     "name": "麻麻鰻",
     "series": "銀河第2彈",
     "star": 3,
-    "energy": 68,
+    "energy": 82,
     "types": [
       "電"
     ],
-    "hp": 110,
-    "atk": 75,
-    "def": 70,
-    "sp_atk": 75,
-    "sp_def": 70,
-    "spd": 75,
-    "move_name": "電光",
+    "hp": 104,
+    "atk": 74,
+    "def": 62,
+    "sp_atk": 66,
+    "sp_def": 62,
+    "spd": 37,
+    "move_name": "電擊波",
     "move_type": "電",
-    "move_power": 85,
+    "move_power": 60,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -2960,9 +3030,19 @@
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/2b388cd80f363cce12ff938cdfc799673569af904f3bf13cab57874e31d931bd.png",
     "name_en": "Eelektrik",
-    "move_category": "物理",
-    "move_accuracy": 100,
-    "move_damage": 6375
+    "move_category": "特殊",
+    "move_accuracy": "必中",
+    "move_damage": 3960,
+    "moves": [
+      {
+        "name": "電擊波",
+        "type": "電",
+        "category": "特殊",
+        "power": 60,
+        "accuracy": "必中",
+        "damage": 3960
+      }
+    ]
   },
   {
     "id": "2-2-048",
@@ -3073,20 +3153,20 @@
     "name": "奇魯莉安",
     "series": "銀河第2彈",
     "star": 3,
-    "energy": 68,
+    "energy": 60,
     "types": [
       "超能力",
       "妖精"
     ],
-    "hp": 110,
-    "atk": 75,
-    "def": 70,
-    "sp_atk": 75,
-    "sp_def": 70,
-    "spd": 75,
-    "move_name": "魔法葉",
-    "move_type": "草",
-    "move_power": 85,
+    "hp": 82,
+    "atk": 33,
+    "def": 33,
+    "sp_atk": 58,
+    "sp_def": 50,
+    "spd": 46,
+    "move_name": "幻象光線",
+    "move_type": "超能力",
+    "move_power": 65,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -3113,9 +3193,19 @@
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/5e7845d8a83753efd5557a0fa5f4609986b91a4716599ed713d832aec8ab86ff.png",
     "name_en": "Kirlia",
-    "move_category": "物理",
+    "move_category": "特殊",
     "move_accuracy": 100,
-    "move_damage": 6375
+    "move_damage": 3770,
+    "moves": [
+      {
+        "name": "幻象光線",
+        "type": "超能力",
+        "category": "特殊",
+        "power": 65,
+        "accuracy": 100,
+        "damage": 3770
+      }
+    ]
   },
   {
     "id": "2-2-051",
@@ -3293,20 +3383,20 @@
     "name": "車輪毬",
     "series": "銀河第2彈",
     "star": 3,
-    "energy": 68,
+    "energy": 76,
     "types": [
       "蟲",
       "毒"
     ],
-    "hp": 110,
-    "atk": 75,
-    "def": 70,
-    "sp_atk": 75,
-    "sp_def": 70,
-    "spd": 75,
-    "move_name": "毒尾",
-    "move_type": "毒",
-    "move_power": 85,
+    "hp": 85,
+    "atk": 51,
+    "def": 88,
+    "sp_atk": 38,
+    "sp_def": 71,
+    "spd": 44,
+    "move_name": "蟲咬",
+    "move_type": "蟲",
+    "move_power": 60,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -3337,7 +3427,17 @@
     "name_en": "Whirlipede",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 6375
+    "move_damage": 3060,
+    "moves": [
+      {
+        "name": "蟲咬",
+        "type": "蟲",
+        "category": "物理",
+        "power": 60,
+        "accuracy": 100,
+        "damage": 3060
+      }
+    ]
   },
   {
     "id": "2-2-055",
@@ -3549,20 +3649,20 @@
     "name": "海魔獅",
     "series": "銀河第2彈",
     "star": 2,
-    "energy": 47,
+    "energy": 82,
     "types": [
       "冰",
       "水"
     ],
-    "hp": 90,
-    "atk": 65,
-    "def": 60,
-    "sp_atk": 60,
-    "sp_def": 60,
-    "spd": 65,
-    "move_name": "極光束",
+    "hp": 124,
+    "atk": 54,
+    "def": 62,
+    "sp_atk": 66,
+    "sp_def": 62,
+    "spd": 41,
+    "move_name": "冰凍之風",
     "move_type": "冰",
-    "move_power": 85,
+    "move_power": 55,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -3588,9 +3688,19 @@
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/fc287a0a1826f2c16747e0602d5a3eb2e28e7d525a28bdac80c1d8370128ab43.png",
     "name_en": "Sealeo",
-    "move_category": "物理",
-    "move_accuracy": 100,
-    "move_damage": 5525
+    "move_category": "特殊",
+    "move_accuracy": 95,
+    "move_damage": 3630,
+    "moves": [
+      {
+        "name": "冰凍之風",
+        "type": "冰",
+        "category": "特殊",
+        "power": 55,
+        "accuracy": 95,
+        "damage": 3630
+      }
+    ]
   },
   {
     "id": "2-2-060",
@@ -3706,20 +3816,20 @@
     "name": "毒薔薇",
     "series": "銀河第2彈",
     "star": 2,
-    "energy": 47,
+    "energy": 76,
     "types": [
       "草",
       "毒"
     ],
-    "hp": 90,
-    "atk": 65,
-    "def": 60,
-    "sp_atk": 60,
-    "sp_def": 60,
-    "spd": 65,
+    "hp": 88,
+    "atk": 51,
+    "def": 40,
+    "sp_atk": 83,
+    "sp_def": 67,
+    "spd": 55,
     "move_name": "超級吸取",
     "move_type": "草",
-    "move_power": 85,
+    "move_power": 40,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -3748,9 +3858,19 @@
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/8834fd00c604d5fa6e476f40588fbe1ba8bb4deeae8409c7ef57ad5a2852005e.png",
     "name_en": "Roselia",
-    "move_category": "物理",
+    "move_category": "特殊",
     "move_accuracy": 100,
-    "move_damage": 5525
+    "move_damage": 3320,
+    "moves": [
+      {
+        "name": "超級吸取",
+        "type": "草",
+        "category": "特殊",
+        "power": 40,
+        "accuracy": 100,
+        "damage": 3320
+      }
+    ]
   },
   {
     "id": "2-2-063",
@@ -3971,19 +4091,19 @@
     "name": "電擊獸",
     "series": "銀河第2彈",
     "star": 1,
-    "energy": 35,
+    "energy": 96,
     "types": [
       "電"
     ],
-    "hp": 75,
-    "atk": 55,
-    "def": 50,
-    "sp_atk": 50,
-    "sp_def": 50,
-    "spd": 60,
-    "move_name": "雷電拳",
+    "hp": 104,
+    "atk": 73,
+    "def": 51,
+    "sp_atk": 82,
+    "sp_def": 74,
+    "spd": 91,
+    "move_name": "電擊波",
     "move_type": "電",
-    "move_power": 95,
+    "move_power": 60,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -4007,9 +4127,19 @@
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/b1e157f09797ce763031b8cfdd4275791a0af29d6512db042b68da1e884baa2e.png",
     "name_en": "Electabuzz",
-    "move_category": "物理",
-    "move_accuracy": 100,
-    "move_damage": 5225
+    "move_category": "特殊",
+    "move_accuracy": "必中",
+    "move_damage": 4920,
+    "moves": [
+      {
+        "name": "電擊波",
+        "type": "電",
+        "category": "特殊",
+        "power": 60,
+        "accuracy": "必中",
+        "damage": 4920
+      }
+    ]
   },
   {
     "id": "2-2-068",
@@ -4127,19 +4257,19 @@
     "name": "喵頭目",
     "series": "銀河第2彈",
     "star": 1,
-    "energy": 35,
+    "energy": 82,
     "types": [
       "鋼"
     ],
-    "hp": 75,
-    "atk": 55,
-    "def": 50,
-    "sp_atk": 50,
+    "hp": 101,
+    "atk": 88,
+    "def": 81,
+    "sp_atk": 43,
     "sp_def": 50,
-    "spd": 60,
+    "spd": 43,
     "move_name": "鐵頭",
     "move_type": "鋼",
-    "move_power": 115,
+    "move_power": 80,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -4176,7 +4306,17 @@
     "name_en": "Perrserker",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 6325
+    "move_damage": 7040,
+    "moves": [
+      {
+        "name": "鐵頭",
+        "type": "鋼",
+        "category": "物理",
+        "power": 80,
+        "accuracy": 100,
+        "damage": 7040
+      }
+    ]
   },
   {
     "id": "2-1-001",
@@ -6226,19 +6366,19 @@
     "name": "啪咚猴",
     "series": "銀河第1彈",
     "star": 4,
-    "energy": 94,
+    "energy": 84,
     "types": [
-      "一般"
+      "草"
     ],
-    "hp": 130,
-    "atk": 100,
-    "def": 85,
-    "sp_atk": 100,
-    "sp_def": 85,
-    "spd": 95,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 170,
+    "hp": 108,
+    "atk": 74,
+    "def": 62,
+    "sp_atk": 50,
+    "sp_def": 54,
+    "spd": 70,
+    "move_name": "飛葉快刀",
+    "move_type": "草",
+    "move_power": 55,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -6252,17 +6392,34 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "火 (2.0x)",
+      "冰 (2.0x)",
+      "毒 (2.0x)",
+      "飛行 (2.0x)",
+      "蟲 (2.0x)"
     ],
-    "resistances": [],
-    "immunities": [
-      "幽靈 (0.0x)"
+    "resistances": [
+      "水 (0.5x)",
+      "草 (0.5x)",
+      "電 (0.5x)",
+      "地面 (0.5x)"
     ],
+    "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/abcbe3133092234dbdf79703c552a32f9c1dcb8c09b0a6eaa5d30d4d0e4b817d.png",
     "name_en": "Thwackey",
     "move_category": "物理",
-    "move_accuracy": 100,
-    "move_damage": 17000
+    "move_accuracy": 95,
+    "move_damage": 4070,
+    "moves": [
+      {
+        "name": "飛葉快刀",
+        "type": "草",
+        "category": "物理",
+        "power": 55,
+        "accuracy": 95,
+        "damage": 4070
+      }
+    ]
   },
   {
     "id": "2-1-034",
@@ -6374,19 +6531,19 @@
     "name": "騰蹴小將",
     "series": "銀河第1彈",
     "star": 4,
-    "energy": 94,
+    "energy": 84,
     "types": [
-      "一般"
+      "火"
     ],
-    "hp": 130,
-    "atk": 100,
-    "def": 85,
-    "sp_atk": 100,
-    "sp_def": 85,
-    "spd": 95,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 170,
+    "hp": 104,
+    "atk": 75,
+    "def": 54,
+    "sp_atk": 50,
+    "sp_def": 54,
+    "spd": 82,
+    "move_name": "蓄能焰襲",
+    "move_type": "火",
+    "move_power": 50,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -6400,17 +6557,34 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "水 (2.0x)",
+      "地面 (2.0x)",
+      "岩石 (2.0x)"
     ],
-    "resistances": [],
-    "immunities": [
-      "幽靈 (0.0x)"
+    "resistances": [
+      "火 (0.5x)",
+      "草 (0.5x)",
+      "冰 (0.5x)",
+      "蟲 (0.5x)",
+      "鋼 (0.5x)",
+      "妖精 (0.5x)"
     ],
+    "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/205f159158330c19bc4fe092e8fdc79ba617216802fa94f443aacd1d1c1b62f6.png",
     "name_en": "Raboot",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 17000
+    "move_damage": 3750,
+    "moves": [
+      {
+        "name": "蓄能焰襲",
+        "type": "火",
+        "category": "物理",
+        "power": 50,
+        "accuracy": 100,
+        "damage": 3750
+      }
+    ]
   },
   {
     "id": "2-1-037",
@@ -6522,19 +6696,19 @@
     "name": "變澀蜥",
     "series": "銀河第1彈",
     "star": 4,
-    "energy": 94,
+    "energy": 84,
     "types": [
-      "一般"
+      "水"
     ],
-    "hp": 130,
-    "atk": 100,
-    "def": 85,
-    "sp_atk": 100,
-    "sp_def": 85,
-    "spd": 95,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 170,
+    "hp": 104,
+    "atk": 54,
+    "def": 50,
+    "sp_atk": 82,
+    "sp_def": 50,
+    "spd": 78,
+    "move_name": "水之波動",
+    "move_type": "水",
+    "move_power": 60,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -6548,17 +6722,31 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "草 (2.0x)",
+      "電 (2.0x)"
     ],
-    "resistances": [],
-    "immunities": [
-      "幽靈 (0.0x)"
+    "resistances": [
+      "火 (0.5x)",
+      "水 (0.5x)",
+      "冰 (0.5x)",
+      "鋼 (0.5x)"
     ],
+    "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/e043e26d0f666e64a164656fe671cf7cbdd12e0f61e38dd2fbef05a58dd59e36.png",
     "name_en": "Drizzile",
-    "move_category": "物理",
+    "move_category": "特殊",
     "move_accuracy": 100,
-    "move_damage": 17000
+    "move_damage": 4920,
+    "moves": [
+      {
+        "name": "水之波動",
+        "type": "水",
+        "category": "特殊",
+        "power": 60,
+        "accuracy": 100,
+        "damage": 4920
+      }
+    ]
   },
   {
     "id": "2-1-040",
@@ -6624,19 +6812,20 @@
     "name": "雪笠怪",
     "series": "銀河第1彈",
     "star": 3,
-    "energy": 68,
+    "energy": 66,
     "types": [
-      "一般"
+      "草",
+      "冰"
     ],
-    "hp": 110,
-    "atk": 75,
-    "def": 70,
-    "sp_atk": 75,
-    "sp_def": 70,
-    "spd": 75,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 95,
+    "atk": 53,
+    "def": 44,
+    "sp_atk": 53,
+    "sp_def": 51,
+    "spd": 36,
+    "move_name": "冰礫",
+    "move_type": "冰",
+    "move_power": 40,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -6650,17 +6839,36 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "火 (4.0x)",
+      "格鬥 (2.0x)",
+      "毒 (2.0x)",
+      "飛行 (2.0x)",
+      "蟲 (2.0x)",
+      "岩石 (2.0x)",
+      "鋼 (2.0x)"
     ],
-    "resistances": [],
-    "immunities": [
-      "幽靈 (0.0x)"
+    "resistances": [
+      "水 (0.5x)",
+      "草 (0.5x)",
+      "電 (0.5x)",
+      "地面 (0.5x)"
     ],
+    "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/5a4e94d424e4255c62f8e2b96d9ad0fa9b75e927bc1c8ba2e75c9eeece306f12.png",
     "name_en": "Snover",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 6000
+    "move_damage": 2120,
+    "moves": [
+      {
+        "name": "冰礫",
+        "type": "冰",
+        "category": "物理",
+        "power": 40,
+        "accuracy": 100,
+        "damage": 2120
+      }
+    ]
   },
   {
     "id": "2-1-042",
@@ -6734,17 +6942,18 @@
     "star": 3,
     "energy": 68,
     "types": [
-      "一般"
+      "幽靈",
+      "飛行"
     ],
-    "hp": 110,
-    "atk": 75,
-    "def": 70,
-    "sp_atk": 75,
-    "sp_def": 70,
-    "spd": 75,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 116,
+    "atk": 43,
+    "def": 30,
+    "sp_atk": 50,
+    "sp_def": 38,
+    "spd": 58,
+    "move_name": "驚嚇",
+    "move_type": "幽靈",
+    "move_power": 30,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -6758,17 +6967,37 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "電 (2.0x)",
+      "冰 (2.0x)",
+      "岩石 (2.0x)",
+      "幽靈 (2.0x)",
+      "惡 (2.0x)"
     ],
-    "resistances": [],
+    "resistances": [
+      "草 (0.5x)",
+      "毒 (0.5x)",
+      "蟲 (0.25x)"
+    ],
     "immunities": [
-      "幽靈 (0.0x)"
+      "一般 (0.0x)",
+      "格鬥 (0.0x)",
+      "地面 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/86a36f9666eca15d6cbcc11955c9601c489118037b1b1950d114d0762ec7d551.png",
     "name_en": "Drifloon",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 6000
+    "move_damage": 1290,
+    "moves": [
+      {
+        "name": "驚嚇",
+        "type": "幽靈",
+        "category": "物理",
+        "power": 30,
+        "accuracy": 100,
+        "damage": 1290
+      }
+    ]
   },
   {
     "id": "2-1-044",
@@ -6841,17 +7070,18 @@
     "star": 3,
     "energy": 68,
     "types": [
-      "一般"
+      "一般",
+      "幽靈"
     ],
-    "hp": 110,
-    "atk": 75,
-    "def": 70,
-    "sp_atk": 75,
-    "sp_def": 70,
-    "spd": 75,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 79,
+    "atk": 54,
+    "def": 37,
+    "sp_atk": 74,
+    "sp_def": 37,
+    "spd": 62,
+    "move_name": "影子偷襲",
+    "move_type": "幽靈",
+    "move_power": 40,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -6865,17 +7095,32 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "惡 (2.0x)"
     ],
-    "resistances": [],
+    "resistances": [
+      "毒 (0.5x)",
+      "蟲 (0.5x)"
+    ],
     "immunities": [
+      "一般 (0.0x)",
+      "格鬥 (0.0x)",
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/173bb80f767bc29f8cdcf1cfbc635c0ec75326285a64a9da96d485b7a175cbf8.png",
     "name_en": "Hisuian Zorua",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 6000
+    "move_damage": 2160,
+    "moves": [
+      {
+        "name": "影子偷襲",
+        "type": "幽靈",
+        "category": "物理",
+        "power": 40,
+        "accuracy": 100,
+        "damage": 2160
+      }
+    ]
   },
   {
     "id": "2-1-046",
@@ -6943,19 +7188,20 @@
     "name": "觸手百合",
     "series": "銀河第1彈",
     "star": 3,
-    "energy": 68,
+    "energy": 74,
     "types": [
-      "一般"
+      "岩石",
+      "草"
     ],
-    "hp": 110,
-    "atk": 75,
-    "def": 70,
-    "sp_atk": 75,
-    "sp_def": 70,
-    "spd": 75,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 107,
+    "atk": 39,
+    "def": 69,
+    "sp_atk": 56,
+    "sp_def": 78,
+    "spd": 24,
+    "move_name": "超級吸取",
+    "move_type": "草",
+    "move_power": 40,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -6969,17 +7215,31 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "冰 (2.0x)",
+      "格鬥 (2.0x)",
+      "蟲 (2.0x)",
+      "鋼 (2.0x)"
     ],
-    "resistances": [],
-    "immunities": [
-      "幽靈 (0.0x)"
+    "resistances": [
+      "一般 (0.5x)",
+      "電 (0.5x)"
     ],
+    "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/55ba854558f70a4cc92b4883d0c2fec8dd7abdffa1758aeb04bd2b3555a03930.png",
     "name_en": "Lileep",
-    "move_category": "物理",
+    "move_category": "特殊",
     "move_accuracy": 100,
-    "move_damage": 6000
+    "move_damage": 2240,
+    "moves": [
+      {
+        "name": "超級吸取",
+        "type": "草",
+        "category": "特殊",
+        "power": 40,
+        "accuracy": 100,
+        "damage": 2240
+      }
+    ]
   },
   {
     "id": "2-1-048",
@@ -7146,17 +7406,17 @@
     "star": 3,
     "energy": 68,
     "types": [
-      "一般"
+      "地面"
     ],
-    "hp": 110,
-    "atk": 75,
-    "def": 70,
-    "sp_atk": 75,
-    "sp_def": 70,
-    "spd": 75,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 100,
+    "atk": 74,
+    "def": 37,
+    "sp_atk": 29,
+    "sp_def": 41,
+    "spd": 60,
+    "move_name": "金屬爪",
+    "move_type": "鋼",
+    "move_power": 50,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -7170,17 +7430,32 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "水 (2.0x)",
+      "草 (2.0x)",
+      "冰 (2.0x)"
     ],
-    "resistances": [],
+    "resistances": [
+      "毒 (0.5x)",
+      "岩石 (0.5x)"
+    ],
     "immunities": [
-      "幽靈 (0.0x)"
+      "電 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/3551dd6d5b8128f208dd4841b170f20c1953524ae168366e8672c1d531e670b8.png",
     "name_en": "Drilbur",
     "move_category": "物理",
-    "move_accuracy": 100,
-    "move_damage": 6000
+    "move_accuracy": 95,
+    "move_damage": 3700,
+    "moves": [
+      {
+        "name": "金屬爪",
+        "type": "鋼",
+        "category": "物理",
+        "power": 50,
+        "accuracy": 95,
+        "damage": 3700
+      }
+    ]
   },
   {
     "id": "2-1-052",
@@ -7297,19 +7572,19 @@
     "name": "鴨嘴火獸",
     "series": "銀河第1彈",
     "star": 3,
-    "energy": 68,
+    "energy": 96,
     "types": [
-      "一般"
+      "火"
     ],
-    "hp": 110,
-    "atk": 75,
-    "def": 70,
-    "sp_atk": 75,
-    "sp_def": 70,
-    "spd": 75,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 104,
+    "atk": 82,
+    "def": 51,
+    "sp_atk": 87,
+    "sp_def": 74,
+    "spd": 81,
+    "move_name": "火焰輪",
+    "move_type": "火",
+    "move_power": 60,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -7323,17 +7598,34 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "水 (2.0x)",
+      "地面 (2.0x)",
+      "岩石 (2.0x)"
     ],
-    "resistances": [],
-    "immunities": [
-      "幽靈 (0.0x)"
+    "resistances": [
+      "火 (0.5x)",
+      "草 (0.5x)",
+      "冰 (0.5x)",
+      "蟲 (0.5x)",
+      "鋼 (0.5x)",
+      "妖精 (0.5x)"
     ],
+    "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/9343d48bf1999e1fe33b4317e204acfd1805bf35d87f29e7405fde6d63f6953f.png",
     "name_en": "Magmar",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 6000
+    "move_damage": 4920,
+    "moves": [
+      {
+        "name": "火焰輪",
+        "type": "火",
+        "category": "物理",
+        "power": 60,
+        "accuracy": 100,
+        "damage": 4920
+      }
+    ]
   },
   {
     "id": "2-1-055",
@@ -7400,19 +7692,19 @@
     "name": "卡蒂狗",
     "series": "銀河第1彈",
     "star": 2,
-    "energy": 47,
+    "energy": 74,
     "types": [
-      "一般"
+      "火"
     ],
-    "hp": 90,
-    "atk": 65,
-    "def": 60,
-    "sp_atk": 60,
-    "sp_def": 60,
-    "spd": 65,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 98,
+    "atk": 63,
+    "def": 42,
+    "sp_atk": 63,
+    "sp_def": 47,
+    "spd": 55,
+    "move_name": "火花",
+    "move_type": "火",
+    "move_power": 40,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -7426,17 +7718,34 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "水 (2.0x)",
+      "地面 (2.0x)",
+      "岩石 (2.0x)"
     ],
-    "resistances": [],
-    "immunities": [
-      "幽靈 (0.0x)"
+    "resistances": [
+      "火 (0.5x)",
+      "草 (0.5x)",
+      "冰 (0.5x)",
+      "蟲 (0.5x)",
+      "鋼 (0.5x)",
+      "妖精 (0.5x)"
     ],
+    "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/f4107fc0287fb367e2532881bfab5736f3ddf9b5d6cd81d343b5fa6ddd54381e.png",
     "name_en": "Growlithe",
-    "move_category": "物理",
+    "move_category": "特殊",
     "move_accuracy": 100,
-    "move_damage": 5200
+    "move_damage": 2520,
+    "moves": [
+      {
+        "name": "火花",
+        "type": "火",
+        "category": "特殊",
+        "power": 40,
+        "accuracy": 100,
+        "damage": 2520
+      }
+    ]
   },
   {
     "id": "2-1-057",
@@ -7674,19 +7983,19 @@
     "name": "幼棉棉",
     "series": "銀河第1彈",
     "star": 2,
-    "energy": 47,
+    "energy": 54,
     "types": [
-      "一般"
+      "草"
     ],
-    "hp": 90,
-    "atk": 65,
-    "def": 60,
-    "sp_atk": 60,
-    "sp_def": 60,
-    "spd": 65,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 80,
+    "atk": 36,
+    "def": 51,
+    "sp_atk": 36,
+    "sp_def": 51,
+    "spd": 12,
+    "move_name": "樹葉",
+    "move_type": "草",
+    "move_power": 40,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -7700,17 +8009,34 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "火 (2.0x)",
+      "冰 (2.0x)",
+      "毒 (2.0x)",
+      "飛行 (2.0x)",
+      "蟲 (2.0x)"
     ],
-    "resistances": [],
-    "immunities": [
-      "幽靈 (0.0x)"
+    "resistances": [
+      "水 (0.5x)",
+      "草 (0.5x)",
+      "電 (0.5x)",
+      "地面 (0.5x)"
     ],
+    "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/47ee0fa6dc2b496083a6156e38477137205cb6489321c5f6d545d6b1abeebb78.png",
     "name_en": "Gossifleur",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 5200
+    "move_damage": 1440,
+    "moves": [
+      {
+        "name": "樹葉",
+        "type": "草",
+        "category": "物理",
+        "power": 40,
+        "accuracy": 100,
+        "damage": 1440
+      }
+    ]
   },
   {
     "id": "2-1-062",
@@ -7777,19 +8103,20 @@
     "name": "狃拉",
     "series": "銀河第1彈",
     "star": 2,
-    "energy": 47,
+    "energy": 80,
     "types": [
-      "一般"
+      "惡",
+      "冰"
     ],
-    "hp": 90,
-    "atk": 65,
-    "def": 60,
-    "sp_atk": 60,
-    "sp_def": 60,
-    "spd": 65,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 89,
+    "atk": 77,
+    "def": 46,
+    "sp_atk": 31,
+    "sp_def": 62,
+    "spd": 92,
+    "move_name": "以牙還牙",
+    "move_type": "惡",
+    "move_power": 50,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -7803,17 +8130,36 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "火 (2.0x)",
+      "格鬥 (4.0x)",
+      "蟲 (2.0x)",
+      "岩石 (2.0x)",
+      "鋼 (2.0x)",
+      "妖精 (2.0x)"
     ],
-    "resistances": [],
+    "resistances": [
+      "冰 (0.5x)",
+      "幽靈 (0.5x)",
+      "惡 (0.5x)"
+    ],
     "immunities": [
-      "幽靈 (0.0x)"
+      "超能力 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/2d93c3ed896511e066d76bcb0b2791259014ab08ada5f279bcd2473b50872add.png",
     "name_en": "Sneasel",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 5200
+    "move_damage": 3850,
+    "moves": [
+      {
+        "name": "以牙還牙",
+        "type": "惡",
+        "category": "物理",
+        "power": 50,
+        "accuracy": 100,
+        "damage": 3850
+      }
+    ]
   },
   {
     "id": "2-1-064",
@@ -7926,19 +8272,19 @@
     "name": "尼多娜",
     "series": "銀河第1彈",
     "star": 1,
-    "energy": 35,
+    "energy": 76,
     "types": [
-      "一般"
+      "毒"
     ],
-    "hp": 75,
-    "atk": 55,
-    "def": 50,
-    "sp_atk": 50,
-    "sp_def": 50,
-    "spd": 60,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 110,
+    "atk": 57,
+    "def": 61,
+    "sp_atk": 51,
+    "sp_def": 51,
+    "spd": 52,
+    "move_name": "咬住",
+    "move_type": "惡",
+    "move_power": 60,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -7952,17 +8298,32 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "地面 (2.0x)",
+      "超能力 (2.0x)"
     ],
-    "resistances": [],
-    "immunities": [
-      "幽靈 (0.0x)"
+    "resistances": [
+      "草 (0.5x)",
+      "格鬥 (0.5x)",
+      "毒 (0.5x)",
+      "蟲 (0.5x)",
+      "妖精 (0.5x)"
     ],
+    "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/647ed78cb81663efe10c2871016df3af4b30111e4f7670b72732e0d51b057692.png",
     "name_en": "Nidorina",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 4400
+    "move_damage": 3420,
+    "moves": [
+      {
+        "name": "咬住",
+        "type": "惡",
+        "category": "物理",
+        "power": 60,
+        "accuracy": 100,
+        "damage": 3420
+      }
+    ]
   },
   {
     "id": "2-1-067",
@@ -8075,19 +8436,19 @@
     "name": "尼多力諾",
     "series": "銀河第1彈",
     "star": 1,
-    "energy": 35,
+    "energy": 76,
     "types": [
-      "一般"
+      "毒"
     ],
-    "hp": 75,
-    "atk": 55,
-    "def": 50,
-    "sp_atk": 50,
-    "sp_def": 50,
-    "spd": 60,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 103,
+    "atk": 65,
+    "def": 52,
+    "sp_atk": 51,
+    "sp_def": 51,
+    "spd": 59,
+    "move_name": "二連踢",
+    "move_type": "格鬥",
+    "move_power": 60,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -8101,17 +8462,32 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "地面 (2.0x)",
+      "超能力 (2.0x)"
     ],
-    "resistances": [],
-    "immunities": [
-      "幽靈 (0.0x)"
+    "resistances": [
+      "草 (0.5x)",
+      "格鬥 (0.5x)",
+      "毒 (0.5x)",
+      "蟲 (0.5x)",
+      "妖精 (0.5x)"
     ],
+    "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/2de4cbbc0227f61e8a8338ed77f9ef6369a63e578f543785fa1077304304f617.png",
     "name_en": "Nidorino",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 4400
+    "move_damage": 3900,
+    "moves": [
+      {
+        "name": "二連踢",
+        "type": "格鬥",
+        "category": "物理",
+        "power": 60,
+        "accuracy": 100,
+        "damage": 3900
+      }
+    ]
   },
   {
     "id": "2-1-070",
@@ -10106,19 +10482,19 @@
     "name": "月桂葉",
     "series": "星塵第4彈",
     "star": 4,
-    "energy": 94,
+    "energy": 70,
     "types": [
-      "一般"
+      "草"
     ],
-    "hp": 130,
-    "atk": 100,
-    "def": 85,
-    "sp_atk": 100,
-    "sp_def": 85,
-    "spd": 95,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 170,
+    "hp": 87,
+    "atk": 48,
+    "def": 61,
+    "sp_atk": 49,
+    "sp_def": 61,
+    "spd": 47,
+    "move_name": "魔法葉",
+    "move_type": "草",
+    "move_power": 60,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -10132,17 +10508,34 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "火 (2.0x)",
+      "冰 (2.0x)",
+      "毒 (2.0x)",
+      "飛行 (2.0x)",
+      "蟲 (2.0x)"
     ],
-    "resistances": [],
-    "immunities": [
-      "幽靈 (0.0x)"
+    "resistances": [
+      "水 (0.5x)",
+      "草 (0.5x)",
+      "電 (0.5x)",
+      "地面 (0.5x)"
     ],
+    "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/2d07ad508d8c72c195214f7f694e8f27be8d7f7d15236c5276d5418c78a576dc.png",
     "name_en": "Bayleef",
-    "move_category": "物理",
-    "move_accuracy": 100,
-    "move_damage": 17000
+    "move_category": "特殊",
+    "move_accuracy": "必中",
+    "move_damage": 2940,
+    "moves": [
+      {
+        "name": "魔法葉",
+        "type": "草",
+        "category": "特殊",
+        "power": 60,
+        "accuracy": "必中",
+        "damage": 2940
+      }
+    ]
   },
   {
     "id": "1-4-030",
@@ -10252,19 +10645,19 @@
     "name": "火岩鼠",
     "series": "星塵第4彈",
     "star": 4,
-    "energy": 94,
+    "energy": 70,
     "types": [
-      "一般"
+      "火"
     ],
-    "hp": 130,
-    "atk": 100,
-    "def": 85,
-    "sp_atk": 100,
-    "sp_def": 85,
-    "spd": 95,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 170,
+    "hp": 85,
+    "atk": 49,
+    "def": 45,
+    "sp_atk": 61,
+    "sp_def": 50,
+    "spd": 61,
+    "move_name": "火焰輪",
+    "move_type": "火",
+    "move_power": 60,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -10278,17 +10671,34 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "水 (2.0x)",
+      "地面 (2.0x)",
+      "岩石 (2.0x)"
     ],
-    "resistances": [],
-    "immunities": [
-      "幽靈 (0.0x)"
+    "resistances": [
+      "火 (0.5x)",
+      "草 (0.5x)",
+      "冰 (0.5x)",
+      "蟲 (0.5x)",
+      "鋼 (0.5x)",
+      "妖精 (0.5x)"
     ],
+    "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/28311491e7f8a34709194328bf0adf1d560c9912a5a2b283f0b4e92d625ed12e.png",
     "name_en": "Quilava",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 17000
+    "move_damage": 2940,
+    "moves": [
+      {
+        "name": "火焰輪",
+        "type": "火",
+        "category": "物理",
+        "power": 60,
+        "accuracy": 100,
+        "damage": 2940
+      }
+    ]
   },
   {
     "id": "1-4-033",
@@ -10398,19 +10808,19 @@
     "name": "藍鱷",
     "series": "星塵第4彈",
     "star": 4,
-    "energy": 94,
+    "energy": 70,
     "types": [
-      "一般"
+      "水"
     ],
-    "hp": 130,
-    "atk": 100,
-    "def": 85,
-    "sp_atk": 100,
-    "sp_def": 85,
-    "spd": 95,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 170,
+    "hp": 90,
+    "atk": 61,
+    "def": 61,
+    "sp_atk": 46,
+    "sp_def": 49,
+    "spd": 45,
+    "move_name": "水之波動",
+    "move_type": "水",
+    "move_power": 60,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -10424,17 +10834,31 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "草 (2.0x)",
+      "電 (2.0x)"
     ],
-    "resistances": [],
-    "immunities": [
-      "幽靈 (0.0x)"
+    "resistances": [
+      "火 (0.5x)",
+      "水 (0.5x)",
+      "冰 (0.5x)",
+      "鋼 (0.5x)"
     ],
+    "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/4501ce050ed882866ba9511113cbcf38ae8a5dea32bd53515958da2104eaba8b.png",
     "name_en": "Croconaw",
-    "move_category": "物理",
+    "move_category": "特殊",
     "move_accuracy": 100,
-    "move_damage": 17000
+    "move_damage": 2760,
+    "moves": [
+      {
+        "name": "水之波動",
+        "type": "水",
+        "category": "特殊",
+        "power": 60,
+        "accuracy": 100,
+        "damage": 2760
+      }
+    ]
   },
   {
     "id": "1-4-036",
@@ -10541,19 +10965,20 @@
     "name": "多龍奇",
     "series": "星塵第4彈",
     "star": 4,
-    "energy": 94,
+    "energy": 74,
     "types": [
-      "一般"
+      "龍",
+      "幽靈"
     ],
-    "hp": 130,
-    "atk": 100,
-    "def": 85,
-    "sp_atk": 100,
-    "sp_def": 85,
-    "spd": 95,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 170,
+    "hp": 97,
+    "atk": 64,
+    "def": 42,
+    "sp_atk": 49,
+    "sp_def": 42,
+    "spd": 80,
+    "move_name": "廣域破壞",
+    "move_type": "龍",
+    "move_power": 60,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -10567,17 +10992,39 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "冰 (2.0x)",
+      "幽靈 (2.0x)",
+      "龍 (2.0x)",
+      "惡 (2.0x)",
+      "妖精 (2.0x)"
     ],
-    "resistances": [],
+    "resistances": [
+      "火 (0.5x)",
+      "水 (0.5x)",
+      "草 (0.5x)",
+      "電 (0.5x)",
+      "毒 (0.5x)",
+      "蟲 (0.5x)"
+    ],
     "immunities": [
-      "幽靈 (0.0x)"
+      "一般 (0.0x)",
+      "格鬥 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/c492160394fe793cd4a6edcc68b80e1aee3298ba88805b1d107e0798b946e931.png",
     "name_en": "Drakloak",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 17000
+    "move_damage": 3840,
+    "moves": [
+      {
+        "name": "廣域破壞",
+        "type": "龍",
+        "category": "物理",
+        "power": 60,
+        "accuracy": 100,
+        "damage": 3840
+      }
+    ]
   },
   {
     "id": "1-4-039",
@@ -10751,19 +11198,20 @@
     "name": "老翁龍",
     "series": "星塵第4彈",
     "star": 3,
-    "energy": 68,
+    "energy": 82,
     "types": [
-      "一般"
+      "一般",
+      "龍"
     ],
-    "hp": 110,
-    "atk": 75,
-    "def": 70,
-    "sp_atk": 75,
-    "sp_def": 70,
-    "spd": 75,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 99,
+    "atk": 47,
+    "def": 64,
+    "sp_atk": 99,
+    "sp_def": 68,
+    "spd": 30,
+    "move_name": "龍息",
+    "move_type": "龍",
+    "move_power": 60,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -10777,17 +11225,35 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "冰 (2.0x)",
+      "格鬥 (2.0x)",
+      "龍 (2.0x)",
+      "妖精 (2.0x)"
     ],
-    "resistances": [],
+    "resistances": [
+      "火 (0.5x)",
+      "水 (0.5x)",
+      "草 (0.5x)",
+      "電 (0.5x)"
+    ],
     "immunities": [
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/24a57c9438d0d59175f059de8a55d47055f16ce00843edf300b8e91aadcf7fff.png",
     "name_en": "Drampa",
-    "move_category": "物理",
+    "move_category": "特殊",
     "move_accuracy": 100,
-    "move_damage": 6000
+    "move_damage": 5940,
+    "moves": [
+      {
+        "name": "龍息",
+        "type": "龍",
+        "category": "特殊",
+        "power": 60,
+        "accuracy": 100,
+        "damage": 5940
+      }
+    ]
   },
   {
     "id": "1-4-043",
@@ -10839,19 +11305,19 @@
     "name": "電擊獸",
     "series": "星塵第4彈",
     "star": 3,
-    "energy": 68,
+    "energy": 86,
     "types": [
       "電"
     ],
-    "hp": 110,
-    "atk": 75,
-    "def": 70,
+    "hp": 95,
+    "atk": 66,
+    "def": 47,
     "sp_atk": 75,
-    "sp_def": 70,
-    "spd": 75,
-    "move_name": "雷電拳",
+    "sp_def": 67,
+    "spd": 82,
+    "move_name": "電擊波",
     "move_type": "電",
-    "move_power": 95,
+    "move_power": 60,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -10875,9 +11341,19 @@
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/5ea8db602d888b88a9498ca1fec9f41ba40095cf42b51ff246fc08dd6bcb6c8e.png",
     "name_en": "Electabuzz",
-    "move_category": "物理",
-    "move_accuracy": 100,
-    "move_damage": 7125
+    "move_category": "特殊",
+    "move_accuracy": "必中",
+    "move_damage": 4500,
+    "moves": [
+      {
+        "name": "電擊波",
+        "type": "電",
+        "category": "特殊",
+        "power": 60,
+        "accuracy": "必中",
+        "damage": 4500
+      }
+    ]
   },
   {
     "id": "1-4-045",
@@ -10939,19 +11415,19 @@
     "name": "阿羅拉六尾",
     "series": "星塵第4彈",
     "star": 3,
-    "energy": 68,
+    "energy": 56,
     "types": [
-      "一般"
+      "冰"
     ],
-    "hp": 110,
-    "atk": 75,
-    "def": 70,
-    "sp_atk": 75,
-    "sp_def": 70,
-    "spd": 75,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 73,
+    "atk": 34,
+    "def": 33,
+    "sp_atk": 41,
+    "sp_def": 51,
+    "spd": 51,
+    "move_name": "冰凍之風",
+    "move_type": "冰",
+    "move_power": 55,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -10965,17 +11441,30 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "火 (2.0x)",
+      "格鬥 (2.0x)",
+      "岩石 (2.0x)",
+      "鋼 (2.0x)"
     ],
-    "resistances": [],
-    "immunities": [
-      "幽靈 (0.0x)"
+    "resistances": [
+      "冰 (0.5x)"
     ],
+    "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/b79557f32f9ebe814fd38779b44c23ddda5a41d95950d33c2a7679dce5077a87.png",
     "name_en": "Alolan Vulpix",
-    "move_category": "物理",
-    "move_accuracy": 100,
-    "move_damage": 6000
+    "move_category": "特殊",
+    "move_accuracy": 95,
+    "move_damage": 2255,
+    "moves": [
+      {
+        "name": "冰凍之風",
+        "type": "冰",
+        "category": "特殊",
+        "power": 55,
+        "accuracy": 95,
+        "damage": 2255
+      }
+    ]
   },
   {
     "id": "1-4-047",
@@ -11182,19 +11671,20 @@
     "name": "雙首暴龍",
     "series": "星塵第4彈",
     "star": 3,
-    "energy": 68,
+    "energy": 76,
     "types": [
-      "一般"
+      "惡",
+      "龍"
     ],
-    "hp": 110,
-    "atk": 75,
-    "def": 70,
-    "sp_atk": 75,
-    "sp_def": 70,
-    "spd": 75,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 100,
+    "atk": 67,
+    "def": 56,
+    "sp_atk": 53,
+    "sp_def": 56,
+    "spd": 47,
+    "move_name": "惡意追擊",
+    "move_type": "惡",
+    "move_power": 60,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -11208,17 +11698,38 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "冰 (2.0x)",
+      "格鬥 (2.0x)",
+      "蟲 (2.0x)",
+      "龍 (2.0x)",
+      "妖精 (4.0x)"
     ],
-    "resistances": [],
+    "resistances": [
+      "火 (0.5x)",
+      "水 (0.5x)",
+      "草 (0.5x)",
+      "電 (0.5x)",
+      "幽靈 (0.5x)",
+      "惡 (0.5x)"
+    ],
     "immunities": [
-      "幽靈 (0.0x)"
+      "超能力 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/39ca8b008bb65b02c28c343942ed0aa95a6d6fc9fe6cfe755aa1807619691621.png",
     "name_en": "Zweilous",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 6000
+    "move_damage": 4020,
+    "moves": [
+      {
+        "name": "惡意追擊",
+        "type": "惡",
+        "category": "物理",
+        "power": 60,
+        "accuracy": 100,
+        "damage": 4020
+      }
+    ]
   },
   {
     "id": "1-4-052",
@@ -11333,19 +11844,20 @@
     "name": "心蝙蝠",
     "series": "星塵第4彈",
     "star": 3,
-    "energy": 68,
+    "energy": 76,
     "types": [
-      "一般"
+      "超能力",
+      "飛行"
     ],
-    "hp": 110,
-    "atk": 75,
-    "def": 70,
-    "sp_atk": 75,
-    "sp_def": 70,
-    "spd": 75,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 94,
+    "atk": 46,
+    "def": 44,
+    "sp_atk": 60,
+    "sp_def": 44,
+    "spd": 87,
+    "move_name": "空氣利刃",
+    "move_type": "飛行",
+    "move_power": 60,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -11359,17 +11871,35 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "電 (2.0x)",
+      "冰 (2.0x)",
+      "岩石 (2.0x)",
+      "幽靈 (2.0x)",
+      "惡 (2.0x)"
     ],
-    "resistances": [],
+    "resistances": [
+      "草 (0.5x)",
+      "格鬥 (0.25x)",
+      "超能力 (0.5x)"
+    ],
     "immunities": [
-      "幽靈 (0.0x)"
+      "地面 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/fbe4fbf89520e48fd41f341056b44319e47c1fefd318ee029bdc8305b092f7bd.png",
     "name_en": "Swoobat",
-    "move_category": "物理",
-    "move_accuracy": 100,
-    "move_damage": 6000
+    "move_category": "特殊",
+    "move_accuracy": 95,
+    "move_damage": 3600,
+    "moves": [
+      {
+        "name": "空氣利刃",
+        "type": "飛行",
+        "category": "特殊",
+        "power": 60,
+        "accuracy": 95,
+        "damage": 3600
+      }
+    ]
   },
   {
     "id": "1-4-055",
@@ -11419,19 +11949,19 @@
     "name": "豪力",
     "series": "星塵第4彈",
     "star": 2,
-    "energy": 47,
+    "energy": 72,
     "types": [
-      "一般"
+      "格鬥"
     ],
-    "hp": 90,
-    "atk": 65,
-    "def": 60,
-    "sp_atk": 60,
-    "sp_def": 60,
-    "spd": 65,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 103,
+    "atk": 77,
+    "def": 55,
+    "sp_atk": 41,
+    "sp_def": 48,
+    "spd": 37,
+    "move_name": "借力摔",
+    "move_type": "格鬥",
+    "move_power": 70,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -11445,17 +11975,31 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "飛行 (2.0x)",
+      "超能力 (2.0x)",
+      "妖精 (2.0x)"
     ],
-    "resistances": [],
-    "immunities": [
-      "幽靈 (0.0x)"
+    "resistances": [
+      "蟲 (0.5x)",
+      "岩石 (0.5x)",
+      "惡 (0.5x)"
     ],
+    "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/2e969be4c685efac8766d6a1c03e7f19d5126ab8d232d30c05015fbcb445a189.png",
     "name_en": "Machoke",
     "move_category": "物理",
-    "move_accuracy": 100,
-    "move_damage": 5200
+    "move_accuracy": "必中",
+    "move_damage": 5390,
+    "moves": [
+      {
+        "name": "借力摔",
+        "type": "格鬥",
+        "category": "物理",
+        "power": 70,
+        "accuracy": "必中",
+        "damage": 5390
+      }
+    ]
   },
   {
     "id": "1-4-057",
@@ -11519,19 +12063,20 @@
     "name": "黑暗鴉",
     "series": "星塵第4彈",
     "star": 2,
-    "energy": 47,
+    "energy": 72,
     "types": [
-      "一般"
+      "惡",
+      "飛行"
     ],
-    "hp": 90,
-    "atk": 65,
-    "def": 60,
-    "sp_atk": 60,
-    "sp_def": 60,
-    "spd": 65,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 89,
+    "atk": 66,
+    "def": 35,
+    "sp_atk": 66,
+    "sp_def": 35,
+    "spd": 70,
+    "move_name": "追打",
+    "move_type": "惡",
+    "move_power": 40,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -11545,17 +12090,35 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "電 (2.0x)",
+      "冰 (2.0x)",
+      "岩石 (2.0x)",
+      "妖精 (2.0x)"
     ],
-    "resistances": [],
+    "resistances": [
+      "草 (0.5x)",
+      "幽靈 (0.5x)",
+      "惡 (0.5x)"
+    ],
     "immunities": [
-      "幽靈 (0.0x)"
+      "地面 (0.0x)",
+      "超能力 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/7dbf94f5e5103b3a25cb969ca4b449e61ad060a107ee2e50e774280546d7ec5f.png",
     "name_en": "Murkrow",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 5200
+    "move_damage": 2640,
+    "moves": [
+      {
+        "name": "追打",
+        "type": "惡",
+        "category": "物理",
+        "power": 40,
+        "accuracy": 100,
+        "damage": 2640
+      }
+    ]
   },
   {
     "id": "1-4-059",
@@ -11667,19 +12230,19 @@
     "name": "提布莉姆",
     "series": "星塵第4彈",
     "star": 2,
-    "energy": 47,
+    "energy": 70,
     "types": [
-      "一般"
+      "超能力"
     ],
-    "hp": 90,
-    "atk": 65,
-    "def": 60,
-    "sp_atk": 60,
+    "hp": 91,
+    "atk": 35,
+    "def": 54,
+    "sp_atk": 70,
     "sp_def": 60,
-    "spd": 65,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "spd": 42,
+    "move_name": "念力",
+    "move_type": "超能力",
+    "move_power": 50,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -11693,17 +12256,30 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "蟲 (2.0x)",
+      "幽靈 (2.0x)",
+      "惡 (2.0x)"
     ],
-    "resistances": [],
-    "immunities": [
-      "幽靈 (0.0x)"
+    "resistances": [
+      "格鬥 (0.5x)",
+      "超能力 (0.5x)"
     ],
+    "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/f850551e79ada93c4fe8d4dcd3b5e04d48efdaf308e332d203f2e306c7982839.png",
     "name_en": "Hattrem",
-    "move_category": "物理",
+    "move_category": "特殊",
     "move_accuracy": 100,
-    "move_damage": 5200
+    "move_damage": 3500,
+    "moves": [
+      {
+        "name": "念力",
+        "type": "超能力",
+        "category": "特殊",
+        "power": 50,
+        "accuracy": 100,
+        "damage": 3500
+      }
+    ]
   },
   {
     "id": "1-4-062",
@@ -11814,19 +12390,20 @@
     "name": "長毛豬",
     "series": "星塵第4彈",
     "star": 2,
-    "energy": 47,
+    "energy": 82,
     "types": [
-      "一般"
+      "冰",
+      "地面"
     ],
-    "hp": 90,
-    "atk": 65,
-    "def": 60,
-    "sp_atk": 60,
-    "sp_def": 60,
-    "spd": 65,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 124,
+    "atk": 81,
+    "def": 65,
+    "sp_atk": 50,
+    "sp_def": 50,
+    "spd": 43,
+    "move_name": "冰凍之風",
+    "move_type": "冰",
+    "move_power": 55,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -11840,17 +12417,33 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "火 (2.0x)",
+      "水 (2.0x)",
+      "草 (2.0x)",
+      "格鬥 (2.0x)",
+      "鋼 (2.0x)"
     ],
-    "resistances": [],
+    "resistances": [
+      "毒 (0.5x)"
+    ],
     "immunities": [
-      "幽靈 (0.0x)"
+      "電 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/6cf16a9d7f182d2f939f165983f992e467f90297897f6faee4e65b7d2173f49c.png",
     "name_en": "Piloswine",
-    "move_category": "物理",
-    "move_accuracy": 100,
-    "move_damage": 5200
+    "move_category": "特殊",
+    "move_accuracy": 95,
+    "move_damage": 2750,
+    "moves": [
+      {
+        "name": "冰凍之風",
+        "type": "冰",
+        "category": "特殊",
+        "power": 55,
+        "accuracy": 95,
+        "damage": 2750
+      }
+    ]
   },
   {
     "id": "1-4-065",
@@ -11960,19 +12553,20 @@
     "name": "火箭雀",
     "series": "星塵第4彈",
     "star": 1,
-    "energy": 35,
+    "energy": 68,
     "types": [
-      "一般"
+      "火",
+      "飛行"
     ],
-    "hp": 75,
-    "atk": 55,
-    "def": 50,
-    "sp_atk": 50,
-    "sp_def": 50,
-    "spd": 60,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 90,
+    "atk": 57,
+    "def": 44,
+    "sp_atk": 45,
+    "sp_def": 42,
+    "spd": 65,
+    "move_name": "雜技",
+    "move_type": "飛行",
+    "move_power": 55,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -11986,17 +12580,36 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "水 (2.0x)",
+      "電 (2.0x)",
+      "岩石 (4.0x)"
     ],
-    "resistances": [],
+    "resistances": [
+      "火 (0.5x)",
+      "草 (0.25x)",
+      "格鬥 (0.5x)",
+      "蟲 (0.25x)",
+      "鋼 (0.5x)",
+      "妖精 (0.5x)"
+    ],
     "immunities": [
-      "幽靈 (0.0x)"
+      "地面 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/2117524dbb289ad0cdafd9b873f05ee21927f4c57f19819e5b64f31dcde74d34.png",
     "name_en": "Fletchinder",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 4400
+    "move_damage": 3135,
+    "moves": [
+      {
+        "name": "雜技",
+        "type": "飛行",
+        "category": "物理",
+        "power": 55,
+        "accuracy": 100,
+        "damage": 3135
+      }
+    ]
   },
   {
     "id": "1-4-068",
@@ -13959,19 +14572,20 @@
     "name": "凍脊龍",
     "series": "星塵第3彈",
     "star": 4,
-    "energy": 94,
+    "energy": 98,
     "types": [
-      "一般"
+      "龍",
+      "冰"
     ],
-    "hp": 130,
-    "atk": 100,
-    "def": 85,
-    "sp_atk": 100,
-    "sp_def": 85,
-    "spd": 95,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 170,
+    "hp": 144,
+    "atk": 96,
+    "def": 68,
+    "sp_atk": 48,
+    "sp_def": 67,
+    "spd": 64,
+    "move_name": "冰凍之風",
+    "move_type": "冰",
+    "move_power": 55,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -13985,36 +14599,53 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "格鬥 (2.0x)",
+      "岩石 (2.0x)",
+      "龍 (2.0x)",
+      "鋼 (2.0x)",
+      "妖精 (2.0x)"
     ],
-    "resistances": [],
-    "immunities": [
-      "幽靈 (0.0x)"
+    "resistances": [
+      "水 (0.5x)",
+      "草 (0.5x)",
+      "電 (0.5x)"
     ],
+    "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/702aee715ae22aa76765b733d2b4246824b67282d2e1ac692300e3d190832f02.png",
     "name_en": "Arctibax",
-    "move_category": "物理",
-    "move_accuracy": 100,
-    "move_damage": 17000
+    "move_category": "特殊",
+    "move_accuracy": 95,
+    "move_damage": 2640,
+    "moves": [
+      {
+        "name": "冰凍之風",
+        "type": "冰",
+        "category": "特殊",
+        "power": 55,
+        "accuracy": 95,
+        "damage": 2640
+      }
+    ]
   },
   {
     "id": "1-3-028",
     "name": "布土撥",
     "series": "星塵第3彈",
     "star": 4,
-    "energy": 94,
+    "energy": 86,
     "types": [
-      "一般"
+      "電",
+      "格鬥"
     ],
-    "hp": 130,
-    "atk": 100,
-    "def": 85,
-    "sp_atk": 100,
-    "sp_def": 85,
-    "spd": 95,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 170,
+    "hp": 117,
+    "atk": 78,
+    "def": 44,
+    "sp_atk": 54,
+    "sp_def": 44,
+    "spd": 88,
+    "move_name": "猛推",
+    "move_type": "格鬥",
+    "move_power": 53,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -14028,17 +14659,33 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "地面 (2.0x)",
+      "超能力 (2.0x)",
+      "妖精 (2.0x)"
     ],
-    "resistances": [],
-    "immunities": [
-      "幽靈 (0.0x)"
+    "resistances": [
+      "電 (0.5x)",
+      "蟲 (0.5x)",
+      "岩石 (0.5x)",
+      "惡 (0.5x)",
+      "鋼 (0.5x)"
     ],
+    "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/1169006ade22929c93f4ad5602beee43e233733c3128c5c544afa39198168c61.png",
     "name_en": "Pawmo",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 17000
+    "move_damage": 4134,
+    "moves": [
+      {
+        "name": "猛推",
+        "type": "格鬥",
+        "category": "物理",
+        "power": 53,
+        "accuracy": 100,
+        "damage": 4134
+      }
+    ]
   },
   {
     "id": "1-3-029",
@@ -14088,19 +14735,19 @@
     "name": "森林蜥蜴",
     "series": "星塵第3彈",
     "star": 4,
-    "energy": 94,
+    "energy": 72,
     "types": [
-      "一般"
+      "草"
     ],
-    "hp": 130,
-    "atk": 100,
-    "def": 85,
-    "sp_atk": 100,
-    "sp_def": 85,
-    "spd": 95,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 170,
+    "hp": 82,
+    "atk": 51,
+    "def": 37,
+    "sp_atk": 66,
+    "sp_def": 51,
+    "spd": 73,
+    "move_name": "惡意追擊",
+    "move_type": "惡",
+    "move_power": 60,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -14114,17 +14761,34 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "火 (2.0x)",
+      "冰 (2.0x)",
+      "毒 (2.0x)",
+      "飛行 (2.0x)",
+      "蟲 (2.0x)"
     ],
-    "resistances": [],
-    "immunities": [
-      "幽靈 (0.0x)"
+    "resistances": [
+      "水 (0.5x)",
+      "草 (0.5x)",
+      "電 (0.5x)",
+      "地面 (0.5x)"
     ],
+    "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/d6e3b41b729dcf3c42d792768a82b21755bdecdcad0ca9f1c2e6626ea733d076.png",
     "name_en": "Grovyle",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 17000
+    "move_damage": 3060,
+    "moves": [
+      {
+        "name": "惡意追擊",
+        "type": "惡",
+        "category": "物理",
+        "power": 60,
+        "accuracy": 100,
+        "damage": 3060
+      }
+    ]
   },
   {
     "id": "1-3-031",
@@ -14236,19 +14900,20 @@
     "name": "力壯雞",
     "series": "星塵第3彈",
     "star": 4,
-    "energy": 94,
+    "energy": 72,
     "types": [
-      "一般"
+      "火",
+      "格鬥"
     ],
-    "hp": 130,
-    "atk": 100,
-    "def": 85,
-    "sp_atk": 100,
-    "sp_def": 85,
-    "spd": 95,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 170,
+    "hp": 89,
+    "atk": 66,
+    "def": 48,
+    "sp_atk": 66,
+    "sp_def": 48,
+    "spd": 44,
+    "move_name": "蓄能焰襲",
+    "move_type": "火",
+    "move_power": 50,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -14262,17 +14927,35 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "水 (2.0x)",
+      "地面 (2.0x)",
+      "飛行 (2.0x)",
+      "超能力 (2.0x)"
     ],
-    "resistances": [],
-    "immunities": [
-      "幽靈 (0.0x)"
+    "resistances": [
+      "火 (0.5x)",
+      "草 (0.5x)",
+      "冰 (0.5x)",
+      "蟲 (0.25x)",
+      "惡 (0.5x)",
+      "鋼 (0.5x)"
     ],
+    "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/a97f470fd5b8a51bbbd7d5712823219941ef464cad2c07c7730850be40368be4.png",
     "name_en": "Combusken",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 17000
+    "move_damage": 3300,
+    "moves": [
+      {
+        "name": "蓄能焰襲",
+        "type": "火",
+        "category": "物理",
+        "power": 50,
+        "accuracy": 100,
+        "damage": 3300
+      }
+    ]
   },
   {
     "id": "1-3-034",
@@ -14386,19 +15069,20 @@
     "name": "沼躍魚",
     "series": "星塵第3彈",
     "star": 4,
-    "energy": 94,
+    "energy": 72,
     "types": [
-      "一般"
+      "水",
+      "地面"
     ],
-    "hp": 130,
-    "atk": 100,
-    "def": 85,
-    "sp_atk": 100,
-    "sp_def": 85,
-    "spd": 95,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 170,
+    "hp": 96,
+    "atk": 66,
+    "def": 55,
+    "sp_atk": 48,
+    "sp_def": 55,
+    "spd": 41,
+    "move_name": "泥巴射擊",
+    "move_type": "地面",
+    "move_power": 55,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -14412,17 +15096,32 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "草 (4.0x)"
     ],
-    "resistances": [],
+    "resistances": [
+      "火 (0.5x)",
+      "毒 (0.5x)",
+      "岩石 (0.5x)",
+      "鋼 (0.5x)"
+    ],
     "immunities": [
-      "幽靈 (0.0x)"
+      "電 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/eb727f198b76464db1ef13abdc837ce2852fc0ea037b8fe6203d643d7599197d.png",
     "name_en": "Marshtomp",
-    "move_category": "物理",
-    "move_accuracy": 100,
-    "move_damage": 17000
+    "move_category": "特殊",
+    "move_accuracy": 95,
+    "move_damage": 2640,
+    "moves": [
+      {
+        "name": "泥巴射擊",
+        "type": "地面",
+        "category": "特殊",
+        "power": 55,
+        "accuracy": 95,
+        "damage": 2640
+      }
+    ]
   },
   {
     "id": "1-3-037",
@@ -14533,19 +15232,19 @@
     "name": "鴨嘴火獸",
     "series": "星塵第3彈",
     "star": 4,
-    "energy": 94,
+    "energy": 82,
     "types": [
-      "一般"
+      "火"
     ],
-    "hp": 130,
-    "atk": 100,
-    "def": 85,
-    "sp_atk": 100,
-    "sp_def": 85,
-    "spd": 95,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 170,
+    "hp": 90,
+    "atk": 71,
+    "def": 44,
+    "sp_atk": 75,
+    "sp_def": 64,
+    "spd": 70,
+    "move_name": "火焰輪",
+    "move_type": "火",
+    "move_power": 60,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -14559,17 +15258,34 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "水 (2.0x)",
+      "地面 (2.0x)",
+      "岩石 (2.0x)"
     ],
-    "resistances": [],
-    "immunities": [
-      "幽靈 (0.0x)"
+    "resistances": [
+      "火 (0.5x)",
+      "草 (0.5x)",
+      "冰 (0.5x)",
+      "蟲 (0.5x)",
+      "鋼 (0.5x)",
+      "妖精 (0.5x)"
     ],
+    "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/3fb03c604f71daaf0a1cf652e7f9f7d62694283e75b47d9dfa9bbadc36eafeee.png",
     "name_en": "Magmar",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 17000
+    "move_damage": 4260,
+    "moves": [
+      {
+        "name": "火焰輪",
+        "type": "火",
+        "category": "物理",
+        "power": 60,
+        "accuracy": 100,
+        "damage": 4260
+      }
+    ]
   },
   {
     "id": "1-3-040",
@@ -14784,19 +15500,20 @@
     "name": "金屬怪",
     "series": "星塵第3彈",
     "star": 3,
-    "energy": 68,
+    "energy": 76,
     "types": [
-      "一般"
+      "鋼",
+      "超能力"
     ],
-    "hp": 110,
-    "atk": 75,
-    "def": 70,
-    "sp_atk": 75,
-    "sp_def": 70,
-    "spd": 75,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 91,
+    "atk": 60,
+    "def": 79,
+    "sp_atk": 45,
+    "sp_def": 64,
+    "spd": 42,
+    "move_name": "金屬爪",
+    "move_type": "鋼",
+    "move_power": 50,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -14810,17 +15527,40 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "火 (2.0x)",
+      "地面 (2.0x)",
+      "幽靈 (2.0x)",
+      "惡 (2.0x)"
     ],
-    "resistances": [],
+    "resistances": [
+      "一般 (0.5x)",
+      "草 (0.5x)",
+      "冰 (0.5x)",
+      "飛行 (0.5x)",
+      "超能力 (0.25x)",
+      "岩石 (0.5x)",
+      "龍 (0.5x)",
+      "鋼 (0.5x)",
+      "妖精 (0.5x)"
+    ],
     "immunities": [
-      "幽靈 (0.0x)"
+      "毒 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/3b852e13de57ab4b9a8021f8ffc254b08ab866d8d1bd327d312c58ffdccdf147.png",
     "name_en": "Metang",
     "move_category": "物理",
-    "move_accuracy": 100,
-    "move_damage": 6000
+    "move_accuracy": 95,
+    "move_damage": 3000,
+    "moves": [
+      {
+        "name": "金屬爪",
+        "type": "鋼",
+        "category": "物理",
+        "power": 50,
+        "accuracy": 95,
+        "damage": 3000
+      }
+    ]
   },
   {
     "id": "1-3-045",
@@ -14941,17 +15681,17 @@
     "star": 3,
     "energy": 68,
     "types": [
-      "一般"
+      "電"
     ],
-    "hp": 110,
-    "atk": 75,
-    "def": 70,
-    "sp_atk": 75,
-    "sp_def": 70,
-    "spd": 75,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 91,
+    "atk": 67,
+    "def": 41,
+    "sp_atk": 49,
+    "sp_def": 41,
+    "spd": 49,
+    "move_name": "電光",
+    "move_type": "電",
+    "move_power": 65,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -14965,17 +15705,29 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "地面 (2.0x)"
     ],
-    "resistances": [],
-    "immunities": [
-      "幽靈 (0.0x)"
+    "resistances": [
+      "電 (0.5x)",
+      "飛行 (0.5x)",
+      "鋼 (0.5x)"
     ],
+    "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/8f3eb8d8251e9a11788edeeddf4082c41a8d25fe205e53d761991ab3075aa62e.png",
     "name_en": "Luxio",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 6000
+    "move_damage": 4355,
+    "moves": [
+      {
+        "name": "電光",
+        "type": "電",
+        "category": "物理",
+        "power": 65,
+        "accuracy": 100,
+        "damage": 4355
+      }
+    ]
   },
   {
     "id": "1-3-048",
@@ -15080,19 +15832,20 @@
     "name": "天罩蟲",
     "series": "星塵第3彈",
     "star": 3,
-    "energy": 68,
+    "energy": 62,
     "types": [
-      "一般"
+      "蟲",
+      "超能力"
     ],
-    "hp": 110,
-    "atk": 75,
-    "def": 70,
-    "sp_atk": 75,
-    "sp_def": 70,
-    "spd": 75,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 82,
+    "atk": 30,
+    "def": 62,
+    "sp_atk": 41,
+    "sp_def": 69,
+    "spd": 26,
+    "move_name": "念力",
+    "move_type": "超能力",
+    "move_power": 50,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -15106,17 +15859,35 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "火 (2.0x)",
+      "飛行 (2.0x)",
+      "蟲 (2.0x)",
+      "岩石 (2.0x)",
+      "幽靈 (2.0x)",
+      "惡 (2.0x)"
     ],
-    "resistances": [],
-    "immunities": [
-      "幽靈 (0.0x)"
+    "resistances": [
+      "草 (0.5x)",
+      "格鬥 (0.25x)",
+      "地面 (0.5x)",
+      "超能力 (0.5x)"
     ],
+    "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/9ab62669b71a2001564edbe5ce540e57ab11328c6a8380804338cdce53d256da.png",
     "name_en": "Dottler",
-    "move_category": "物理",
+    "move_category": "特殊",
     "move_accuracy": 100,
-    "move_damage": 6000
+    "move_damage": 2050,
+    "moves": [
+      {
+        "name": "念力",
+        "type": "超能力",
+        "category": "特殊",
+        "power": 50,
+        "accuracy": 100,
+        "damage": 2050
+      }
+    ]
   },
   {
     "id": "1-3-051",
@@ -15329,19 +16100,20 @@
     "name": "大炭車",
     "series": "星塵第3彈",
     "star": 3,
-    "energy": 68,
+    "energy": 72,
     "types": [
-      "一般"
+      "岩石",
+      "火"
     ],
-    "hp": 110,
-    "atk": 75,
-    "def": 70,
-    "sp_atk": 75,
-    "sp_def": 70,
-    "spd": 75,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 103,
+    "atk": 48,
+    "def": 69,
+    "sp_atk": 48,
+    "sp_def": 55,
+    "spd": 41,
+    "move_name": "擊落",
+    "move_type": "岩石",
+    "move_power": 50,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -15355,17 +16127,36 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "水 (4.0x)",
+      "格鬥 (2.0x)",
+      "地面 (4.0x)",
+      "岩石 (2.0x)"
     ],
-    "resistances": [],
-    "immunities": [
-      "幽靈 (0.0x)"
+    "resistances": [
+      "一般 (0.5x)",
+      "火 (0.25x)",
+      "冰 (0.5x)",
+      "毒 (0.5x)",
+      "飛行 (0.5x)",
+      "蟲 (0.5x)",
+      "妖精 (0.5x)"
     ],
+    "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/36ecd93885c488f19f747500bbbf660e4cefda1a2db3d059ef30dd6292dd0116.png",
     "name_en": "Carkol",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 6000
+    "move_damage": 2400,
+    "moves": [
+      {
+        "name": "擊落",
+        "type": "岩石",
+        "category": "物理",
+        "power": 50,
+        "accuracy": 100,
+        "damage": 2400
+      }
+    ]
   },
   {
     "id": "1-3-056",
@@ -15435,19 +16226,19 @@
     "name": "泥驢仔",
     "series": "星塵第3彈",
     "star": 2,
-    "energy": 47,
+    "energy": 72,
     "types": [
-      "一般"
+      "地面"
     ],
-    "hp": 90,
-    "atk": 65,
-    "def": 60,
-    "sp_atk": 60,
-    "sp_def": 60,
-    "spd": 65,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 101,
+    "atk": 81,
+    "def": 58,
+    "sp_atk": 39,
+    "sp_def": 46,
+    "spd": 39,
+    "move_name": "重踏",
+    "move_type": "地面",
+    "move_power": 60,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -15461,17 +16252,32 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "水 (2.0x)",
+      "草 (2.0x)",
+      "冰 (2.0x)"
     ],
-    "resistances": [],
+    "resistances": [
+      "毒 (0.5x)",
+      "岩石 (0.5x)"
+    ],
     "immunities": [
-      "幽靈 (0.0x)"
+      "電 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/3c9559fce6932a2e1e9d43d4a9b5f8529d171539114138048df34c0d420f73b2.png",
     "name_en": "Mudbray",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 5200
+    "move_damage": 4860,
+    "moves": [
+      {
+        "name": "重踏",
+        "type": "地面",
+        "category": "物理",
+        "power": 60,
+        "accuracy": 100,
+        "damage": 4860
+      }
+    ]
   },
   {
     "id": "1-3-058",
@@ -15579,19 +16385,20 @@
     "name": "詐唬魔",
     "series": "星塵第3彈",
     "star": 2,
-    "energy": 47,
+    "energy": 68,
     "types": [
-      "一般"
+      "惡",
+      "妖精"
     ],
-    "hp": 90,
-    "atk": 65,
-    "def": 60,
-    "sp_atk": 60,
-    "sp_def": 60,
-    "spd": 65,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 92,
+    "atk": 48,
+    "def": 37,
+    "sp_atk": 59,
+    "sp_def": 44,
+    "spd": 55,
+    "move_name": "惡意追擊",
+    "move_type": "惡",
+    "move_power": 60,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -15605,17 +16412,33 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "毒 (2.0x)",
+      "鋼 (2.0x)",
+      "妖精 (2.0x)"
     ],
-    "resistances": [],
+    "resistances": [
+      "幽靈 (0.5x)",
+      "惡 (0.25x)"
+    ],
     "immunities": [
-      "幽靈 (0.0x)"
+      "超能力 (0.0x)",
+      "龍 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/084a62193708ecf6fa65d9ff5df969c0bc8d00e3a10d6b62848ad544b681ab61.png",
     "name_en": "Morgrem",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 5200
+    "move_damage": 2880,
+    "moves": [
+      {
+        "name": "惡意追擊",
+        "type": "惡",
+        "category": "物理",
+        "power": 60,
+        "accuracy": 100,
+        "damage": 2880
+      }
+    ]
   },
   {
     "id": "1-3-061",
@@ -15888,19 +16711,19 @@
     "name": "彷徨夜靈",
     "series": "星塵第3彈",
     "star": 1,
-    "energy": 35,
+    "energy": 80,
     "types": [
-      "一般"
+      "幽靈"
     ],
-    "hp": 75,
+    "hp": 74,
     "atk": 55,
-    "def": 50,
-    "sp_atk": 50,
-    "sp_def": 50,
-    "spd": 60,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "def": 98,
+    "sp_atk": 48,
+    "sp_def": 98,
+    "spd": 23,
+    "move_name": "影子偷襲",
+    "move_type": "幽靈",
+    "move_power": 40,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -15914,17 +16737,32 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "幽靈 (2.0x)",
+      "惡 (2.0x)"
     ],
-    "resistances": [],
+    "resistances": [
+      "毒 (0.5x)",
+      "蟲 (0.5x)"
+    ],
     "immunities": [
-      "幽靈 (0.0x)"
+      "一般 (0.0x)",
+      "格鬥 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/11b41f00ad44bd9b7c71dbd9a313703dc1bac5f176cdb8602a2fcf6f14cf05be.png",
     "name_en": "Dusclops",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 4400
+    "move_damage": 2200,
+    "moves": [
+      {
+        "name": "影子偷襲",
+        "type": "幽靈",
+        "category": "物理",
+        "power": 40,
+        "accuracy": 100,
+        "damage": 2200
+      }
+    ]
   },
   {
     "id": "1-3-067",
@@ -16032,19 +16870,19 @@
     "name": "斧牙龍",
     "series": "星塵第3彈",
     "star": 1,
-    "energy": 35,
+    "energy": 72,
     "types": [
-      "一般"
+      "龍"
     ],
-    "hp": 75,
-    "atk": 55,
-    "def": 50,
-    "sp_atk": 50,
-    "sp_def": 50,
-    "spd": 60,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 91,
+    "atk": 86,
+    "def": 54,
+    "sp_atk": 33,
+    "sp_def": 40,
+    "spd": 51,
+    "move_name": "廣域破壞",
+    "move_type": "龍",
+    "move_power": 60,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -16058,17 +16896,32 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "冰 (2.0x)",
+      "龍 (2.0x)",
+      "妖精 (2.0x)"
     ],
-    "resistances": [],
-    "immunities": [
-      "幽靈 (0.0x)"
+    "resistances": [
+      "火 (0.5x)",
+      "水 (0.5x)",
+      "草 (0.5x)",
+      "電 (0.5x)"
     ],
+    "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/3b448f72363242eea34fed9e46dc64c21678e83d672ef11542347b6c6b277500.png",
     "name_en": "Fraxure",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 4400
+    "move_damage": 5160,
+    "moves": [
+      {
+        "name": "廣域破壞",
+        "type": "龍",
+        "category": "物理",
+        "power": 60,
+        "accuracy": 100,
+        "damage": 5160
+      }
+    ]
   },
   {
     "id": "1-3-070",
@@ -18187,19 +19040,19 @@
     "name": "樹林龜",
     "series": "星塵第2彈",
     "star": 4,
-    "energy": 94,
+    "energy": 64,
     "types": [
-      "一般"
+      "草"
     ],
-    "hp": 130,
-    "atk": 100,
-    "def": 85,
-    "sp_atk": 100,
-    "sp_def": 85,
-    "spd": 95,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 170,
+    "hp": 87,
+    "atk": 60,
+    "def": 57,
+    "sp_atk": 39,
+    "sp_def": 45,
+    "spd": 26,
+    "move_name": "超級吸取",
+    "move_type": "草",
+    "move_power": 40,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -18213,17 +19066,34 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "火 (2.0x)",
+      "冰 (2.0x)",
+      "毒 (2.0x)",
+      "飛行 (2.0x)",
+      "蟲 (2.0x)"
     ],
-    "resistances": [],
-    "immunities": [
-      "幽靈 (0.0x)"
+    "resistances": [
+      "水 (0.5x)",
+      "草 (0.5x)",
+      "電 (0.5x)",
+      "地面 (0.5x)"
     ],
+    "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/f19fc8d999c6a10b53ed5758192a54ab40704af6086efa388685d301fc67b7ec.png",
     "name_en": "Grotle",
-    "move_category": "物理",
+    "move_category": "特殊",
     "move_accuracy": 100,
-    "move_damage": 17000
+    "move_damage": 1560,
+    "moves": [
+      {
+        "name": "超級吸取",
+        "type": "草",
+        "category": "特殊",
+        "power": 40,
+        "accuracy": 100,
+        "damage": 1560
+      }
+    ]
   },
   {
     "id": "1-2-034",
@@ -18333,19 +19203,20 @@
     "name": "猛火猴",
     "series": "星塵第2彈",
     "star": 4,
-    "energy": 94,
+    "energy": 64,
     "types": [
-      "一般"
+      "火",
+      "格鬥"
     ],
-    "hp": 130,
-    "atk": 100,
-    "def": 85,
-    "sp_atk": 100,
-    "sp_def": 85,
-    "spd": 95,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 170,
+    "hp": 80,
+    "atk": 53,
+    "def": 37,
+    "sp_atk": 53,
+    "sp_def": 37,
+    "spd": 55,
+    "move_name": "音速拳",
+    "move_type": "格鬥",
+    "move_power": 40,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -18359,17 +19230,35 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "水 (2.0x)",
+      "地面 (2.0x)",
+      "飛行 (2.0x)",
+      "超能力 (2.0x)"
     ],
-    "resistances": [],
-    "immunities": [
-      "幽靈 (0.0x)"
+    "resistances": [
+      "火 (0.5x)",
+      "草 (0.5x)",
+      "冰 (0.5x)",
+      "蟲 (0.25x)",
+      "惡 (0.5x)",
+      "鋼 (0.5x)"
     ],
+    "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/18f56524f5fce0764e20d0eb3eccc8e3b1fe62a1ca2e5dc9c96953e345797576.png",
     "name_en": "Monferno",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 17000
+    "move_damage": 2120,
+    "moves": [
+      {
+        "name": "音速拳",
+        "type": "格鬥",
+        "category": "物理",
+        "power": 40,
+        "accuracy": 100,
+        "damage": 2120
+      }
+    ]
   },
   {
     "id": "1-2-037",
@@ -18481,19 +19370,19 @@
     "name": "波皇子",
     "series": "星塵第2彈",
     "star": 4,
-    "energy": 94,
+    "energy": 64,
     "types": [
-      "一般"
+      "水"
     ],
-    "hp": 130,
-    "atk": 100,
-    "def": 85,
-    "sp_atk": 100,
-    "sp_def": 85,
-    "spd": 95,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 170,
+    "hp": 80,
+    "atk": 45,
+    "def": 47,
+    "sp_atk": 55,
+    "sp_def": 52,
+    "spd": 36,
+    "move_name": "泡沫光線",
+    "move_type": "水",
+    "move_power": 65,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -18507,17 +19396,31 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "草 (2.0x)",
+      "電 (2.0x)"
     ],
-    "resistances": [],
-    "immunities": [
-      "幽靈 (0.0x)"
+    "resistances": [
+      "火 (0.5x)",
+      "水 (0.5x)",
+      "冰 (0.5x)",
+      "鋼 (0.5x)"
     ],
+    "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/040655e7565e980192280f15c1e07a176611297ffd9be9820e5d41c2dab8cced.png",
     "name_en": "Prinplup",
-    "move_category": "物理",
+    "move_category": "特殊",
     "move_accuracy": 100,
-    "move_damage": 17000
+    "move_damage": 3575,
+    "moves": [
+      {
+        "name": "泡沫光線",
+        "type": "水",
+        "category": "特殊",
+        "power": 65,
+        "accuracy": 100,
+        "damage": 3575
+      }
+    ]
   },
   {
     "id": "1-2-040",
@@ -18963,19 +19866,20 @@
     "name": "比比鳥",
     "series": "星塵第2彈",
     "star": 3,
-    "energy": 68,
+    "energy": 54,
     "types": [
-      "一般"
+      "一般",
+      "飛行"
     ],
-    "hp": 110,
-    "atk": 75,
-    "def": 70,
-    "sp_atk": 75,
-    "sp_def": 70,
-    "spd": 75,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 77,
+    "atk": 41,
+    "def": 38,
+    "sp_atk": 35,
+    "sp_def": 35,
+    "spd": 47,
+    "move_name": "翅膀攻擊",
+    "move_type": "飛行",
+    "move_power": 60,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -18989,17 +19893,33 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "電 (2.0x)",
+      "冰 (2.0x)",
+      "岩石 (2.0x)"
     ],
-    "resistances": [],
+    "resistances": [
+      "草 (0.5x)",
+      "蟲 (0.5x)"
+    ],
     "immunities": [
+      "地面 (0.0x)",
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/4dbc6c82be1d50db24a52d77823bb3c9a857d88c48ec929d7262d970a656cc9d.png",
     "name_en": "Pidgeotto",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 6000
+    "move_damage": 2460,
+    "moves": [
+      {
+        "name": "翅膀攻擊",
+        "type": "飛行",
+        "category": "物理",
+        "power": 60,
+        "accuracy": 100,
+        "damage": 2460
+      }
+    ]
   },
   {
     "id": "1-2-049",
@@ -19217,18 +20137,19 @@
     "name": "青銅鐘",
     "series": "星塵第2彈",
     "star": 3,
-    "energy": 68,
+    "energy": 74,
     "types": [
-      "一般"
+      "鋼",
+      "超能力"
     ],
-    "hp": 110,
-    "atk": 75,
-    "def": 70,
-    "sp_atk": 75,
-    "sp_def": 70,
-    "spd": 75,
-    "move_name": "撞擊",
-    "move_type": "一般",
+    "hp": 82,
+    "atk": 60,
+    "def": 76,
+    "sp_atk": 53,
+    "sp_def": 76,
+    "spd": 24,
+    "move_name": "鐵頭",
+    "move_type": "鋼",
     "move_power": 80,
     "second_move": {},
     "special": "無",
@@ -19243,17 +20164,40 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "火 (2.0x)",
+      "地面 (2.0x)",
+      "幽靈 (2.0x)",
+      "惡 (2.0x)"
     ],
-    "resistances": [],
+    "resistances": [
+      "一般 (0.5x)",
+      "草 (0.5x)",
+      "冰 (0.5x)",
+      "飛行 (0.5x)",
+      "超能力 (0.25x)",
+      "岩石 (0.5x)",
+      "龍 (0.5x)",
+      "鋼 (0.5x)",
+      "妖精 (0.5x)"
+    ],
     "immunities": [
-      "幽靈 (0.0x)"
+      "毒 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/076a6f38c5193783d60519ea44d1e5929b6ff257a051a9f2f6b2e5270592ba05.png",
     "name_en": "Bronzong",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 6000
+    "move_damage": 4800,
+    "moves": [
+      {
+        "name": "鐵頭",
+        "type": "鋼",
+        "category": "物理",
+        "power": 80,
+        "accuracy": 100,
+        "damage": 4800
+      }
+    ]
   },
   {
     "id": "1-2-054",
@@ -19303,19 +20247,20 @@
     "name": "超音波幼蟲",
     "series": "星塵第2彈",
     "star": 3,
-    "energy": 68,
+    "energy": 58,
     "types": [
-      "一般"
+      "地面",
+      "龍"
     ],
-    "hp": 110,
-    "atk": 75,
-    "def": 70,
-    "sp_atk": 75,
-    "sp_def": 70,
-    "spd": 75,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 76,
+    "atk": 51,
+    "def": 38,
+    "sp_atk": 38,
+    "sp_def": 38,
+    "spd": 51,
+    "move_name": "龍尾",
+    "move_type": "龍",
+    "move_power": 60,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -19329,17 +20274,33 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "冰 (4.0x)",
+      "龍 (2.0x)",
+      "妖精 (2.0x)"
     ],
-    "resistances": [],
+    "resistances": [
+      "火 (0.5x)",
+      "毒 (0.5x)",
+      "岩石 (0.5x)"
+    ],
     "immunities": [
-      "幽靈 (0.0x)"
+      "電 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/60335d01cfda00b165c30669b5887c66e56ea3fcdef0660894db3e65ec57c238.png",
     "name_en": "Vibrava",
     "move_category": "物理",
-    "move_accuracy": 100,
-    "move_damage": 6000
+    "move_accuracy": 90,
+    "move_damage": 3060,
+    "moves": [
+      {
+        "name": "龍尾",
+        "type": "龍",
+        "category": "物理",
+        "power": 60,
+        "accuracy": 90,
+        "damage": 3060
+      }
+    ]
   },
   {
     "id": "1-2-056",
@@ -19449,19 +20410,20 @@
     "name": "大嘴鷗",
     "series": "星塵第2彈",
     "star": 2,
-    "energy": 47,
+    "energy": 70,
     "types": [
-      "一般"
+      "水",
+      "飛行"
     ],
-    "hp": 90,
-    "atk": 65,
-    "def": 60,
-    "sp_atk": 60,
-    "sp_def": 60,
-    "spd": 65,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 80,
+    "atk": 37,
+    "def": 69,
+    "sp_atk": 65,
+    "sp_def": 49,
+    "spd": 46,
+    "move_name": "空氣斬",
+    "move_type": "飛行",
+    "move_power": 75,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -19475,36 +20437,54 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "電 (4.0x)",
+      "岩石 (2.0x)"
     ],
-    "resistances": [],
+    "resistances": [
+      "火 (0.5x)",
+      "水 (0.5x)",
+      "格鬥 (0.5x)",
+      "蟲 (0.5x)",
+      "鋼 (0.5x)"
+    ],
     "immunities": [
-      "幽靈 (0.0x)"
+      "地面 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/61b529d5245fdca08d269b1f819fdaa46ca59ed7b2fbc8dbf74fcb2673eaf929.png",
     "name_en": "Pelipper",
-    "move_category": "物理",
-    "move_accuracy": 100,
-    "move_damage": 5200
+    "move_category": "特殊",
+    "move_accuracy": 95,
+    "move_damage": 4875,
+    "moves": [
+      {
+        "name": "空氣斬",
+        "type": "飛行",
+        "category": "特殊",
+        "power": 75,
+        "accuracy": 95,
+        "damage": 4875
+      }
+    ]
   },
   {
     "id": "1-2-059",
     "name": "迷唇姐",
     "series": "星塵第2彈",
     "star": 2,
-    "energy": 47,
+    "energy": 68,
     "types": [
-      "一般"
+      "冰",
+      "超能力"
     ],
-    "hp": 90,
-    "atk": 65,
-    "def": 60,
-    "sp_atk": 60,
-    "sp_def": 60,
-    "spd": 65,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 79,
+    "atk": 35,
+    "def": 24,
+    "sp_atk": 74,
+    "sp_def": 62,
+    "spd": 62,
+    "move_name": "雪崩",
+    "move_type": "冰",
+    "move_power": 60,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -19518,17 +20498,33 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "火 (2.0x)",
+      "蟲 (2.0x)",
+      "岩石 (2.0x)",
+      "幽靈 (2.0x)",
+      "惡 (2.0x)",
+      "鋼 (2.0x)"
     ],
-    "resistances": [],
-    "immunities": [
-      "幽靈 (0.0x)"
+    "resistances": [
+      "冰 (0.5x)",
+      "超能力 (0.5x)"
     ],
+    "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/72c0fa89e1417413fff6e325f74b2309eae408a2583b8b8bd4da8a6fcbceb6cb.png",
     "name_en": "Jynx",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 5200
+    "move_damage": 2100,
+    "moves": [
+      {
+        "name": "雪崩",
+        "type": "冰",
+        "category": "物理",
+        "power": 60,
+        "accuracy": 100,
+        "damage": 2100
+      }
+    ]
   },
   {
     "id": "1-2-060",
@@ -19578,19 +20574,19 @@
     "name": "勇基拉",
     "series": "星塵第2彈",
     "star": 2,
-    "energy": 47,
+    "energy": 62,
     "types": [
-      "一般"
+      "超能力"
     ],
-    "hp": 90,
-    "atk": 65,
-    "def": 60,
-    "sp_atk": 60,
-    "sp_def": 60,
-    "spd": 65,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 65,
+    "atk": 26,
+    "def": 22,
+    "sp_atk": 79,
+    "sp_def": 48,
+    "spd": 70,
+    "move_name": "幻象光線",
+    "move_type": "超能力",
+    "move_power": 65,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -19604,17 +20600,30 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "蟲 (2.0x)",
+      "幽靈 (2.0x)",
+      "惡 (2.0x)"
     ],
-    "resistances": [],
-    "immunities": [
-      "幽靈 (0.0x)"
+    "resistances": [
+      "格鬥 (0.5x)",
+      "超能力 (0.5x)"
     ],
+    "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/7ddfed2ee4cdb74fcbd7bc0fee41752242e6ceb0640f61099b35568908c222b2.png",
     "name_en": "Kadabra",
-    "move_category": "物理",
+    "move_category": "特殊",
     "move_accuracy": 100,
-    "move_damage": 5200
+    "move_damage": 5135,
+    "moves": [
+      {
+        "name": "幻象光線",
+        "type": "超能力",
+        "category": "特殊",
+        "power": 65,
+        "accuracy": 100,
+        "damage": 5135
+      }
+    ]
   },
   {
     "id": "1-2-062",
@@ -19679,19 +20688,20 @@
     "name": "飄飄球",
     "series": "星塵第2彈",
     "star": 2,
-    "energy": 47,
+    "energy": 56,
     "types": [
-      "一般"
+      "幽靈",
+      "飛行"
     ],
-    "hp": 90,
-    "atk": 65,
-    "def": 60,
-    "sp_atk": 60,
-    "sp_def": 60,
-    "spd": 65,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 96,
+    "atk": 36,
+    "def": 25,
+    "sp_atk": 42,
+    "sp_def": 32,
+    "spd": 48,
+    "move_name": "驚嚇",
+    "move_type": "幽靈",
+    "move_power": 30,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -19705,17 +20715,37 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "電 (2.0x)",
+      "冰 (2.0x)",
+      "岩石 (2.0x)",
+      "幽靈 (2.0x)",
+      "惡 (2.0x)"
     ],
-    "resistances": [],
+    "resistances": [
+      "草 (0.5x)",
+      "毒 (0.5x)",
+      "蟲 (0.25x)"
+    ],
     "immunities": [
-      "幽靈 (0.0x)"
+      "一般 (0.0x)",
+      "格鬥 (0.0x)",
+      "地面 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/7276b3c537020bb840a2ff347124fa0b2306b60db5660f01f21db69411b2bf98.png",
     "name_en": "Drifloon",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 5200
+    "move_damage": 1080,
+    "moves": [
+      {
+        "name": "驚嚇",
+        "type": "幽靈",
+        "category": "物理",
+        "power": 30,
+        "accuracy": 100,
+        "damage": 1080
+      }
+    ]
   },
   {
     "id": "1-2-064",
@@ -19786,19 +20816,20 @@
     "name": "好壞星",
     "series": "星塵第2彈",
     "star": 2,
-    "energy": 47,
+    "energy": 54,
     "types": [
-      "一般"
+      "毒",
+      "水"
     ],
-    "hp": 90,
-    "atk": 65,
-    "def": 60,
-    "sp_atk": 60,
-    "sp_def": 60,
-    "spd": 65,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 76,
+    "atk": 39,
+    "def": 45,
+    "sp_atk": 33,
+    "sp_def": 39,
+    "spd": 34,
+    "move_name": "毒液衝擊",
+    "move_type": "毒",
+    "move_power": 65,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -19812,36 +20843,56 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "電 (2.0x)",
+      "地面 (2.0x)",
+      "超能力 (2.0x)"
     ],
-    "resistances": [],
-    "immunities": [
-      "幽靈 (0.0x)"
+    "resistances": [
+      "火 (0.5x)",
+      "水 (0.5x)",
+      "冰 (0.5x)",
+      "格鬥 (0.5x)",
+      "毒 (0.5x)",
+      "蟲 (0.5x)",
+      "鋼 (0.5x)",
+      "妖精 (0.5x)"
     ],
+    "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/4de0d06434ed42364cb664a8ad89c511b8bff55d53282066691c4d0adcf468e7.png",
     "name_en": "Mareanie",
-    "move_category": "物理",
+    "move_category": "特殊",
     "move_accuracy": 100,
-    "move_damage": 5200
+    "move_damage": 2145,
+    "moves": [
+      {
+        "name": "毒液衝擊",
+        "type": "毒",
+        "category": "特殊",
+        "power": 65,
+        "accuracy": 100,
+        "damage": 2145
+      }
+    ]
   },
   {
     "id": "1-2-066",
     "name": "托戈德瑪爾",
     "series": "星塵第2彈",
     "star": 1,
-    "energy": 35,
+    "energy": 68,
     "types": [
-      "一般"
+      "電",
+      "鋼"
     ],
-    "hp": 75,
-    "atk": 55,
-    "def": 50,
-    "sp_atk": 50,
-    "sp_def": 50,
-    "spd": 60,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 83,
+    "atk": 67,
+    "def": 45,
+    "sp_atk": 30,
+    "sp_def": 51,
+    "spd": 66,
+    "move_name": "電光",
+    "move_type": "電",
+    "move_power": 65,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -19855,17 +20906,41 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "火 (2.0x)",
+      "格鬥 (2.0x)",
+      "地面 (4.0x)"
     ],
-    "resistances": [],
+    "resistances": [
+      "一般 (0.5x)",
+      "草 (0.5x)",
+      "電 (0.5x)",
+      "冰 (0.5x)",
+      "飛行 (0.25x)",
+      "超能力 (0.5x)",
+      "蟲 (0.5x)",
+      "岩石 (0.5x)",
+      "龍 (0.5x)",
+      "鋼 (0.25x)",
+      "妖精 (0.5x)"
+    ],
     "immunities": [
-      "幽靈 (0.0x)"
+      "毒 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/34cbc52bb7d3be1672d01490cc307d75a42118cdd1d3b715b88e706fec85d252.png",
     "name_en": "Togedemaru",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 4400
+    "move_damage": 4355,
+    "moves": [
+      {
+        "name": "電光",
+        "type": "電",
+        "category": "物理",
+        "power": 65,
+        "accuracy": 100,
+        "damage": 4355
+      }
+    ]
   },
   {
     "id": "1-2-067",
@@ -19921,20 +20996,20 @@
     "name": "奇魯莉安",
     "series": "星塵第2彈",
     "star": 1,
-    "energy": 35,
+    "energy": 50,
     "types": [
       "超能力",
       "妖精"
     ],
-    "hp": 75,
-    "atk": 55,
-    "def": 50,
-    "sp_atk": 50,
-    "sp_def": 50,
-    "spd": 60,
-    "move_name": "魔法葉",
-    "move_type": "草",
-    "move_power": 85,
+    "hp": 68,
+    "atk": 27,
+    "def": 27,
+    "sp_atk": 47,
+    "sp_def": 41,
+    "spd": 38,
+    "move_name": "吸取之吻",
+    "move_type": "妖精",
+    "move_power": 50,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -19961,9 +21036,19 @@
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/cff48c1b41a4b580acdf0b745f45be467fc4004b506945946d8b33a66f7f2eb4.png",
     "name_en": "Kirlia",
-    "move_category": "物理",
+    "move_category": "特殊",
     "move_accuracy": 100,
-    "move_damage": 4675
+    "move_damage": 2350,
+    "moves": [
+      {
+        "name": "吸取之吻",
+        "type": "妖精",
+        "category": "特殊",
+        "power": 50,
+        "accuracy": 100,
+        "damage": 2350
+      }
+    ]
   },
   {
     "id": "1-2-069",
@@ -20031,19 +21116,20 @@
     "name": "大岩蛇",
     "series": "星塵第2彈",
     "star": 1,
-    "energy": 35,
+    "energy": 64,
     "types": [
-      "一般"
+      "岩石",
+      "地面"
     ],
-    "hp": 75,
-    "atk": 55,
-    "def": 50,
-    "sp_atk": 50,
-    "sp_def": 50,
-    "spd": 60,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 64,
+    "atk": 34,
+    "def": 110,
+    "sp_atk": 22,
+    "sp_def": 34,
+    "spd": 51,
+    "move_name": "重踏",
+    "move_type": "地面",
+    "move_power": 60,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -20057,17 +21143,38 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "水 (4.0x)",
+      "草 (4.0x)",
+      "冰 (2.0x)",
+      "格鬥 (2.0x)",
+      "地面 (2.0x)",
+      "鋼 (2.0x)"
     ],
-    "resistances": [],
+    "resistances": [
+      "一般 (0.5x)",
+      "火 (0.5x)",
+      "毒 (0.25x)",
+      "飛行 (0.5x)",
+      "岩石 (0.5x)"
+    ],
     "immunities": [
-      "幽靈 (0.0x)"
+      "電 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/14de11082691994b60be1c4615081580e5260ce0ab87ac676131e3588928680d.png",
     "name_en": "Onix",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 4400
+    "move_damage": 2040,
+    "moves": [
+      {
+        "name": "重踏",
+        "type": "地面",
+        "category": "物理",
+        "power": 60,
+        "accuracy": 100,
+        "damage": 2040
+      }
+    ]
   },
   {
     "id": "1-1-001",
@@ -21760,19 +22867,19 @@
     "name": "蒂蕾喵",
     "series": "星塵第1彈",
     "star": 4,
-    "energy": 94,
+    "energy": 84,
     "types": [
       "草"
     ],
-    "hp": 130,
-    "atk": 100,
-    "def": 85,
-    "sp_atk": 100,
-    "sp_def": 85,
-    "spd": 95,
+    "hp": 103,
+    "atk": 72,
+    "def": 57,
+    "sp_atk": 55,
+    "sp_def": 57,
+    "spd": 74,
     "move_name": "魔法葉",
     "move_type": "草",
-    "move_power": 105,
+    "move_power": 60,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -21801,9 +22908,19 @@
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/8ddd19f11aa5e25a587c482ebf915e74d6e97c3a6871c956971d27524248cb2f.png",
     "name_en": "Floragato",
-    "move_category": "物理",
-    "move_accuracy": 100,
-    "move_damage": 10500
+    "move_category": "特殊",
+    "move_accuracy": "必中",
+    "move_damage": 3300,
+    "moves": [
+      {
+        "name": "魔法葉",
+        "type": "草",
+        "category": "特殊",
+        "power": 60,
+        "accuracy": "必中",
+        "damage": 3300
+      }
+    ]
   },
   {
     "id": "1-1-028",
@@ -21860,19 +22977,19 @@
     "name": "炙燙鱷",
     "series": "星塵第1彈",
     "star": 4,
-    "energy": 94,
+    "energy": 84,
     "types": [
       "火"
     ],
-    "hp": 130,
-    "atk": 100,
-    "def": 85,
-    "sp_atk": 100,
-    "sp_def": 85,
-    "spd": 95,
-    "move_name": "蓄能焰襲",
+    "hp": 120,
+    "atk": 51,
+    "def": 70,
+    "sp_atk": 80,
+    "sp_def": 53,
+    "spd": 51,
+    "move_name": "燒盡",
     "move_type": "火",
-    "move_power": 105,
+    "move_power": 60,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -21901,9 +23018,19 @@
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/af54eeef6f0f77599d94a4912a4a3c924c4cce0bef5c80f08adb228616de4a83.png",
     "name_en": "Crocalor",
-    "move_category": "物理",
+    "move_category": "特殊",
     "move_accuracy": 100,
-    "move_damage": 10500
+    "move_damage": 4800,
+    "moves": [
+      {
+        "name": "燒盡",
+        "type": "火",
+        "category": "特殊",
+        "power": 60,
+        "accuracy": 100,
+        "damage": 4800
+      }
+    ]
   },
   {
     "id": "1-1-030",
@@ -21957,19 +23084,19 @@
     "name": "湧躍鴨",
     "series": "星塵第1彈",
     "star": 4,
-    "energy": 94,
+    "energy": 84,
     "types": [
       "水"
     ],
-    "hp": 130,
-    "atk": 100,
-    "def": 85,
-    "sp_atk": 100,
-    "sp_def": 85,
-    "spd": 95,
-    "move_name": "水流裂破",
+    "hp": 110,
+    "atk": 76,
+    "def": 59,
+    "sp_atk": 59,
+    "sp_def": 55,
+    "spd": 59,
+    "move_name": "水之波動",
     "move_type": "水",
-    "move_power": 105,
+    "move_power": 60,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -21995,9 +23122,19 @@
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/8760ec8d72ead48c2a7afa719a6344e22b5bfda74f78c479b4344bbb5d2e7078.png",
     "name_en": "Quaxwell",
-    "move_category": "物理",
+    "move_category": "特殊",
     "move_accuracy": 100,
-    "move_damage": 10500
+    "move_damage": 3540,
+    "moves": [
+      {
+        "name": "水之波動",
+        "type": "水",
+        "category": "特殊",
+        "power": 60,
+        "accuracy": 100,
+        "damage": 3540
+      }
+    ]
   },
   {
     "id": "1-1-032",
@@ -22047,19 +23184,19 @@
     "name": "啪咚猴",
     "series": "星塵第1彈",
     "star": 4,
-    "energy": 94,
+    "energy": 64,
     "types": [
-      "一般"
+      "草"
     ],
-    "hp": 130,
-    "atk": 100,
-    "def": 85,
-    "sp_atk": 100,
-    "sp_def": 85,
-    "spd": 95,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 170,
+    "hp": 82,
+    "atk": 56,
+    "def": 47,
+    "sp_atk": 38,
+    "sp_def": 41,
+    "spd": 53,
+    "move_name": "飛葉快刀",
+    "move_type": "草",
+    "move_power": 55,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -22073,17 +23210,34 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "火 (2.0x)",
+      "冰 (2.0x)",
+      "毒 (2.0x)",
+      "飛行 (2.0x)",
+      "蟲 (2.0x)"
     ],
-    "resistances": [],
-    "immunities": [
-      "幽靈 (0.0x)"
+    "resistances": [
+      "水 (0.5x)",
+      "草 (0.5x)",
+      "電 (0.5x)",
+      "地面 (0.5x)"
     ],
+    "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/7357ed5ebb3d6190b44458cef5600e53474d9196cd6e010c3c85904139c1220d.png",
     "name_en": "Thwackey",
     "move_category": "物理",
-    "move_accuracy": 100,
-    "move_damage": 17000
+    "move_accuracy": 95,
+    "move_damage": 3080,
+    "moves": [
+      {
+        "name": "飛葉快刀",
+        "type": "草",
+        "category": "物理",
+        "power": 55,
+        "accuracy": 95,
+        "damage": 3080
+      }
+    ]
   },
   {
     "id": "1-1-034",
@@ -22195,19 +23349,19 @@
     "name": "騰蹴小將",
     "series": "星塵第1彈",
     "star": 4,
-    "energy": 94,
+    "energy": 64,
     "types": [
-      "一般"
+      "火"
     ],
-    "hp": 130,
-    "atk": 100,
-    "def": 85,
-    "sp_atk": 100,
-    "sp_def": 85,
-    "spd": 95,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 170,
+    "hp": 79,
+    "atk": 56,
+    "def": 41,
+    "sp_atk": 38,
+    "sp_def": 41,
+    "spd": 61,
+    "move_name": "蓄能焰襲",
+    "move_type": "火",
+    "move_power": 50,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -22221,17 +23375,34 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "水 (2.0x)",
+      "地面 (2.0x)",
+      "岩石 (2.0x)"
     ],
-    "resistances": [],
-    "immunities": [
-      "幽靈 (0.0x)"
+    "resistances": [
+      "火 (0.5x)",
+      "草 (0.5x)",
+      "冰 (0.5x)",
+      "蟲 (0.5x)",
+      "鋼 (0.5x)",
+      "妖精 (0.5x)"
     ],
+    "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/968f335d770daeb0f95008d7416f74a8b79ef451b91801fa7896737b61d13313.png",
     "name_en": "Raboot",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 17000
+    "move_damage": 2800,
+    "moves": [
+      {
+        "name": "蓄能焰襲",
+        "type": "火",
+        "category": "物理",
+        "power": 50,
+        "accuracy": 100,
+        "damage": 2800
+      }
+    ]
   },
   {
     "id": "1-1-037",
@@ -22343,19 +23514,19 @@
     "name": "變澀蜥",
     "series": "星塵第1彈",
     "star": 4,
-    "energy": 94,
+    "energy": 64,
     "types": [
-      "一般"
+      "水"
     ],
-    "hp": 130,
-    "atk": 100,
-    "def": 85,
-    "sp_atk": 100,
-    "sp_def": 85,
-    "spd": 95,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 170,
+    "hp": 79,
+    "atk": 41,
+    "def": 38,
+    "sp_atk": 62,
+    "sp_def": 38,
+    "spd": 59,
+    "move_name": "水之波動",
+    "move_type": "水",
+    "move_power": 60,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -22369,17 +23540,31 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "草 (2.0x)",
+      "電 (2.0x)"
     ],
-    "resistances": [],
-    "immunities": [
-      "幽靈 (0.0x)"
+    "resistances": [
+      "火 (0.5x)",
+      "水 (0.5x)",
+      "冰 (0.5x)",
+      "鋼 (0.5x)"
     ],
+    "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/0bac8ea22d2dc025affa315368a2c4706836d3fe2fdeb746670a1ebc7ac40dbd.png",
     "name_en": "Drizzile",
-    "move_category": "物理",
+    "move_category": "特殊",
     "move_accuracy": 100,
-    "move_damage": 17000
+    "move_damage": 3720,
+    "moves": [
+      {
+        "name": "水之波動",
+        "type": "水",
+        "category": "特殊",
+        "power": 60,
+        "accuracy": 100,
+        "damage": 3720
+      }
+    ]
   },
   {
     "id": "1-1-040",
@@ -22488,19 +23673,19 @@
     "name": "皮卡丘",
     "series": "星塵第1彈",
     "star": 3,
-    "energy": 68,
+    "energy": 60,
     "types": [
       "電"
     ],
-    "hp": 110,
-    "atk": 75,
-    "def": 70,
-    "sp_atk": 75,
-    "sp_def": 70,
-    "spd": 75,
-    "move_name": "超極巨萬雷轟頂",
+    "hp": 71,
+    "atk": 44,
+    "def": 33,
+    "sp_atk": 41,
+    "sp_def": 41,
+    "spd": 70,
+    "move_name": "電光",
     "move_type": "電",
-    "move_power": 190,
+    "move_power": 65,
     "second_move": {},
     "special": "超極巨化",
     "special_mechanics": [
@@ -22529,7 +23714,17 @@
     "name_en": "Pikachu",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 14250
+    "move_damage": 2860,
+    "moves": [
+      {
+        "name": "電光",
+        "type": "電",
+        "category": "物理",
+        "power": 65,
+        "accuracy": 100,
+        "damage": 2860
+      }
+    ]
   },
   {
     "id": "1-1-043",
@@ -22591,19 +23786,19 @@
     "name": "伊布",
     "series": "星塵第1彈",
     "star": 3,
-    "energy": 68,
+    "energy": 60,
     "types": [
       "一般"
     ],
-    "hp": 110,
-    "atk": 75,
-    "def": 70,
-    "sp_atk": 75,
-    "sp_def": 70,
-    "spd": 75,
-    "move_name": "撞擊",
+    "hp": 85,
+    "atk": 44,
+    "def": 41,
+    "sp_atk": 37,
+    "sp_def": 51,
+    "spd": 44,
+    "move_name": "高速星星",
     "move_type": "一般",
-    "move_power": 80,
+    "move_power": 60,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -22625,9 +23820,19 @@
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/14ef7c29af5ff0428559f38e5719c451a02a52ae749e82379710341ddeec2783.png",
     "name_en": "Eevee",
-    "move_category": "物理",
-    "move_accuracy": 100,
-    "move_damage": 6000
+    "move_category": "特殊",
+    "move_accuracy": "必中",
+    "move_damage": 2220,
+    "moves": [
+      {
+        "name": "高速星星",
+        "type": "一般",
+        "category": "特殊",
+        "power": 60,
+        "accuracy": "必中",
+        "damage": 2220
+      }
+    ]
   },
   {
     "id": "1-1-045",
@@ -22863,19 +24068,20 @@
     "name": "狃拉",
     "series": "星塵第1彈",
     "star": 3,
-    "energy": 68,
+    "energy": 66,
     "types": [
-      "一般"
+      "惡",
+      "冰"
     ],
-    "hp": 110,
-    "atk": 75,
-    "def": 70,
-    "sp_atk": 75,
-    "sp_def": 70,
-    "spd": 75,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 75,
+    "atk": 63,
+    "def": 39,
+    "sp_atk": 26,
+    "sp_def": 51,
+    "spd": 76,
+    "move_name": "以牙還牙",
+    "move_type": "惡",
+    "move_power": 50,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -22889,17 +24095,36 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "火 (2.0x)",
+      "格鬥 (4.0x)",
+      "蟲 (2.0x)",
+      "岩石 (2.0x)",
+      "鋼 (2.0x)",
+      "妖精 (2.0x)"
     ],
-    "resistances": [],
+    "resistances": [
+      "冰 (0.5x)",
+      "幽靈 (0.5x)",
+      "惡 (0.5x)"
+    ],
     "immunities": [
-      "幽靈 (0.0x)"
+      "超能力 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/b0169c8297ad3b7f25e3973a2435a92937288aa905dc35a41f1a7edf94c9586b.png",
     "name_en": "Sneasel",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 6000
+    "move_damage": 3150,
+    "moves": [
+      {
+        "name": "以牙還牙",
+        "type": "惡",
+        "category": "物理",
+        "power": 50,
+        "accuracy": 100,
+        "damage": 3150
+      }
+    ]
   },
   {
     "id": "1-1-050",
@@ -23012,19 +24237,20 @@
     "name": "泥偶巨人",
     "series": "星塵第1彈",
     "star": 3,
-    "energy": 68,
+    "energy": 72,
     "types": [
-      "一般"
+      "地面",
+      "幽靈"
     ],
-    "hp": 110,
-    "atk": 75,
-    "def": 70,
-    "sp_atk": 75,
-    "sp_def": 70,
-    "spd": 75,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 96,
+    "atk": 81,
+    "def": 54,
+    "sp_atk": 39,
+    "sp_def": 54,
+    "spd": 39,
+    "move_name": "暗影拳",
+    "move_type": "幽靈",
+    "move_power": 60,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -23038,17 +24264,37 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "水 (2.0x)",
+      "草 (2.0x)",
+      "冰 (2.0x)",
+      "幽靈 (2.0x)",
+      "惡 (2.0x)"
     ],
-    "resistances": [],
+    "resistances": [
+      "毒 (0.25x)",
+      "蟲 (0.5x)",
+      "岩石 (0.5x)"
+    ],
     "immunities": [
-      "幽靈 (0.0x)"
+      "一般 (0.0x)",
+      "電 (0.0x)",
+      "格鬥 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/9ed0bf3ee15631b121300dea2edcf6bf8dd2970414be2c13b9be8789f1b39977.png",
     "name_en": "Golurk",
     "move_category": "物理",
-    "move_accuracy": 100,
-    "move_damage": 6000
+    "move_accuracy": "必中",
+    "move_damage": 4860,
+    "moves": [
+      {
+        "name": "暗影拳",
+        "type": "幽靈",
+        "category": "物理",
+        "power": 60,
+        "accuracy": "必中",
+        "damage": 4860
+      }
+    ]
   },
   {
     "id": "1-1-053",
@@ -23161,19 +24407,19 @@
     "name": "泥驢仔",
     "series": "星塵第1彈",
     "star": 3,
-    "energy": 68,
+    "energy": 62,
     "types": [
-      "一般"
+      "地面"
     ],
-    "hp": 110,
-    "atk": 75,
-    "def": 70,
-    "sp_atk": 75,
-    "sp_def": 70,
-    "spd": 75,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 86,
+    "atk": 69,
+    "def": 49,
+    "sp_atk": 33,
+    "sp_def": 40,
+    "spd": 33,
+    "move_name": "重踏",
+    "move_type": "地面",
+    "move_power": 60,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -23187,17 +24433,32 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "水 (2.0x)",
+      "草 (2.0x)",
+      "冰 (2.0x)"
     ],
-    "resistances": [],
+    "resistances": [
+      "毒 (0.5x)",
+      "岩石 (0.5x)"
+    ],
     "immunities": [
-      "幽靈 (0.0x)"
+      "電 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/b5334cb0b4176d83211a8c9c4dc5657096fcb5b6bf96e771bf8a47779d1328ec.png",
     "name_en": "Mudbray",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 6000
+    "move_damage": 4140,
+    "moves": [
+      {
+        "name": "重踏",
+        "type": "地面",
+        "category": "物理",
+        "power": 60,
+        "accuracy": 100,
+        "damage": 4140
+      }
+    ]
   },
   {
     "id": "1-1-056",
@@ -23305,19 +24566,20 @@
     "name": "伽勒爾直衝熊",
     "series": "星塵第1彈",
     "star": 2,
-    "energy": 47,
+    "energy": 64,
     "types": [
+      "惡",
       "一般"
     ],
-    "hp": 90,
-    "atk": 65,
-    "def": 60,
-    "sp_atk": 60,
-    "sp_def": 60,
-    "spd": 65,
-    "move_name": "撞擊",
-    "move_type": "一般",
-    "move_power": 80,
+    "hp": 89,
+    "atk": 48,
+    "def": 42,
+    "sp_atk": 36,
+    "sp_def": 42,
+    "spd": 67,
+    "move_name": "大聲咆哮",
+    "move_type": "惡",
+    "move_power": 55,
     "second_move": {},
     "special": "無",
     "special_mechanics": [],
@@ -23331,17 +24593,32 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "格鬥 (4.0x)",
+      "蟲 (2.0x)",
+      "妖精 (2.0x)"
     ],
-    "resistances": [],
+    "resistances": [
+      "惡 (0.5x)"
+    ],
     "immunities": [
+      "超能力 (0.0x)",
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/c792ab2b130915e79b0c05fd7f64f3c99985045cd0193cb34e775394a36b4d62.png",
     "name_en": "Galarian Linoone",
-    "move_category": "物理",
-    "move_accuracy": 100,
-    "move_damage": 5200
+    "move_category": "特殊",
+    "move_accuracy": 95,
+    "move_damage": 1980,
+    "moves": [
+      {
+        "name": "大聲咆哮",
+        "type": "惡",
+        "category": "特殊",
+        "power": 55,
+        "accuracy": 95,
+        "damage": 1980
+      }
+    ]
   },
   {
     "id": "1-1-059",
@@ -23450,18 +24727,19 @@
     "name": "蟲電寶",
     "series": "星塵第1彈",
     "star": 2,
-    "energy": 47,
+    "energy": 62,
     "types": [
-      "一般"
+      "蟲",
+      "電"
     ],
-    "hp": 90,
-    "atk": 65,
-    "def": 60,
-    "sp_atk": 60,
-    "sp_def": 60,
-    "spd": 65,
-    "move_name": "撞擊",
-    "move_type": "一般",
+    "hp": 76,
+    "atk": 55,
+    "def": 63,
+    "sp_atk": 39,
+    "sp_def": 51,
+    "spd": 26,
+    "move_name": "十字剪",
+    "move_type": "蟲",
     "move_power": 80,
     "second_move": {},
     "special": "無",
@@ -23476,17 +24754,31 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "火 (2.0x)",
+      "岩石 (2.0x)"
     ],
-    "resistances": [],
-    "immunities": [
-      "幽靈 (0.0x)"
+    "resistances": [
+      "草 (0.5x)",
+      "電 (0.5x)",
+      "格鬥 (0.5x)",
+      "鋼 (0.5x)"
     ],
+    "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/56ff02c5dca4381b7a4516e90f5b7a22e3f29059c58c3becf660fd18d1c4a1a2.png",
     "name_en": "Charjabug",
     "move_category": "物理",
     "move_accuracy": 100,
-    "move_damage": 5200
+    "move_damage": 4400,
+    "moves": [
+      {
+        "name": "十字剪",
+        "type": "蟲",
+        "category": "物理",
+        "power": 80,
+        "accuracy": 100,
+        "damage": 4400
+      }
+    ]
   },
   {
     "id": "1-1-062",
@@ -23817,18 +25109,19 @@
     "name": "古月鳥",
     "series": "星塵第1彈",
     "star": 1,
-    "energy": 35,
+    "energy": 70,
     "types": [
-      "一般"
+      "飛行",
+      "水"
     ],
-    "hp": 75,
-    "atk": 55,
-    "def": 50,
-    "sp_atk": 50,
-    "sp_def": 50,
-    "spd": 60,
-    "move_name": "撞擊",
-    "move_type": "一般",
+    "hp": 82,
+    "atk": 56,
+    "def": 38,
+    "sp_atk": 56,
+    "sp_def": 62,
+    "spd": 56,
+    "move_name": "熱水",
+    "move_type": "水",
     "move_power": 80,
     "second_move": {},
     "special": "無",
@@ -23843,17 +25136,34 @@
     "has_terastal": false,
     "has_primal": false,
     "weaknesses": [
-      "格鬥 (2.0x)"
+      "電 (4.0x)",
+      "岩石 (2.0x)"
     ],
-    "resistances": [],
+    "resistances": [
+      "火 (0.5x)",
+      "水 (0.5x)",
+      "格鬥 (0.5x)",
+      "蟲 (0.5x)",
+      "鋼 (0.5x)"
+    ],
     "immunities": [
-      "幽靈 (0.0x)"
+      "地面 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/c6004b916479baf6da0486b3a3ac7754488abf1b8ed06a930d58afad4b1fcad5.png",
     "name_en": "Cramorant",
-    "move_category": "物理",
+    "move_category": "特殊",
     "move_accuracy": 100,
-    "move_damage": 4400
+    "move_damage": 4480,
+    "moves": [
+      {
+        "name": "熱水",
+        "type": "水",
+        "category": "特殊",
+        "power": 80,
+        "accuracy": 100,
+        "damage": 4480
+      }
+    ]
   },
   {
     "id": "1-1-069",
