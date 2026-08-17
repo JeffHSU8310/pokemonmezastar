@@ -1272,8 +1272,8 @@ with tabs[6]:
     with col_syn2:
         st.markdown("**📥 從 GitHub 雲端 ➔ 拉取最新資料至此裝置**")
         st.caption("在換新手機、更換電腦或清除瀏覽器快取後，點擊下方按鈕即可秒還原所有卡匣與訓練家！")
-        if st.button("📥 一鍵自 GitHub 雲端拉取並還原", use_container_width=True):
-            with st.spinner("正在自 GitHub main 下載最新資料..."):
+        if st.button("📥 一鍵自 GitHub 雲端拉取並還原", use_container_width=True, type="primary"):
+            with st.spinner("正在直連 GitHub main 下載最新檔案..."):
                 ok_c, content_c, msg_c = pull_file_from_github_api("data/my_collection.json", token=active_token)
                 ok_t, content_t, msg_t = pull_file_from_github_api("data/trainers.json", token=active_token)
                 
@@ -1294,7 +1294,8 @@ with tabs[6]:
                         pass
                 
                 if success_count > 0:
-                    st.success(f"🎉 成功自 GitHub 雲端完全還原！載入 {len(st.session_state.owned_ids)} 張卡匣與最新訓練家資料！")
+                    st.balloons()
+                    st.success(f"🎉 成功自 GitHub 雲端完全還原！載入共 {len(st.session_state.owned_ids)} 款實體卡匣與最新訓練家資料！")
                     st.rerun()
                 else:
                     st.error(f"❌ 拉取失敗: {msg_c}")

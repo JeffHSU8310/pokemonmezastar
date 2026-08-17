@@ -160,21 +160,25 @@ def push_file_to_github_api(
 def pull_file_from_github_api(file_rel_path: str, token: Optional[str] = None) -> Tuple[bool, str, str]:
     """
     透過 GitHub REST API 從遠端 main 分支下載最新檔案內容。
-    若未傳入 Token 則自動讀取已儲存的 Token，確保私人倉庫 100% 順暢。
+    加入時間戳破除 CDN 快取，確保 100% 抓到 GitHub 雲端最新 commit！
     :return: (是否成功, 檔案內容字串, 訊息)
     """
     use_token = token
     if not use_token or not use_token.strip():
         use_token = get_saved_github_token()
 
+    timestamp = int(time.time() * 1000)
     headers = {
         "Accept": "application/vnd.github.v3+json",
-        "User-Agent": "PokemonMezastar-SyncBot"
+        "User-Agent": f"PokemonMezastar-SyncBot-{timestamp}",
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        "Pragma": "no-cache",
+        "Expires": "0"
     }
     if use_token and use_token.strip():
         headers["Authorization"] = f"Bearer {use_token.strip()}"
 
-    url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/{file_rel_path}?ref={BRANCH}"
+    url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/{file_rel_path}?ref={BRANCH}&_nocache={timestamp}"
 
     try:
         res = requests.get(url, headers=headers, timeout=10)
@@ -183,19 +187,15 @@ def pull_file_from_github_api(file_rel_path: str, token: Optional[str] = None) -
             content_b64 = data.get("content", "")
             decoded = base64.b64decode(content_b64).decode("utf-8")
             return True, decoded, "成功自 GitHub 雲端讀取最新資料！"
-    except Exception:
-        pass
+        elif res.status_code in [401, 403, 404]:
+            if not use_token:
+                return False, "", "⚠️ 您的 GitHub 倉庫為 Private (私人倉庫)，請先在上方填入 GitHub Token 並點擊【💾 永久記住 Token】！"
+            else:
+                return False, "", f"GitHub API 認證失敗 ({res.status_code})，請確認 Token 具備 repo 權限！"
+    except Exception as e:
+        return False, "", f"連線 GitHub 雲端伺服器失敗: {str(e)}"
 
-    # 容錯降級：讀取本機/伺服器磁碟上的同名檔案
-    local_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), file_rel_path)
-    if os.path.exists(local_path):
-        try:
-            with open(local_path, "r", encoding="utf-8") as f:
-                return True, f.read(), "已自儲存庫成功載入最新卡匣資料！"
-        except Exception as e:
-            return False, "", f"讀取本機檔案失敗: {str(e)}"
-
-    return False, "", "無法從 GitHub 或本機找到該檔案，請先在【🔄 雲端同步】填入 GitHub Token！"
+    return False, "", "無法從 GitHub 讀取檔案，請確認網路連線與 Token 設定。"
 
 def sync_all_user_data_to_github(
     owned_ids: List[str],
