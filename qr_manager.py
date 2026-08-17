@@ -1,9 +1,3 @@
-﻿"""
-Pokemon Mezastar QR & Trainer & Support Pokemon Manager
-處理訓練家 ID (QR Code 辨識/生成/持久化儲存/放大機台掃描) 與 支援寶可夢完整資料庫
-相容 Python 3.14，支援 OpenCV 影像高精度解碼與 QRCode 高清生成。
-"""
-
 import json
 import os
 import io
@@ -12,8 +6,16 @@ import base64
 from typing import List, Dict, Any, Optional, Tuple, Set
 import qrcode
 from PIL import Image
-import cv2
-import numpy as np
+
+# 安全防禦性載入 cv2 (防止在無 GUI 的 Linux 雲端環境報錯)
+try:
+    import cv2
+    import numpy as np
+    HAS_CV2 = True
+except Exception as e:
+    cv2 = None
+    np = None
+    HAS_CV2 = False
 
 from mezastar_data import DATA_DIR
 
@@ -290,6 +292,9 @@ def decode_qr_from_bytes(image_bytes: bytes) -> Tuple[bool, str, str]:
     採用多重影像增強算法 (灰階、對比增強、自適應二值化)，即使手機拍照反光或模糊也能精準解碼。
     :return: (是否成功, 解碼出的內容字串, 提示訊息)
     """
+    if not HAS_CV2 or cv2 is None or np is None:
+        return False, "", "目前環境未啟用 OpenCV 影像辨識，請直接手動輸入訓練家 ID！"
+
     try:
         nparr = np.frombuffer(image_bytes, np.uint8)
         img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
