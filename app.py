@@ -182,50 +182,62 @@ render_html("""
         font-size: 0.85rem !important;
     }
 
-    /* 📌 頂部分頁導覽列固定吸頂 (Sticky Tabs) - 上下滑動時始終置頂固定 */
+    /* 📌 頂部分頁導覽列固定吸頂 (Sticky Tabs) - 電腦與手機均置頂固定 */
     div[data-testid="stTabs"] > div:first-child {
         position: sticky !important;
         top: 2.875rem !important; /* 吸附在 Streamlit 頂部 header 下方 */
         z-index: 999 !important;
         background-color: #FFFFFF !important;
-        padding: 6px 4px 4px 4px !important;
+        padding: 6px 8px 4px 8px !important;
         border-bottom: 2px solid #E0E0E0 !important;
-        box-shadow: 0 4px 6px -2px rgba(0, 0, 0, 0.08) !important;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08) !important;
     }
 
-    /* 🔝 懸浮置頂按鈕 (Back to Top Button) */
+    /* 🔝 懸浮置頂按鈕 (Back to Top Button) - 電腦與手機自適應 */
     #back-to-top-btn {
         position: fixed;
-        bottom: 24px;
-        right: 20px;
-        width: 44px;
-        height: 44px;
+        bottom: 28px;
+        right: 28px;
+        width: 48px;
+        height: 48px;
         border-radius: 50%;
-        background: rgba(229, 57, 53, 0.9);
+        background: rgba(229, 57, 53, 0.95);
         color: #FFFFFF;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 20px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        font-size: 22px;
+        box-shadow: 0 4px 14px rgba(229, 57, 53, 0.4);
         cursor: pointer;
         z-index: 99999;
-        transition: opacity 0.3s, transform 0.2s;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         user-select: none;
         -webkit-tap-highlight-color: transparent;
+        border: 2px solid #FFFFFF;
+    }
+    #back-to-top-btn:hover {
+        transform: translateY(-3px) scale(1.08);
+        background: #D32F2F;
+        box-shadow: 0 6px 20px rgba(229, 57, 53, 0.6);
     }
     #back-to-top-btn:active {
-        transform: scale(0.9);
+        transform: scale(0.92);
+    }
+
+    /* 電腦頂部 Header 游標指針提示 */
+    header[data-testid="stHeader"] {
+        cursor: pointer !important;
+        user-select: none !important;
     }
 </style>
 
-<!-- 🔝 頂部雙擊回最上面 (Double-Tap to Scroll Top) & 懸浮按鈕腳本 -->
-<div id="back-to-top-btn" title="回頂部" onclick="window.scrollToTopMezastar()">🔝</div>
+<!-- 🔝 電腦與手機 頂部雙擊回最上面 (Double-Click / Double-Tap to Scroll Top) & 懸浮按鈕腳本 -->
+<div id="back-to-top-btn" title="點擊回到最上方 (或雙擊頂部空白處)" onclick="window.scrollToTopMezastar()">🔝</div>
 
 <script>
 (function() {
     function scrollToTopMezastar() {
-        // 同時相容 window 捲動與 Streamlit 內部 main 容器捲動
+        // 同時相容 window 捲動、主容器捲動與各式瀏覽器
         window.scrollTo({ top: 0, behavior: 'smooth' });
         const mainContainer = document.querySelector('section.main') || document.querySelector('.main');
         if (mainContainer) {
@@ -236,47 +248,59 @@ render_html("""
     }
     window.scrollToTopMezastar = scrollToTopMezastar;
 
-    // 監聽手機/電腦在頂部 Header 與導覽列雙擊 (Double Tap / Double Click)
+    // 監聽雙擊事件 (電腦滑鼠 dblclick + 手機觸控快速雙連擊)
     let lastTapTime = 0;
     function handleTopDoubleTap(e) {
         const currentTime = new Date().getTime();
         const tapLength = currentTime - lastTapTime;
-        if (tapLength < 380 && tapLength > 0) {
+        if (tapLength < 400 && tapLength > 0) {
             scrollToTopMezastar();
-            e.preventDefault();
+            if (e && e.preventDefault) e.preventDefault();
         }
         lastTapTime = currentTime;
     }
 
-    // 綁定頂部 Header、分頁 Tab 列與整頁頂部雙擊
-    document.addEventListener('DOMContentLoaded', initScrollFeatures);
-    setTimeout(initScrollFeatures, 1000);
-    setTimeout(initScrollFeatures, 3000);
-
     function initScrollFeatures() {
+        // 1. 電腦與手機頂部 Header (打 O 處) 綁定雙擊
         const header = document.querySelector('header[data-testid="stHeader"]');
         if (header) {
-            header.style.cursor = 'pointer';
+            header.title = "雙擊兩下回到頁面頂端";
+            header.addEventListener('dblclick', scrollToTopMezastar);
             header.addEventListener('click', handleTopDoubleTap);
             header.addEventListener('touchend', handleTopDoubleTap);
         }
         
+        // 2. 分頁導覽列 (打 V 處) 頂部吸頂欄綁定雙擊
         const tabsBar = document.querySelector('div[data-testid="stTabs"] > div:first-child');
         if (tabsBar) {
-            tabsBar.addEventListener('dblclick', scrollToTopMezastar);
+            tabsBar.addEventListener('dblclick', function(e) {
+                // 如果不是點在按鈕本身，雙擊空白處回頂部
+                if (e.target.tagName !== 'BUTTON') {
+                    scrollToTopMezastar();
+                }
+            });
         }
 
-        // 監聽滾動以切換右下角懸浮按鈕顯示/隱藏
+        // 3. 鍵盤快速鍵支援 (電腦按 Home 鍵回頂部)
+        window.addEventListener('keydown', function(e) {
+            if (e.key === 'Home') {
+                scrollToTopMezastar();
+            }
+        });
+
+        // 4. 監聽滾動以顯示/隱藏右下角懸浮按鈕
         const bttBtn = document.getElementById('back-to-top-btn');
         function onScrollCheck() {
             const scrollY = window.scrollY || document.documentElement.scrollTop || (document.querySelector('section.main') ? document.querySelector('section.main').scrollTop : 0);
             if (bttBtn) {
-                if (scrollY > 250) {
+                if (scrollY > 200) {
                     bttBtn.style.opacity = '1';
                     bttBtn.style.pointerEvents = 'auto';
+                    bttBtn.style.transform = 'translateY(0)';
                 } else {
                     bttBtn.style.opacity = '0';
                     bttBtn.style.pointerEvents = 'none';
+                    bttBtn.style.transform = 'translateY(15px)';
                 }
             }
         }
@@ -287,8 +311,13 @@ render_html("""
         }
         onScrollCheck();
     }
+
+    document.addEventListener('DOMContentLoaded', initScrollFeatures);
+    setTimeout(initScrollFeatures, 800);
+    setTimeout(initScrollFeatures, 2500);
 })();
 </script>
+
 
 """)
 
