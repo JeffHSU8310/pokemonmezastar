@@ -181,7 +181,115 @@ render_html("""
         padding: 6px 10px !important;
         font-size: 0.85rem !important;
     }
+
+    /* 📌 頂部分頁導覽列固定吸頂 (Sticky Tabs) - 上下滑動時始終置頂固定 */
+    div[data-testid="stTabs"] > div:first-child {
+        position: sticky !important;
+        top: 2.875rem !important; /* 吸附在 Streamlit 頂部 header 下方 */
+        z-index: 999 !important;
+        background-color: #FFFFFF !important;
+        padding: 6px 4px 4px 4px !important;
+        border-bottom: 2px solid #E0E0E0 !important;
+        box-shadow: 0 4px 6px -2px rgba(0, 0, 0, 0.08) !important;
+    }
+
+    /* 🔝 懸浮置頂按鈕 (Back to Top Button) */
+    #back-to-top-btn {
+        position: fixed;
+        bottom: 24px;
+        right: 20px;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: rgba(229, 57, 53, 0.9);
+        color: #FFFFFF;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        cursor: pointer;
+        z-index: 99999;
+        transition: opacity 0.3s, transform 0.2s;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+    }
+    #back-to-top-btn:active {
+        transform: scale(0.9);
+    }
 </style>
+
+<!-- 🔝 頂部雙擊回最上面 (Double-Tap to Scroll Top) & 懸浮按鈕腳本 -->
+<div id="back-to-top-btn" title="回頂部" onclick="window.scrollToTopMezastar()">🔝</div>
+
+<script>
+(function() {
+    function scrollToTopMezastar() {
+        // 同時相容 window 捲動與 Streamlit 內部 main 容器捲動
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        const mainContainer = document.querySelector('section.main') || document.querySelector('.main');
+        if (mainContainer) {
+            mainContainer.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
+        document.body.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    window.scrollToTopMezastar = scrollToTopMezastar;
+
+    // 監聽手機/電腦在頂部 Header 與導覽列雙擊 (Double Tap / Double Click)
+    let lastTapTime = 0;
+    function handleTopDoubleTap(e) {
+        const currentTime = new Date().getTime();
+        const tapLength = currentTime - lastTapTime;
+        if (tapLength < 380 && tapLength > 0) {
+            scrollToTopMezastar();
+            e.preventDefault();
+        }
+        lastTapTime = currentTime;
+    }
+
+    // 綁定頂部 Header、分頁 Tab 列與整頁頂部雙擊
+    document.addEventListener('DOMContentLoaded', initScrollFeatures);
+    setTimeout(initScrollFeatures, 1000);
+    setTimeout(initScrollFeatures, 3000);
+
+    function initScrollFeatures() {
+        const header = document.querySelector('header[data-testid="stHeader"]');
+        if (header) {
+            header.style.cursor = 'pointer';
+            header.addEventListener('click', handleTopDoubleTap);
+            header.addEventListener('touchend', handleTopDoubleTap);
+        }
+        
+        const tabsBar = document.querySelector('div[data-testid="stTabs"] > div:first-child');
+        if (tabsBar) {
+            tabsBar.addEventListener('dblclick', scrollToTopMezastar);
+        }
+
+        // 監聽滾動以切換右下角懸浮按鈕顯示/隱藏
+        const bttBtn = document.getElementById('back-to-top-btn');
+        function onScrollCheck() {
+            const scrollY = window.scrollY || document.documentElement.scrollTop || (document.querySelector('section.main') ? document.querySelector('section.main').scrollTop : 0);
+            if (bttBtn) {
+                if (scrollY > 250) {
+                    bttBtn.style.opacity = '1';
+                    bttBtn.style.pointerEvents = 'auto';
+                } else {
+                    bttBtn.style.opacity = '0';
+                    bttBtn.style.pointerEvents = 'none';
+                }
+            }
+        }
+        window.addEventListener('scroll', onScrollCheck);
+        const mainContainer = document.querySelector('section.main');
+        if (mainContainer) {
+            mainContainer.addEventListener('scroll', onScrollCheck);
+        }
+        onScrollCheck();
+    }
+})();
+</script>
+
 """)
 
 def render_type_badge(t_name: str) -> str:
