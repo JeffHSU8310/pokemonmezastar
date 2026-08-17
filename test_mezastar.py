@@ -179,7 +179,43 @@ class TestPokemonMezastar(unittest.TestCase):
         self.assertEqual(r_type.status_code, 200)
         self.assertEqual(r_type.json()["full_chart"]["岩石"], 4.0)
 
+    def test_trainer_and_support_pokemon_qr(self):
+        """測試訓練家管理、QR Code 生成與解碼、支援寶可夢資料庫"""
+        import qr_manager
+        
+        # 1. 測試訓練家新增與讀取
+        trainers = qr_manager.load_trainers()
+        self.assertGreaterEqual(len(trainers), 1)
+
+        ok, msg, updated = qr_manager.add_trainer("UNITTEST-TR-001", "測試訓練家", "單元測試備註")
+        self.assertTrue(ok)
+        self.assertTrue(any(t["id"] == "UNITTEST-TR-001" for t in updated))
+
+        # 2. 測試切換目前選用
+        ok_act, _, _ = qr_manager.set_active_trainer("UNITTEST-TR-001")
+        self.assertTrue(ok_act)
+
+        # 3. 測試 QR Code Base64 與二進位解碼
+        qr_bytes = qr_manager.generate_qr_bytes("UNITTEST-TR-001", box_size=10)
+        self.assertGreater(len(qr_bytes), 100)
+
+        ok_dec, val, _ = qr_manager.decode_qr_from_bytes(qr_bytes)
+        self.assertTrue(ok_dec)
+        self.assertEqual(val, "UNITTEST-TR-001")
+
+        # 4. 測試支援寶可夢資料庫
+        sp_list = qr_manager.load_support_pokemon()
+        self.assertGreaterEqual(len(sp_list), 20)
+        charizard_sp = next((sp for sp in sp_list if "噴火龍" in sp["name"]), None)
+        self.assertIsNotNone(charizard_sp)
+        self.assertIn("qr_data", charizard_sp)
+        self.assertIn("skill_name", charizard_sp)
+
+        # 清理測試資料
+        qr_manager.delete_trainer("UNITTEST-TR-001")
+
 if __name__ == "__main__":
     unittest.main()
+
 
 

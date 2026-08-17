@@ -40,6 +40,16 @@ from github_sync import (
     auto_commit_and_push,
     load_version_info
 )
+from qr_manager import (
+    load_trainers,
+    save_trainers,
+    add_trainer,
+    delete_trainer,
+    set_active_trainer,
+    load_support_pokemon,
+    generate_qr_base64,
+    decode_qr_from_bytes
+)
 
 # 設定頁面資訊
 st.set_page_config(
@@ -320,6 +330,8 @@ render_html("""
 tabs = st.tabs([
     "⚔️ 陣容推薦",
     "🎒 我的卡匣",
+    "👑 訓練家 ID",
+    "🤝 支援寶可夢",
     "📖 圖鑑庫",
     "🌐 網路擴充",
     "🔄 雲端同步"
@@ -715,9 +727,202 @@ with tabs[1]:
                     st.rerun()
 
 # ==============================================================================
-# TAB 3: 📖 全卡匣圖鑑庫 (Pokedex) - 依彈別完整分類與數據檢視
+# TAB 3: 👑 訓練家 ID 庫 (Trainer ID Manager & Machine QR Code Scanner)
 # ==============================================================================
 with tabs[2]:
+    st.markdown("#### 👑 訓練家 ID 管理與機台專用 QR Code")
+    st.caption("支援上傳相片自動辨識 QR Code、自訂多組訓練家名稱與放大高亮掃描模式！")
+
+    trainers_list = load_trainers()
+
+    # 頂部：目前使用中的訓練家橫幅與超大掃描快速按鈕
+    active_trainer = next((t for t in trainers_list if t.get("is_active")), trainers_list[0] if trainers_list else None)
+
+    if active_trainer:
+        t_id = active_trainer.get("id", "")
+        t_name = active_trainer.get("name", "未命名訓練家")
+        t_notes = active_trainer.get("notes", "")
+        qr_b64 = generate_qr_base64(t_id, box_size=14)
+
+        render_html(f"""
+        <div style="background: linear-gradient(135deg, #FFF8E1, #FFECB3); border: 2px solid #FFA000; border-radius: 12px; padding: 12px; margin-bottom: 12px; text-align:center;">
+            <div style="font-size:0.85rem; color:#E65100; font-weight:bold;">👑 目前選用訓練家</div>
+            <div style="font-size:1.2rem; font-weight:800; color:#212121; margin:2px 0;">{t_name}</div>
+            <div style="font-size:0.8rem; color:#616161; font-family:monospace;">ID: {t_id}</div>
+            {f"<div style='font-size:0.75rem; color:#757575; margin-top:2px;'>{t_notes}</div>" if t_notes else ""}
+        </div>
+        """)
+
+        # 快速放大掃描視窗抽屜
+        with st.expander("⚡ 點此開啟【機台鏡頭專用 • 超大亮屏掃描 QR Code】", expanded=True):
+            st.markdown("""
+            <div style="background:#000000; padding:15px; border-radius:12px; text-align:center; margin:auto; max-width:380px;">
+                <div style="color:#FFF; font-weight:bold; font-size:0.95rem; margin-bottom:8px;">📱 請將此二維碼對準 Mezastar 機台讀取鏡頭</div>
+                <div style="background:#FFFFFF; padding:12px; border-radius:10px; display:inline-block;">
+            """ + f'<img src="{qr_b64}" style="width:260px; height:260px; display:block; margin:auto;" />' + """
+                </div>
+                <div style="color:#FFD54F; font-size:0.75rem; margin-top:8px;">💡 提示：掃描時請將手機螢幕亮度調高，保持距離機台鏡頭約 5~10 公分。</div>
+            </div>
+            """, unsafe_allow_html=True)
+
+    st.divider()
+
+    # 新增/讀取訓練家區塊
+    st.markdown("##### ➕ 新增或讀取訓練家 ID")
+    add_mode = st.radio("新增方式:", ["📷 上傳 QR Code 照片/截圖自動辨識", "✍️ 手動輸入訓練家 ID/代碼"], horizontal=True)
+
+    detected_id = ""
+    if "📷" in add_mode:
+        qr_file = st.file_uploader("上傳含有訓練家 QR Code 的照片或截圖 (JPG/PNG/WEBP):", type=["png", "jpg", "jpeg", "webp"], key="upload_trainer_qr")
+        if qr_file is not None:
+            with st.spinner("正在以多重濾鏡自動辨識 QR Code..."):
+                img_bytes = qr_file.getvalue()
+                success, val, msg = decode_qr_from_bytes(img_bytes)
+                if success:
+                    st.success(f"✅ {msg} 辨識結果: `{val}`")
+                    detected_id = val
+                else:
+                    st.error(f"❌ {msg}")
+    
+    with st.form("add_trainer_form"):
+        form_id = st.text_input("訓練家 ID / QR Code 內容:", value=detected_id, placeholder="例如: MZ-TR-8888-001 或辨識出的字串")
+        form_name = st.text_input("訓練家名稱 (自訂暱稱):", placeholder="例如: 哥哥的主號 / 寶可夢大師")
+        form_notes = st.text_input("備註說明 (可選):", placeholder="例如: 常用於台北站前大卡機")
+        
+        submitted = st.form_submit_button("💾 儲存訓練家至本機", use_container_width=True, type="primary")
+        if submitted:
+            if not form_id.strip():
+                st.warning("請先填寫或辨識出訓練家 ID！")
+            else:
+                ok, res_msg, updated_list = add_trainer(form_id, form_name, form_notes)
+                if ok:
+                    st.success(f"✅ {res_msg}")
+                    st.rerun()
+                else:
+                    st.error(f"❌ {res_msg}")
+
+    st.divider()
+
+    # 多組訓練家清單與切換
+    st.markdown("##### 🗂️ 已儲存的訓練家清單")
+    if not trainers_list:
+        st.info("目前尚無儲存的訓練家資料。")
+    else:
+        for idx, tr in enumerate(trainers_list):
+            tr_id = tr.get("id", "")
+            tr_name = tr.get("name", "未命名")
+            tr_active = tr.get("is_active", False)
+            tr_notes = tr.get("notes", "")
+
+            with st.container():
+                col_t1, col_t2, col_t3 = st.columns([3, 1.2, 1])
+                with col_t1:
+                    status_badge = "👑 **[目前使用中]** " if tr_active else ""
+                    st.markdown(f"{status_badge}**{tr_name}** (`{tr_id}`)")
+                    if tr_notes:
+                        st.caption(f"備註: {tr_notes}")
+                with col_t2:
+                    if not tr_active:
+                        if st.button("👑 設為目前", key=f"btn_set_act_{idx}_{tr_id}", use_container_width=True):
+                            set_active_trainer(tr_id)
+                            st.rerun()
+                    else:
+                        st.button("✅ 使用中", key=f"btn_act_dis_{idx}_{tr_id}", disabled=True, use_container_width=True)
+                with col_t3:
+                    if st.button("🗑️ 刪除", key=f"btn_del_tr_{idx}_{tr_id}", use_container_width=True):
+                        delete_trainer(tr_id)
+                        st.rerun()
+                
+                # 單一訓練家 QR Code 展開
+                with st.expander(f"🔍 查看【{tr_name}】專屬 QR Code", expanded=False):
+                    q_b64 = generate_qr_base64(tr_id, box_size=12)
+                    st.markdown(f'<div style="text-align:center; padding:10px; background:#F5F5F5; border-radius:8px;"><img src="{q_b64}" style="width:200px; height:200px;" /></div>', unsafe_allow_html=True)
+
+
+# ==============================================================================
+# TAB 4: 🤝 支援寶可夢 (Support Pokemon & Machine QR Code Library)
+# ==============================================================================
+with tabs[3]:
+    st.markdown("#### 🤝 官方支援寶可夢圖鑑與機台專用 QR Code")
+    st.caption("收錄歷代官方全系列支援寶可夢！在機台對戰掃描時，可直接點擊放大 QR Code 召喚神獸支援助戰！")
+
+    all_support_pokemon = load_support_pokemon()
+
+    # 篩選控制項
+    sp_series_list = ["🌟 全部系列"] + sorted(list(set(sp.get("series", "") for sp in all_support_pokemon)))
+    sp_col1, sp_col2 = st.columns([1, 1])
+    with sp_col1:
+        sp_sel_series = st.selectbox("📂 彈別系列篩選:", options=sp_series_list, index=0, key="sp_series_filter")
+    with sp_col2:
+        sp_kw = st.text_input("🔍 搜尋寶可夢名稱或技能:", value="", placeholder="例如: 噴火龍, 蒼響, 閃電...", key="sp_search_kw")
+
+    # 過濾
+    filtered_sp = []
+    for sp in all_support_pokemon:
+        if sp_sel_series != "🌟 全部系列" and sp.get("series") != sp_sel_series:
+            continue
+        if sp_kw:
+            kw_low = sp_kw.lower()
+            if kw_low not in sp.get("name", "").lower() and kw_low not in sp.get("skill_name", "").lower() and kw_low not in sp.get("skill_desc", "").lower():
+                continue
+        filtered_sp.append(sp)
+
+    st.caption(f"共找到 **{len(filtered_sp)}** 款支援寶可夢：")
+
+    # 支援寶可夢卡片式列表
+    sp_grid_cols = st.columns(2)
+    for idx, sp in enumerate(filtered_sp):
+        sp_id = sp.get("id", "")
+        sp_name = sp.get("name", "")
+        sp_types = sp.get("types", [])
+        sp_skill = sp.get("skill_name", "")
+        sp_desc = sp.get("skill_desc", "")
+        sp_series = sp.get("series", "")
+        sp_qr_data = sp.get("qr_data", f"MEZASTAR-SP:{sp_id}")
+        sp_icon = sp.get("icon_url", "")
+
+        with sp_grid_cols[idx % 2]:
+            primary_type = sp_types[0] if sp_types else "一般"
+            type_bg = TYPE_COLORS.get(primary_type, "#E53935")
+
+            render_html(f"""
+            <div class="card-box" style="border-top: 4px solid {type_bg}; padding:10px; margin-bottom:8px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="background:{type_bg}; color:#FFF; font-size:0.7rem; font-weight:bold; padding:2px 6px; border-radius:4px;">{sp_series}</span>
+                    <span style="font-size:0.75rem; color:#666; font-family:monospace;">{sp_id}</span>
+                </div>
+                <div style="display:flex; align-items:center; margin:8px 0;">
+                    <img src="{sp_icon}" style="width:55px; height:55px; object-fit:contain; margin-right:8px;" />
+                    <div>
+                        <div style="font-weight:bold; font-size:0.95rem; color:#111;">{sp_name}</div>
+                        <div style="font-size:0.75rem;">{render_types_html(sp_types)}</div>
+                    </div>
+                </div>
+                <div style="background:#FFFDE7; border-left:3px solid #FBC02D; padding:6px; border-radius:4px; font-size:0.75rem; margin-bottom:6px;">
+                    <div style="font-weight:bold; color:#F57F17;">⚡ 支援招式：{sp_skill}</div>
+                    <div style="color:#555; font-size:0.7rem; margin-top:2px;">{sp_desc}</div>
+                </div>
+            </div>
+            """)
+
+            # 點擊放大 QR Code 抽屜
+            with st.expander(f"📱 點此放大【{sp_name}】機台掃描 QR Code", expanded=False):
+                sp_qr_b64 = generate_qr_base64(sp_qr_data, box_size=12)
+                st.markdown(f"""
+                <div style="background:#000000; padding:12px; border-radius:10px; text-align:center;">
+                    <div style="color:#FFF; font-weight:bold; font-size:0.85rem; margin-bottom:6px;">⚡ {sp_name} 支援召喚碼</div>
+                    <div style="background:#FFFFFF; padding:10px; border-radius:8px; display:inline-block;">
+                        <img src="{sp_qr_b64}" style="width:220px; height:220px; display:block; margin:auto;" />
+                    </div>
+                    <div style="color:#B0BEC5; font-size:0.7rem; margin-top:6px; font-family:monospace;">代碼: {sp_qr_data}</div>
+                </div>
+                """, unsafe_allow_html=True)
+
+
+# ==============================================================================
+# TAB 5: 📖 全卡匣圖鑑庫 (Pokedex) - 依彈別完整分類與數據檢視
+# ==============================================================================
+with tabs[4]:
     st.markdown("#### 📖 寶可夢 Mezastar 全卡匣圖鑑庫")
     
     # 彈別快速分類選單
@@ -839,9 +1044,9 @@ with tabs[2]:
         st.dataframe(df_all, use_container_width=True)
 
 # ==============================================================================
-# TAB 4: 🌐 網路資料擴充與一鍵自動更新
+# TAB 6: 🌐 網路資料擴充與一鍵自動更新
 # ==============================================================================
-with tabs[3]:
+with tabs[5]:
     st.markdown("#### 🌐 官方卡匣一鍵自動更新與網路擴充")
     
     from scraper import fetch_and_sync_official_new_cards
@@ -919,9 +1124,9 @@ with tabs[3]:
                     st.error(msg)
 
 # ==============================================================================
-# TAB 5: 🔄 GitHub 雲端同步
+# TAB 7: 🔄 GitHub 雲端同步
 # ==============================================================================
-with tabs[4]:
+with tabs[6]:
     st.markdown("#### 🔄 GitHub 雲端同步")
     g_info = get_git_status()
     st.caption(f"版次: `v{g_info['version']}` | 分支: `{g_info['branch']}`")
