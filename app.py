@@ -308,33 +308,57 @@ def render_type_badge(t_name: str) -> str:
 def render_types_html(types: List[str]) -> str:
     return "".join([render_type_badge(t) for t in types])
 
-# 初始化 Session State
-if "owned_ids" not in st.session_state:
-    st.session_state.owned_ids = load_user_collection_ids()
-
-# 🚀 程式開啟/伺服器 Reboot 時自動自 GitHub 雲端拉取最新資料 (確保永遠讀取 GitHub 最新存檔)
+# ==============================================================================
+# 🚀 每次新 Session 開啟：強制自 GitHub 雲端拉取最新卡匣庫與訓練家資料
+# 規則：永遠優先從 GitHub 讀取，不依賴本機磁碟，確保所有裝置永遠同步
+# ==============================================================================
 if "github_auto_synced" not in st.session_state:
     st.session_state.github_auto_synced = True
+
+    # 三重 Token 讀取機制：磁碟設定 → Streamlit Secrets → 環境變數
     auto_token = get_saved_github_token()
-    if not auto_token and hasattr(st, "secrets"):
-        auto_token = st.secrets.get("GITHUB_TOKEN", None)
-    
+    if not auto_token:
+        try:
+            auto_token = st.secrets.get("GITHUB_TOKEN", "")
+        except Exception:
+            pass
+    if not auto_token:
+        auto_token = os.environ.get("GITHUB_TOKEN", "")
+
+    # 記入 session state 備用
+    if auto_token:
+        st.session_state["github_token"] = auto_token
+
+    github_loaded = False
     try:
-        # 1. 自動從 GitHub 抓取最新卡匣庫
+        # 1. 從 GitHub 拉取最新卡匣庫
         ok_c, content_c, _ = pull_file_from_github_api("data/my_collection.json", token=auto_token)
-        if ok_c and content_c:
+        if ok_c and content_c.strip():
             imp_ok, _, new_ids = import_collection_from_json(content_c, mode="overwrite")
-            if imp_ok:
+            if imp_ok and new_ids:
                 st.session_state.owned_ids = new_ids
+                # 同步寫回本機（供斷網備用）
                 save_user_collection_ids(new_ids)
-        # 2. 自動從 GitHub 抓取最新訓練家 ID 與 QR Code
+                github_loaded = True
+        # 2. 從 GitHub 拉取最新訓練家 ID 與 QR Code
         ok_t, content_t, _ = pull_file_from_github_api("data/trainers.json", token=auto_token)
-        if ok_t and content_t:
+        if ok_t and content_t.strip():
             parsed_trainers = json.loads(content_t)
             if isinstance(parsed_trainers, list):
                 save_trainers(parsed_trainers)
     except Exception:
         pass
+
+    # 若 GitHub 載入成功，session state 已有最新資料，否則讀本機備份
+    if not github_loaded:
+        if "owned_ids" not in st.session_state:
+            st.session_state.owned_ids = load_user_collection_ids()
+    
+    st.session_state["github_startup_loaded"] = github_loaded
+
+elif "owned_ids" not in st.session_state:
+    # 同一 session 中若 owned_ids 被清除，重新從本機讀取
+    st.session_state.owned_ids = load_user_collection_ids()
 
 # 載入卡匣資料
 all_cards = load_cards()
@@ -1193,14 +1217,28 @@ with tabs[6]:
     g_info = get_git_status()
     st.caption(f"📌 系統版本: `v{g_info['version']}` | 雲端分支: `main` | 倉庫: `JeffHSU8310/pokemonmezastar`")
 
-    # 讀取已永久儲存的 Token
+    # 讀取已永久儲存的 Token（三重來源）
     saved_tok = get_saved_github_token()
-    if not saved_tok and hasattr(st, "secrets"):
-        saved_tok = st.secrets.get("GITHUB_TOKEN", "")
+    if not saved_tok:
+        try:
+            saved_tok = st.secrets.get("GITHUB_TOKEN", "")
+        except Exception:
+            pass
     if not saved_tok and "github_token" in st.session_state:
-        saved_tok = st.session_state.github_token
+        saved_tok = st.session_state.get("github_token", "")
+
+    # 儲存狀態診斷
+    config_exists = os.path.exists(os.path.join("data", "user_config.json"))
+    secrets_exists = os.path.exists(os.path.join(".streamlit", "secrets.toml"))
 
     st.markdown("##### 🔑 1. 設定並記住 GitHub Personal Access Token (PAT)")
+    
+    # 顯示 Token 儲存狀態
+    if saved_tok:
+        st.success(f"✅ **Token 已永久儲存**（磁碟設定檔: {'✓' if config_exists else '✗'} | secrets.toml: {'✓' if secrets_exists else '✗'}）— 每次開啟自動連 GitHub 讀取最新資料！")
+    else:
+        st.warning("⚠️ **尚未儲存 Token！** 請貼上您的 GitHub Token 並點擊【💾 永久記住 Token】，之後每次開啟都會自動從 GitHub 載入最新卡匣與訓練家！")
+
     col_t1, col_t2 = st.columns([3, 1])
     with col_t1:
         tok_input = st.text_input(
@@ -1208,16 +1246,21 @@ with tabs[6]:
             value=saved_tok,
             type="password",
             placeholder="例如: ghp_xxxxxxxxxxxxxxxxxxxx",
-            help="此 Token 用於直接呼叫 GitHub API 寫入您的私人倉庫，儲存後永久免再次輸入。"
+            help="儲存後永久寫入磁碟，重開機、清快取均有效。"
         )
     with col_t2:
-        st.write("") # 對齊間距
+        st.write("")
         st.write("")
         if st.button("💾 永久記住 Token", type="primary", use_container_width=True):
             if tok_input.strip():
-                save_github_token(tok_input.strip())
+                ok = save_github_token(tok_input.strip())
                 st.session_state.github_token = tok_input.strip()
-                st.success("✅ Token 已成功記住！以後開啟無需再次輸入！")
+                if ok:
+                    st.success("✅ Token 已永久儲存至磁碟！下次開啟自動從 GitHub 載入！")
+                else:
+                    st.warning("⚠️ 儲存可能不完整，請確認程式目錄有寫入權限。")
+                # 儲存後立即觸發一次 GitHub 同步更新 session
+                st.session_state.pop("github_auto_synced", None)
                 st.rerun()
             else:
                 st.warning("請先填入 Token！")
@@ -1225,17 +1268,21 @@ with tabs[6]:
         if saved_tok:
             if st.button("🗑️ 清除記錄", use_container_width=True):
                 clear_saved_github_token()
-                if "github_token" in st.session_state:
-                    del st.session_state.github_token
+                for k in ["github_token", "github_auto_synced", "github_startup_loaded"]:
+                    st.session_state.pop(k, None)
                 st.info("已清除已儲存的 Token")
                 st.rerun()
 
-    active_token = tok_input.strip() if tok_input else saved_tok
+    active_token = tok_input.strip() if tok_input and tok_input.strip() else saved_tok
 
     if active_token:
-        st.caption("🟢 **目前狀態：已綁定 GitHub 授權 Token**，隨時可進行全量雙向同步！")
+        startup_ok = st.session_state.get("github_startup_loaded", False)
+        if startup_ok:
+            st.caption(f"🟢 **Token 已綁定，本次啟動已成功自 GitHub 載入 {len(st.session_state.owned_ids)} 款卡匣與訓練家資料！**")
+        else:
+            st.caption("🟡 **Token 已綁定，但本次啟動 GitHub 同步未成功**（可能網路暫時中斷）— 請點擊下方【📥 拉取並還原】手動同步。")
     else:
-        st.caption("🟠 **目前狀態：未設定 Token**（若需寫入私人倉庫請先填入並點擊【💾 永久記住 Token】）")
+        st.caption("🔴 **尚未設定 Token** — 請先填入 Token 並點擊【💾 永久記住 Token】，之後每次開啟均自動從 GitHub 載入最新資料！")
 
     with st.expander("💡 如何在 1 分鐘內免費取得您的 GitHub Token？（超簡單 3 步驟）", expanded=False):
         st.markdown("""
