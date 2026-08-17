@@ -37,8 +37,10 @@ from collection_manager import (
 from scraper import add_custom_card, fetch_online_pokemon_metadata, batch_import_cards
 from github_sync import (
     get_git_status,
-    auto_commit_and_push,
-    load_version_info
+    load_version_info,
+    push_file_to_github_api,
+    pull_file_from_github_api,
+    sync_all_user_data_to_github
 )
 from qr_manager import (
     load_trainers,
@@ -512,27 +514,52 @@ with tabs[1]:
     </div>
     """)
     
-    col_sync_btn1, col_sync_btn2 = st.columns([1.2, 1])
+    col_sync_btn1, col_sync_btn2, col_sync_btn3 = st.columns([1.2, 1, 1])
     with col_sync_btn1:
-        gh_token = st.secrets.get("GITHUB_TOKEN", None) if hasattr(st, "secrets") else None
-        if st.button("🚀 立即上傳/備份收藏至 GitHub 雲端", use_container_width=True, type="primary"):
-            with st.spinner("正在自動記錄版次並同步至 GitHub main..."):
-                ok, sync_res = auto_commit_and_push(
-                    change_summary=f"更新個人收藏庫 (共 {len(st.session_state.owned_ids)} 張卡匣)",
-                    branch="main",
-                    github_token=gh_token
-                )
-                if ok:
-                    st.success("✅ 您的卡匣已成功記錄並備份！")
-                    st.rerun()
-                else:
-                    st.error(f"❌ 同步提示: {sync_res}")
+        # 優先從 Secrets 或 Session 讀取 Token
+        user_token = st.secrets.get("GITHUB_TOKEN", None) if hasattr(st, "secrets") else None
+        if not user_token and "github_token" in st.session_state:
+            user_token = st.session_state.github_token
+            
+        if st.button("🚀 永久寫入 GitHub 雲端", use_container_width=True, type="primary", help="透過 GitHub API 直接將卡匣與訓練家寫入 main 倉庫"):
+            if not user_token:
+                st.warning("⚠️ 請先至【🔄 雲端同步】頁籤填入一次 GitHub Token，即可永久一鍵同步！")
+            else:
+                with st.spinner("正在透過 GitHub API 寫入 main 倉庫..."):
+                    trainers_curr = load_trainers()
+                    ok, sync_res = sync_all_user_data_to_github(
+                        owned_ids=list(st.session_state.owned_ids),
+                        trainers=trainers_curr,
+                        token=user_token,
+                        summary=f"更新卡匣庫 ({len(st.session_state.owned_ids)} 張) 與訓練家 ({len(trainers_curr)} 組)"
+                    )
+                    if ok:
+                        st.success(sync_res)
+                        st.rerun()
+                    else:
+                        st.error(sync_res)
 
     with col_sync_btn2:
+        if st.button("📥 自 GitHub 抓取最新", use_container_width=True, help="換裝置或清快取時，點此直接自 GitHub 下載最新卡匣庫"):
+            with st.spinner("正在自 GitHub main 下載最新卡匣庫..."):
+                user_token = st.secrets.get("GITHUB_TOKEN", None) if hasattr(st, "secrets") else None
+                if not user_token and "github_token" in st.session_state:
+                    user_token = st.session_state.github_token
+                ok, content_str, msg = pull_file_from_github_api("data/my_collection.json", token=user_token)
+                if ok:
+                    imp_ok, imp_msg, new_ids = import_collection_from_json(content_str, mode="overwrite")
+                    if imp_ok:
+                        st.session_state.owned_ids = new_ids
+                        st.success(f"✅ 成功自 GitHub 同步！已載入 {len(new_ids)} 張卡匣！")
+                        st.rerun()
+                else:
+                    st.error(f"❌ 下載失敗: {msg}")
+
+    with col_sync_btn3:
         # JSON 匯出下載按鈕
         collection_json_str = export_collection_json(st.session_state.owned_ids)
         st.download_button(
-            label="📥 下載/備份卡匣 JSON 檔",
+            label="💾 下載 JSON 檔",
             data=collection_json_str,
             file_name="my_mezastar_collection.json",
             mime="application/json",
@@ -1129,22 +1156,98 @@ with tabs[5]:
                     st.error(msg)
 
 # ==============================================================================
-# TAB 7: 🔄 GitHub 雲端同步
+# TAB 7: 🔄 GitHub 雲端同步 (GitHub REST API 雙向持久化備份)
 # ==============================================================================
 with tabs[6]:
-    st.markdown("#### 🔄 GitHub 雲端同步")
-    g_info = get_git_status()
-    st.caption(f"版次: `v{g_info['version']}` | 分支: `{g_info['branch']}`")
+    st.markdown("#### 🔄 GitHub 雲端永久雙向同步")
+    st.caption("透過 GitHub REST API 直連您的 GitHub main 分支，換手機、清快取、伺服器重啟均能秒還原！")
     
-    commit_summary = st.text_input("修改說明:", value="新增點擊卡匣彈跳放大圖與完整詳細數據視窗功能")
-    if st.button("🚀 立即建立版次並推送到 GitHub", use_container_width=True, type="primary"):
-        with st.spinner("同步中..."):
-            success, sync_msg = auto_commit_and_push(change_summary=commit_summary, branch="main")
-            if success:
-                st.success(sync_msg)
-                st.rerun()
+    g_info = get_git_status()
+    st.caption(f"📌 系統版本: `v{g_info['version']}` | 雲端分支: `main` | 倉庫: `JeffHSU8310/pokemonmezastar`")
+
+    # 讀取現有 Token (優先從 secrets，次之 session_state)
+    default_tok = st.secrets.get("GITHUB_TOKEN", "") if hasattr(st, "secrets") else ""
+    if not default_tok and "github_token" in st.session_state:
+        default_tok = st.session_state.github_token
+
+    st.markdown("##### 🔑 1. 設定 GitHub Personal Access Token (PAT)")
+    tok_input = st.text_input(
+        "輸入您的 GitHub Token (以 ghp_ 開頭):",
+        value=default_tok,
+        type="password",
+        placeholder="例如: ghp_xxxxxxxxxxxxxxxxxxxx",
+        help="此 Token 僅用於直接呼叫 GitHub API 寫入您的私人倉庫，請安心使用。"
+    )
+    if tok_input:
+        st.session_state.github_token = tok_input.strip()
+
+    with st.expander("💡 如何在 1 分鐘內免費取得您的 GitHub Token？（超簡單 3 步驟）", expanded=False):
+        st.markdown("""
+        1. 點擊開啟：[👉 GitHub Token 快速建立頁面 (點此直達)](https://github.com/settings/tokens/new)
+        2. **Note（名稱）**：填入 `mezastar-sync`
+        3. **Expiration（效期）**：選 `No expiration`（無期限）
+        4. **Select scopes（權限勾選）**：務必勾選第 1 項 **`repo`**（包含所有子項目）
+        5. 滑到最下方點擊綠色按鈕 **「Generate token」** ➔ 複製綠色框框中的 `ghp_...` 代碼。
+        6. 回到上方貼入輸入框中即可！
+        
+        *(進階提示：您也可以在 Streamlit Cloud 後台 Settings ➔ Secrets 填入 `GITHUB_TOKEN = "ghp_..."`，即可所有裝置免輸入自動同步！)*
+        """)
+
+    st.divider()
+
+    st.markdown("##### 🚀 2. 雙向同步操作")
+    col_syn1, col_syn2 = st.columns(2)
+    with col_syn1:
+        st.markdown("**📤 將目前裝置資料 ➔ 永久寫入 GitHub**")
+        commit_msg = st.text_input("提交備註說明:", value="同步最新卡匣庫與訓練家資料")
+        if st.button("🚀 立即全量寫入 GitHub 雲端", type="primary", use_container_width=True):
+            current_token = tok_input.strip() if tok_input else default_tok
+            if not current_token:
+                st.error("❌ 請先在上方填入您的 GitHub Token！")
             else:
-                st.error(sync_msg)
+                with st.spinner("正在透過 GitHub API 寫入 main 倉庫..."):
+                    trainers_curr = load_trainers()
+                    ok, res_msg = sync_all_user_data_to_github(
+                        owned_ids=list(st.session_state.owned_ids),
+                        trainers=trainers_curr,
+                        token=current_token,
+                        summary=commit_msg
+                    )
+                    if ok:
+                        st.balloons()
+                        st.success(res_msg)
+                    else:
+                        st.error(res_msg)
+
+    with col_syn2:
+        st.markdown("**📥 從 GitHub 雲端 ➔ 拉取最新資料至此裝置**")
+        st.caption("在換新手機、更換電腦或清除瀏覽器快取後，點擊下方按鈕即可秒還原所有卡匣與訓練家！")
+        if st.button("📥 一鍵自 GitHub 雲端拉取並還原", use_container_width=True):
+            current_token = tok_input.strip() if tok_input else default_tok
+            with st.spinner("正在自 GitHub main 下載最新資料..."):
+                ok_c, content_c, msg_c = pull_file_from_github_api("data/my_collection.json", token=current_token)
+                ok_t, content_t, msg_t = pull_file_from_github_api("data/trainers.json", token=current_token)
+                
+                success_count = 0
+                if ok_c:
+                    imp_ok, _, new_ids = import_collection_from_json(content_c, mode="overwrite")
+                    if imp_ok:
+                        st.session_state.owned_ids = new_ids
+                        success_count += 1
+                if ok_t:
+                    try:
+                        t_data = json.loads(content_t)
+                        if isinstance(t_data, list):
+                            save_trainers(t_data)
+                            success_count += 1
+                    except Exception:
+                        pass
+                
+                if success_count > 0:
+                    st.success(f"🎉 成功自 GitHub 雲端完全還原！載入 {len(st.session_state.owned_ids)} 張卡匣與最新訓練家資料！")
+                    st.rerun()
+                else:
+                    st.error(f"❌ 拉取失敗: {msg_c}")
 
     st.info("""
     **📱 手機使用小撇步：**

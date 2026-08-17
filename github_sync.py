@@ -1,21 +1,19 @@
 """
-GitHub Auto-Sync & Versioning Module for Pokemon Mezastar
-Handles local disk auto-commit, version incrementing, and pushing/merging to GitHub main.
+GitHub Auto-Sync & Direct REST API Synchronization Engine
+支援透過 GitHub REST API 直接將個人卡庫 (my_collection.json) 與 訓練家 ID (trainers.json)
+免依賴 git 指令，100% 穩定寫入 GitHub main 分支，實現換電腦、重開伺服器永久保存！
 """
 
-from typing import Dict, List, Any, Optional, Tuple
-import sys
 import os
-import subprocess
 import json
-from datetime import datetime
+import base64
+import time
+import requests
+from typing import Dict, List, Any, Optional, Tuple
 
-# 確保標準輸出編碼正常
-if sys.stdout.encoding != 'utf-8':
-    try:
-        sys.stdout.reconfigure(encoding='utf-8')
-    except Exception:
-        pass
+REPO_OWNER = "JeffHSU8310"
+REPO_NAME = "pokemonmezastar"
+BRANCH = "main"
 
 VERSION_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "version.json")
 
@@ -28,15 +26,9 @@ def load_version_info() -> Dict[str, Any]:
         except Exception as e:
             print(f"Error loading version file: {e}")
     return {
-        "version": "1.0.0",
-        "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        "history": [
-            {
-                "version": "1.0.0",
-                "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                "message": "系統初始化與初版發布"
-            }
-        ]
+        "version": "2.2.0",
+        "last_updated": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
+        "history": []
     }
 
 def increment_version(current_ver: str, part: str = "patch") -> str:
@@ -44,7 +36,6 @@ def increment_version(current_ver: str, part: str = "patch") -> str:
     parts = current_ver.split(".")
     if len(parts) != 3:
         parts = ["1", "0", "0"]
-    
     major, minor, patch = int(parts[0]), int(parts[1]), int(parts[2])
     if part == "major":
         major += 1
@@ -58,7 +49,7 @@ def increment_version(current_ver: str, part: str = "patch") -> str:
     return f"{major}.{minor}.{patch}"
 
 def save_version_info(ver_data: Dict[str, Any]) -> bool:
-    """儲存版本與紀錄"""
+    """儲存版本資料"""
     try:
         with open(VERSION_FILE, "w", encoding="utf-8") as f:
             json.dump(ver_data, f, ensure_ascii=False, indent=2)
@@ -67,101 +58,138 @@ def save_version_info(ver_data: Dict[str, Any]) -> bool:
         print(f"Error saving version file: {e}")
         return False
 
-def run_git_cmd(args: List[str], cwd: Optional[str] = None) -> Tuple[int, str, str]:
-    """執行 Git 指令"""
-    if cwd is None:
-        cwd = os.path.dirname(os.path.abspath(__file__))
-    try:
-        res = subprocess.run(
-            ["git"] + args,
-            cwd=cwd,
-            capture_output=True,
-            text=True,
-            encoding="utf-8",
-            errors="replace"
-        )
-        return res.returncode, res.stdout.strip(), res.stderr.strip()
-    except Exception as e:
-        return -1, "", str(e)
+# ==============================================================================
+# 🌐 GitHub REST API 直接讀寫 (Direct Cloud Sync via GitHub API)
+# ==============================================================================
 
-def get_git_status() -> Dict[str, Any]:
-    """獲取 Git 當前分支、狀態與未提交變更"""
-    repo_dir = os.path.dirname(os.path.abspath(__file__))
-    code, stdout, stderr = run_git_cmd(["status", "--porcelain"], repo_dir)
-    changed_files = [line.strip() for line in stdout.splitlines() if line.strip()] if code == 0 else []
+def push_file_to_github_api(
+    file_rel_path: str,
+    content_str: str,
+    commit_message: str,
+    token: str
+) -> Tuple[bool, str]:
+    """
+    透過 GitHub REST API 直接更新或建立遠端檔案，不受本機 Git 限制。
+    :param file_rel_path: 相對於倉庫根目錄的路徑 (如 'data/my_collection.json')
+    :param content_str: 欲寫入的字串內容 (JSON/文字)
+    :param commit_message: 提交說明
+    :param token: GitHub Personal Access Token (PAT)
+    :return: (是否成功, 訊息)
+    """
+    if not token or not token.strip():
+        return False, "未提供 GitHub Token，請在 Streamlit Secrets 或介面填入 Token！"
 
-    _, branch, _ = run_git_cmd(["branch", "--show-current"], repo_dir)
-    _, commit_id, _ = run_git_cmd(["rev-parse", "--short", "HEAD"], repo_dir)
-    _, remote_url, _ = run_git_cmd(["remote", "get-url", "origin"], repo_dir)
-
-    ver_info = load_version_info()
-
-    return {
-        "is_git": code == 0,
-        "branch": branch or "main",
-        "commit": commit_id or "Initial",
-        "remote_url": remote_url or "https://github.com/JeffHSU8310/pokemonmezastar.git",
-        "changed_files": changed_files,
-        "has_changes": len(changed_files) > 0,
-        "version": ver_info.get("version", "1.0.0"),
-        "last_updated": ver_info.get("last_updated", "")
+    clean_token = token.strip()
+    headers = {
+        "Authorization": f"Bearer {clean_token}",
+        "Accept": "application/vnd.github.v3+json",
+        "User-Agent": "PokemonMezastar-SyncBot"
     }
 
-def auto_commit_and_push(change_summary: str = "自動更新卡匣與系統資料", branch: str = "main", github_token: Optional[str] = None) -> Tuple[bool, str]:
-    """
-    自動記錄版次、Commit、並同步推送到 GitHub main 分支
-    """
-    repo_dir = os.path.dirname(os.path.abspath(__file__))
-    
-    # 0. 自動設定 Git 使用者身分，防止在雲端環境報 Author identity unknown 錯誤
-    run_git_cmd(["config", "user.name", "JeffHSU8310"], repo_dir)
-    run_git_cmd(["config", "user.email", "jeffhsu8310@users.noreply.github.com"], repo_dir)
+    url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/{file_rel_path}"
 
-    # 1. 遞增版次
+    # 1. 取得遠端現有檔案的 SHA
+    sha = None
+    try:
+        get_res = requests.get(f"{url}?ref={BRANCH}", headers=headers, timeout=10)
+        if get_res.status_code == 200:
+            sha = get_res.json().get("sha")
+    except Exception as e:
+        return False, f"連線 GitHub 失敗: {str(e)}"
+
+    # 2. Base64 編碼內容
+    encoded_content = base64.b64encode(content_str.encode("utf-8")).decode("utf-8")
+
+    payload: Dict[str, Any] = {
+        "message": commit_message,
+        "content": encoded_content,
+        "branch": BRANCH
+    }
+    if sha:
+        payload["sha"] = sha
+
+    # 3. 發送 PUT 請求寫入
+    try:
+        put_res = requests.put(url, headers=headers, json=payload, timeout=15)
+        if put_res.status_code in [200, 201]:
+            return True, f"✅ 成功將 [{file_rel_path}] 寫入 GitHub main 分支！"
+        else:
+            err_msg = put_res.json().get("message", put_res.text)
+            return False, f"GitHub API 寫入失敗 ({put_res.status_code}): {err_msg}"
+    except Exception as e:
+        return False, f"上傳請求異常: {str(e)}"
+
+def pull_file_from_github_api(file_rel_path: str, token: Optional[str] = None) -> Tuple[bool, str, str]:
+    """
+    透過 GitHub REST API 從遠端 main 分支下載最新檔案內容。
+    :return: (是否成功, 檔案內容字串, 訊息)
+    """
+    headers = {
+        "Accept": "application/vnd.github.v3+json",
+        "User-Agent": "PokemonMezastar-SyncBot"
+    }
+    if token and token.strip():
+        headers["Authorization"] = f"Bearer {token.strip()}"
+
+    url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/{file_rel_path}?ref={BRANCH}"
+
+    try:
+        res = requests.get(url, headers=headers, timeout=10)
+        if res.status_code == 200:
+            data = res.json()
+            content_b64 = data.get("content", "")
+            decoded = base64.b64decode(content_b64).decode("utf-8")
+            return True, decoded, "成功自 GitHub 讀取最新資料！"
+        else:
+            return False, "", f"讀取失敗 ({res.status_code}): {res.text}"
+    except Exception as e:
+        return False, "", f"連線異常: {str(e)}"
+
+def sync_all_user_data_to_github(
+    owned_ids: List[str],
+    trainers: List[Dict[str, Any]],
+    token: str,
+    summary: str = "更新卡匣庫與訓練家資料"
+) -> Tuple[bool, str]:
+    """
+    一鍵將個人卡匣庫 (my_collection.json) 與 訓練家清單 (trainers.json) 一併同步推送到 GitHub！
+    """
+    if not token or not token.strip():
+        return False, "請先提供 GitHub Token"
+
+    cur_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+    
+    # 1. 寫入 my_collection.json
+    collection_str = json.dumps(sorted(list(set(owned_ids))), ensure_ascii=False, indent=2)
+    ok1, msg1 = push_file_to_github_api(
+        "data/my_collection.json",
+        collection_str,
+        f"sync: {summary} (卡匣數: {len(owned_ids)}) @ {cur_time}",
+        token
+    )
+    if not ok1:
+        return False, f"卡匣庫同步失敗: {msg1}"
+
+    # 2. 寫入 trainers.json
+    trainers_str = json.dumps(trainers, ensure_ascii=False, indent=2)
+    ok2, msg2 = push_file_to_github_api(
+        "data/trainers.json",
+        trainers_str,
+        f"sync: 更新訓練家清單 (共 {len(trainers)} 組) @ {cur_time}",
+        token
+    )
+    if not ok2:
+        return False, f"訓練家同步失敗: {msg2}"
+
+    return True, f"🎉 太棒了！已將您的卡匣庫 ({len(owned_ids)} 張) 與訓練家清單 ({len(trainers)} 組) 真正永久寫入 GitHub main 倉庫！"
+
+def get_git_status() -> Dict[str, Any]:
+    """獲取 Git 當前狀態 (相容非 git 環境與 GitHub API)"""
     ver_info = load_version_info()
-    new_ver = increment_version(ver_info.get("version", "1.0.0"), "patch")
-    now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-    ver_info["version"] = new_ver
-    ver_info["last_updated"] = now_str
-    if "history" not in ver_info:
-        ver_info["history"] = []
-    ver_info["history"].insert(0, {
-        "version": new_ver,
-        "timestamp": now_str,
-        "message": change_summary
-    })
-    save_version_info(ver_info)
-
-    # 2. Git Add
-    code, out, err = run_git_cmd(["add", "-A"], repo_dir)
-    if code != 0:
-        return False, f"Git Add 失敗: {err}"
-
-    # 3. Git Commit
-    commit_msg = f"[v{new_ver}] {now_str} - {change_summary}"
-    code, out, err = run_git_cmd(["commit", "-m", commit_msg], repo_dir)
-    if code != 0 and "nothing to commit" not in (out + err):
-        return False, f"Git Commit 失敗: {err}"
-
-    # 4. Git Push
-    run_git_cmd(["branch", "-M", branch], repo_dir)
-    
-    # 檢查是否有 token 可供認證推送
-    push_remote = "origin"
-    if github_token:
-        push_remote = f"https://x-access-token:{github_token}@github.com/JeffHSU8310/pokemonmezastar.git"
-    elif os.environ.get("GITHUB_TOKEN"):
-        push_remote = f"https://x-access-token:{os.environ.get('GITHUB_TOKEN')}@github.com/JeffHSU8310/pokemonmezastar.git"
-
-    code, out, err = run_git_cmd(["push", "-u", push_remote, branch], repo_dir)
-    if code != 0:
-        # 嘗試 pull rebase 後再 push
-        pull_code, _, _ = run_git_cmd(["pull", "--rebase", "origin", branch], repo_dir)
-        if pull_code == 0:
-            code, out, err = run_git_cmd(["push", "-u", push_remote, branch], repo_dir)
-
-    if code == 0:
-        return True, f"✅ 成功記錄版次 v{new_ver} 並自動同步推送至 GitHub ({branch}) 分支！"
-    else:
-        return True, f"💾 已成功記錄版次 v{new_ver} 並完成 Commit！(提示: 若在雲端環境可透過 GitHub 網頁直接編輯 my_collection.json 儲存)"
+    return {
+        "is_git": True,
+        "branch": BRANCH,
+        "remote_url": f"https://github.com/{REPO_OWNER}/{REPO_NAME}.git",
+        "version": ver_info.get("version", "2.2.0"),
+        "last_updated": ver_info.get("last_updated", "")
+    }
