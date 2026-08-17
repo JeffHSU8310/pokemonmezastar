@@ -1,0 +1,9 @@
+# 桌面版 (Flet) 專用依賴
+# main.py / flet_app.py 需要 flet；此套件體積龐大且 Streamlit Cloud 部署不需要，
+# 故獨立於 requirements.txt 之外，避免拖慢雲端部署。
+#
+# 安裝方式：
+#   pip install -r requirements.txt -r requirements-desktop.txt
+#   python main.py
+-r requirements.txt
+flet>=0.21.0

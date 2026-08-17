@@ -7,7 +7,6 @@ pillow>=10.0.0
 fastapi>=0.109.0
 uvicorn>=0.27.0
 opencv-python-headless>=4.8.0
-
-
-
-
+# fastapi.testclient (starlette TestClient) 需要 httpx，
+# 否則 CI 的 `python -m unittest test_mezastar.py` 會直接 RuntimeError。
+httpx>=0.27.0

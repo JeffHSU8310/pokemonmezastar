@@ -87,8 +87,20 @@ pokemonmezastar/
 ├── sync_and_push.bat           # Windows CMD 一鍵同步腳本
 ├── test_mezastar.py            # 單元測試程式
 ├── version.json                # 版本號與歷史修改紀錄
-├── requirements.txt            # Python 依賴清單
+├── requirements.txt            # Python 依賴清單 (Web / API / 測試)
+├── requirements-desktop.txt    # 桌面版 (Flet) 額外依賴
 └── README.md                   # 專案說明文件
+```
+
+---
+
+### 3. 🖥️ 桌面版 (Flet) 執行方式
+
+桌面版 (`main.py` / `flet_app.py`) 需要額外安裝 `flet`：
+
+```bash
+pip install -r requirements.txt -r requirements-desktop.txt
+python main.py
 ```
 
 ---
@@ -98,6 +110,12 @@ pokemonmezastar/
 ```bash
 python -m unittest test_mezastar.py
 ```
+
+> [!IMPORTANT]
+> 測試會透過環境變數 `MEZASTAR_COLLECTION_FILE` 將收藏檔導向暫存目錄，
+> **絕不會動到 `data/my_collection.json` 內的個人卡匣資料**。
+> 新增任何會寫入收藏的測試時，請務必維持這層隔離
+> （詳見 `PROJECT_RULES.md` 第 2 條使用者個人資料保護原則）。
 
 ---
 

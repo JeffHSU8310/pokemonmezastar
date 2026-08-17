@@ -2,6 +2,9 @@
 Unit Tests for Pokemon Mezastar System
 """
 
+import os
+import shutil
+import tempfile
 import unittest
 from mezastar_data import (
     calculate_type_effectiveness,
@@ -15,11 +18,34 @@ from collection_manager import (
     save_user_collection_ids,
     toggle_card_ownership,
     get_collection_stats,
-    get_user_cards
+    get_user_cards,
+    COLLECTION_FILE_ENV
 )
 from github_sync import increment_version, load_version_info
 
 class TestPokemonMezastar(unittest.TestCase):
+    """
+    ⚠️ 測試隔離鐵則：
+    本測試會呼叫 save_user_collection_ids / toggle_card_ownership 等寫入函式。
+    若未隔離，執行 `python -m unittest test_mezastar.py` 會直接把
+    data/my_collection.json 覆蓋成測試用假資料，摧毀使用者真實卡匣庫
+    （並在後續自動同步時一併推上 GitHub）。
+    因此這裡以環境變數把收藏檔導向暫存目錄，測試結束後還原。
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        cls._tmp_dir = tempfile.mkdtemp(prefix="mezastar_test_")
+        cls._prev_env = os.environ.get(COLLECTION_FILE_ENV)
+        os.environ[COLLECTION_FILE_ENV] = os.path.join(cls._tmp_dir, "my_collection.json")
+
+    @classmethod
+    def tearDownClass(cls):
+        if cls._prev_env is None:
+            os.environ.pop(COLLECTION_FILE_ENV, None)
+        else:
+            os.environ[COLLECTION_FILE_ENV] = cls._prev_env
+        shutil.rmtree(cls._tmp_dir, ignore_errors=True)
 
     def test_type_effectiveness_single_type(self):
         # 水剋火 = 2.0
@@ -147,6 +173,114 @@ class TestPokemonMezastar(unittest.TestCase):
         self.assertTrue(ok_merge)
         self.assertIn("DC1-001", merged_ids)
         self.assertIn("2-2-001", merged_ids)
+
+    # ==========================================================================
+    # 🛡️ 使用者資料保護迴歸測試 (Regression Tests - User Data Integrity)
+    # ==========================================================================
+
+    def test_import_preview_does_not_touch_saved_collection(self):
+        """
+        迴歸測試：匯入「預覽解析」階段絕不可寫入收藏檔。
+        修復前，UI 只要在分享代碼輸入框打一個字（且選了「完全覆蓋」），
+        import_collection_from_share_code 就會立刻存檔，
+        在使用者按下「確認匯入」之前就把整個卡匣庫清空。
+        """
+        from collection_manager import (
+            import_collection_from_json,
+            import_collection_from_share_code
+        )
+
+        baseline = {"2-2-001", "2-2-002", "2-2-005"}
+        save_user_collection_ids(baseline)
+
+        # 1. 分享代碼預覽（覆蓋模式）不得動到存檔
+        ok, _, parsed = import_collection_from_share_code(
+            "2-2-063", mode="overwrite", persist=False
+        )
+        self.assertTrue(ok)
+        self.assertEqual(parsed, {"2-2-063"})
+        self.assertEqual(load_user_collection_ids(), baseline, "預覽不應覆寫收藏檔")
+
+        # 2. JSON 檔案預覽（覆蓋模式）不得動到存檔
+        ok_j, _, parsed_j = import_collection_from_json(
+            '["2-2-068"]', mode="overwrite", persist=False
+        )
+        self.assertTrue(ok_j)
+        self.assertEqual(load_user_collection_ids(), baseline, "預覽不應覆寫收藏檔")
+
+        # 3. 真正確認匯入 (persist=True) 才寫入
+        ok_c, _, final_ids = import_collection_from_share_code(
+            "2-2-063", mode="overwrite", persist=True
+        )
+        self.assertTrue(ok_c)
+        self.assertEqual(load_user_collection_ids(), {"2-2-063"})
+
+    def test_no_ambiguous_card_aliases(self):
+        """
+        迴歸測試：卡匣別名不得有歧義。
+        修復前 '001' 同時對應 1-1-001 / 1-2-001 / … / 2-2-001 / SP-001 共 7 張卡，
+        normalize_collection_ids('005') 會默默把使用者的卡對應成錯的那一張。
+        """
+        from collection_manager import get_card_alias_map, normalize_collection_ids
+
+        alias_map, canonical_aliases = get_card_alias_map()
+        all_ids = {c["id"] for c in load_cards()}
+
+        # 每個標準卡號都必須存在且指向自己
+        for cid in all_ids:
+            self.assertEqual(alias_map.get(cid), cid, f"標準卡號 {cid} 必須指向自己")
+
+        # 歧義的簡寫別名必須被捨棄，不得出現在對照表中
+        self.assertNotIn("001", alias_map, "'001' 有 7 種可能對應，必須捨棄")
+        self.assertNotIn("2-001", alias_map, "'2-001' 同時對應 2-1-001 與 2-2-001，必須捨棄")
+
+        # canonical_to_aliases 也不得殘留歧義別名，
+        # 否則 toggle_card_ownership 會連帶刪掉其他卡匣
+        for cid, aliases in canonical_aliases.items():
+            for a in aliases:
+                self.assertEqual(
+                    alias_map.get(a), cid,
+                    f"卡匣 {cid} 的別名 {a} 有歧義，會誤刪其他卡匣"
+                )
+
+        # 標準卡號經標準化後必須維持原狀
+        self.assertEqual(normalize_collection_ids({"2-1-005"}), {"2-1-005"})
+        self.assertEqual(normalize_collection_ids({"2-2-005"}), {"2-2-005"})
+
+    def test_csv_export_contains_real_stats(self):
+        """
+        迴歸測試：CSV 匯出必須帶出六維體質數值。
+        修復前讀取不存在的 c["stats"]，導致 HP/攻擊/特攻/防禦/特防/速度 六欄全空白。
+        """
+        import csv as _csv
+        import io as _io
+        from collection_manager import export_collection_csv
+
+        card = next(c for c in load_cards() if c["id"] == "2-2-001")
+        csv_text = export_collection_csv({"2-2-001"})
+        rows = list(_csv.reader(_io.StringIO(csv_text)))
+        header, data_row = rows[0], rows[1]
+
+        for col, key in [
+            ("HP", "hp"), ("攻擊", "atk"), ("特攻", "sp_atk"),
+            ("防禦", "def"), ("特防", "sp_def"), ("速度", "spd"),
+        ]:
+            value = data_row[header.index(col)]
+            self.assertNotEqual(value, "", f"CSV 欄位「{col}」不可為空")
+            self.assertEqual(int(value), card[key], f"CSV 欄位「{col}」數值錯誤")
+
+    def test_collection_stats_covers_all_star_tiers(self):
+        """迴歸測試：統計桶需涵蓋 1~6 星（圖鑑內含 30 張 1 星卡匣）。"""
+        stats = get_collection_stats(set())
+        self.assertEqual(
+            sorted(stats["star_counts"].keys()), [1, 2, 3, 4, 5, 6],
+            "star_counts 必須涵蓋 1~6 星"
+        )
+
+        one_star = next(c for c in load_cards() if c.get("star") == 1)
+        stats_one = get_collection_stats({one_star["id"]})
+        self.assertEqual(stats_one["star_counts"][1], 1)
+        self.assertEqual(stats_one["total_owned"], 1)
 
     def test_fastapi_endpoints(self):
         """測試 FastAPI 核心 REST 端點"""

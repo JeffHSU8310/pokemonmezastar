@@ -15,30 +15,60 @@ from mezastar_data import load_cards, DATA_DIR, sort_cards_chronological
 
 COLLECTION_FILE = os.path.join(DATA_DIR, "my_collection.json")
 
+# 測試或多帳號情境可透過環境變數覆寫收藏檔路徑，避免污染使用者正式收藏資料
+COLLECTION_FILE_ENV = "MEZASTAR_COLLECTION_FILE"
+
+def get_collection_file() -> str:
+    """取得目前生效的收藏檔路徑（可由環境變數覆寫，預設為 data/my_collection.json）"""
+    return os.environ.get(COLLECTION_FILE_ENV) or COLLECTION_FILE
+
 def get_card_alias_map() -> Tuple[Dict[str, str], Dict[str, Set[str]]]:
     """
     建立卡匣標準 ID 與別名雙向映射表。
     alias_to_canonical: {'1-001': '1-1-001', '001': '1-1-001', '1-1-001': '1-1-001'}
     canonical_to_aliases: {'1-1-001': {'1-1-001', '1-001', '001'}}
+
+    ⚠️ 重要：簡寫別名（例如 '001'、'2-001'）在多彈別並存時會產生歧義
+    （'001' 同時對應 1-1-001、1-2-001 … 2-2-001、SP-001 共 7 張卡）。
+    若逕自採用「先到先得」會把使用者的卡匣默默對應到錯誤的卡，
+    因此此處僅保留「全系統唯一」的別名，歧義別名一律捨棄。
     """
     all_cards = load_cards()
-    alias_to_canonical: Dict[str, str] = {}
+
+    # 第一輪：統計每個候選別名對應到幾張不同的卡匣
+    alias_owners: Dict[str, Set[str]] = {}
     canonical_to_aliases: Dict[str, Set[str]] = {}
 
     for c in all_cards:
-        cid = c.get("id", "")
+        cid = (c.get("id") or "").strip()
         if not cid:
             continue
-        aliases = {cid, cid.strip()}
+        aliases = {cid}
         parts = cid.split("-")
         if len(parts) >= 2:
             aliases.add(f"{parts[0]}-{parts[-1]}")
             aliases.add(parts[-1])
-        
+
         canonical_to_aliases[cid] = aliases
         for a in aliases:
-            if a not in alias_to_canonical:
-                alias_to_canonical[a] = cid
+            alias_owners.setdefault(a, set()).add(cid)
+
+    # 第二輪：只登錄無歧義的別名（完整標準 ID 一律保留並指向自己）
+    alias_to_canonical: Dict[str, str] = {}
+    for alias, owners in alias_owners.items():
+        if alias in canonical_to_aliases:
+            # 這本身就是一個標準卡號，永遠指向自己
+            alias_to_canonical[alias] = alias
+        elif len(owners) == 1:
+            alias_to_canonical[alias] = next(iter(owners))
+        # len(owners) > 1 -> 歧義別名，捨棄不登錄
+
+    # 同步清除 canonical_to_aliases 中的歧義別名，
+    # 避免 toggle_card_ownership 誤刪其他卡匣的紀錄
+    for cid, aliases in canonical_to_aliases.items():
+        canonical_to_aliases[cid] = {
+            a for a in aliases if alias_to_canonical.get(a) == cid
+        }
 
     return alias_to_canonical, canonical_to_aliases
 
@@ -56,9 +86,10 @@ def normalize_collection_ids(raw_ids: Set[str]) -> Set[str]:
 
 def load_user_collection_ids() -> Set[str]:
     """載入使用者已擁有卡匣的 ID 集合 (自動進行 ID 標準化)"""
-    if os.path.exists(COLLECTION_FILE):
+    collection_file = get_collection_file()
+    if os.path.exists(collection_file):
         try:
-            with open(COLLECTION_FILE, "r", encoding="utf-8") as f:
+            with open(collection_file, "r", encoding="utf-8") as f:
                 data = json.load(f)
                 raw_ids: Set[str] = set()
                 if isinstance(data, list):
@@ -79,8 +110,9 @@ def save_user_collection_ids(owned_ids: Set[str]) -> bool:
     """儲存使用者已擁有卡匣的 ID 集合至本機/儲存檔 (自動儲存標準 ID)"""
     try:
         norm_ids = normalize_collection_ids(owned_ids)
-        os.makedirs(DATA_DIR, exist_ok=True)
-        with open(COLLECTION_FILE, "w", encoding="utf-8") as f:
+        collection_file = get_collection_file()
+        os.makedirs(os.path.dirname(collection_file) or ".", exist_ok=True)
+        with open(collection_file, "w", encoding="utf-8") as f:
             json.dump(sorted(list(norm_ids)), f, ensure_ascii=False, indent=2)
         return True
     except Exception as e:
@@ -125,10 +157,14 @@ def get_collection_stats(owned_ids: Set[str] | None = None) -> Dict[str, Any]:
     """計算收藏庫統計數據（星級分佈、屬性分佈、總收集率）"""
     if owned_ids is None:
         owned_ids = load_user_collection_ids()
+    # 與 get_user_cards 一致，先將別名/舊格式 ID 標準化，
+    # 否則傳入非標準 ID 時統計會全部歸零。
+    norm_ids = normalize_collection_ids(owned_ids)
     all_cards = load_cards()
-    user_cards = [c for c in all_cards if c.get("id") in owned_ids]
+    user_cards = [c for c in all_cards if c.get("id") in norm_ids]
 
-    star_counts = {6: 0, 5: 0, 4: 0, 3: 0, 2: 0}
+    # 圖鑑內含 1 星卡匣，統計桶必須涵蓋 1~6 星
+    star_counts = {6: 0, 5: 0, 4: 0, 3: 0, 2: 0, 1: 0}
     type_counts: Dict[str, int] = {}
 
     for c in user_cards:
@@ -201,7 +237,9 @@ def export_collection_csv(owned_ids: Set[str] | None = None) -> str:
     
     for c in user_cards:
         types_str = "/".join(c.get("types", []))
-        stats = c.get("stats", {})
+        # 六維體質為卡匣物件的頂層欄位，並非巢狀於 "stats" 之下；
+        # 舊寫法讀取不存在的 c["stats"] 會導致匯出的 CSV 六個數值欄位全部空白。
+        stats = c.get("stats") or c
         writer.writerow([
             c.get("id", ""),
             c.get("name", ""),
@@ -225,11 +263,13 @@ def export_collection_csv(owned_ids: Set[str] | None = None) -> str:
 # 📥 匯入功能 (Import Functions)
 # ==============================================================================
 
-def import_collection_from_json(json_str: str, mode: str = "merge") -> Tuple[bool, str, Set[str]]:
+def import_collection_from_json(json_str: str, mode: str = "merge", persist: bool = True) -> Tuple[bool, str, Set[str]]:
     """
     從 JSON 字串匯入卡匣清單。
     :param json_str: JSON 字串內容
     :param mode: 'merge' (合併到現有收藏) 或 'overwrite' (完全覆蓋現有收藏)
+    :param persist: 是否立即寫入收藏檔。設為 False 可先解析預覽而不動到使用者資料
+                    （UI 的「確認匯入」按鈕按下前必須使用 persist=False）。
     :return: (是否成功, 提示訊息, 更新後的 ID 集合)
     """
     try:
@@ -259,18 +299,24 @@ def import_collection_from_json(json_str: str, mode: str = "merge") -> Tuple[boo
         else:
             final_ids = current_ids.union(incoming_ids)
 
-        save_user_collection_ids(final_ids)
-        
+        # 先標準化，確保回傳的集合與實際存檔內容完全一致
+        final_ids = normalize_collection_ids(final_ids)
+
+        if persist:
+            save_user_collection_ids(final_ids)
+
         msg = f"成功匯入 {len(incoming_ids)} 張卡匣（包含 {system_match_count} 款圖鑑卡匣）！目前收藏總數：{len(final_ids)} 張。"
         return True, msg, final_ids
     except Exception as e:
         return False, f"JSON 解析失敗: {str(e)}", set()
 
-def import_collection_from_share_code(code_str: str, mode: str = "merge") -> Tuple[bool, str, Set[str]]:
+def import_collection_from_share_code(code_str: str, mode: str = "merge", persist: bool = True) -> Tuple[bool, str, Set[str]]:
     """
     從分享代碼字串匯入卡匣清單。
     :param code_str: 分享代碼字串（例如 'MEZASTAR-V1:...' 或逗號分隔編號）
     :param mode: 'merge' (合併) 或 'overwrite' (覆蓋)
+    :param persist: 是否立即寫入收藏檔。設為 False 可先解析預覽而不動到使用者資料
+                    （UI 的「確認匯入」按鈕按下前必須使用 persist=False）。
     :return: (是否成功, 提示訊息, 更新後的 ID 集合)
     """
     try:
@@ -297,7 +343,12 @@ def import_collection_from_share_code(code_str: str, mode: str = "merge") -> Tup
         else:
             final_ids = current_ids.union(incoming_ids)
 
-        save_user_collection_ids(final_ids)
+        # 先標準化，確保回傳的集合與實際存檔內容完全一致
+        final_ids = normalize_collection_ids(final_ids)
+
+        if persist:
+            save_user_collection_ids(final_ids)
+
         msg = f"代碼解析成功！匯入 {len(incoming_ids)} 張卡匣（包含 {system_match_count} 款圖鑑卡匣），目前收藏總數：{len(final_ids)} 張。"
         return True, msg, final_ids
     except Exception as e:

@@ -1399,7 +1399,8 @@ with tabs[6]:
             if uploaded_file is not None:
                 try:
                     file_str = uploaded_file.getvalue().decode("utf-8")
-                    temp_ok, temp_msg, parsed_ids = import_collection_from_json(file_str, mode=mode_val)
+                    # persist=False：僅解析預覽，未按下「確認匯入」前絕不寫入使用者收藏檔
+                    temp_ok, temp_msg, parsed_ids = import_collection_from_json(file_str, mode=mode_val, persist=False)
                     if temp_ok:
                         preview_cards = get_user_cards(parsed_ids)
                         st.info(f"📋 檔案解析成功！內含 **{len(parsed_ids)}** 張卡匣（匹配 **{len(preview_cards)}** 款圖鑑卡匣）")
@@ -1417,7 +1418,8 @@ with tabs[6]:
             st.markdown("**方式 2：貼上分享代碼或卡號**")
             code_input = st.text_area("貼上代碼 (支援 MEZASTAR-V1:... 或逗號分隔編號):", height=80, placeholder="例如: MEZASTAR-V1:... 或 2-2-001, 2-2-002", key="input_code_tab7")
             if code_input.strip():
-                temp_ok, temp_msg, parsed_ids = import_collection_from_share_code(code_input, mode=mode_val)
+                # persist=False：僅解析預覽，未按下「確認匯入」前絕不寫入使用者收藏檔
+                temp_ok, temp_msg, parsed_ids = import_collection_from_share_code(code_input, mode=mode_val, persist=False)
                 if temp_ok:
                     preview_cards = get_user_cards(parsed_ids)
                     st.info(f"📋 代碼解析成功！包含 **{len(parsed_ids)}** 張卡匣（匹配 **{len(preview_cards)}** 款圖鑑卡匣）")
