@@ -48,14 +48,52 @@ def increment_version(current_ver: str, part: str = "patch") -> str:
         patch += 1
     return f"{major}.{minor}.{patch}"
 
-def save_version_info(ver_data: Dict[str, Any]) -> bool:
-    """儲存版本資料"""
+CONFIG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "user_config.json")
+
+def get_saved_github_token() -> str:
+    """從本地設定檔或環境變數讀取已儲存的 GitHub Token"""
+    if os.environ.get("GITHUB_TOKEN"):
+        return os.environ.get("GITHUB_TOKEN", "").strip()
+    if os.path.exists(CONFIG_FILE):
+        try:
+            with open(CONFIG_FILE, "r", encoding="utf-8") as f:
+                cfg = json.load(f)
+                return str(cfg.get("github_token", "")).strip()
+        except Exception:
+            pass
+    return ""
+
+def save_github_token(token: str) -> bool:
+    """將 GitHub Token 永久儲存至本地設定檔"""
     try:
-        with open(VERSION_FILE, "w", encoding="utf-8") as f:
-            json.dump(ver_data, f, ensure_ascii=False, indent=2)
+        os.makedirs(os.path.dirname(CONFIG_FILE), exist_ok=True)
+        cfg = {}
+        if os.path.exists(CONFIG_FILE):
+            try:
+                with open(CONFIG_FILE, "r", encoding="utf-8") as f:
+                    cfg = json.load(f)
+            except Exception:
+                cfg = {}
+        cfg["github_token"] = token.strip()
+        cfg["token_updated_at"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        with open(CONFIG_FILE, "w", encoding="utf-8") as f:
+            json.dump(cfg, f, ensure_ascii=False, indent=2)
         return True
     except Exception as e:
-        print(f"Error saving version file: {e}")
+        print(f"Error saving token: {e}")
+        return False
+
+def clear_saved_github_token() -> bool:
+    """清除已儲存的 GitHub Token"""
+    try:
+        if os.path.exists(CONFIG_FILE):
+            with open(CONFIG_FILE, "r", encoding="utf-8") as f:
+                cfg = json.load(f)
+            cfg.pop("github_token", None)
+            with open(CONFIG_FILE, "w", encoding="utf-8") as f:
+                json.dump(cfg, f, ensure_ascii=False, indent=2)
+        return True
+    except Exception:
         return False
 
 # ==============================================================================

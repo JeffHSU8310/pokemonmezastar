@@ -41,7 +41,10 @@ from github_sync import (
     load_version_info,
     push_file_to_github_api,
     pull_file_from_github_api,
-    sync_all_user_data_to_github
+    sync_all_user_data_to_github,
+    get_saved_github_token,
+    save_github_token,
+    clear_saved_github_token
 )
 from qr_manager import (
     load_trainers,
@@ -517,8 +520,10 @@ with tabs[1]:
     
     col_sync_btn1, col_sync_btn2, col_sync_btn3 = st.columns([1.2, 1, 1])
     with col_sync_btn1:
-        # 優先從 Secrets 或 Session 讀取 Token
-        user_token = st.secrets.get("GITHUB_TOKEN", None) if hasattr(st, "secrets") else None
+        # 優先從已儲存的 Token、Secrets 或 Session 讀取 Token
+        user_token = get_saved_github_token()
+        if not user_token and hasattr(st, "secrets"):
+            user_token = st.secrets.get("GITHUB_TOKEN", None)
         if not user_token and "github_token" in st.session_state:
             user_token = st.session_state.github_token
             
@@ -1169,21 +1174,49 @@ with tabs[6]:
     g_info = get_git_status()
     st.caption(f"📌 系統版本: `v{g_info['version']}` | 雲端分支: `main` | 倉庫: `JeffHSU8310/pokemonmezastar`")
 
-    # 讀取現有 Token (優先從 secrets，次之 session_state)
-    default_tok = st.secrets.get("GITHUB_TOKEN", "") if hasattr(st, "secrets") else ""
-    if not default_tok and "github_token" in st.session_state:
-        default_tok = st.session_state.github_token
+    # 讀取已永久儲存的 Token
+    saved_tok = get_saved_github_token()
+    if not saved_tok and hasattr(st, "secrets"):
+        saved_tok = st.secrets.get("GITHUB_TOKEN", "")
+    if not saved_tok and "github_token" in st.session_state:
+        saved_tok = st.session_state.github_token
 
-    st.markdown("##### 🔑 1. 設定 GitHub Personal Access Token (PAT)")
-    tok_input = st.text_input(
-        "輸入您的 GitHub Token (以 ghp_ 開頭):",
-        value=default_tok,
-        type="password",
-        placeholder="例如: ghp_xxxxxxxxxxxxxxxxxxxx",
-        help="此 Token 僅用於直接呼叫 GitHub API 寫入您的私人倉庫，請安心使用。"
-    )
-    if tok_input:
-        st.session_state.github_token = tok_input.strip()
+    st.markdown("##### 🔑 1. 設定並記住 GitHub Personal Access Token (PAT)")
+    col_t1, col_t2 = st.columns([3, 1])
+    with col_t1:
+        tok_input = st.text_input(
+            "輸入您的 GitHub Token (以 ghp_ 開頭):",
+            value=saved_tok,
+            type="password",
+            placeholder="例如: ghp_xxxxxxxxxxxxxxxxxxxx",
+            help="此 Token 用於直接呼叫 GitHub API 寫入您的私人倉庫，儲存後永久免再次輸入。"
+        )
+    with col_t2:
+        st.write("") # 對齊間距
+        st.write("")
+        if st.button("💾 永久記住 Token", type="primary", use_container_width=True):
+            if tok_input.strip():
+                save_github_token(tok_input.strip())
+                st.session_state.github_token = tok_input.strip()
+                st.success("✅ Token 已成功記住！以後開啟無需再次輸入！")
+                st.rerun()
+            else:
+                st.warning("請先填入 Token！")
+        
+        if saved_tok:
+            if st.button("🗑️ 清除記錄", use_container_width=True):
+                clear_saved_github_token()
+                if "github_token" in st.session_state:
+                    del st.session_state.github_token
+                st.info("已清除已儲存的 Token")
+                st.rerun()
+
+    active_token = tok_input.strip() if tok_input else saved_tok
+
+    if active_token:
+        st.caption("🟢 **目前狀態：已綁定 GitHub 授權 Token**，隨時可進行全量雙向同步！")
+    else:
+        st.caption("🟠 **目前狀態：未設定 Token**（若需寫入私人倉庫請先填入並點擊【💾 永久記住 Token】）")
 
     with st.expander("💡 如何在 1 分鐘內免費取得您的 GitHub Token？（超簡單 3 步驟）", expanded=False):
         st.markdown("""
@@ -1192,7 +1225,7 @@ with tabs[6]:
         3. **Expiration（效期）**：選 `No expiration`（無期限）
         4. **Select scopes（權限勾選）**：務必勾選第 1 項 **`repo`**（包含所有子項目）
         5. 滑到最下方點擊綠色按鈕 **「Generate token」** ➔ 複製綠色框框中的 `ghp_...` 代碼。
-        6. 回到上方貼入輸入框中即可！
+        6. 回到上方貼入輸入框中，點擊 **【💾 永久記住 Token】** 即可！
         
         *(進階提示：您也可以在 Streamlit Cloud 後台 Settings ➔ Secrets 填入 `GITHUB_TOKEN = "ghp_..."`，即可所有裝置免輸入自動同步！)*
         """)
