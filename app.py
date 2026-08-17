@@ -533,36 +533,38 @@ with tabs[1]:
 
         st.caption(f"🎒 目前顯示已擁有卡匣共 **{len(filtered_my_cards)}** 款：")
 
-        # 針對 6.1" 手機：採用 2 列直立卡片網格 (只顯示已擁有卡匣)
-        card_cols = st.columns(2)
-        for i, c in enumerate(filtered_my_cards):
-            c_id = c["id"]
-            with card_cols[i % 2]:
-                render_html(f"""
-                <div class="card-box" style="border: 2px solid #E53935; background-color: #FFF8F8; min-height: 220px; padding: 8px;">
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span class="star-badge">{'⭐'*c.get('star', 5)}</span>
-                        <span class="energy-badge">⚡{c.get('energy', 100)}</span>
+        # 針對手機與電腦：採用標準橫向逐行網格 (嚴格依照 1 ➔ 2 ➔ 3 ➔ 4 橫向順序排列)
+        for row_idx in range(0, len(filtered_my_cards), 2):
+            row_cards = filtered_my_cards[row_idx:row_idx+2]
+            cols = st.columns(2)
+            for j, c in enumerate(row_cards):
+                c_id = c["id"]
+                with cols[j]:
+                    render_html(f"""
+                    <div class="card-box" style="border: 2px solid #E53935; background-color: #FFF8F8; min-height: 220px; padding: 8px; margin-bottom: 8px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <span class="star-badge">{'⭐'*c.get('star', 5)}</span>
+                            <span class="energy-badge">⚡{c.get('energy', 100)}</span>
+                        </div>
+                        <div style="text-align:center; margin: 4px 0;">
+                            <img src="{c.get('image', '')}" style="width: 60px; height: 60px; object-fit: contain;">
+                            <div style="font-weight: bold; font-size: 0.95rem; line-height:1.2;">{c.get('name')}</div>
+                            <div style="font-size: 0.7rem; color: #777;">{c.get('series')} • {c.get('id')}</div>
+                        </div>
+                        <div style="margin: 2px 0;">{render_types_html(c.get('types', []))}</div>
+                        <div style="font-size: 0.75rem; color:#333;">⚔️ {c.get('move_name')} [{c.get('move_power')}]</div>
+                        <div style="font-size: 0.7rem; color:#0288D1;">✨ {c.get('special', '無')}</div>
                     </div>
-                    <div style="text-align:center; margin: 4px 0;">
-                        <img src="{c.get('image', '')}" style="width: 60px; height: 60px; object-fit: contain;">
-                        <div style="font-weight: bold; font-size: 0.95rem; line-height:1.2;">{c.get('name')}</div>
-                        <div style="font-size: 0.7rem; color: #777;">{c.get('series')} • {c.get('id')}</div>
-                    </div>
-                    <div style="margin: 2px 0;">{render_types_html(c.get('types', []))}</div>
-                    <div style="font-size: 0.75rem; color:#333;">⚔️ {c.get('move_name')} [{c.get('move_power')}]</div>
-                    <div style="font-size: 0.7rem; color:#0288D1;">✨ {c.get('special', '無')}</div>
-                </div>
-                """)
-                
-                sub_c1, sub_c2 = st.columns(2)
-                with sub_c1:
-                    if st.button("🔍 詳情", key=f"btn_my_det_{c_id}", use_container_width=True):
-                        show_card_details_modal(c)
-                with sub_c2:
-                    if st.button("🗑️ 移出", key=f"btn_my_del_{c_id}", use_container_width=True, type="secondary"):
-                        st.session_state.owned_ids = toggle_card_ownership(c_id, st.session_state.owned_ids)
-                        st.rerun()
+                    """)
+                    
+                    sub_c1, sub_c2 = st.columns(2)
+                    with sub_c1:
+                        if st.button("🔍 詳情", key=f"btn_my_det_{c_id}", use_container_width=True):
+                            show_card_details_modal(c)
+                    with sub_c2:
+                        if st.button("🗑️ 移出", key=f"btn_my_del_{c_id}", use_container_width=True, type="secondary"):
+                            st.session_state.owned_ids = toggle_card_ownership(c_id, st.session_state.owned_ids)
+                            st.rerun()
 
     # 展開從全圖鑑快速勾選卡匣
     with st.expander("➕ 展開全圖鑑快速勾選/新增持有卡匣", expanded=False):
@@ -581,27 +583,30 @@ with tabs[1]:
                     continue
             cand_to_add.append(c)
             
-        add_cols = st.columns(2)
-        for i, c in enumerate(cand_to_add[:40]):
-            c_id = c["id"]
-            is_owned = c_id in st.session_state.owned_ids
-            with add_cols[i % 2]:
-                border_color = "#E53935" if is_owned else "#E0E0E0"
-                bg_color = "#FFF8F8" if is_owned else "#FFFFFF"
-                render_html(f"""
-                <div class="card-box" style="border: 1.5px solid {border_color}; background-color: {bg_color}; padding: 6px; margin-bottom: 6px;">
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="font-size:0.8rem;">{'⭐'*c.get('star', 5)}</span>
-                        <span style="font-size:0.7rem; color:#777;">{c.get('id')}</span>
+        cand_to_add = sort_cards_chronological(cand_to_add)
+        for row_idx in range(0, min(len(cand_to_add), 60), 2):
+            row_items = cand_to_add[row_idx:row_idx+2]
+            cols = st.columns(2)
+            for j, c in enumerate(row_items):
+                c_id = c["id"]
+                is_owned = c_id in st.session_state.owned_ids
+                with cols[j]:
+                    border_color = "#E53935" if is_owned else "#E0E0E0"
+                    bg_color = "#FFF8F8" if is_owned else "#FFFFFF"
+                    render_html(f"""
+                    <div class="card-box" style="border: 1.5px solid {border_color}; background-color: {bg_color}; padding: 6px; margin-bottom: 6px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <span style="font-size:0.8rem;">{'⭐'*c.get('star', 5)}</span>
+                            <span style="font-size:0.7rem; color:#777;">{c.get('id')}</span>
+                        </div>
+                        <div style="font-weight:bold; font-size:0.85rem; margin:2px 0;">{c.get('name')} <span style="font-size:0.7rem; color:#888;">({c.get('series')})</span></div>
                     </div>
-                    <div style="font-weight:bold; font-size:0.85rem; margin:2px 0;">{c.get('name')} <span style="font-size:0.7rem; color:#888;">({c.get('series')})</span></div>
-                </div>
-                """)
-                btn_lbl = "✅ 已擁有" if is_owned else "➕ 加入收藏"
-                btn_tp = "primary" if is_owned else "secondary"
-                if st.button(btn_lbl, key=f"btn_add_tab_{c_id}", use_container_width=True, type=btn_tp):
-                    st.session_state.owned_ids = toggle_card_ownership(c_id, st.session_state.owned_ids)
-                    st.rerun()
+                    """)
+                    btn_lbl = "✅ 已擁有" if is_owned else "➕ 加入收藏"
+                    btn_tp = "primary" if is_owned else "secondary"
+                    if st.button(btn_lbl, key=f"btn_add_tab_{c_id}", use_container_width=True, type=btn_tp):
+                        st.session_state.owned_ids = toggle_card_ownership(c_id, st.session_state.owned_ids)
+                        st.rerun()
 
 # ==============================================================================
 # TAB 3: 👑 訓練家 ID 庫 (Trainer ID Manager & Machine QR Code Scanner)
@@ -746,54 +751,56 @@ with tabs[3]:
 
     st.caption(f"共找到 **{len(filtered_sp)}** 款支援寶可夢：")
 
-    # 支援寶可夢卡片式列表
-    sp_grid_cols = st.columns(2)
-    for idx, sp in enumerate(filtered_sp):
-        sp_id = sp.get("id", "")
-        sp_name = sp.get("name", "")
-        sp_types = sp.get("types", [])
-        sp_skill = sp.get("skill_name", "")
-        sp_desc = sp.get("skill_desc", "")
-        sp_series = sp.get("series", "")
-        sp_qr_data = sp.get("qr_data", f"MEZASTAR-SP:{sp_id}")
-        sp_icon = sp.get("icon_url", "")
+    # 支援寶可夢卡片式列表 (逐行排列)
+    for sp_idx in range(0, len(filtered_sp), 2):
+        row_sp = filtered_sp[sp_idx:sp_idx+2]
+        sp_cols = st.columns(2)
+        for j, sp in enumerate(row_sp):
+            sp_id = sp.get("id", "")
+            sp_name = sp.get("name", "")
+            sp_types = sp.get("types", [])
+            sp_skill = sp.get("skill_name", "")
+            sp_desc = sp.get("skill_desc", "")
+            sp_series = sp.get("series", "")
+            sp_qr_data = sp.get("qr_data", f"MEZASTAR-SP:{sp_id}")
+            sp_icon = sp.get("icon_url", "")
 
-        with sp_grid_cols[idx % 2]:
-            primary_type = sp_types[0] if sp_types else "一般"
-            type_bg = TYPE_COLORS.get(primary_type, "#E53935")
+            with sp_cols[j]:
+                primary_type = sp_types[0] if sp_types else "一般"
+                type_bg = TYPE_COLORS.get(primary_type, "#E53935")
 
-            render_html(f"""
-            <div class="card-box" style="border-top: 4px solid {type_bg}; padding:10px; margin-bottom:8px;">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span style="background:{type_bg}; color:#FFF; font-size:0.7rem; font-weight:bold; padding:2px 6px; border-radius:4px;">{sp_series}</span>
-                    <span style="font-size:0.75rem; color:#666; font-family:monospace;">{sp_id}</span>
-                </div>
-                <div style="display:flex; align-items:center; margin:8px 0;">
-                    <img src="{sp_icon}" style="width:55px; height:55px; object-fit:contain; margin-right:8px;" />
-                    <div>
-                        <div style="font-weight:bold; font-size:0.95rem; color:#111;">{sp_name}</div>
-                        <div style="font-size:0.75rem;">{render_types_html(sp_types)}</div>
+                render_html(f"""
+                <div class="card-box" style="border-top: 4px solid {type_bg}; padding:10px; margin-bottom:8px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span style="background:{type_bg}; color:#FFF; font-size:0.7rem; font-weight:bold; padding:2px 6px; border-radius:4px;">{sp_series}</span>
+                        <span style="font-size:0.75rem; color:#666; font-family:monospace;">{sp_id}</span>
+                    </div>
+                    <div style="display:flex; align-items:center; margin:8px 0;">
+                        <img src="{sp_icon}" style="width:55px; height:55px; object-fit:contain; margin-right:8px;" />
+                        <div>
+                            <div style="font-weight:bold; font-size:0.95rem; color:#111;">{sp_name}</div>
+                            <div style="font-size:0.75rem;">{render_types_html(sp_types)}</div>
+                        </div>
+                    </div>
+                    <div style="background:#FFFDE7; border-left:3px solid #FBC02D; padding:6px; border-radius:4px; font-size:0.75rem; margin-bottom:6px;">
+                        <div style="font-weight:bold; color:#F57F17;">⚡ 支援招式：{sp_skill}</div>
+                        <div style="color:#555; font-size:0.7rem; margin-top:2px;">{sp_desc}</div>
                     </div>
                 </div>
-                <div style="background:#FFFDE7; border-left:3px solid #FBC02D; padding:6px; border-radius:4px; font-size:0.75rem; margin-bottom:6px;">
-                    <div style="font-weight:bold; color:#F57F17;">⚡ 支援招式：{sp_skill}</div>
-                    <div style="color:#555; font-size:0.7rem; margin-top:2px;">{sp_desc}</div>
-                </div>
-            </div>
-            """)
+                """)
 
-            # 點擊放大 QR Code 抽屜
-            with st.expander(f"📱 點此放大【{sp_name}】機台掃描 QR Code", expanded=False):
-                sp_qr_b64 = generate_qr_base64(sp_qr_data, box_size=12)
-                st.markdown(f"""
-                <div style="background:#000000; padding:12px; border-radius:10px; text-align:center;">
-                    <div style="color:#FFF; font-weight:bold; font-size:0.85rem; margin-bottom:6px;">⚡ {sp_name} 支援召喚碼</div>
-                    <div style="background:#FFFFFF; padding:10px; border-radius:8px; display:inline-block;">
-                        <img src="{sp_qr_b64}" style="width:220px; height:220px; display:block; margin:auto;" />
+                # 點擊放大 QR Code 抽屜
+                with st.expander(f"📱 點此放大【{sp_name}】機台掃描 QR Code", expanded=False):
+                    sp_qr_b64 = generate_qr_base64(sp_qr_data, box_size=12)
+                    st.markdown(f"""
+                    <div style="background:#000000; padding:12px; border-radius:10px; text-align:center;">
+                        <div style="color:#FFF; font-weight:bold; font-size:0.85rem; margin-bottom:6px;">⚡ {sp_name} 支援召喚碼</div>
+                        <div style="background:#FFFFFF; padding:10px; border-radius:8px; display:inline-block;">
+                            <img src="{sp_qr_b64}" style="width:220px; height:220px; display:block; margin:auto;" />
+                        </div>
+                        <div style="color:#B0BEC5; font-size:0.7rem; margin-top:6px; font-family:monospace;">代碼: {sp_qr_data}</div>
                     </div>
-                    <div style="color:#B0BEC5; font-size:0.7rem; margin-top:6px; font-family:monospace;">代碼: {sp_qr_data}</div>
-                </div>
-                """, unsafe_allow_html=True)
+                    """, unsafe_allow_html=True)
 
 
 # ==============================================================================
@@ -857,48 +864,50 @@ with tabs[4]:
     st.caption(f"目前顯示共 **{len(pokedex_cards)}** 款卡匣：")
 
     if view_mode == "🗂️ 圖鑑卡片模式 (手機好讀)":
-        # 6.1 吋手機雙列卡片網格
-        pk_cols = st.columns(2)
-        for i, c in enumerate(pokedex_cards):
-            c_id = c["id"]
-            with pk_cols[i % 2]:
-                weak_str = ", ".join(c.get("weaknesses", []))
-                sec_m = c.get("second_move", {})
-                sec_text = f"<div style='font-size:0.7rem; color:#666;'>副招: {sec_m.get('name')} [{sec_m.get('power')}]</div>" if sec_m else ""
-                
-                render_html(f"""
-                <div class="card-box" style="border-top: 4px solid {TYPE_COLORS.get(c.get('move_type', '一般'), '#E53935')}; min-height: 250px; padding:8px;">
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span class="star-badge">{'⭐'*c.get('star', 5)}</span>
-                        <span class="energy-badge">⚡{c.get('energy', 100)}</span>
+        # 6.1 吋手機標準橫向逐行卡片網格 (保證 1 ➔ 2 ➔ 3 ➔ 4 橫向嚴格順序)
+        for row_idx in range(0, len(pokedex_cards), 2):
+            row_cards = pokedex_cards[row_idx:row_idx+2]
+            pk_cols = st.columns(2)
+            for j, c in enumerate(row_cards):
+                c_id = c["id"]
+                with pk_cols[j]:
+                    weak_str = ", ".join(c.get("weaknesses", []))
+                    sec_m = c.get("second_move", {})
+                    sec_text = f"<div style='font-size:0.7rem; color:#666;'>副招: {sec_m.get('name')} [{sec_m.get('power')}]</div>" if sec_m else ""
+                    
+                    render_html(f"""
+                    <div class="card-box" style="border-top: 4px solid {TYPE_COLORS.get(c.get('move_type', '一般'), '#E53935')}; min-height: 250px; padding:8px; margin-bottom:8px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <span class="star-badge">{'⭐'*c.get('star', 5)}</span>
+                            <span class="energy-badge">⚡{c.get('energy', 100)}</span>
+                        </div>
+                        <div style="text-align:center; margin: 4px 0;">
+                            <img src="{c.get('image', '')}" style="width: 60px; height: 60px; object-fit: contain;">
+                            <div style="font-weight: bold; font-size: 0.95rem; line-height:1.2;">{c.get('name')}</div>
+                            <div style="font-size: 0.7rem; color: #777;">{c.get('series')} • {c.get('id')}</div>
+                        </div>
+                        <div style="margin: 2px 0;">{render_types_html(c.get('types', []))}</div>
+                        <div style="font-size: 0.75rem;">⚔️ <b>{c.get('move_name')}</b> ({c.get('move_type')}) [威力: {c.get('move_power')}]</div>
+                        {sec_text}
+                        <div style="font-size: 0.7rem; color:#555; background:#F8F9FA; padding:3px; border-radius:4px; margin:3px 0;">
+                            HP {c.get('hp')} | 攻 {c.get('atk')} | 防 {c.get('def')} | 速 {c.get('spd')}
+                        </div>
+                        <div style="font-size: 0.7rem; color:#D32F2F;">🎯 弱點: {weak_str[:25] + ('...' if len(weak_str)>25 else '')}</div>
+                        <div style="font-size: 0.7rem; color:#0288D1;">✨ {c.get('special', '無')}</div>
                     </div>
-                    <div style="text-align:center; margin: 4px 0;">
-                        <img src="{c.get('image', '')}" style="width: 60px; height: 60px; object-fit: contain;">
-                        <div style="font-weight: bold; font-size: 0.95rem; line-height:1.2;">{c.get('name')}</div>
-                        <div style="font-size: 0.7rem; color: #777;">{c.get('series')} • {c.get('id')}</div>
-                    </div>
-                    <div style="margin: 2px 0;">{render_types_html(c.get('types', []))}</div>
-                    <div style="font-size: 0.75rem;">⚔️ <b>{c.get('move_name')}</b> ({c.get('move_type')}) [威力: {c.get('move_power')}]</div>
-                    {sec_text}
-                    <div style="font-size: 0.7rem; color:#555; background:#F8F9FA; padding:3px; border-radius:4px; margin:3px 0;">
-                        HP {c.get('hp')} | 攻 {c.get('atk')} | 防 {c.get('def')} | 速 {c.get('spd')}
-                    </div>
-                    <div style="font-size: 0.7rem; color:#D32F2F;">🎯 弱點: {weak_str[:25] + ('...' if len(weak_str)>25 else '')}</div>
-                    <div style="font-size: 0.7rem; color:#0288D1;">✨ {c.get('special', '無')}</div>
-                </div>
-                """)
-                
-                pk_btn_c1, pk_btn_c2 = st.columns(2)
-                with pk_btn_c1:
-                    if st.button("🔍 詳情", key=f"btn_pk_det_{i}_{c_id}", use_container_width=True):
-                        show_card_details_modal(c)
-                with pk_btn_c2:
-                    is_owned = c_id in st.session_state.owned_ids
-                    pk_lbl = "✅ 擁有" if is_owned else "➕ 加入"
-                    pk_tp = "primary" if is_owned else "secondary"
-                    if st.button(pk_lbl, key=f"btn_pk_own_{i}_{c_id}", use_container_width=True, type=pk_tp):
-                        st.session_state.owned_ids = toggle_card_ownership(c_id, st.session_state.owned_ids)
-                        st.rerun()
+                    """)
+                    
+                    pk_btn_c1, pk_btn_c2 = st.columns(2)
+                    with pk_btn_c1:
+                        if st.button("🔍 詳情", key=f"btn_pk_det_{row_idx}_{j}_{c_id}", use_container_width=True):
+                            show_card_details_modal(c)
+                    with pk_btn_c2:
+                        is_owned = c_id in st.session_state.owned_ids
+                        pk_lbl = "✅ 擁有" if is_owned else "➕ 加入"
+                        pk_tp = "primary" if is_owned else "secondary"
+                        if st.button(pk_lbl, key=f"btn_pk_own_{row_idx}_{j}_{c_id}", use_container_width=True, type=pk_tp):
+                            st.session_state.owned_ids = toggle_card_ownership(c_id, st.session_state.owned_ids)
+                            st.rerun()
     else:
         df_all = pd.DataFrame([{
             "編號": c.get("id"),
