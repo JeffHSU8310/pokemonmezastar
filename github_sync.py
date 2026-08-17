@@ -160,20 +160,24 @@ def push_file_to_github_api(
 def pull_file_from_github_api(file_rel_path: str, token: Optional[str] = None) -> Tuple[bool, str, str]:
     """
     透過 GitHub REST API 從遠端 main 分支下載最新檔案內容。
-    若為私人倉庫且未填 Token，則自動降級讀取伺服器本地最新檔案，確保 100% 順暢。
+    若未傳入 Token 則自動讀取已儲存的 Token，確保私人倉庫 100% 順暢。
     :return: (是否成功, 檔案內容字串, 訊息)
     """
+    use_token = token
+    if not use_token or not use_token.strip():
+        use_token = get_saved_github_token()
+
     headers = {
         "Accept": "application/vnd.github.v3+json",
         "User-Agent": "PokemonMezastar-SyncBot"
     }
-    if token and token.strip():
-        headers["Authorization"] = f"Bearer {token.strip()}"
+    if use_token and use_token.strip():
+        headers["Authorization"] = f"Bearer {use_token.strip()}"
 
     url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/{file_rel_path}?ref={BRANCH}"
 
     try:
-        res = requests.get(url, headers=headers, timeout=8)
+        res = requests.get(url, headers=headers, timeout=10)
         if res.status_code == 200:
             data = res.json()
             content_b64 = data.get("content", "")

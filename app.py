@@ -314,22 +314,22 @@ if "github_auto_synced" not in st.session_state:
     if not auto_token and hasattr(st, "secrets"):
         auto_token = st.secrets.get("GITHUB_TOKEN", None)
     
-    if auto_token:
-        try:
-            # 1. 自動從 GitHub 抓取最新卡匣庫
-            ok_c, content_c, _ = pull_file_from_github_api("data/my_collection.json", token=auto_token)
-            if ok_c and content_c:
-                imp_ok, _, new_ids = import_collection_from_json(content_c, mode="overwrite")
-                if imp_ok:
-                    st.session_state.owned_ids = new_ids
-            # 2. 自動從 GitHub 抓取最新訓練家 ID 與 QR Code
-            ok_t, content_t, _ = pull_file_from_github_api("data/trainers.json", token=auto_token)
-            if ok_t and content_t:
-                parsed_trainers = json.loads(content_t)
-                if isinstance(parsed_trainers, list):
-                    save_trainers(parsed_trainers)
-        except Exception:
-            pass
+    try:
+        # 1. 自動從 GitHub 抓取最新卡匣庫
+        ok_c, content_c, _ = pull_file_from_github_api("data/my_collection.json", token=auto_token)
+        if ok_c and content_c:
+            imp_ok, _, new_ids = import_collection_from_json(content_c, mode="overwrite")
+            if imp_ok:
+                st.session_state.owned_ids = new_ids
+                save_user_collection_ids(new_ids)
+        # 2. 自動從 GitHub 抓取最新訓練家 ID 與 QR Code
+        ok_t, content_t, _ = pull_file_from_github_api("data/trainers.json", token=auto_token)
+        if ok_t and content_t:
+            parsed_trainers = json.loads(content_t)
+            if isinstance(parsed_trainers, list):
+                save_trainers(parsed_trainers)
+    except Exception:
+        pass
 
 # 載入卡匣資料
 all_cards = load_cards()
@@ -1252,8 +1252,7 @@ with tabs[6]:
         st.markdown("**📤 將目前裝置資料 ➔ 永久寫入 GitHub**")
         commit_msg = st.text_input("提交備註說明:", value="同步最新卡匣庫與訓練家資料")
         if st.button("🚀 立即全量寫入 GitHub 雲端", type="primary", use_container_width=True):
-            current_token = tok_input.strip() if tok_input else default_tok
-            if not current_token:
+            if not active_token:
                 st.error("❌ 請先在上方填入您的 GitHub Token！")
             else:
                 with st.spinner("正在透過 GitHub API 寫入 main 倉庫..."):
@@ -1261,7 +1260,7 @@ with tabs[6]:
                     ok, res_msg = sync_all_user_data_to_github(
                         owned_ids=list(st.session_state.owned_ids),
                         trainers=trainers_curr,
-                        token=current_token,
+                        token=active_token,
                         summary=commit_msg
                     )
                     if ok:
@@ -1274,16 +1273,16 @@ with tabs[6]:
         st.markdown("**📥 從 GitHub 雲端 ➔ 拉取最新資料至此裝置**")
         st.caption("在換新手機、更換電腦或清除瀏覽器快取後，點擊下方按鈕即可秒還原所有卡匣與訓練家！")
         if st.button("📥 一鍵自 GitHub 雲端拉取並還原", use_container_width=True):
-            current_token = tok_input.strip() if tok_input else default_tok
             with st.spinner("正在自 GitHub main 下載最新資料..."):
-                ok_c, content_c, msg_c = pull_file_from_github_api("data/my_collection.json", token=current_token)
-                ok_t, content_t, msg_t = pull_file_from_github_api("data/trainers.json", token=current_token)
+                ok_c, content_c, msg_c = pull_file_from_github_api("data/my_collection.json", token=active_token)
+                ok_t, content_t, msg_t = pull_file_from_github_api("data/trainers.json", token=active_token)
                 
                 success_count = 0
                 if ok_c:
                     imp_ok, _, new_ids = import_collection_from_json(content_c, mode="overwrite")
                     if imp_ok:
                         st.session_state.owned_ids = new_ids
+                        save_user_collection_ids(new_ids)
                         success_count += 1
                 if ok_t:
                     try:
