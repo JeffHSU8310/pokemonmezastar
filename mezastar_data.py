@@ -259,7 +259,11 @@ def sort_cards_chronological(cards: List[Dict[str, Any]]) -> List[Dict[str, Any]
                 card_num = 999
         
         # 輔助：若無編號則按星級由大到小 (6星在前面)
-        star = c.get("star", 5)
+        star_raw = c.get("star", 5)
+        try:
+            star = int(star_raw)
+        except Exception:
+            star = 5
         
         return (series_rank, card_num, -star, cid)
 
