@@ -1,18 +1,1 @@
-[
-  {
-    "id": "MZ-TR-8888-001",
-    "name": "主要訓練家 (Master)",
-    "created_at": "2026-01-01 12:00:00",
-    "notes": "主力對戰帳號，已累積 50+ 六星卡",
-    "avatar_color": "#FF5722",
-    "is_active": true
-  },
-  {
-    "id": "MZ-TR-9999-002",
-    "name": "副帳號 (小號)",
-    "created_at": "2026-02-15 15:30:00",
-    "notes": "活動與替補專用",
-    "avatar_color": "#2196F3",
-    "is_active": false
-  }
-]
+[]
