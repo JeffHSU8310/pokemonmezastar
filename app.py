@@ -396,15 +396,61 @@ def render_card_detail_content(c: Dict[str, Any]):
     
     # 招式系統
     st.markdown("##### ⚔️ 戰鬥招式")
-    sec_m = c.get("second_move", {})
-    sec_html = f"<div style='margin-top:4px; font-size:0.85rem; color:#455A64;'>🗡️ <b>副招式:</b> {sec_m.get('name')} ({sec_m.get('type')}) [威力: {sec_m.get('power')}]</div>" if sec_m else ""
     
-    render_html(f"""
-    <div style="background:#FFF8E1; border:1px solid #FFE082; border-radius:8px; padding:8px 10px; margin-bottom:10px;">
-        <div style="font-size:0.85rem;">⚔️ <b>主招式:</b> <b>{c.get('move_name')}</b> ({c.get('move_type')}) [威力: <b>{c.get('move_power')}</b>]</div>
-        {sec_html}
-    </div>
-    """)
+    def render_move_card_html(m_name, m_type, m_cat, m_pwr, m_acc, m_dmg, is_secondary=False):
+        if not m_name:
+            return ""
+        t_col = TYPE_COLORS.get(m_type, "#455A64")
+        cat_str = m_cat or ("物理" if m_pwr >= 100 else "特殊")
+        cat_badge_col = "#D32F2F" if cat_str == "物理" else "#1976D2"
+        acc_str = f"{m_acc}" if m_acc is not None else "100"
+        dmg_val = f"{m_dmg:,}" if m_dmg else "-"
+        pfx = "🗡️ 副招式" if is_secondary else "⚔️ 主招式"
+        bg_col = "#F3E5F5" if is_secondary else "#E8EAF6"
+        border_col = "#CE93D8" if is_secondary else "#C5CAE9"
+        
+        return f"""
+        <div style="background:{bg_col}; border:1.5px solid {border_col}; border-radius:10px; padding:10px 12px; margin-bottom:8px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                <div style="font-size:1.05rem; font-weight:800; color:#1A237E;">
+                    <span style="font-size:0.8rem; color:#5C6BC0; margin-right:4px;">{pfx}:</span>{m_name}
+                </div>
+                <span style="background:{t_col}; color:white; padding:2px 8px; border-radius:6px; font-size:0.75rem; font-weight:bold;">{m_type}</span>
+            </div>
+            <div style="display:flex; flex-wrap:wrap; gap:8px 16px; font-size:0.82rem; color:#37474F;">
+                <div>屬性: <b>{m_type}</b></div>
+                <div>攻擊類型: <span style="font-weight:bold; color:{cat_badge_col};">{cat_str}</span></div>
+                <div>招式威力: <b style="color:#D84315;">{m_pwr}</b></div>
+                <div>命中: <b>{acc_str}</b></div>
+                <div>傷害: <b style="color:#2E7D32; font-size:0.9rem;">{dmg_val}</b></div>
+            </div>
+        </div>
+        """
+        
+    m1_html = render_move_card_html(
+        c.get("move_name"),
+        c.get("move_type"),
+        c.get("move_category", "物理"),
+        c.get("move_power", 100),
+        c.get("move_accuracy", 100),
+        c.get("move_damage", 0),
+        is_secondary=False
+    )
+    
+    sec_m = c.get("second_move", {})
+    sec_html = ""
+    if sec_m and sec_m.get("name"):
+        sec_html = render_move_card_html(
+            sec_m.get("name"),
+            sec_m.get("type"),
+            sec_m.get("category", "特殊"),
+            sec_m.get("power", 100),
+            sec_m.get("accuracy", 100),
+            sec_m.get("damage", 0),
+            is_secondary=True
+        )
+        
+    render_html(f"{m1_html}{sec_html}")
     
     # 六維體質能力值
     st.markdown("##### 📊 六維體質能力值")

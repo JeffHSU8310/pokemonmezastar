@@ -21,7 +21,10 @@
     "second_move": {
       "name": "月亮之力",
       "type": "妖精",
-      "power": 95
+      "category": "特殊",
+      "power": 95,
+      "accuracy": 100,
+      "damage": 13462
     },
     "special": "雙重招式",
     "special_mechanics": [
@@ -57,7 +60,28 @@
       "龍 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/a6f521c203570fd2e7cb8235ef33c70eee3276ed976cb42394d416d6ab80ebbc.png",
-    "name_en": "Zacian"
+    "name_en": "Zacian",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 29380,
+    "moves": [
+      {
+        "name": "巨獸斬",
+        "type": "鋼",
+        "category": "物理",
+        "power": 100,
+        "accuracy": 100,
+        "damage": 29380
+      },
+      {
+        "name": "月亮之力",
+        "type": "妖精",
+        "category": "特殊",
+        "power": 95,
+        "accuracy": 100,
+        "damage": 13462
+      }
+    ]
   },
   {
     "id": "2-2-002",
@@ -81,7 +105,10 @@
     "second_move": {
       "name": "近身戰",
       "type": "格鬥",
-      "power": 120
+      "category": "物理",
+      "power": 120,
+      "accuracy": 100,
+      "damage": 27144
     },
     "special": "雙重招式",
     "special_mechanics": [
@@ -116,7 +143,28 @@
       "毒 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/8d0a19959124f469bb755dc0a01009e264e61cb1cf8c012b8bcdf983ea827fee.png",
-    "name_en": "Zamazenta"
+    "name_en": "Zamazenta",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 22620,
+    "moves": [
+      {
+        "name": "巨獸彈",
+        "type": "鋼",
+        "category": "物理",
+        "power": 100,
+        "accuracy": 100,
+        "damage": 22620
+      },
+      {
+        "name": "近身戰",
+        "type": "格鬥",
+        "category": "物理",
+        "power": 120,
+        "accuracy": 100,
+        "damage": 27144
+      }
+    ]
   },
   {
     "id": "2-2-003",
@@ -140,7 +188,10 @@
     "second_move": {
       "name": "超極巨劣化衰變",
       "type": "龍",
-      "power": 140
+      "category": "物理",
+      "power": 140,
+      "accuracy": "必中",
+      "damage": 21504
     },
     "special": "超極巨化",
     "special_mechanics": [
@@ -174,7 +225,28 @@
       "毒 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/141a525ad64b51b9f39cd3cb414be03224254584d0581e91d1b2d2035c4b4aec.png",
-    "name_en": "Duraludon"
+    "name_en": "Duraludon",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 15360,
+    "moves": [
+      {
+        "name": "逆鱗",
+        "type": "龍",
+        "category": "物理",
+        "power": 120,
+        "accuracy": 100,
+        "damage": 15360
+      },
+      {
+        "name": "超極巨劣化衰變",
+        "type": "龍",
+        "category": "物理",
+        "power": 140,
+        "accuracy": "必中",
+        "damage": 21504
+      }
+    ]
   },
   {
     "id": "2-2-004",
@@ -198,7 +270,10 @@
     "second_move": {
       "name": "超極巨地獄滅焰",
       "type": "火",
-      "power": 130
+      "category": "特殊",
+      "power": 130,
+      "accuracy": "必中",
+      "damage": 21372
     },
     "special": "超極巨化",
     "special_mechanics": [
@@ -231,7 +306,28 @@
       "地面 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/b0246f1e3cb822c25fbb54a1b92856392729c9e337a4eca0721e47969fab1fc6.png",
-    "name_en": "Charizard"
+    "name_en": "Charizard",
+    "move_category": "特殊",
+    "move_accuracy": 100,
+    "move_damage": 12330,
+    "moves": [
+      {
+        "name": "噴射火焰",
+        "type": "火",
+        "category": "特殊",
+        "power": 90,
+        "accuracy": 100,
+        "damage": 12330
+      },
+      {
+        "name": "超極巨地獄滅焰",
+        "type": "火",
+        "category": "特殊",
+        "power": 130,
+        "accuracy": "必中",
+        "damage": 21372
+      }
+    ]
   },
   {
     "id": "2-2-005",
@@ -255,7 +351,10 @@
     "second_move": {
       "name": "極巨草原",
       "type": "草",
-      "power": 140
+      "category": "物理",
+      "power": 140,
+      "accuracy": "必中",
+      "damage": 25368
     },
     "special": "極巨化",
     "special_mechanics": [
@@ -292,7 +391,28 @@
       "超能力 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/6e6244f3d1f9386a03154a058c3a20824fa28beb44d081260ea28724c2a040e2.png",
-    "name_en": "Zarude"
+    "name_en": "Zarude",
+    "move_category": "物理",
+    "move_accuracy": 85,
+    "move_damage": 18120,
+    "moves": [
+      {
+        "name": "強力鞭打",
+        "type": "草",
+        "category": "物理",
+        "power": 120,
+        "accuracy": 85,
+        "damage": 18120
+      },
+      {
+        "name": "極巨草原",
+        "type": "草",
+        "category": "物理",
+        "power": 140,
+        "accuracy": "必中",
+        "damage": 25368
+      }
+    ]
   },
   {
     "id": "2-2-006",
@@ -316,7 +436,10 @@
     "second_move": {
       "name": "極巨拳鬥",
       "type": "格鬥",
-      "power": 140
+      "category": "特殊",
+      "power": 140,
+      "accuracy": "必中",
+      "damage": 24360
     },
     "special": "超級進化",
     "special_mechanics": [
@@ -351,7 +474,28 @@
       "毒 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/9e1b19824af3013d5b4d6c87e324589b8215003ab83ce28ee438c663788a7c58.png",
-    "name_en": "Lucario"
+    "name_en": "Lucario",
+    "move_category": "特殊",
+    "move_accuracy": 70,
+    "move_damage": 17400,
+    "moves": [
+      {
+        "name": "真氣彈",
+        "type": "格鬥",
+        "category": "特殊",
+        "power": 120,
+        "accuracy": 70,
+        "damage": 17400
+      },
+      {
+        "name": "極巨拳鬥",
+        "type": "格鬥",
+        "category": "特殊",
+        "power": 140,
+        "accuracy": "必中",
+        "damage": 24360
+      }
+    ]
   },
   {
     "id": "2-2-007",
@@ -404,7 +548,20 @@
       "地面 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/7fe8053a9134308881bd0669feb3a7cc9b25fd46899faa6e33790d00f7f2758d.png",
-    "name_en": "Rayquaza"
+    "name_en": "Rayquaza",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 26280,
+    "moves": [
+      {
+        "name": "畫龍點睛",
+        "type": "飛行",
+        "category": "物理",
+        "power": 120,
+        "accuracy": 100,
+        "damage": 26280
+      }
+    ]
   },
   {
     "id": "2-2-008",
@@ -458,7 +615,20 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/2d196cf36ed77b012ea212f601f2c559b69e08498d2e4b2bc7c6269174797b29.png",
-    "name_en": "Latias"
+    "name_en": "Latias",
+    "move_category": "特殊",
+    "move_accuracy": 100,
+    "move_damage": 13015,
+    "moves": [
+      {
+        "name": "薄霧球",
+        "type": "超能力",
+        "category": "特殊",
+        "power": 95,
+        "accuracy": 100,
+        "damage": 13015
+      }
+    ]
   },
   {
     "id": "2-2-009",
@@ -512,7 +682,20 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/453db70a433a86194e22982050c8f3fdf455e5c46651890b9c8e6091db6b4038.png",
-    "name_en": "Latios"
+    "name_en": "Latios",
+    "move_category": "特殊",
+    "move_accuracy": 100,
+    "move_damage": 15295,
+    "moves": [
+      {
+        "name": "潔淨光芒",
+        "type": "超能力",
+        "category": "特殊",
+        "power": 95,
+        "accuracy": 100,
+        "damage": 15295
+      }
+    ]
   },
   {
     "id": "2-2-010",
@@ -565,7 +748,20 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/058c94f21ee32d4e21df25000052e170683cb20cd9ff56b8a172f941b7684df6.png",
-    "name_en": "Naganadel"
+    "name_en": "Naganadel",
+    "move_category": "特殊",
+    "move_accuracy": 100,
+    "move_damage": 10335,
+    "moves": [
+      {
+        "name": "毒液衝擊",
+        "type": "毒",
+        "category": "特殊",
+        "power": 65,
+        "accuracy": 100,
+        "damage": 10335
+      }
+    ]
   },
   {
     "id": "2-2-011",
@@ -621,7 +817,10 @@
       "毒 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/262de81853e76b55cf7ba70207538e3351501279798aba849e28d8ba1b0e802d.png",
-    "name_en": "Metagross"
+    "name_en": "Metagross",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 19575
   },
   {
     "id": "2-2-012",
@@ -666,7 +865,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/bb413fdf841bfd3bcc9fc18313ee695416b0c2fdb63f298827e65995c4997365.png",
-    "name_en": "Haxorus"
+    "name_en": "Haxorus",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18900
   },
   {
     "id": "2-2-013",
@@ -719,7 +921,10 @@
       "地面 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/040ca56bd9a8507fa52c86cb76e943175fe3ce999dc1c266b78edfdad6a2e2bd.png",
-    "name_en": "Aerodactyl"
+    "name_en": "Aerodactyl",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18225
   },
   {
     "id": "2-2-014",
@@ -768,7 +973,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/074ab0d11ce181460970cb9a74f08b3ceec14ef76b893c1082f04c58cf8f959d.png",
-    "name_en": "Dracozolt"
+    "name_en": "Dracozolt",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18900
   },
   {
     "id": "2-2-015",
@@ -812,7 +1020,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/c35dbdc0b23279bdd8cc8b49b866a6db6d1d22d9ba01d3893f70b6f4b08e8e17.png",
-    "name_en": "Dracovish"
+    "name_en": "Dracovish",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18900
   },
   {
     "id": "2-2-016",
@@ -857,7 +1068,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/2c75b0a4709bdcf376e350eae924550de256ee8f026d243c625b4802ab732efc.png",
-    "name_en": "Alakazam"
+    "name_en": "Alakazam",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18900
   },
   {
     "id": "2-2-017",
@@ -903,7 +1117,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/7d74f37af4117c9d0d7cbdbf467f4e42646ec4330e5ee5a8c804bdc0e469d32f.png",
-    "name_en": "Arctozolt"
+    "name_en": "Arctozolt",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18225
   },
   {
     "id": "2-2-018",
@@ -950,7 +1167,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/676cf440489fcf0b8f52fed19bbb7c58b08ef6491bd1287a46c2a124dd0b2b02.png",
-    "name_en": "Golisopod"
+    "name_en": "Golisopod",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18225
   },
   {
     "id": "2-2-022",
@@ -1004,7 +1224,10 @@
       "毒 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/f47f5164401d8bf565d9f18d789577f902e149a03a3f4a732e5eedf1fd435f29.png",
-    "name_en": "Iron Treads"
+    "name_en": "Iron Treads",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18900
   },
   {
     "id": "2-2-023",
@@ -1049,7 +1272,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/6ebb00c7b5552b66a9464d42b0d9bb56a6b234733b300ff6e4e82d1e3a528646.png",
-    "name_en": "Poipole"
+    "name_en": "Poipole",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 14850
   },
   {
     "id": "2-2-024",
@@ -1097,7 +1323,10 @@
       "龍 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/8f2391a5b5c5d3d8f53b8294958270c1109926a7b34005aaad046e98f6e9ff93.png",
-    "name_en": "Hatterene"
+    "name_en": "Hatterene",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 19575
   },
   {
     "id": "2-2-025",
@@ -1144,7 +1373,10 @@
       "超能力 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/4f861446b37ea4400da707597e96641bc7eed13fa1b215e4a14eb3345270522d.png",
-    "name_en": "Absol"
+    "name_en": "Absol",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18225
   },
   {
     "id": "2-2-019",
@@ -1191,7 +1423,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/245a17095f30a10fdcb3084fa1e7fe8b1f2c7720be7850144c09d4574a0a87d0.png",
-    "name_en": "Serperior"
+    "name_en": "Serperior",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18225
   },
   {
     "id": "2-2-020",
@@ -1240,7 +1475,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/ad97035a1198212e3b0e7c1469a358e521e124fbdf669f36b8076b27d69f7020.png",
-    "name_en": "Emboar"
+    "name_en": "Emboar",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18225
   },
   {
     "id": "2-2-021",
@@ -1284,7 +1522,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/326b450a03aa62dd707579b1df5be1d674fde21c12a5fa02d9925b837a360659.png",
-    "name_en": "Samurott"
+    "name_en": "Samurott",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18225
   },
   {
     "id": "2-2-026",
@@ -1331,7 +1572,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/cb326b1db7492ad8751c8debe421c4a6cd1e9dbb0686c311194855f0f288485c.png",
-    "name_en": "Floragato"
+    "name_en": "Floragato",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 10500
   },
   {
     "id": "2-2-027",
@@ -1387,7 +1631,10 @@
       "超能力 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/35273c3561cdd869965249513865d6251a1af4cd3aebbd1351e827c23b233b69.png",
-    "name_en": "Meowscarada"
+    "name_en": "Meowscarada",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 14000
   },
   {
     "id": "2-2-028",
@@ -1434,7 +1681,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/923887b8ce4e590f09cad59402dfb638b2ccfd9be32a9e29f4b3da13999e5ff6.png",
-    "name_en": "Crocalor"
+    "name_en": "Crocalor",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 10500
   },
   {
     "id": "2-2-029",
@@ -1490,7 +1740,10 @@
       "格鬥 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/b30bca89aba8dd42b53b2af7f3f5b7212e4ac5fdc04f3ea6f8896e680a3bb57b.png",
-    "name_en": "Skeledirge"
+    "name_en": "Skeledirge",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 14000
   },
   {
     "id": "2-2-030",
@@ -1534,7 +1787,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/ed3393cffcd8610ad00187cb242805cd3a67d249a2a49709e6ee55d40a8cc9f5.png",
-    "name_en": "Quaxwell"
+    "name_en": "Quaxwell",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 10500
   },
   {
     "id": "2-2-031",
@@ -1587,7 +1843,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/b2b8444e3812d65c2adad932a837e7b54876d2e45b3724915729d2334cefbfa9.png",
-    "name_en": "Quaquaval"
+    "name_en": "Quaquaval",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 14000
   },
   {
     "id": "2-2-032",
@@ -1634,7 +1893,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/406d7ee2b8c4d2c43090452a06597a44d4a3e402a45811c79640370d3a7f69bf.png",
-    "name_en": "Snivy"
+    "name_en": "Snivy",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 8000
   },
   {
     "id": "2-2-033",
@@ -1681,7 +1943,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/8d4dbd178cd4537c9f58760dd3a929f2efc69dc5e14f5b678a03a123038a50d8.png",
-    "name_en": "Servine"
+    "name_en": "Servine",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 9500
   },
   {
     "id": "2-2-034",
@@ -1728,7 +1993,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/993a76fe718bca61ae8db8e6e43db2a7b5bdf0c073dccef14e4ccd0dddc72534.png",
-    "name_en": "Serperior"
+    "name_en": "Serperior",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 13500
   },
   {
     "id": "2-2-035",
@@ -1775,7 +2043,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/d139e7d1b347860234bff0a62a772600f4a943927598c0afb1d041ed0bb222ea.png",
-    "name_en": "Tepig"
+    "name_en": "Tepig",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 8000
   },
   {
     "id": "2-2-036",
@@ -1824,7 +2095,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/89ad42c3823014bab2b7571a45564367a5871d34eedf2ecbcce6ee4ccb170410.png",
-    "name_en": "Pignite"
+    "name_en": "Pignite",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 9500
   },
   {
     "id": "2-2-037",
@@ -1873,7 +2147,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/33272112e95098a9ad5d90e6b780b9601b90a4a371dc3ac16c137c7584a48f57.png",
-    "name_en": "Emboar"
+    "name_en": "Emboar",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 13500
   },
   {
     "id": "2-2-038",
@@ -1917,7 +2194,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/57c8ee7907bd32cc70ad5027c100771dbe10555910ba4870b15ee30a842762cf.png",
-    "name_en": "Oshawott"
+    "name_en": "Oshawott",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 8000
   },
   {
     "id": "2-2-039",
@@ -1961,7 +2241,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/6920efefec98ff06eb4e77711576ae10b2433c933c7be1cc655d34c6df9ce07f.png",
-    "name_en": "Dewott"
+    "name_en": "Dewott",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 9500
   },
   {
     "id": "2-2-040",
@@ -2005,7 +2288,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/0291b46ac7fdf12f7cfffa72299310981173d46e1e28a0652211cf2260ad9ea0.png",
-    "name_en": "Samurott"
+    "name_en": "Samurott",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 13500
   },
   {
     "id": "2-2-041",
@@ -2049,7 +2335,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/527bd4ce66b0b11eaf312e459fcbfa32a369606c06b3f430c340d3502bbc6154.png",
-    "name_en": "Poliwag"
+    "name_en": "Poliwag",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 4500
   },
   {
     "id": "2-2-042",
@@ -2093,7 +2382,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/9814d0d69a4aa7ae4371315f500d000140a0cb00439dbbabb60ea6ae57e9b27b.png",
-    "name_en": "Poliwhirl"
+    "name_en": "Poliwhirl",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6375
   },
   {
     "id": "2-2-043",
@@ -2144,7 +2436,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/da9132becb839c3c6a7d573db41863614cac6f0e4a112bade5977f8bf0b8b45d.png",
-    "name_en": "Poliwrath"
+    "name_en": "Poliwrath",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 9000
   },
   {
     "id": "2-2-044",
@@ -2188,7 +2483,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/a0b9ee30efda81343a29c05b86555130820ad9f1392d0cd5751ec2f0164fd493.png",
-    "name_en": "Feebas"
+    "name_en": "Feebas",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 4125
   },
   {
     "id": "2-2-045",
@@ -2232,7 +2530,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/a4db75688f020e4de3cef8ef4931ad8a5b03b0d3502ef2fa13f816f1a2d841d5.png",
-    "name_en": "Milotic"
+    "name_en": "Milotic",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 9750
   },
   {
     "id": "2-2-046",
@@ -2274,7 +2575,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/1c6a2667b88b9f43e5319abb0041c19e53595fc3788cb3c168a90337ce61c6a7.png",
-    "name_en": "Tynamo"
+    "name_en": "Tynamo",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 4500
   },
   {
     "id": "2-2-047",
@@ -2316,7 +2620,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/2b388cd80f363cce12ff938cdfc799673569af904f3bf13cab57874e31d931bd.png",
-    "name_en": "Eelektrik"
+    "name_en": "Eelektrik",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6375
   },
   {
     "id": "2-2-048",
@@ -2358,7 +2665,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/03129d3bcab604a38ea32251389c9e8cd81c0bbcc92b7f503a700b2fdd61ff2e.png",
-    "name_en": "Eelektross"
+    "name_en": "Eelektross",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 9375
   },
   {
     "id": "2-2-049",
@@ -2404,7 +2714,10 @@
       "龍 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/98b4381a7550eb321306480acee515e167b57d7655283e098149f5185b107a8d.png",
-    "name_en": "Ralts"
+    "name_en": "Ralts",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 4500
   },
   {
     "id": "2-2-050",
@@ -2450,7 +2763,10 @@
       "龍 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/5e7845d8a83753efd5557a0fa5f4609986b91a4716599ed713d832aec8ab86ff.png",
-    "name_en": "Kirlia"
+    "name_en": "Kirlia",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6375
   },
   {
     "id": "2-2-051",
@@ -2498,7 +2814,10 @@
       "龍 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/7ad0a83846aca793df7f83c0d3b62a060076235ecc5450945e3e2a789d424bf2.png",
-    "name_en": "Gardevoir"
+    "name_en": "Gardevoir",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 10500
   },
   {
     "id": "2-2-052",
@@ -2544,7 +2863,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/6268b6937ce92c69940c89feaf3a576cace5ccdb4dfa0a86bb81cd2a0918849e.png",
-    "name_en": "Gallade"
+    "name_en": "Gallade",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 10500
   },
   {
     "id": "2-2-053",
@@ -2592,7 +2914,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/aa6dbecd77b72f362a66f614acfa5bfdf327cb0680cc03dc9bb9583cf66c3630.png",
-    "name_en": "Venipede"
+    "name_en": "Venipede",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 4500
   },
   {
     "id": "2-2-054",
@@ -2640,7 +2965,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/eddc1f92a68b3b37386038a34803b9d86065c3f6f9e502f45880102c51b7ab04.png",
-    "name_en": "Whirlipede"
+    "name_en": "Whirlipede",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6375
   },
   {
     "id": "2-2-055",
@@ -2688,7 +3016,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/c7c02c1e7cf4d9d60de7aa5c2bd771e623d37b1afea1467369212a2c72823a17.png",
-    "name_en": "Scolipede"
+    "name_en": "Scolipede",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 9375
   },
   {
     "id": "2-2-056",
@@ -2728,7 +3059,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/4bb4803ef00f604663d035c6e07699103ecd6f00a4d41eddfb08896bfda59d3e.png",
-    "name_en": "Skwovet"
+    "name_en": "Skwovet",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 4225
   },
   {
     "id": "2-2-057",
@@ -2768,7 +3102,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/f716847827e706634dd0283fc427bb72242f1577c55cb8724a41e918299f4607.png",
-    "name_en": "Greedent"
+    "name_en": "Greedent",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 7150
   },
   {
     "id": "2-2-058",
@@ -2813,7 +3150,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/3f89fd96feb1431a8131dbacca3d148e7700fa57d183282380ba9d528cafe9eb.png",
-    "name_en": "Spheal"
+    "name_en": "Spheal",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 3900
   },
   {
     "id": "2-2-059",
@@ -2858,7 +3198,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/fc287a0a1826f2c16747e0602d5a3eb2e28e7d525a28bdac80c1d8370128ab43.png",
-    "name_en": "Sealeo"
+    "name_en": "Sealeo",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5525
   },
   {
     "id": "2-2-060",
@@ -2903,7 +3246,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/c7916fc94f7ef8ec52acce377893938e90688aab8774ef83bd982352dc9090b0.png",
-    "name_en": "Walrein"
+    "name_en": "Walrein",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 8125
   },
   {
     "id": "2-2-061",
@@ -2951,7 +3297,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/aaa2eb1dc92fda236f39b928c84bd302c23c32f35926510d485bb00ba0df7e60.png",
-    "name_en": "Budew"
+    "name_en": "Budew",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 3575
   },
   {
     "id": "2-2-062",
@@ -2999,7 +3348,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/8834fd00c604d5fa6e476f40588fbe1ba8bb4deeae8409c7ef57ad5a2852005e.png",
-    "name_en": "Roselia"
+    "name_en": "Roselia",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5525
   },
   {
     "id": "2-2-063",
@@ -3047,7 +3399,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/a7b99eea2ac5dcb8f84c5bf74960d7dede1989b154e1c8b42099fd63b4246a30.png",
-    "name_en": "Roserade"
+    "name_en": "Roserade",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 8125
   },
   {
     "id": "2-2-064",
@@ -3092,7 +3447,10 @@
       "龍 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/8a948371151545559812a120643b6102e12b5d4168f3a78153da3ecffd75a369.png",
-    "name_en": "Milcery"
+    "name_en": "Milcery",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 3575
   },
   {
     "id": "2-2-065",
@@ -3139,7 +3497,10 @@
       "龍 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/2858b97cdd22105ec64bcfe5bf72f37a1d7c49e4afbf206cbdd65a9a66a86868.png",
-    "name_en": "Alcremie"
+    "name_en": "Alcremie",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 7800
   },
   {
     "id": "2-2-066",
@@ -3181,7 +3542,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/0bc26712e2d562a57e32756dd42c2c9b78323385e113b357d082950c4e0c3806.png",
-    "name_en": "Elekid"
+    "name_en": "Elekid",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 3300
   },
   {
     "id": "2-2-067",
@@ -3223,7 +3587,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/b1e157f09797ce763031b8cfdd4275791a0af29d6512db042b68da1e884baa2e.png",
-    "name_en": "Electabuzz"
+    "name_en": "Electabuzz",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5225
   },
   {
     "id": "2-2-068",
@@ -3265,7 +3632,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/b4a6935e0f8cfe3d33e2697f27deac595326f17892d42aeb89899f2bd5fbe867.png",
-    "name_en": "Electivire"
+    "name_en": "Electivire",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 7150
   },
   {
     "id": "2-2-069",
@@ -3318,7 +3688,10 @@
       "毒 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/e50ffc31a337280d895e91e5ce56dd6f06e2e2f49d31a6cac107608090ed5ef4.png",
-    "name_en": "Galarian Meowth"
+    "name_en": "Galarian Meowth",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 3575
   },
   {
     "id": "2-2-070",
@@ -3371,7 +3744,10 @@
       "毒 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/a6e28b41322c51bfb8c5d62bed838e06927279a047516bab7b8d29bf6a35fdef.png",
-    "name_en": "Perrserker"
+    "name_en": "Perrserker",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6325
   },
   {
     "id": "2-1-001",
@@ -3394,7 +3770,10 @@
     "second_move": {
       "name": "超極巨狂擂亂打",
       "type": "草",
-      "power": 160
+      "category": "物理",
+      "power": 160,
+      "accuracy": "必中",
+      "damage": 31680
     },
     "special": "超極巨化",
     "special_mechanics": [
@@ -3424,7 +3803,28 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/da4f043261cf1f9eec62188a7fa97d0a7c62a87503e510b3fe7ba4b03b53b7ac.png",
-    "name_en": "Rillaboom"
+    "name_en": "Rillaboom",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 13200,
+    "moves": [
+      {
+        "name": "鼓擊",
+        "type": "草",
+        "category": "物理",
+        "power": 80,
+        "accuracy": 100,
+        "damage": 13200
+      },
+      {
+        "name": "超極巨狂擂亂打",
+        "type": "草",
+        "category": "物理",
+        "power": 160,
+        "accuracy": "必中",
+        "damage": 31680
+      }
+    ]
   },
   {
     "id": "2-1-002",
@@ -3447,7 +3847,10 @@
     "second_move": {
       "name": "超極巨破陣火球",
       "type": "火",
-      "power": 160
+      "category": "物理",
+      "power": 160,
+      "accuracy": "必中",
+      "damage": 29376
     },
     "special": "超極巨化",
     "special_mechanics": [
@@ -3477,7 +3880,28 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/9c06f5cc7199f82528f346c88255b2d98fd9ebb6e118e0e02dbd6fb845df5143.png",
-    "name_en": "Cinderace"
+    "name_en": "Cinderace",
+    "move_category": "物理",
+    "move_accuracy": 90,
+    "move_damage": 18360,
+    "moves": [
+      {
+        "name": "火焰球",
+        "type": "火",
+        "category": "物理",
+        "power": 120,
+        "accuracy": 90,
+        "damage": 18360
+      },
+      {
+        "name": "超極巨破陣火球",
+        "type": "火",
+        "category": "物理",
+        "power": 160,
+        "accuracy": "必中",
+        "damage": 29376
+      }
+    ]
   },
   {
     "id": "2-1-003",
@@ -3500,7 +3924,10 @@
     "second_move": {
       "name": "超極巨狙擊神射",
       "type": "水",
-      "power": 160
+      "category": "特殊",
+      "power": 160,
+      "accuracy": "必中",
+      "damage": 31680
     },
     "special": "超極巨化",
     "special_mechanics": [
@@ -3527,7 +3954,28 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/40193687e3a3bce1e75a823dfa6787f28457f26af1ba4f8ba4c434727f819637.png",
-    "name_en": "Inteleon"
+    "name_en": "Inteleon",
+    "move_category": "特殊",
+    "move_accuracy": 100,
+    "move_damage": 13200,
+    "moves": [
+      {
+        "name": "狙擊",
+        "type": "水",
+        "category": "特殊",
+        "power": 80,
+        "accuracy": 100,
+        "damage": 13200
+      },
+      {
+        "name": "超極巨狙擊神射",
+        "type": "水",
+        "category": "特殊",
+        "power": 160,
+        "accuracy": "必中",
+        "damage": 31680
+      }
+    ]
   },
   {
     "id": "2-1-004",
@@ -3550,7 +3998,10 @@
     "second_move": {
       "name": "超極巨萬雷轟頂",
       "type": "電",
-      "power": 130
+      "category": "特殊",
+      "power": 130,
+      "accuracy": "必中",
+      "damage": 12948
     },
     "special": "超極巨化",
     "special_mechanics": [
@@ -3576,7 +4027,28 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/9a369a6971dcf8c131a20f4a63acbdcbf78d2b98c9b09ac9c82b7bf062872ab1.png",
-    "name_en": "Pikachu"
+    "name_en": "Pikachu",
+    "move_category": "特殊",
+    "move_accuracy": 100,
+    "move_damage": 7470,
+    "moves": [
+      {
+        "name": "十萬伏特",
+        "type": "電",
+        "category": "特殊",
+        "power": 90,
+        "accuracy": 100,
+        "damage": 7470
+      },
+      {
+        "name": "超極巨萬雷轟頂",
+        "type": "電",
+        "category": "特殊",
+        "power": 130,
+        "accuracy": "必中",
+        "damage": 12948
+      }
+    ]
   },
   {
     "id": "2-1-005",
@@ -3599,7 +4071,10 @@
     "second_move": {
       "name": "咬碎",
       "type": "惡",
-      "power": 80
+      "category": "物理",
+      "power": 80,
+      "accuracy": 100,
+      "damage": 11960
     },
     "special": "雙重招式",
     "special_mechanics": [
@@ -3625,7 +4100,28 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/470fa95dbbe64dd155f59149cfc0909faca6ae35e12286106a432a2e8905ff81.png",
-    "name_en": "Raikou"
+    "name_en": "Raikou",
+    "move_category": "特殊",
+    "move_accuracy": 70,
+    "move_damage": 22022,
+    "moves": [
+      {
+        "name": "打雷",
+        "type": "電",
+        "category": "特殊",
+        "power": 110,
+        "accuracy": 70,
+        "damage": 22022
+      },
+      {
+        "name": "咬碎",
+        "type": "惡",
+        "category": "物理",
+        "power": 80,
+        "accuracy": 100,
+        "damage": 11960
+      }
+    ]
   },
   {
     "id": "2-1-006",
@@ -3648,7 +4144,10 @@
     "second_move": {
       "name": "鐵頭",
       "type": "鋼",
-      "power": 80
+      "category": "物理",
+      "power": 80,
+      "accuracy": 100,
+      "damage": 16016
     },
     "special": "雙重招式",
     "special_mechanics": [
@@ -3679,7 +4178,28 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/c8376b12b7f21d5541877e2ebd66208da653ecccf77d65d122bb118960156abf.png",
-    "name_en": "Entei"
+    "name_en": "Entei",
+    "move_category": "特殊",
+    "move_accuracy": 85,
+    "move_damage": 17446,
+    "moves": [
+      {
+        "name": "大字爆炎",
+        "type": "火",
+        "category": "特殊",
+        "power": 110,
+        "accuracy": 85,
+        "damage": 17446
+      },
+      {
+        "name": "鐵頭",
+        "type": "鋼",
+        "category": "物理",
+        "power": 80,
+        "accuracy": 100,
+        "damage": 16016
+      }
+    ]
   },
   {
     "id": "2-1-007",
@@ -3702,7 +4222,10 @@
     "second_move": {
       "name": "暗影球",
       "type": "幽靈",
-      "power": 80
+      "category": "特殊",
+      "power": 80,
+      "accuracy": 100,
+      "damage": 12688
     },
     "special": "雙重招式",
     "special_mechanics": [
@@ -3730,7 +4253,28 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/c9865b2ee03a366a8899c3f305b96c7dd00c1c8c5aa789095be12647f5653087.png",
-    "name_en": "Suicune"
+    "name_en": "Suicune",
+    "move_category": "特殊",
+    "move_accuracy": 80,
+    "move_damage": 17446,
+    "moves": [
+      {
+        "name": "水炮",
+        "type": "水",
+        "category": "特殊",
+        "power": 110,
+        "accuracy": 80,
+        "damage": 17446
+      },
+      {
+        "name": "暗影球",
+        "type": "幽靈",
+        "category": "特殊",
+        "power": 80,
+        "accuracy": 100,
+        "damage": 12688
+      }
+    ]
   },
   {
     "id": "2-1-008",
@@ -3753,7 +4297,10 @@
     "second_move": {
       "name": "極巨超能",
       "type": "超能力",
-      "power": 130
+      "category": "特殊",
+      "power": 130,
+      "accuracy": "必中",
+      "damage": 29952
     },
     "special": "極巨化",
     "special_mechanics": [
@@ -3780,7 +4327,28 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/35af1ac5cef7a4e08d33f1c7006270f1ae3c9a92e8e1b355562e866b32f3cedd.png",
-    "name_en": "Mewtwo"
+    "name_en": "Mewtwo",
+    "move_category": "特殊",
+    "move_accuracy": 100,
+    "move_damage": 19200,
+    "moves": [
+      {
+        "name": "精神擊破",
+        "type": "超能力",
+        "category": "特殊",
+        "power": 100,
+        "accuracy": 100,
+        "damage": 19200
+      },
+      {
+        "name": "極巨超能",
+        "type": "超能力",
+        "category": "特殊",
+        "power": 130,
+        "accuracy": "必中",
+        "damage": 29952
+      }
+    ]
   },
   {
     "id": "2-1-009",
@@ -3822,7 +4390,20 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/8a2207c67be55c875af5ee8c895f4b673122b5ea1c8af24063dceb863e301362.png",
-    "name_en": "Arceus"
+    "name_en": "Arceus",
+    "move_category": "特殊",
+    "move_accuracy": 100,
+    "move_damage": 14900,
+    "moves": [
+      {
+        "name": "制裁光礫",
+        "type": "一般",
+        "category": "特殊",
+        "power": 100,
+        "accuracy": 100,
+        "damage": 14900
+      }
+    ]
   },
   {
     "id": "2-1-010",
@@ -3870,7 +4451,20 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/44c3fda8bb0080646d9b4ed0c2289890473377485194753ba74d66262c178586.png",
-    "name_en": "Hisuian Zoroark"
+    "name_en": "Hisuian Zoroark",
+    "move_category": "特殊",
+    "move_accuracy": 100,
+    "move_damage": 12375,
+    "moves": [
+      {
+        "name": "冤冤相報",
+        "type": "幽靈",
+        "category": "特殊",
+        "power": 75,
+        "accuracy": 100,
+        "damage": 12375
+      }
+    ]
   },
   {
     "id": "2-1-011",
@@ -3916,7 +4510,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/4f06a94a15e8e58504b2fd1144d5077c9adba76fdff5233c7b52bb7f9f8d7b23.png",
-    "name_en": "Pinsir"
+    "name_en": "Pinsir",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18900
   },
   {
     "id": "2-1-012",
@@ -3966,7 +4563,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/a978ca5efcc92e5ef2ebc25c37de5336660951c12b9487ba01de83e390c20146.png",
-    "name_en": "Heracross"
+    "name_en": "Heracross",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18900
   },
   {
     "id": "2-1-013",
@@ -4017,7 +4617,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/98a9aea103bec0bcb0bd12beba91f462581534f3713e8f9b28fba12df1063c08.png",
-    "name_en": "Keldeo"
+    "name_en": "Keldeo",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 19575
   },
   {
     "id": "2-1-014",
@@ -4067,7 +4670,10 @@
       "超能力 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/e04872939028d7d59f509b73c34a58663aab1432128e85552ceea3d08584e45e.png",
-    "name_en": "Weavile"
+    "name_en": "Weavile",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18225
   },
   {
     "id": "2-1-015",
@@ -4111,7 +4717,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/04cee7aa2a15aa40b225334328ff1f82fb43a6d3d82b9207c70f5ac629d58118.png",
-    "name_en": "Sirfetch'd"
+    "name_en": "Sirfetch'd",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18225
   },
   {
     "id": "2-1-016",
@@ -4151,7 +4760,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/c679cff65198a0d00ced94b66be674b3608dbcc59096c8de1940415f0baa49ff.png",
-    "name_en": "Nidoking"
+    "name_en": "Nidoking",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17550
   },
   {
     "id": "2-1-017",
@@ -4191,7 +4803,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/0ab56b8d73e8acdbb1c5dac2b204363bd51d5159ef98819131196057e8c7f089.png",
-    "name_en": "Flygon"
+    "name_en": "Flygon",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17550
   },
   {
     "id": "2-1-018",
@@ -4231,7 +4846,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/8f901c1517c07948fce2138977fd627e2ac39da960d3a98f489d829c6478e5f5.png",
-    "name_en": "Arctovish"
+    "name_en": "Arctovish",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17550
   },
   {
     "id": "2-1-023",
@@ -4282,7 +4900,10 @@
       "電 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/789eed95528bedcb9df5cf1c25a8f43710f0be8c52690c7d479ccb15f4c953a2.png",
-    "name_en": "Great Tusk"
+    "name_en": "Great Tusk",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18900
   },
   {
     "id": "2-1-024",
@@ -4322,7 +4943,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/3fb247cfaf853e215dde1a5ead692846fc20758e322d73438021bdb6bea605d3.png",
-    "name_en": "Vikavolt"
+    "name_en": "Vikavolt",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17550
   },
   {
     "id": "2-1-025",
@@ -4374,7 +4998,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/99129a6501972312d36d5c79777372a0602c8a7abbac7a9a2f8b3ac3c75d7edb.png",
-    "name_en": "Abomasnow"
+    "name_en": "Abomasnow",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18225
   },
   {
     "id": "2-1-019",
@@ -4416,7 +5043,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/357b1b0272cf6b449f4436c0ae60b33ce7d0455be7ee81cc0b63257944a012ce.png",
-    "name_en": "Electivire"
+    "name_en": "Electivire",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17550
   },
   {
     "id": "2-1-020",
@@ -4463,7 +5093,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/f65cf26446cb4efcdedca51063a016bb3da949f7c93eb169864bce46d57e0b61.png",
-    "name_en": "Magmortar"
+    "name_en": "Magmortar",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17550
   },
   {
     "id": "2-1-021",
@@ -4514,7 +5147,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/cd8ffc73319c5c36761f7a0255e734e5c1207a0c2fd6d83ec084ab57d0d07875.png",
-    "name_en": "Toxtricity"
+    "name_en": "Toxtricity",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 19575
   },
   {
     "id": "2-1-022",
@@ -4565,7 +5201,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/9cd4aafa815dcbf2311c505bbdd0badb2ae11289e734b92ff96dace11c1da29f.png",
-    "name_en": "Toxtricity"
+    "name_en": "Toxtricity",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 19575
   },
   {
     "id": "2-1-026",
@@ -4612,7 +5251,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/c6f413eb421ec048a7fa86fcb2ad6a43032388c4fe641334da67725632cf27f9.png",
-    "name_en": "Sprigatito"
+    "name_en": "Sprigatito",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6500
   },
   {
     "id": "2-1-027",
@@ -4659,7 +5301,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/f4c049dbb0f0e555ec41297b8181d5c0f26e1057e785e6162f5e6a5e32fe9134.png",
-    "name_en": "Fuecoco"
+    "name_en": "Fuecoco",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6500
   },
   {
     "id": "2-1-028",
@@ -4703,7 +5348,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/b75d159f4ae21ec4afba123b7d23980a1d39175c892a0c39bd284c6bc7ea957c.png",
-    "name_en": "Quaxly"
+    "name_en": "Quaxly",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6500
   },
   {
     "id": "2-1-029",
@@ -4743,7 +5391,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/7db4baec162cdd1936fc46741483a6593af209309d7b69ed38320fac2a04a149.png",
-    "name_en": "Charcadet"
+    "name_en": "Charcadet",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "2-1-030",
@@ -4783,7 +5434,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/45e41c0b8bdf3ea410eec18a4c48e725b9377358d95f5956e58dbe562f82b951.png",
-    "name_en": "Frigibax"
+    "name_en": "Frigibax",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "2-1-031",
@@ -4823,7 +5477,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/509fb062356f10faba92f7d558275998102af5b0c877488bc2c41c99097d58c8.png",
-    "name_en": "Pawmi"
+    "name_en": "Pawmi",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "2-1-032",
@@ -4863,7 +5520,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/4574938af5085c38a87e4102fbbdf2fa6452a1cfc7895a46b1d253ceced79503.png",
-    "name_en": "Grookey"
+    "name_en": "Grookey",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "2-1-033",
@@ -4903,7 +5563,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/abcbe3133092234dbdf79703c552a32f9c1dcb8c09b0a6eaa5d30d4d0e4b817d.png",
-    "name_en": "Thwackey"
+    "name_en": "Thwackey",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "2-1-034",
@@ -4952,7 +5615,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/551d978b02be53f496a52f128fb1ae17dd4001a7a84f9f6fc2752d61f65ea57c.png",
-    "name_en": "Rillaboom"
+    "name_en": "Rillaboom",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 19000
   },
   {
     "id": "2-1-035",
@@ -4992,7 +5658,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/ddcde455133817c41a9198db614bf1ef3c645d0798904b8e3c42cf2bc8e22662.png",
-    "name_en": "Scorbunny"
+    "name_en": "Scorbunny",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "2-1-036",
@@ -5032,7 +5701,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/205f159158330c19bc4fe092e8fdc79ba617216802fa94f443aacd1d1c1b62f6.png",
-    "name_en": "Raboot"
+    "name_en": "Raboot",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "2-1-037",
@@ -5081,7 +5753,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/5973e463709e63e27ad6e5d3cc67caf19ca59c61b4c2f636a4dded6b4486e3c6.png",
-    "name_en": "Cinderace"
+    "name_en": "Cinderace",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 19000
   },
   {
     "id": "2-1-038",
@@ -5121,7 +5796,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/ce32b5032396275611a9422ac16848d7911c3fe97664d8ba7772240b5854b735.png",
-    "name_en": "Sobble"
+    "name_en": "Sobble",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "2-1-039",
@@ -5161,7 +5839,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/e043e26d0f666e64a164656fe671cf7cbdd12e0f61e38dd2fbef05a58dd59e36.png",
-    "name_en": "Drizzile"
+    "name_en": "Drizzile",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "2-1-040",
@@ -5207,7 +5888,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/6d79f21e5a1833897803ecd9be7d4bcf28802a7d0e30a046a470fbfcbfa49938.png",
-    "name_en": "Inteleon"
+    "name_en": "Inteleon",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 19000
   },
   {
     "id": "2-1-041",
@@ -5247,7 +5931,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/5a4e94d424e4255c62f8e2b96d9ad0fa9b75e927bc1c8ba2e75c9eeece306f12.png",
-    "name_en": "Snover"
+    "name_en": "Snover",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "2-1-042",
@@ -5299,7 +5986,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/955c5f7b5aee2002f1722d141c8a3f6f2e6cc89e1e492eb29e4bc5874bd84af7.png",
-    "name_en": "Abomasnow"
+    "name_en": "Abomasnow",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 10125
   },
   {
     "id": "2-1-043",
@@ -5339,7 +6029,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/86a36f9666eca15d6cbcc11955c9601c489118037b1b1950d114d0762ec7d551.png",
-    "name_en": "Drifloon"
+    "name_en": "Drifloon",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "2-1-044",
@@ -5379,7 +6072,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/2f594169f01749322d6abbf94125504b5ca798120b14376bb7671800c4e30bf4.png",
-    "name_en": "Drifblim"
+    "name_en": "Drifblim",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "2-1-045",
@@ -5419,7 +6115,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/173bb80f767bc29f8cdcf1cfbc635c0ec75326285a64a9da96d485b7a175cbf8.png",
-    "name_en": "Hisuian Zorua"
+    "name_en": "Hisuian Zorua",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "2-1-046",
@@ -5467,7 +6166,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/28db72bb94c6719fa792d46ce92b6592ef3c8ab9fe43d00f3a5546b330dbc739.png",
-    "name_en": "Hisuian Zoroark"
+    "name_en": "Hisuian Zoroark",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 12750
   },
   {
     "id": "2-1-047",
@@ -5507,7 +6209,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/55ba854558f70a4cc92b4883d0c2fec8dd7abdffa1758aeb04bd2b3555a03930.png",
-    "name_en": "Lileep"
+    "name_en": "Lileep",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "2-1-048",
@@ -5547,7 +6252,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/f5006b26b526cfa4d44a858ec55ab3ea4205599bcf66e110d6b1c649bc748460.png",
-    "name_en": "Cradily"
+    "name_en": "Cradily",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "2-1-049",
@@ -5587,7 +6295,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/ef6e55ac5e5e1a0bc3f5cb5ba2696868e8966016d1339c143440a55dbdaa276b.png",
-    "name_en": "Galarian Farfetch'd"
+    "name_en": "Galarian Farfetch'd",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "2-1-050",
@@ -5631,7 +6342,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/0c50c7a9177b2a383bc905e18a146af0e3400c21419e8695323c419838fff9fc.png",
-    "name_en": "Sirfetch'd"
+    "name_en": "Sirfetch'd",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 10125
   },
   {
     "id": "2-1-051",
@@ -5671,7 +6385,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/3551dd6d5b8128f208dd4841b170f20c1953524ae168366e8672c1d531e670b8.png",
-    "name_en": "Drilbur"
+    "name_en": "Drilbur",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "2-1-052",
@@ -5711,7 +6428,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/8f522c456cd301a40f8f3d4d824aa1cfa1c08593908850d549ab3684eb587cce.png",
-    "name_en": "Excadrill"
+    "name_en": "Excadrill",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "2-1-053",
@@ -5751,7 +6471,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/06fa4fc267a99a3c3b8f989d0b5ec7521722ecb9a91a6e9c01162167154f2272.png",
-    "name_en": "Magby"
+    "name_en": "Magby",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "2-1-054",
@@ -5791,7 +6514,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/9343d48bf1999e1fe33b4317e204acfd1805bf35d87f29e7405fde6d63f6953f.png",
-    "name_en": "Magmar"
+    "name_en": "Magmar",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "2-1-055",
@@ -5838,7 +6564,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/417dc3393760028efa71b91e7e3f2562fe64b349a50c27ac6bb89be6f012f09b.png",
-    "name_en": "Magmortar"
+    "name_en": "Magmortar",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 9750
   },
   {
     "id": "2-1-056",
@@ -5878,7 +6607,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/f4107fc0287fb367e2532881bfab5736f3ddf9b5d6cd81d343b5fa6ddd54381e.png",
-    "name_en": "Growlithe"
+    "name_en": "Growlithe",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "2-1-057",
@@ -5918,7 +6650,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/f58e8a0f7bab44b8360fccd9d467d2615c1625f0248c42be18d7a3c4070f785f.png",
-    "name_en": "Arcanine"
+    "name_en": "Arcanine",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "2-1-058",
@@ -5958,7 +6693,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/62226b89029d60a8c25151eab42a2689cee4a8e4a6a477c116f19094f1d3a75f.png",
-    "name_en": "Toxel"
+    "name_en": "Toxel",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "2-1-059",
@@ -6009,7 +6747,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/131a8ba7a4102ed4fa9c69868ec19d25fe68aa78f71a46ed186dd91e96e4e864.png",
-    "name_en": "Toxtricity"
+    "name_en": "Toxtricity",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 9425
   },
   {
     "id": "2-1-060",
@@ -6060,7 +6801,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/d1a99245a8cb36d56fc5ab277796ac4000cd0c760b413746539a82b74a863af8.png",
-    "name_en": "Toxtricity"
+    "name_en": "Toxtricity",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 9425
   },
   {
     "id": "2-1-061",
@@ -6100,7 +6844,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/47ee0fa6dc2b496083a6156e38477137205cb6489321c5f6d545d6b1abeebb78.png",
-    "name_en": "Gossifleur"
+    "name_en": "Gossifleur",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "2-1-062",
@@ -6140,7 +6887,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/90fb51787e2cfbaa9e05e66646e8b354f14bc51712acc84f9ad10829d5611d73.png",
-    "name_en": "Eldegoss"
+    "name_en": "Eldegoss",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "2-1-063",
@@ -6180,7 +6930,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/2d93c3ed896511e066d76bcb0b2791259014ab08ada5f279bcd2473b50872add.png",
-    "name_en": "Sneasel"
+    "name_en": "Sneasel",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "2-1-064",
@@ -6230,7 +6983,10 @@
       "超能力 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/d56ef5e0d4aa1832c9f691837f3252d1f9416f1f6f95a5d3a940f852901b40a6.png",
-    "name_en": "Weavile"
+    "name_en": "Weavile",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 8775
   },
   {
     "id": "2-1-065",
@@ -6270,7 +7026,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/9e8b4d083efa5282e053a1520443888ed8098345228678045e69b630550a8645.png",
-    "name_en": "Nidoran♀"
+    "name_en": "Nidoran♀",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "2-1-066",
@@ -6310,7 +7069,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/647ed78cb81663efe10c2871016df3af4b30111e4f7670b72732e0d51b057692.png",
-    "name_en": "Nidorina"
+    "name_en": "Nidorina",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 4400
   },
   {
     "id": "2-1-067",
@@ -6350,7 +7112,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/ab19b923137ae89fce9f02d5212e4a80760618d7648cdc6f858dcea1d65c8314.png",
-    "name_en": "Nidoqueen"
+    "name_en": "Nidoqueen",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 4400
   },
   {
     "id": "2-1-068",
@@ -6390,7 +7155,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/651c6de43edb5bc2d55329c834c1e5bd55985b81827b0a6210e7e461fb26b721.png",
-    "name_en": "Nidoran♂"
+    "name_en": "Nidoran♂",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 4400
   },
   {
     "id": "2-1-069",
@@ -6430,7 +7198,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/2de4cbbc0227f61e8a8338ed77f9ef6369a63e578f543785fa1077304304f617.png",
-    "name_en": "Nidorino"
+    "name_en": "Nidorino",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 4400
   },
   {
     "id": "2-1-070",
@@ -6470,7 +7241,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/9d336ab9c9ee3101d9e956462001519aaadba01ba28176b8d1b5d6bc02f8d019.png",
-    "name_en": "Nidoking"
+    "name_en": "Nidoking",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 4400
   },
   {
     "id": "1-4-001",
@@ -6524,7 +7298,20 @@
       "毒 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/66e4eb025056c5718447d3036c0035215a7bc36e4637a3c9fe16f10ea6e2d002.png",
-    "name_en": "Dialga"
+    "name_en": "Dialga",
+    "move_category": "特殊",
+    "move_accuracy": 90,
+    "move_damage": 27300,
+    "moves": [
+      {
+        "name": "時光咆哮",
+        "type": "龍",
+        "category": "特殊",
+        "power": 150,
+        "accuracy": 90,
+        "damage": 27300
+      }
+    ]
   },
   {
     "id": "1-4-002",
@@ -6570,7 +7357,20 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/8a9f47e8806bfcd90112e9c6d2ac3850a7ef613fb2acb26d1c39cede822c8460.png",
-    "name_en": "Palkia"
+    "name_en": "Palkia",
+    "move_category": "特殊",
+    "move_accuracy": 95,
+    "move_damage": 18200,
+    "moves": [
+      {
+        "name": "亞空裂斬",
+        "type": "龍",
+        "category": "特殊",
+        "power": 100,
+        "accuracy": 95,
+        "damage": 18200
+      }
+    ]
   },
   {
     "id": "1-4-003",
@@ -6593,7 +7393,10 @@
     "second_move": {
       "name": "極巨妖精",
       "type": "妖精",
-      "power": 130
+      "category": "特殊",
+      "power": 130,
+      "accuracy": "必中",
+      "damage": 24804
     },
     "special": "雙重招式",
     "special_mechanics": [
@@ -6621,7 +7424,28 @@
       "龍 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/4fce272da0032dae2ebdf053947a7a4a53cfcec6a22d988b4ce98b8641d90dfa.png",
-    "name_en": "Xerneas"
+    "name_en": "Xerneas",
+    "move_category": "特殊",
+    "move_accuracy": 100,
+    "move_damage": 15105,
+    "moves": [
+      {
+        "name": "月亮之力",
+        "type": "妖精",
+        "category": "特殊",
+        "power": 95,
+        "accuracy": 100,
+        "damage": 15105
+      },
+      {
+        "name": "極巨妖精",
+        "type": "妖精",
+        "category": "特殊",
+        "power": 130,
+        "accuracy": "必中",
+        "damage": 24804
+      }
+    ]
   },
   {
     "id": "1-4-004",
@@ -6645,7 +7469,10 @@
     "second_move": {
       "name": "極巨惡霸",
       "type": "惡",
-      "power": 130
+      "category": "特殊",
+      "power": 130,
+      "accuracy": "必中",
+      "damage": 24804
     },
     "special": "雙重招式",
     "special_mechanics": [
@@ -6676,7 +7503,28 @@
       "超能力 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/80c17c5d5a3cb681609acc9385377378a4720cb6f8bb908236cd702259258f97.png",
-    "name_en": "Yveltal"
+    "name_en": "Yveltal",
+    "move_category": "特殊",
+    "move_accuracy": 100,
+    "move_damage": 12720,
+    "moves": [
+      {
+        "name": "惡之波動",
+        "type": "惡",
+        "category": "特殊",
+        "power": 80,
+        "accuracy": 100,
+        "damage": 12720
+      },
+      {
+        "name": "極巨惡霸",
+        "type": "惡",
+        "category": "特殊",
+        "power": 130,
+        "accuracy": "必中",
+        "damage": 24804
+      }
+    ]
   },
   {
     "id": "1-4-005",
@@ -6700,7 +7548,10 @@
     "second_move": {
       "name": "極巨寒冰",
       "type": "冰",
-      "power": 140
+      "category": "物理",
+      "power": 140,
+      "accuracy": "必中",
+      "damage": 34104
     },
     "special": "雙重招式",
     "special_mechanics": [
@@ -6729,7 +7580,28 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/5e9436e75ba9a793ced195b7dcc41e4750c3ee6dce4af1f932d2e6e2e1e5dad7.png",
-    "name_en": "Calyrex"
+    "name_en": "Calyrex",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 24360,
+    "moves": [
+      {
+        "name": "雪矛",
+        "type": "冰",
+        "category": "物理",
+        "power": 120,
+        "accuracy": 100,
+        "damage": 24360
+      },
+      {
+        "name": "極巨寒冰",
+        "type": "冰",
+        "category": "物理",
+        "power": 140,
+        "accuracy": "必中",
+        "damage": 34104
+      }
+    ]
   },
   {
     "id": "1-4-006",
@@ -6753,7 +7625,10 @@
     "second_move": {
       "name": "極巨幽魂",
       "type": "幽靈",
-      "power": 140
+      "category": "特殊",
+      "power": 140,
+      "accuracy": "必中",
+      "damage": 34104
     },
     "special": "雙重招式",
     "special_mechanics": [
@@ -6781,7 +7656,28 @@
       "格鬥 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/765603120fc9317744963f75145ec82530545aaad5ef228390f7cbd4c69a4ae1.png",
-    "name_en": "Calyrex"
+    "name_en": "Calyrex",
+    "move_category": "特殊",
+    "move_accuracy": 100,
+    "move_damage": 24360,
+    "moves": [
+      {
+        "name": "星碎",
+        "type": "幽靈",
+        "category": "特殊",
+        "power": 120,
+        "accuracy": 100,
+        "damage": 24360
+      },
+      {
+        "name": "極巨幽魂",
+        "type": "幽靈",
+        "category": "特殊",
+        "power": 140,
+        "accuracy": "必中",
+        "damage": 34104
+      }
+    ]
   },
   {
     "id": "1-4-007",
@@ -6805,7 +7701,10 @@
     "second_move": {
       "name": "親密無間大亂揍",
       "type": "妖精",
-      "power": 190
+      "category": "物理",
+      "power": 190,
+      "accuracy": "必中",
+      "damage": 29526
     },
     "special": "Z招式",
     "special_mechanics": [
@@ -6833,7 +7732,28 @@
       "龍 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/9ee5ba8c4dd74cfc95e4d815f90153954ab118d323bc85bd59e8c4b5fb4f2103.png",
-    "name_en": "Mimikyu"
+    "name_en": "Mimikyu",
+    "move_category": "物理",
+    "move_accuracy": 90,
+    "move_damage": 9990,
+    "moves": [
+      {
+        "name": "嬉鬧",
+        "type": "妖精",
+        "category": "物理",
+        "power": 90,
+        "accuracy": 90,
+        "damage": 9990
+      },
+      {
+        "name": "親密無間大亂揍",
+        "type": "妖精",
+        "category": "物理",
+        "power": 190,
+        "accuracy": "必中",
+        "damage": 29526
+      }
+    ]
   },
   {
     "id": "1-4-008",
@@ -6882,7 +7802,20 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/b54f9721fc3c0e523852125d56909495a6e701b9aaa9c3a6d828d41448e8b42a.png",
-    "name_en": "Kyurem"
+    "name_en": "Kyurem",
+    "move_category": "特殊",
+    "move_accuracy": 100,
+    "move_damage": 20200,
+    "moves": [
+      {
+        "name": "交錯火焰",
+        "type": "火",
+        "category": "特殊",
+        "power": 100,
+        "accuracy": 100,
+        "damage": 20200
+      }
+    ]
   },
   {
     "id": "1-4-009",
@@ -6931,7 +7864,20 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/768a76c819813ab3a65fe33227457b2307f793e1dcca02365c065fd54e04c1de.png",
-    "name_en": "Kyurem"
+    "name_en": "Kyurem",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 20200,
+    "moves": [
+      {
+        "name": "交錯閃電",
+        "type": "電",
+        "category": "物理",
+        "power": 100,
+        "accuracy": 100,
+        "damage": 20200
+      }
+    ]
   },
   {
     "id": "1-4-010",
@@ -6984,7 +7930,20 @@
       "地面 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/6170d375ef05963d7286d1fdf1384518d9fb465e2e5e3c07076508e81aa8af93.png",
-    "name_en": "Rayquaza"
+    "name_en": "Rayquaza",
+    "move_category": "特殊",
+    "move_accuracy": 90,
+    "move_damage": 24050,
+    "moves": [
+      {
+        "name": "流星群",
+        "type": "龍",
+        "category": "特殊",
+        "power": 130,
+        "accuracy": 90,
+        "damage": 24050
+      }
+    ]
   },
   {
     "id": "1-4-011",
@@ -7038,7 +7997,10 @@
       "毒 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/69375d4835e98dfe0e11d25e67cba47f1e574c7df3a55ba4eed4e6353817641c.png",
-    "name_en": "Aggron"
+    "name_en": "Aggron",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18900
   },
   {
     "id": "1-4-012",
@@ -7085,7 +8047,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/9ecfb9658f704d692806b93e6daed3e0308e942d3b4810f118623e207446ad88.png",
-    "name_en": "Meganium"
+    "name_en": "Meganium",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18225
   },
   {
     "id": "1-4-013",
@@ -7132,7 +8097,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/b930a9ad28f15abb89f882720e56b5a0de60f42be4e639c7bd018aa3de5c65ed.png",
-    "name_en": "Typhlosion"
+    "name_en": "Typhlosion",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18225
   },
   {
     "id": "1-4-014",
@@ -7176,7 +8144,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/d782c4ec528eea6c2f9958fdb9c0da421424715eaee12297d6606d4d754a0551.png",
-    "name_en": "Feraligatr"
+    "name_en": "Feraligatr",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18225
   },
   {
     "id": "1-4-015",
@@ -7221,7 +8192,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/79fbb1c122c3c6bb280f9209460f7e053aefee1478527b30a4eacc130397a0a1.png",
-    "name_en": "Goodra"
+    "name_en": "Goodra",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18900
   },
   {
     "id": "1-4-016",
@@ -7261,7 +8235,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/e746e9e0451a132d4757187b05745d3ceb4cbc289f85f69f8bdd19dff87b9e48.png",
-    "name_en": "Corviknight"
+    "name_en": "Corviknight",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17550
   },
   {
     "id": "1-4-017",
@@ -7301,7 +8278,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/442b0f75731db8b2556c08efae3ac53cf77fc377c374f4c6a6e6b81df0f092cc.png",
-    "name_en": "Runerigus"
+    "name_en": "Runerigus",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17550
   },
   {
     "id": "1-4-018",
@@ -7341,7 +8321,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/1cc4d24454395f96b127dd595ad5e034a92e24cac7b7e6f918a7c0b77ed98a5e.png",
-    "name_en": "Machamp"
+    "name_en": "Machamp",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17550
   },
   {
     "id": "1-4-019",
@@ -7389,7 +8372,10 @@
       "龍 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/272be04f01f9ecc676de354850c4ba3805874adc8d32352ddfa0aed9f5400e3a.png",
-    "name_en": "Gardevoir"
+    "name_en": "Gardevoir",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18900
   },
   {
     "id": "1-4-020",
@@ -7435,7 +8421,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/18b353e40de08c67035da2341ba3c6711c9dfe1d4a9ad1879c2b0ad2f9524d7e.png",
-    "name_en": "Obstagoon"
+    "name_en": "Obstagoon",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18225
   },
   {
     "id": "1-4-021",
@@ -7477,7 +8466,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/dc1434e89fb60afcfdd6a254794f7c41276e368168d1ae5bcfcd76b1beb1a9c6.png",
-    "name_en": "Regieleki"
+    "name_en": "Regieleki",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 19575
   },
   {
     "id": "1-4-022",
@@ -7522,7 +8514,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/0c0d820dca1470a6b471631407dd5a36daf9456ce3fd8853e3f7c0d1d85164d4.png",
-    "name_en": "Regidrago"
+    "name_en": "Regidrago",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 19575
   },
   {
     "id": "1-4-023",
@@ -7576,7 +8571,10 @@
       "毒 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/978be5a9c0243cb8b9dd921e9d2249246a6505e1b68a22b2a77ba69c11a0f905.png",
-    "name_en": "Iron Treads"
+    "name_en": "Iron Treads",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18900
   },
   {
     "id": "1-4-024",
@@ -7631,7 +8629,10 @@
       "毒 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/2d66736abeb1bac9391f255a418b5d9988ab58fa808a69caf1b04dda152fc5a0.png",
-    "name_en": "Copperajah"
+    "name_en": "Copperajah",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 19575
   },
   {
     "id": "1-4-025",
@@ -7681,7 +8682,10 @@
       "地面 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/4689c811d19fc591c55c84e76edf0be889efd5a993a182216bd15cf840f9f46f.png",
-    "name_en": "Talonflame"
+    "name_en": "Talonflame",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18225
   },
   {
     "id": "1-4-026",
@@ -7737,7 +8741,10 @@
       "格鬥 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/654677f43978ca7192ad1e65c8e39c890d84a23de6f10c3d671599ad1d7be0b2.png",
-    "name_en": "Ceruledge"
+    "name_en": "Ceruledge",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 14000
   },
   {
     "id": "1-4-027",
@@ -7777,7 +8784,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/60005f368d711cccf48f4ad08e0c1bf2878c7ad85f4d5e19ba0710bb67fd24cc.png",
-    "name_en": "Baxcalibur"
+    "name_en": "Baxcalibur",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-4-028",
@@ -7817,7 +8827,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/6e467731c21662da6915a2211e9ca0c9ee459bb5773aaf35aa5d183c868bbfad.png",
-    "name_en": "Chikorita"
+    "name_en": "Chikorita",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-4-029",
@@ -7857,7 +8870,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/2d07ad508d8c72c195214f7f694e8f27be8d7f7d15236c5276d5418c78a576dc.png",
-    "name_en": "Bayleef"
+    "name_en": "Bayleef",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-4-030",
@@ -7904,7 +8920,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/68db4cd04b20cb38f2e6049706da90753fbae4822d69816e5aaec6031265eabd.png",
-    "name_en": "Meganium"
+    "name_en": "Meganium",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 13500
   },
   {
     "id": "1-4-031",
@@ -7944,7 +8963,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/1a7279b2271c11b8f5d92aa3c50d9a847321c62505c1c888d7b5537269ca7f3f.png",
-    "name_en": "Cyndaquil"
+    "name_en": "Cyndaquil",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-4-032",
@@ -7984,7 +9006,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/28311491e7f8a34709194328bf0adf1d560c9912a5a2b283f0b4e92d625ed12e.png",
-    "name_en": "Quilava"
+    "name_en": "Quilava",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-4-033",
@@ -8031,7 +9056,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/6bb65b32bd17552358b52ed97a4100b99e046788130d984bfb1949068a19f70d.png",
-    "name_en": "Typhlosion"
+    "name_en": "Typhlosion",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 13500
   },
   {
     "id": "1-4-034",
@@ -8071,7 +9099,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/dc9813f26459b37996c64d2cb6a26451256dac049eadc1bc9dd0abdb63b47faf.png",
-    "name_en": "Totodile"
+    "name_en": "Totodile",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-4-035",
@@ -8111,7 +9142,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/4501ce050ed882866ba9511113cbcf38ae8a5dea32bd53515958da2104eaba8b.png",
-    "name_en": "Croconaw"
+    "name_en": "Croconaw",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-4-036",
@@ -8155,7 +9189,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/3758880912c8ba3ba5200bdcdedd3e6e95d68c6a417e2d2081c1aa721714371a.png",
-    "name_en": "Feraligatr"
+    "name_en": "Feraligatr",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 13500
   },
   {
     "id": "1-4-037",
@@ -8195,7 +9232,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/926151062e9bf7f0d93bd3911bcade660008108ea82f789a2e3c076d51a94ee4.png",
-    "name_en": "Dreepy"
+    "name_en": "Dreepy",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-4-038",
@@ -8235,7 +9275,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/c492160394fe793cd4a6edcc68b80e1aee3298ba88805b1d107e0798b946e931.png",
-    "name_en": "Drakloak"
+    "name_en": "Drakloak",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-4-039",
@@ -8275,7 +9318,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/801df679ab9fe67922c76f9a738737e0624af3432f6ad9fe658ed14ffa6709d4.png",
-    "name_en": "Dragapult"
+    "name_en": "Dragapult",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-4-040",
@@ -8315,7 +9361,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/5d5731aa65dc4c0adb427a6c2bd7c269129f951fe53f3db7ea99be5d9a5a0285.png",
-    "name_en": "Sinistea"
+    "name_en": "Sinistea",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-4-041",
@@ -8355,7 +9404,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/8d729a69b4ab83c6e181d705ede10f9b6296e411e48a9640837e50675274d454.png",
-    "name_en": "Polteageist"
+    "name_en": "Polteageist",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-4-042",
@@ -8395,7 +9447,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/24a57c9438d0d59175f059de8a55d47055f16ce00843edf300b8e91aadcf7fff.png",
-    "name_en": "Drampa"
+    "name_en": "Drampa",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-4-043",
@@ -8437,7 +9492,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/fe6e2bc7aa25dcfb0b87324ca6b972eb0ec52066747434f7cbc9ec04e4f2b8a8.png",
-    "name_en": "Elekid"
+    "name_en": "Elekid",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 4500
   },
   {
     "id": "1-4-044",
@@ -8479,7 +9537,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/5ea8db602d888b88a9498ca1fec9f41ba40095cf42b51ff246fc08dd6bcb6c8e.png",
-    "name_en": "Electabuzz"
+    "name_en": "Electabuzz",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 7125
   },
   {
     "id": "1-4-045",
@@ -8521,7 +9582,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/b86047ee9114b5b80beca5429cb7ed4abd4164cbcce52740cfd54edd945d7c37.png",
-    "name_en": "Electivire"
+    "name_en": "Electivire",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 9750
   },
   {
     "id": "1-4-046",
@@ -8561,7 +9625,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/b79557f32f9ebe814fd38779b44c23ddda5a41d95950d33c2a7679dce5077a87.png",
-    "name_en": "Alolan Vulpix"
+    "name_en": "Alolan Vulpix",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-4-047",
@@ -8601,7 +9668,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/e61b2d813647fe0339d0eb1733f1a6ab229e7458e9897729c3a484784b6dd1d4.png",
-    "name_en": "Alolan Ninetales"
+    "name_en": "Alolan Ninetales",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-4-048",
@@ -8641,7 +9711,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/f9f0213e76b296a3656c6541a2771d1c780b4b0c94824c8cfac90065a2040a0d.png",
-    "name_en": "Wooloo"
+    "name_en": "Wooloo",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-4-049",
@@ -8681,7 +9754,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/873f705b85b337ba37a093ed342973e0a299ec7eae73189d474811fc3d7167c4.png",
-    "name_en": "Dubwool"
+    "name_en": "Dubwool",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-4-050",
@@ -8721,7 +9797,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/ea792a7689ceebccc5ba2ef6106ae595706cce8a5bb23e3d8f2b81cf2143bd94.png",
-    "name_en": "Deino"
+    "name_en": "Deino",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-4-051",
@@ -8761,7 +9840,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/39ca8b008bb65b02c28c343942ed0aa95a6d6fc9fe6cfe755aa1807619691621.png",
-    "name_en": "Zweilous"
+    "name_en": "Zweilous",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-4-052",
@@ -8801,7 +9883,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/3b4d548adeae57566d7dc3c6c6d9f9661471d49e4f485eb514b9e327c54276d1.png",
-    "name_en": "Hydreigon"
+    "name_en": "Hydreigon",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-4-053",
@@ -8841,7 +9926,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/df3da80624bf5919b9c0990a580d491713de13601967a57ead78a6e509d4d728.png",
-    "name_en": "Woobat"
+    "name_en": "Woobat",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-4-054",
@@ -8881,7 +9969,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/fbe4fbf89520e48fd41f341056b44319e47c1fefd318ee029bdc8305b092f7bd.png",
-    "name_en": "Swoobat"
+    "name_en": "Swoobat",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-4-055",
@@ -8921,7 +10012,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/2a9b5b35a4a9aa2f4cac7b89d2448325bab5e06c5bdf248b6f1ccee231bffef1.png",
-    "name_en": "Machop"
+    "name_en": "Machop",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-4-056",
@@ -8961,7 +10055,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/2e969be4c685efac8766d6a1c03e7f19d5126ab8d232d30c05015fbcb445a189.png",
-    "name_en": "Machoke"
+    "name_en": "Machoke",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-4-057",
@@ -9001,7 +10098,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/9031d68bfc596b496b03d98ee19e1f4b383409720e618b4c77f4a9f9c4b30ffe.png",
-    "name_en": "Machamp"
+    "name_en": "Machamp",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-4-058",
@@ -9041,7 +10141,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/7dbf94f5e5103b3a25cb969ca4b449e61ad060a107ee2e50e774280546d7ec5f.png",
-    "name_en": "Murkrow"
+    "name_en": "Murkrow",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-4-059",
@@ -9081,7 +10184,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/cd8ae883ecd0507a6f846128cfdacca216d9463189c202b0bf08294a29f81e42.png",
-    "name_en": "Honchkrow"
+    "name_en": "Honchkrow",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-4-060",
@@ -9121,7 +10227,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/ff4d5ea7a6e1a26893346ee39672388ae3e3e67913981671add149e85c1fc837.png",
-    "name_en": "Hatenna"
+    "name_en": "Hatenna",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-4-061",
@@ -9161,7 +10270,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/f850551e79ada93c4fe8d4dcd3b5e04d48efdaf308e332d203f2e306c7982839.png",
-    "name_en": "Hattrem"
+    "name_en": "Hattrem",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-4-062",
@@ -9209,7 +10321,10 @@
       "龍 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/e1e4206a6a318f0d11c9ef81bb07ef45854e43b9b700c2ff195c432bf32e2032.png",
-    "name_en": "Hatterene"
+    "name_en": "Hatterene",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 9425
   },
   {
     "id": "1-4-063",
@@ -9249,7 +10364,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/57b7efba2f6d13ee69e78b680c5fab8da412e0a2d5ba8678cd0c52ba6ec2582d.png",
-    "name_en": "Swinub"
+    "name_en": "Swinub",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-4-064",
@@ -9289,7 +10407,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/6cf16a9d7f182d2f939f165983f992e467f90297897f6faee4e65b7d2173f49c.png",
-    "name_en": "Piloswine"
+    "name_en": "Piloswine",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-4-065",
@@ -9329,7 +10450,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/adc5dac7c48d505d2dfb2b8b369592d83c641100b50385f6e88f772c0388cd3b.png",
-    "name_en": "Mamoswine"
+    "name_en": "Mamoswine",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-4-066",
@@ -9369,7 +10493,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/be68ea7b897555f0a97f11551fc0e168b868d5c69d6e0c2fdec10c9a086ca7eb.png",
-    "name_en": "Fletchling"
+    "name_en": "Fletchling",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 4400
   },
   {
     "id": "1-4-067",
@@ -9409,7 +10536,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/2117524dbb289ad0cdafd9b873f05ee21927f4c57f19819e5b64f31dcde74d34.png",
-    "name_en": "Fletchinder"
+    "name_en": "Fletchinder",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 4400
   },
   {
     "id": "1-4-068",
@@ -9459,7 +10589,10 @@
       "地面 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/02abbd1096f2e226878eae97b094bc4b39cfdff02ac887cbc45e7c844e2aa747.png",
-    "name_en": "Talonflame"
+    "name_en": "Talonflame",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 7425
   },
   {
     "id": "1-4-069",
@@ -9499,7 +10632,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/3ec57bac29ef9fb97d7e51fb9a97f43cb6bfa658ed1331d9b36681aa987e4964.png",
-    "name_en": "Noibat"
+    "name_en": "Noibat",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 4400
   },
   {
     "id": "1-4-070",
@@ -9539,7 +10675,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/30661fb489a5d92bdd7d993f63f8c518574cda3afdb1189b24654884d75f1976.png",
-    "name_en": "Noivern"
+    "name_en": "Noivern",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 4400
   },
   {
     "id": "1-3-001",
@@ -9590,7 +10729,20 @@
       "地面 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/6c2ccb6f9aefe2fd9d8646a158af859b6bd641fbd50a31a8d3502a0bf1f8b6ac.png",
-    "name_en": "Lugia"
+    "name_en": "Lugia",
+    "move_category": "特殊",
+    "move_accuracy": 95,
+    "move_damage": 10000,
+    "moves": [
+      {
+        "name": "氣旋攻擊",
+        "type": "飛行",
+        "category": "特殊",
+        "power": 100,
+        "accuracy": 95,
+        "damage": 10000
+      }
+    ]
   },
   {
     "id": "1-3-002",
@@ -9642,7 +10794,20 @@
       "地面 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/90da9a0fe0709c09d08b3145bbc11449bb857dac63094f9e78e8de494139aad4.png",
-    "name_en": "Ho-Oh"
+    "name_en": "Ho-Oh",
+    "move_category": "物理",
+    "move_accuracy": 95,
+    "move_damage": 15300,
+    "moves": [
+      {
+        "name": "神聖之火",
+        "type": "火",
+        "category": "物理",
+        "power": 100,
+        "accuracy": 95,
+        "damage": 15300
+      }
+    ]
   },
   {
     "id": "1-3-003",
@@ -9698,7 +10863,20 @@
       "毒 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/341d6d186d710f8d61e23f0ba28874ac1a8f8285571a9e940044e6f1d714f9f8.png",
-    "name_en": "Solgaleo"
+    "name_en": "Solgaleo",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 16100,
+    "moves": [
+      {
+        "name": "流星閃衝",
+        "type": "鋼",
+        "category": "物理",
+        "power": 100,
+        "accuracy": 100,
+        "damage": 16100
+      }
+    ]
   },
   {
     "id": "1-3-004",
@@ -9746,7 +10924,20 @@
       "格鬥 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/d7dadee65b5c92a4e32a99821ed8536766fd3e03906f5f68f2a8231ba7a2a275.png",
-    "name_en": "Lunala"
+    "name_en": "Lunala",
+    "move_category": "特殊",
+    "move_accuracy": 100,
+    "move_damage": 16100,
+    "moves": [
+      {
+        "name": "暗影之光",
+        "type": "幽靈",
+        "category": "特殊",
+        "power": 100,
+        "accuracy": 100,
+        "damage": 16100
+      }
+    ]
   },
   {
     "id": "1-3-005",
@@ -9770,7 +10961,10 @@
     "second_move": {
       "name": "黑洞吞噬萬物滅",
       "type": "惡",
-      "power": 160
+      "category": "特殊",
+      "power": 160,
+      "accuracy": "必中",
+      "damage": 27776
     },
     "special": "超級進化",
     "special_mechanics": [
@@ -9804,7 +10998,28 @@
       "超能力 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/1b8456b7dcf9a48e097a88da28ac9ec3187fbb39980490c77fe7a45d9f06384b.png",
-    "name_en": "Greninja"
+    "name_en": "Greninja",
+    "move_category": "特殊",
+    "move_accuracy": 100,
+    "move_damage": 9920,
+    "moves": [
+      {
+        "name": "惡之波動",
+        "type": "惡",
+        "category": "特殊",
+        "power": 80,
+        "accuracy": 100,
+        "damage": 9920
+      },
+      {
+        "name": "黑洞吞噬萬物滅",
+        "type": "惡",
+        "category": "特殊",
+        "power": 160,
+        "accuracy": "必中",
+        "damage": 27776
+      }
+    ]
   },
   {
     "id": "1-3-006",
@@ -9827,7 +11042,10 @@
     "second_move": {
       "name": "終極伏特狂雷閃",
       "type": "電",
-      "power": 180
+      "category": "物理",
+      "power": 180,
+      "accuracy": "必中",
+      "damage": 33768
     },
     "special": "連擊",
     "special_mechanics": [
@@ -9852,7 +11070,28 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/e095f1a928dcd344d55a06c7e409066a7017952e182365805cbb1410312f557c.png",
-    "name_en": "Zeraora"
+    "name_en": "Zeraora",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 13400,
+    "moves": [
+      {
+        "name": "等離子閃電拳",
+        "type": "電",
+        "category": "物理",
+        "power": 100,
+        "accuracy": 100,
+        "damage": 13400
+      },
+      {
+        "name": "終極伏特狂雷閃",
+        "type": "電",
+        "category": "物理",
+        "power": 180,
+        "accuracy": "必中",
+        "damage": 33768
+      }
+    ]
   },
   {
     "id": "1-3-007",
@@ -9904,7 +11143,20 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/d8127c98d2fa4a3c1481c33810df59352648e5172dc1c61ad0b6be5817c08bb1.png",
-    "name_en": "Eternatus"
+    "name_en": "Eternatus",
+    "move_category": "特殊",
+    "move_accuracy": 100,
+    "move_damage": 16100,
+    "moves": [
+      {
+        "name": "極巨炮",
+        "type": "龍",
+        "category": "特殊",
+        "power": 100,
+        "accuracy": 100,
+        "damage": 16100
+      }
+    ]
   },
   {
     "id": "1-3-008",
@@ -9928,7 +11180,10 @@
     "second_move": {
       "name": "極巨拳鬥",
       "type": "格鬥",
-      "power": 90
+      "category": "特殊",
+      "power": 90,
+      "accuracy": "必中",
+      "damage": 17172
     },
     "special": "無",
     "special_mechanics": [],
@@ -9959,7 +11214,28 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/d07199fedb7a9422af9838b7a3631bae667830de3f5ca0a5d456e1c3f2c0d4ce.png",
-    "name_en": "Keldeo"
+    "name_en": "Keldeo",
+    "move_category": "特殊",
+    "move_accuracy": 100,
+    "move_damage": 13515,
+    "moves": [
+      {
+        "name": "神秘之劍",
+        "type": "格鬥",
+        "category": "特殊",
+        "power": 85,
+        "accuracy": 100,
+        "damage": 13515
+      },
+      {
+        "name": "極巨拳鬥",
+        "type": "格鬥",
+        "category": "特殊",
+        "power": 90,
+        "accuracy": "必中",
+        "damage": 17172
+      }
+    ]
   },
   {
     "id": "1-3-009",
@@ -9983,7 +11259,10 @@
     "second_move": {
       "name": "極巨妖精",
       "type": "妖精",
-      "power": 130
+      "category": "物理",
+      "power": 130,
+      "accuracy": "必中",
+      "damage": 20904
     },
     "special": "超極巨化",
     "special_mechanics": [
@@ -10012,7 +11291,28 @@
       "龍 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/26a17e232e7710ba8f188770146ee1572e6f8307db71bd7b14f89a307cd37624.png",
-    "name_en": "Grimmsnarl"
+    "name_en": "Grimmsnarl",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 10050,
+    "moves": [
+      {
+        "name": "靈魂衝擊",
+        "type": "妖精",
+        "category": "物理",
+        "power": 75,
+        "accuracy": 100,
+        "damage": 10050
+      },
+      {
+        "name": "極巨妖精",
+        "type": "妖精",
+        "category": "物理",
+        "power": 130,
+        "accuracy": "必中",
+        "damage": 20904
+      }
+    ]
   },
   {
     "id": "1-3-010",
@@ -10059,7 +11359,20 @@
       "電 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/01c9318a71bc84afb77a5f0d8d918f206eeedb4c13db0a92ea6a7dda6f06a43a.png",
-    "name_en": "Zygarde"
+    "name_en": "Zygarde",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 9810,
+    "moves": [
+      {
+        "name": "大地神力",
+        "type": "地面",
+        "category": "物理",
+        "power": 90,
+        "accuracy": 100,
+        "damage": 9810
+      }
+    ]
   },
   {
     "id": "1-3-011",
@@ -10108,7 +11421,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/69aa7ac95c165547d2a8083585230d9fb0b47ff12140e887fb507ef278d05ed4.png",
-    "name_en": "Sceptile"
+    "name_en": "Sceptile",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18900
   },
   {
     "id": "1-3-012",
@@ -10159,7 +11475,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/3cc73ba317b1582f03743ab5aea891416cbc2e7e2fbb88f114feaef4f49143a2.png",
-    "name_en": "Blaziken"
+    "name_en": "Blaziken",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18900
   },
   {
     "id": "1-3-013",
@@ -10207,7 +11526,10 @@
       "電 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/56c0f201e161bbe184d5d5b10033a52eb5706569bb15acd388f32188a971b01e.png",
-    "name_en": "Swampert"
+    "name_en": "Swampert",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18900
   },
   {
     "id": "1-3-014",
@@ -10261,7 +11583,10 @@
       "格鬥 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/3d5da763f3c3ce8cf485ad320a47d631aa30de97cb7193bc70c9d6807bc8118a.png",
-    "name_en": "Chandelure"
+    "name_en": "Chandelure",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18225
   },
   {
     "id": "1-3-015",
@@ -10310,7 +11635,10 @@
       "龍 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/b455137ad6e10bcd8c1b9ee653f687d9e90ebe2c4f51c428882282aac64fd13c.png",
-    "name_en": "Grimmsnarl"
+    "name_en": "Grimmsnarl",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18225
   },
   {
     "id": "1-3-016",
@@ -10350,7 +11678,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/715fe69ad12d8a0982d7062476fc2191d2c8b98ac99688d6f3338833dd97f18d.png",
-    "name_en": "Nidoqueen"
+    "name_en": "Nidoqueen",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17550
   },
   {
     "id": "1-3-017",
@@ -10390,7 +11721,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/c12ea75e288a3d6951aac5d98672b4f927b4992e9739911052c0c8d9832b52ab.png",
-    "name_en": "Pidgeot"
+    "name_en": "Pidgeot",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17550
   },
   {
     "id": "1-3-018",
@@ -10430,7 +11764,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/d0de988bd092d7101e5e1c791fa3dbbe66053e346290e1d213543bbb9ae2a152.png",
-    "name_en": "Coalossal"
+    "name_en": "Coalossal",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17550
   },
   {
     "id": "1-3-019",
@@ -10475,7 +11812,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/98e134bbabdebde85d6ce2b0914c14dddba74530e8e1703e37f12b922d15bdce.png",
-    "name_en": "Pikachu"
+    "name_en": "Pikachu",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 25650
   },
   {
     "id": "1-3-020",
@@ -10520,7 +11860,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/dd1e5ac2d47b3e37a61897bf999d0dcef5ce9a4c553742f63ceae0c8059e4f33.png",
-    "name_en": "Alakazam"
+    "name_en": "Alakazam",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18900
   },
   {
     "id": "1-3-021",
@@ -10567,7 +11910,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/c5439ff9eb32cfebdfa9ba43ec39675b106c89be0a75e13950ed5a6509e7025f.png",
-    "name_en": "Regirock"
+    "name_en": "Regirock",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18225
   },
   {
     "id": "1-3-022",
@@ -10610,7 +11956,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/0a1a89cdcae68c5bd6ba4e662239da0b1f1796b64eb9bebaca15cffe8bc6490b.png",
-    "name_en": "Regice"
+    "name_en": "Regice",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18225
   },
   {
     "id": "1-3-023",
@@ -10663,7 +12012,10 @@
       "毒 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/119fb7c978cae4f0003c9c88edb7f3d888fd171333d1b553c588aa94787b0f5a.png",
-    "name_en": "Registeel"
+    "name_en": "Registeel",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18225
   },
   {
     "id": "1-3-024",
@@ -10714,7 +12066,10 @@
       "電 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/dc63c84f65e72a71bbef1868653f4d83c58604dbb50ba62d1c4963846b2e9e85.png",
-    "name_en": "Great Tusk"
+    "name_en": "Great Tusk",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18900
   },
   {
     "id": "1-3-025",
@@ -10759,7 +12114,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/175972ceed746cb87eb11741ea90150e516708bd8f5f4484a3dde9e031cd65d8.png",
-    "name_en": "Haxorus"
+    "name_en": "Haxorus",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18900
   },
   {
     "id": "1-3-026",
@@ -10812,7 +12170,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/63882678d8136474d43637c56f3c983ec3b6ac4253c42d7d8d5841a4591772ee.png",
-    "name_en": "Armarouge"
+    "name_en": "Armarouge",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 14000
   },
   {
     "id": "1-3-027",
@@ -10852,7 +12213,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/702aee715ae22aa76765b733d2b4246824b67282d2e1ac692300e3d190832f02.png",
-    "name_en": "Arctibax"
+    "name_en": "Arctibax",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-3-028",
@@ -10892,7 +12256,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/1169006ade22929c93f4ad5602beee43e233733c3128c5c544afa39198168c61.png",
-    "name_en": "Pawmo"
+    "name_en": "Pawmo",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-3-029",
@@ -10932,7 +12299,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/f545692a0b163e47e6b1ae04b70975001f1abc51ef124e1a10e59f6be96a6150.png",
-    "name_en": "Treecko"
+    "name_en": "Treecko",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-3-030",
@@ -10972,7 +12342,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/d6e3b41b729dcf3c42d792768a82b21755bdecdcad0ca9f1c2e6626ea733d076.png",
-    "name_en": "Grovyle"
+    "name_en": "Grovyle",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-3-031",
@@ -11021,7 +12394,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/e84cb09719ae9c974ab6d5488047d5ca63eca9c529a6516221ae8ece08ccb40e.png",
-    "name_en": "Sceptile"
+    "name_en": "Sceptile",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 14000
   },
   {
     "id": "1-3-032",
@@ -11061,7 +12437,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/12f325a10cb339a5780e64809b466e93dd266f49bd7e6262a80c92c728bcfb03.png",
-    "name_en": "Torchic"
+    "name_en": "Torchic",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-3-033",
@@ -11101,7 +12480,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/a97f470fd5b8a51bbbd7d5712823219941ef464cad2c07c7730850be40368be4.png",
-    "name_en": "Combusken"
+    "name_en": "Combusken",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-3-034",
@@ -11152,7 +12534,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/53da3bf5300ff56163f6f9cc4b9368b2d8c6bea32a47a1f413ee147ddc3939d0.png",
-    "name_en": "Blaziken"
+    "name_en": "Blaziken",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 14000
   },
   {
     "id": "1-3-035",
@@ -11192,7 +12577,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/dbf7e11ea2ec1f62951e47a208ccd244e39bd4140c11595e39cc3566a0649356.png",
-    "name_en": "Mudkip"
+    "name_en": "Mudkip",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-3-036",
@@ -11232,7 +12620,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/eb727f198b76464db1ef13abdc837ce2852fc0ea037b8fe6203d643d7599197d.png",
-    "name_en": "Marshtomp"
+    "name_en": "Marshtomp",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-3-037",
@@ -11280,7 +12671,10 @@
       "電 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/f871f88d313ba89a7f52b1ba23bd6f3cb988d1282916aef667db766d44b612af.png",
-    "name_en": "Swampert"
+    "name_en": "Swampert",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 14000
   },
   {
     "id": "1-3-038",
@@ -11320,7 +12714,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/ab22cafc83e97a9386e708e5be855a7fd8185a2dc718271a97fd2635319a149e.png",
-    "name_en": "Magby"
+    "name_en": "Magby",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-3-039",
@@ -11360,7 +12757,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/3fb03c604f71daaf0a1cf652e7f9f7d62694283e75b47d9dfa9bbadc36eafeee.png",
-    "name_en": "Magmar"
+    "name_en": "Magmar",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-3-040",
@@ -11407,7 +12807,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/dd27382d9635249afcd309ecb8a7be04e35eab835a278419365ab29bc4cf0b86.png",
-    "name_en": "Magmortar"
+    "name_en": "Magmortar",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 13000
   },
   {
     "id": "1-3-041",
@@ -11447,7 +12850,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/98b6faee5617e4d823b157fd96984c8419c7c04c38512ff7e170bcf49cf4973e.png",
-    "name_en": "Koffing"
+    "name_en": "Koffing",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-3-042",
@@ -11487,7 +12893,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/4c1e1cf305bae2c0641cb5c442b89b715d23c102539e73103cec285845712747.png",
-    "name_en": "Galarian Weezing"
+    "name_en": "Galarian Weezing",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-3-043",
@@ -11527,7 +12936,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/474470dd21bab0c2874d30db394656ac580f25389211d7170f3c140698aa4ed3.png",
-    "name_en": "Beldum"
+    "name_en": "Beldum",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-3-044",
@@ -11567,7 +12979,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/3b852e13de57ab4b9a8021f8ffc254b08ab866d8d1bd327d312c58ffdccdf147.png",
-    "name_en": "Metang"
+    "name_en": "Metang",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-3-045",
@@ -11623,7 +13038,10 @@
       "毒 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/dd801baf51fda6a4406c9bf372115da4a7e808af982cea0c301d3678e9f7637f.png",
-    "name_en": "Metagross"
+    "name_en": "Metagross",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 10875
   },
   {
     "id": "1-3-046",
@@ -11663,7 +13081,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/df0fd1ed9bfbdd9432903907d14e928fe7a851ea8656d698bb3487e6514230e6.png",
-    "name_en": "Shinx"
+    "name_en": "Shinx",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-3-047",
@@ -11703,7 +13124,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/8f3eb8d8251e9a11788edeeddf4082c41a8d25fe205e53d761991ab3075aa62e.png",
-    "name_en": "Luxio"
+    "name_en": "Luxio",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-3-048",
@@ -11743,7 +13167,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/b894d5d722398728e6333aab9c1a742318482daaeeb4197eea8cff4692bc697c.png",
-    "name_en": "Luxray"
+    "name_en": "Luxray",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-3-049",
@@ -11783,7 +13210,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/3501d848b2af049d731b15b92b2fba788a7361424c205dacd70aea2550194e43.png",
-    "name_en": "Blipbug"
+    "name_en": "Blipbug",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-3-050",
@@ -11823,7 +13253,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/9ab62669b71a2001564edbe5ce540e57ab11328c6a8380804338cdce53d256da.png",
-    "name_en": "Dottler"
+    "name_en": "Dottler",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-3-051",
@@ -11863,7 +13296,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/dc31d25655579a2526db09195c5e2d165114cc7fb46d0fb5694d25fba2d7b913.png",
-    "name_en": "Orbeetle"
+    "name_en": "Orbeetle",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-3-052",
@@ -11903,7 +13339,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/932629794d46bc43eea06007a05cdd385bf0e9b947f355b73ee187fa1f57d711.png",
-    "name_en": "Silicobra"
+    "name_en": "Silicobra",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-3-053",
@@ -11943,7 +13382,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/34b7e1793d08707941eda82c5128b895e64b1def5d6e89a9313774032e7fa6fb.png",
-    "name_en": "Sandaconda"
+    "name_en": "Sandaconda",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-3-054",
@@ -11983,7 +13425,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/692334a344927b5a8ef7bf41c63db61efe5946823a8259496116450af7735abb.png",
-    "name_en": "Rolycoly"
+    "name_en": "Rolycoly",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-3-055",
@@ -12023,7 +13468,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/36ecd93885c488f19f747500bbbf660e4cefda1a2db3d059ef30dd6292dd0116.png",
-    "name_en": "Carkol"
+    "name_en": "Carkol",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-3-056",
@@ -12063,7 +13511,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/fcfb5a8a36dc21ee81fc18677fa515f7ce4e32b493dead66d5ad1f9bb4a29a12.png",
-    "name_en": "Coalossal"
+    "name_en": "Coalossal",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-3-057",
@@ -12103,7 +13554,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/3c9559fce6932a2e1e9d43d4a9b5f8529d171539114138048df34c0d420f73b2.png",
-    "name_en": "Mudbray"
+    "name_en": "Mudbray",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-3-058",
@@ -12143,7 +13597,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/758aa0fa16aea364d70e4ca2d151039c567af3e5792fd2c8784e11f2d6f7b868.png",
-    "name_en": "Mudsdale"
+    "name_en": "Mudsdale",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-3-059",
@@ -12183,7 +13640,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/406bf78928017f2d104fc25cca4fb9ffc911d7b5c66c0be2cf0b6acdc60743dd.png",
-    "name_en": "Impidimp"
+    "name_en": "Impidimp",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-3-060",
@@ -12223,7 +13683,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/084a62193708ecf6fa65d9ff5df969c0bc8d00e3a10d6b62848ad544b681ab61.png",
-    "name_en": "Morgrem"
+    "name_en": "Morgrem",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-3-061",
@@ -12272,7 +13735,10 @@
       "龍 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/3a009a654a624cede94fdea8409f8e7c7531dafd1c227fe36a25ac221b688e8b.png",
-    "name_en": "Grimmsnarl"
+    "name_en": "Grimmsnarl",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 8775
   },
   {
     "id": "1-3-062",
@@ -12312,7 +13778,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/50fef7820e9ea9bf2912fd9b92070bbc21aab2f1c7bf7287ddcab924f166343d.png",
-    "name_en": "Turtonator"
+    "name_en": "Turtonator",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-3-063",
@@ -12352,7 +13821,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/4a4fe1144750bd446d2b5f7be9d20ce2509f607fae3e9d82fc60ab9a4f37ea0d.png",
-    "name_en": "Nickit"
+    "name_en": "Nickit",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-3-064",
@@ -12392,7 +13864,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/73b09003bac4dd76e73fd35fc9e6c91ac85fc6f7aa76c32314758b7594fde963.png",
-    "name_en": "Thievul"
+    "name_en": "Thievul",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-3-065",
@@ -12432,7 +13907,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/b453e3e7bb5ca0533bfd3ea7a50a976a43fc8326b01ce689b80853d84d6cdb2c.png",
-    "name_en": "Duskull"
+    "name_en": "Duskull",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-3-066",
@@ -12472,7 +13950,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/11b41f00ad44bd9b7c71dbd9a313703dc1bac5f176cdb8602a2fcf6f14cf05be.png",
-    "name_en": "Dusclops"
+    "name_en": "Dusclops",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 4400
   },
   {
     "id": "1-3-067",
@@ -12512,7 +13993,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/b3a3aca472121c2aa85a80c52a4e79ac35b7a8f8545fd51a31330bfdbca62ca9.png",
-    "name_en": "Dusknoir"
+    "name_en": "Dusknoir",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 4400
   },
   {
     "id": "1-3-068",
@@ -12552,7 +14036,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/bb813f6d9f07609707c54b3b4f1b356a548634a3983ea4ffc053da68b59dafd1.png",
-    "name_en": "Axew"
+    "name_en": "Axew",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 4400
   },
   {
     "id": "1-3-069",
@@ -12592,7 +14079,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/3b448f72363242eea34fed9e46dc64c21678e83d672ef11542347b6c6b277500.png",
-    "name_en": "Fraxure"
+    "name_en": "Fraxure",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 4400
   },
   {
     "id": "1-3-070",
@@ -12637,7 +14127,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/5fe7527024c5b6e8117327989448b6b09897ddc5997c987f80ef61c4e71fbfd0.png",
-    "name_en": "Haxorus"
+    "name_en": "Haxorus",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 7700
   },
   {
     "id": "1-2-001",
@@ -12683,7 +14176,20 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/0f8c2c979a6f843cb8317ec55afb34b81962c47fd5ed1be661acfde30f8ad3c3.png",
-    "name_en": "Kyogre"
+    "name_en": "Kyogre",
+    "move_category": "特殊",
+    "move_accuracy": 80,
+    "move_damage": 17050,
+    "moves": [
+      {
+        "name": "水炮",
+        "type": "水",
+        "category": "特殊",
+        "power": 110,
+        "accuracy": 80,
+        "damage": 17050
+      }
+    ]
   },
   {
     "id": "1-2-002",
@@ -12730,7 +14236,20 @@
       "電 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/73997b3c44260121bca35e1b3e9941a0ae213a63245de12f11f67efeef32fa0f.png",
-    "name_en": "Groudon"
+    "name_en": "Groudon",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 15500,
+    "moves": [
+      {
+        "name": "地震",
+        "type": "地面",
+        "category": "物理",
+        "power": 100,
+        "accuracy": 100,
+        "damage": 15500
+      }
+    ]
   },
   {
     "id": "1-2-003",
@@ -12783,7 +14302,20 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/0f85b19174d0daf34042e11bb379dfa0a4fffea63d628b2996e5022c9b46354d.png",
-    "name_en": "Koraidon"
+    "name_en": "Koraidon",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 15000,
+    "moves": [
+      {
+        "name": "全開猛撞",
+        "type": "格鬥",
+        "category": "物理",
+        "power": 100,
+        "accuracy": 100,
+        "damage": 15000
+      }
+    ]
   },
   {
     "id": "1-2-004",
@@ -12806,7 +14338,10 @@
     "second_move": {
       "name": "終極伏特狂雷閃",
       "type": "電",
-      "power": 175
+      "category": "特殊",
+      "power": 175,
+      "accuracy": "必中",
+      "damage": 16905
     },
     "special": "超極巨化",
     "special_mechanics": [
@@ -12832,7 +14367,28 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/33470f1e09791afb96e9d114c2ad21074f7dd7260c7bbb711c0188171cdecbd8.png",
-    "name_en": "Pikachu"
+    "name_en": "Pikachu",
+    "move_category": "特殊",
+    "move_accuracy": 100,
+    "move_damage": 6210,
+    "moves": [
+      {
+        "name": "十萬伏特",
+        "type": "電",
+        "category": "特殊",
+        "power": 90,
+        "accuracy": 100,
+        "damage": 6210
+      },
+      {
+        "name": "終極伏特狂雷閃",
+        "type": "電",
+        "category": "特殊",
+        "power": 175,
+        "accuracy": "必中",
+        "damage": 16905
+      }
+    ]
   },
   {
     "id": "1-2-005",
@@ -12855,7 +14411,10 @@
     "second_move": {
       "name": "極巨攻擊",
       "type": "一般",
-      "power": 150
+      "category": "物理",
+      "power": 150,
+      "accuracy": "必中",
+      "damage": 23760
     },
     "special": "超極巨化",
     "special_mechanics": [
@@ -12878,7 +14437,28 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/269dc1c99a0ac168b2b6e1b698726ce66a7ccfc75eb53cbcbeff9adbf49d49bb.png",
-    "name_en": "Snorlax"
+    "name_en": "Snorlax",
+    "move_category": "物理",
+    "move_accuracy": 90,
+    "move_damage": 19800,
+    "moves": [
+      {
+        "name": "終極衝擊",
+        "type": "一般",
+        "category": "物理",
+        "power": 150,
+        "accuracy": 90,
+        "damage": 19800
+      },
+      {
+        "name": "極巨攻擊",
+        "type": "一般",
+        "category": "物理",
+        "power": 150,
+        "accuracy": "必中",
+        "damage": 23760
+      }
+    ]
   },
   {
     "id": "1-2-006",
@@ -12902,7 +14482,10 @@
     "second_move": {
       "name": "極巨拳鬥",
       "type": "格鬥",
-      "power": 95
+      "category": "特殊",
+      "power": 95,
+      "accuracy": "必中",
+      "damage": 13794
     },
     "special": "Z招式",
     "special_mechanics": [
@@ -12935,7 +14518,28 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/15c1e8eb35a9f1790634151bd4545f06cb2a3441c93540fd889aadcadb212ff4.png",
-    "name_en": "Kommo-o"
+    "name_en": "Kommo-o",
+    "move_category": "特殊",
+    "move_accuracy": 70,
+    "move_damage": 14520,
+    "moves": [
+      {
+        "name": "真氣彈",
+        "type": "格鬥",
+        "category": "特殊",
+        "power": 120,
+        "accuracy": 70,
+        "damage": 14520
+      },
+      {
+        "name": "極巨拳鬥",
+        "type": "格鬥",
+        "category": "特殊",
+        "power": 95,
+        "accuracy": "必中",
+        "damage": 13794
+      }
+    ]
   },
   {
     "id": "1-2-007",
@@ -12983,7 +14587,20 @@
       "龍 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/8c6d80d28ba54843a8b4a66769c6fc9ea917197493ab8be6ee6eb3a6fd054dcd.png",
-    "name_en": "Gardevoir"
+    "name_en": "Gardevoir",
+    "move_category": "特殊",
+    "move_accuracy": 100,
+    "move_damage": 15840,
+    "moves": [
+      {
+        "name": "精神強念",
+        "type": "超能力",
+        "category": "特殊",
+        "power": 90,
+        "accuracy": 100,
+        "damage": 15840
+      }
+    ]
   },
   {
     "id": "1-2-008",
@@ -13030,7 +14647,20 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/cf55335675c9fbf546c82f2d76aecd18da72ca8b499001b6446886ce1495172b.png",
-    "name_en": "Reshiram"
+    "name_en": "Reshiram",
+    "move_category": "特殊",
+    "move_accuracy": 100,
+    "move_damage": 16400,
+    "moves": [
+      {
+        "name": "交錯火焰",
+        "type": "火",
+        "category": "特殊",
+        "power": 100,
+        "accuracy": 100,
+        "damage": 16400
+      }
+    ]
   },
   {
     "id": "1-2-009",
@@ -13079,7 +14709,20 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/87a761d92599df107b9dca40b67baf9c694947d1980cc050210c134c1c624ab5.png",
-    "name_en": "Zekrom"
+    "name_en": "Zekrom",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 16400,
+    "moves": [
+      {
+        "name": "交錯閃電",
+        "type": "電",
+        "category": "物理",
+        "power": 100,
+        "accuracy": 100,
+        "damage": 16400
+      }
+    ]
   },
   {
     "id": "1-2-010",
@@ -13126,7 +14769,20 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/0fbb86a6bff7b53e366ecc9e9e9c7debd5041f412fba90aa369533ed2deba86a.png",
-    "name_en": "Kyurem"
+    "name_en": "Kyurem",
+    "move_category": "特殊",
+    "move_accuracy": 70,
+    "move_damage": 15620,
+    "moves": [
+      {
+        "name": "暴風雪",
+        "type": "冰",
+        "category": "特殊",
+        "power": 110,
+        "accuracy": 70,
+        "damage": 15620
+      }
+    ]
   },
   {
     "id": "1-2-011",
@@ -13168,7 +14824,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/27493693e8f55db037ebca94517c8454d7c151d4ec11dbdddf08458276ac83c1.png",
-    "name_en": "Jolteon"
+    "name_en": "Jolteon",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17550
   },
   {
     "id": "1-2-012",
@@ -13211,7 +14870,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/2933f763e1b57ccfbddcbede1a9da2f1b55b8c710975a3203731f319c49a013f.png",
-    "name_en": "Espeon"
+    "name_en": "Espeon",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17550
   },
   {
     "id": "1-2-013",
@@ -13258,7 +14920,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/eef79d7475c78c8272d29e198937d46230c4e193be78203e6e5f97496181b75d.png",
-    "name_en": "Leafeon"
+    "name_en": "Leafeon",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17550
   },
   {
     "id": "1-2-014",
@@ -13303,7 +14968,10 @@
       "龍 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/ae0e415fb772312aec74bc68e7cd6d67b9fce2bd1086b2a0780c2a2ef5763140.png",
-    "name_en": "Sylveon"
+    "name_en": "Sylveon",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17550
   },
   {
     "id": "1-2-015",
@@ -13358,7 +15026,10 @@
       "毒 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/53064b9f15834486983f263a0ca9c2d3cd5167d635c28cfd016ff7c22110c1f9.png",
-    "name_en": "Lucario"
+    "name_en": "Lucario",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 24300
   },
   {
     "id": "1-2-016",
@@ -13398,7 +15069,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/764cbe46f8af6f68cf211bdbd659adf0aba7f7d39ee8528f18cf4dc9ff1a5f81.png",
-    "name_en": "Torterra"
+    "name_en": "Torterra",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17550
   },
   {
     "id": "1-2-017",
@@ -13438,7 +15112,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/7f2020b676b2a5500825bab5d7ebeb2455c2bf6d3db49835c913726e62e86655.png",
-    "name_en": "Infernape"
+    "name_en": "Infernape",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17550
   },
   {
     "id": "1-2-018",
@@ -13478,7 +15155,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/2430302e9d814b9b36334db5f0b3b55fba7f8c4db9716eca8f1eb77c9b32c8b8.png",
-    "name_en": "Empoleon"
+    "name_en": "Empoleon",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17550
   },
   {
     "id": "1-2-019",
@@ -13518,7 +15198,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/170dd6fde07d50c34669d2b6bc3a6edb2396dcfa89d799c23e7affdbcbe062e5.png",
-    "name_en": "Alolan Ninetales"
+    "name_en": "Alolan Ninetales",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17550
   },
   {
     "id": "1-2-020",
@@ -13574,7 +15257,10 @@
       "超能力 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/11f7290580fa071f1a39c69e42a593276a0d3dfc220f726642af3a200a0eced9.png",
-    "name_en": "Tyranitar"
+    "name_en": "Tyranitar",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 19575
   },
   {
     "id": "1-2-021",
@@ -13630,7 +15316,10 @@
       "毒 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/4473ab7a33d785b693764dc3f99aef644768b0a9534c0656be9f10081da8548a.png",
-    "name_en": "Metagross"
+    "name_en": "Metagross",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 19575
   },
   {
     "id": "1-2-022",
@@ -13681,7 +15370,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/4e74632ee1e87340c7b7d2c5fba23a526e657c98cae2dbb1dbddb18154666917.png",
-    "name_en": "Flapple"
+    "name_en": "Flapple",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17550
   },
   {
     "id": "1-2-023",
@@ -13732,7 +15424,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/be7d2b8165ace2236f01d01f38a1b1e989c2b509093d63fba094ff90447d6019.png",
-    "name_en": "Appletun"
+    "name_en": "Appletun",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17550
   },
   {
     "id": "1-2-024",
@@ -13779,7 +15474,10 @@
       "龍 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/d48270dbc4a188da9b9662a0f09d12919c0ffe8e43de9c96b85bac6492a3312e.png",
-    "name_en": "Alcremie"
+    "name_en": "Alcremie",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 16200
   },
   {
     "id": "1-2-025",
@@ -13829,7 +15527,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/092c0fecbbe783890de7e656192f663b3f73aea363e59676cfe1eef4557383da.png",
-    "name_en": "Drednaw"
+    "name_en": "Drednaw",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 19575
   },
   {
     "id": "1-2-026",
@@ -13885,7 +15586,10 @@
       "超能力 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/0bb99d7b4db6193d58c9b8f58188b424c9bcbb51ef67384302b1f2b76bf37ee1.png",
-    "name_en": "Meowscarada"
+    "name_en": "Meowscarada",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 14000
   },
   {
     "id": "1-2-027",
@@ -13941,7 +15645,10 @@
       "格鬥 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/7f415de9a62c93cda863e39d8912ff46bb01510b078047b9cf09825c4fc4d506.png",
-    "name_en": "Skeledirge"
+    "name_en": "Skeledirge",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 14000
   },
   {
     "id": "1-2-028",
@@ -13994,7 +15701,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/914f505178a4ce34e9afdbb787da2227cea2a9954217091337eaaa0144af8c3e.png",
-    "name_en": "Quaquaval"
+    "name_en": "Quaquaval",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 14000
   },
   {
     "id": "1-2-029",
@@ -14034,7 +15744,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/03b0a285697bf6e0b72026f40a8a5e158281f40b7cca5313100c87a439854f47.png",
-    "name_en": "Charcadet"
+    "name_en": "Charcadet",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-2-030",
@@ -14074,7 +15787,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/cc883e7c75f7ac99f8e6c926058638adb4009ef856325ef661c5f4e73454428c.png",
-    "name_en": "Frigibax"
+    "name_en": "Frigibax",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-2-031",
@@ -14114,7 +15830,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/214dda3025d5e8117212b45e7e7803f036ba1e61d907cd067c5fe77dae891e4d.png",
-    "name_en": "Pawmi"
+    "name_en": "Pawmi",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-2-032",
@@ -14154,7 +15873,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/e7517f09f7497dad3515015220b692eb4411134983abddb1a29b73e3c3e7b4fc.png",
-    "name_en": "Turtwig"
+    "name_en": "Turtwig",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-2-033",
@@ -14194,7 +15916,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/f19fc8d999c6a10b53ed5758192a54ab40704af6086efa388685d301fc67b7ec.png",
-    "name_en": "Grotle"
+    "name_en": "Grotle",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-2-034",
@@ -14234,7 +15959,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/e25a9227fbb2606cb7ec5401ca97cdd87b1a82058dac7cc8af77bdade46ac4bc.png",
-    "name_en": "Torterra"
+    "name_en": "Torterra",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-2-035",
@@ -14274,7 +16002,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/f8e460fcf19004208138f858b341f6d8427b92b238dc1a07896631eff2d93a5e.png",
-    "name_en": "Chimchar"
+    "name_en": "Chimchar",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-2-036",
@@ -14314,7 +16045,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/18f56524f5fce0764e20d0eb3eccc8e3b1fe62a1ca2e5dc9c96953e345797576.png",
-    "name_en": "Monferno"
+    "name_en": "Monferno",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-2-037",
@@ -14354,7 +16088,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/f997a1fb27cf21ed03195d0fa61f629ef0b716a532bd5154b178794e399014d5.png",
-    "name_en": "Infernape"
+    "name_en": "Infernape",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-2-038",
@@ -14394,7 +16131,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/c93c0235a47b3c880e3975a8e88882f30a086500882f30822b3333fb90cc8bf9.png",
-    "name_en": "Piplup"
+    "name_en": "Piplup",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-2-039",
@@ -14434,7 +16174,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/040655e7565e980192280f15c1e07a176611297ffd9be9820e5d41c2dab8cced.png",
-    "name_en": "Prinplup"
+    "name_en": "Prinplup",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-2-040",
@@ -14474,7 +16217,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/105c6dbdff32a33005037d20077adbc3e8e5f94c6f36dffe16f4f5c0b02d0aa2.png",
-    "name_en": "Empoleon"
+    "name_en": "Empoleon",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-2-041",
@@ -14514,7 +16260,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/99b422014a14afd0a46d257759b6f6913611058fb9f4c484e6be08cf93b96caf.png",
-    "name_en": "Vaporeon"
+    "name_en": "Vaporeon",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-2-042",
@@ -14554,7 +16303,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/81189fc4605a9af6f5c726ab5022eb8911109b54bdf7b7eb25f648f4385118b6.png",
-    "name_en": "Flareon"
+    "name_en": "Flareon",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-2-043",
@@ -14594,7 +16346,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/3d67a79ddcd80f3a3f2813e1a26ba6eae7f3fe757ab72a033af44920ce322b77.png",
-    "name_en": "Umbreon"
+    "name_en": "Umbreon",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-2-044",
@@ -14634,7 +16389,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/d8a7fcaf7394dfa0ce4fc7783a3f7bcd660dbd2c6a1166238ac9b24c09701932.png",
-    "name_en": "Glaceon"
+    "name_en": "Glaceon",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-2-045",
@@ -14674,7 +16432,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/064a2cf4780ff86c8937d8d037679274cb81147c9a28beb1340287c03b8f60b4.png",
-    "name_en": "Yamper"
+    "name_en": "Yamper",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-2-046",
@@ -14714,7 +16475,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/db029b27230b9f8c69c34a08106e08e268e1f0920389acc42afab707a72e8281.png",
-    "name_en": "Boltund"
+    "name_en": "Boltund",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-2-047",
@@ -14754,7 +16518,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/0cde995a8b15f738b4f2e13a26bbe02b37863b87a1296ab89e3b1b7b1afce0ea.png",
-    "name_en": "Pidgey"
+    "name_en": "Pidgey",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-2-048",
@@ -14794,7 +16561,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/4dbc6c82be1d50db24a52d77823bb3c9a857d88c48ec929d7262d970a656cc9d.png",
-    "name_en": "Pidgeotto"
+    "name_en": "Pidgeotto",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-2-049",
@@ -14834,7 +16604,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/4acb41a1a55dd9f6fce1b179c7227ad7a864515c16f1d42e36ebb1663351a28c.png",
-    "name_en": "Pidgeot"
+    "name_en": "Pidgeot",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-2-050",
@@ -14874,7 +16647,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/078af2f0c9949349523eda13e8e50e7fbb2be4feb5e9611d4645094ba096cfa3.png",
-    "name_en": "Alolan Sandshrew"
+    "name_en": "Alolan Sandshrew",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-2-051",
@@ -14914,7 +16690,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/abe3c92528b8b315d1378f1c36b4922cd12272a3f823664300df8dd815c796a1.png",
-    "name_en": "Alolan Sandslash"
+    "name_en": "Alolan Sandslash",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-2-052",
@@ -14954,7 +16733,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/5485b1c62b311ad073406109207f6595e33a564e224c1d1d2ded7bdae61662b1.png",
-    "name_en": "Bronzor"
+    "name_en": "Bronzor",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-2-053",
@@ -14994,7 +16776,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/076a6f38c5193783d60519ea44d1e5929b6ff257a051a9f2f6b2e5270592ba05.png",
-    "name_en": "Bronzong"
+    "name_en": "Bronzong",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-2-054",
@@ -15034,7 +16819,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/7f5f5c4001c65b7ee920f8abaa07c442b18dec99b423a812b69463ca4e06a092.png",
-    "name_en": "Trapinch"
+    "name_en": "Trapinch",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-2-055",
@@ -15074,7 +16862,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/60335d01cfda00b165c30669b5887c66e56ea3fcdef0660894db3e65ec57c238.png",
-    "name_en": "Vibrava"
+    "name_en": "Vibrava",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-2-056",
@@ -15114,7 +16905,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/fb56df0fa3373ddcbb6dbcb526bfc5a420a965693458e9c149f465be3846e199.png",
-    "name_en": "Flygon"
+    "name_en": "Flygon",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-2-057",
@@ -15154,7 +16948,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/8be3ee4a092b09d914e08d0256727fde20fc20dbbb4d4d3192cdf9f2c840086c.png",
-    "name_en": "Wingull"
+    "name_en": "Wingull",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-2-058",
@@ -15194,7 +16991,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/61b529d5245fdca08d269b1f819fdaa46ca59ed7b2fbc8dbf74fcb2673eaf929.png",
-    "name_en": "Pelipper"
+    "name_en": "Pelipper",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-2-059",
@@ -15234,7 +17034,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/72c0fa89e1417413fff6e325f74b2309eae408a2583b8b8bd4da8a6fcbceb6cb.png",
-    "name_en": "Jynx"
+    "name_en": "Jynx",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-2-060",
@@ -15274,7 +17077,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/0f5a3d1eeec5f0b06908dddd7eb967a940efe40226b75fec4a225e0f80e445e6.png",
-    "name_en": "Abra"
+    "name_en": "Abra",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-2-061",
@@ -15314,7 +17120,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/7ddfed2ee4cdb74fcbd7bc0fee41752242e6ceb0640f61099b35568908c222b2.png",
-    "name_en": "Kadabra"
+    "name_en": "Kadabra",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-2-062",
@@ -15359,7 +17168,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/c1f80de31c6f56216c2b0ee16a61f2695727043607a7c2d96587903aef1d8c7b.png",
-    "name_en": "Alakazam"
+    "name_en": "Alakazam",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 9100
   },
   {
     "id": "1-2-063",
@@ -15399,7 +17211,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/7276b3c537020bb840a2ff347124fa0b2306b60db5660f01f21db69411b2bf98.png",
-    "name_en": "Drifloon"
+    "name_en": "Drifloon",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-2-064",
@@ -15439,7 +17254,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/ff68f8002579c947dbee757b3bca80c03acda8c8e6abbf8ccef62c592a0561af.png",
-    "name_en": "Drifblim"
+    "name_en": "Drifblim",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-2-065",
@@ -15479,7 +17297,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/4de0d06434ed42364cb664a8ad89c511b8bff55d53282066691c4d0adcf468e7.png",
-    "name_en": "Mareanie"
+    "name_en": "Mareanie",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-2-066",
@@ -15519,7 +17340,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/34cbc52bb7d3be1672d01490cc307d75a42118cdd1d3b715b88e706fec85d252.png",
-    "name_en": "Togedemaru"
+    "name_en": "Togedemaru",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 4400
   },
   {
     "id": "1-2-067",
@@ -15565,7 +17389,10 @@
       "龍 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/e3810c4f9c77bb43dd165c3e0b91545ed5529bc3150e96500fb37e144a1075a7.png",
-    "name_en": "Ralts"
+    "name_en": "Ralts",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 3300
   },
   {
     "id": "1-2-068",
@@ -15611,7 +17438,10 @@
       "龍 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/cff48c1b41a4b580acdf0b745f45be467fc4004b506945946d8b33a66f7f2eb4.png",
-    "name_en": "Kirlia"
+    "name_en": "Kirlia",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 4675
   },
   {
     "id": "1-2-069",
@@ -15659,7 +17489,10 @@
       "龍 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/95bf6e10cadd6879894528f910afef21439204dee35c322fc3779d1f63483445.png",
-    "name_en": "Gardevoir"
+    "name_en": "Gardevoir",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 7700
   },
   {
     "id": "1-2-070",
@@ -15699,7 +17532,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/14de11082691994b60be1c4615081580e5260ce0ab87ac676131e3588928680d.png",
-    "name_en": "Onix"
+    "name_en": "Onix",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 4400
   },
   {
     "id": "1-1-001",
@@ -15745,7 +17581,20 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/f510ab6ff45a6a70c4a3c6f3cb0f64118f1e3151f9d9ea12bfe0385dbe6e25b2.png",
-    "name_en": "Mewtwo"
+    "name_en": "Mewtwo",
+    "move_category": "特殊",
+    "move_accuracy": 100,
+    "move_damage": 16500,
+    "moves": [
+      {
+        "name": "精神擊破",
+        "type": "超能力",
+        "category": "特殊",
+        "power": 100,
+        "accuracy": 100,
+        "damage": 16500
+      }
+    ]
   },
   {
     "id": "1-1-002",
@@ -15790,7 +17639,20 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/9b438edb8a3487e555e67daa6f112abd4ab91582742def509f02fb75dfaa00c4.png",
-    "name_en": "Mew"
+    "name_en": "Mew",
+    "move_category": "特殊",
+    "move_accuracy": 100,
+    "move_damage": 9810,
+    "moves": [
+      {
+        "name": "精神強念",
+        "type": "超能力",
+        "category": "特殊",
+        "power": 90,
+        "accuracy": 100,
+        "damage": 9810
+      }
+    ]
   },
   {
     "id": "1-1-003",
@@ -15846,7 +17708,20 @@
       "龍 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/8973663cb0ac5d1797c3eb1707aa4d130733151fa6c9ea716ca1e9f4500dca4e.png",
-    "name_en": "Zacian"
+    "name_en": "Zacian",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17500,
+    "moves": [
+      {
+        "name": "巨獸斬",
+        "type": "鋼",
+        "category": "物理",
+        "power": 100,
+        "accuracy": 100,
+        "damage": 17500
+      }
+    ]
   },
   {
     "id": "1-1-004",
@@ -15901,7 +17776,20 @@
       "毒 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/659e13e95fe533f14d7de7b97b66934374bd28318ba6bfbec7689865d9ec5cb9.png",
-    "name_en": "Zamazenta"
+    "name_en": "Zamazenta",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 13500,
+    "moves": [
+      {
+        "name": "巨獸彈",
+        "type": "鋼",
+        "category": "物理",
+        "power": 100,
+        "accuracy": 100,
+        "damage": 13500
+      }
+    ]
   },
   {
     "id": "1-1-005",
@@ -15925,7 +17813,10 @@
     "second_move": {
       "name": "極巨岩石",
       "type": "岩石",
-      "power": 130
+      "category": "物理",
+      "power": 130,
+      "accuracy": "必中",
+      "damage": 22932
     },
     "special": "超級進化",
     "special_mechanics": [
@@ -15961,7 +17852,28 @@
       "超能力 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/9751995b664a70e70a909ed2366a2328cc498cca539f6adeffb4cb86c07c6ea1.png",
-    "name_en": "Tyranitar"
+    "name_en": "Tyranitar",
+    "move_category": "物理",
+    "move_accuracy": 80,
+    "move_damage": 14700,
+    "moves": [
+      {
+        "name": "尖石攻擊",
+        "type": "岩石",
+        "category": "物理",
+        "power": 100,
+        "accuracy": 80,
+        "damage": 14700
+      },
+      {
+        "name": "極巨岩石",
+        "type": "岩石",
+        "category": "物理",
+        "power": 130,
+        "accuracy": "必中",
+        "damage": 22932
+      }
+    ]
   },
   {
     "id": "1-1-006",
@@ -15985,7 +17897,10 @@
     "second_move": {
       "name": "極巨鋼鐵",
       "type": "鋼",
-      "power": 130
+      "category": "物理",
+      "power": 130,
+      "accuracy": "必中",
+      "damage": 23088
     },
     "special": "超級進化",
     "special_mechanics": [
@@ -16021,7 +17936,28 @@
       "毒 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/ce97e53f05843c00e4ef19b18d606416fe388a61c868dff8e9961684e71e59dd.png",
-    "name_en": "Metagross"
+    "name_en": "Metagross",
+    "move_category": "物理",
+    "move_accuracy": 90,
+    "move_damage": 13320,
+    "moves": [
+      {
+        "name": "彗星拳",
+        "type": "鋼",
+        "category": "物理",
+        "power": 90,
+        "accuracy": 90,
+        "damage": 13320
+      },
+      {
+        "name": "極巨鋼鐵",
+        "type": "鋼",
+        "category": "物理",
+        "power": 130,
+        "accuracy": "必中",
+        "damage": 23088
+      }
+    ]
   },
   {
     "id": "1-1-007",
@@ -16072,7 +18008,20 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/965681be408f2d1be5c2ddaa416cfedf777a927c98fc438e306ec8e9fe533b08.png",
-    "name_en": "Miraidon"
+    "name_en": "Miraidon",
+    "move_category": "特殊",
+    "move_accuracy": 100,
+    "move_damage": 15000,
+    "moves": [
+      {
+        "name": "閃電猛衝",
+        "type": "電",
+        "category": "特殊",
+        "power": 100,
+        "accuracy": 100,
+        "damage": 15000
+      }
+    ]
   },
   {
     "id": "1-1-008",
@@ -16120,7 +18069,20 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/8bd86ec4747d00a0c39a060b0b315de4ada64c97240a310a222d1553416eae65.png",
-    "name_en": "Venusaur"
+    "name_en": "Venusaur",
+    "move_category": "特殊",
+    "move_accuracy": 90,
+    "move_damage": 16510,
+    "moves": [
+      {
+        "name": "飛葉風暴",
+        "type": "草",
+        "category": "特殊",
+        "power": 130,
+        "accuracy": 90,
+        "damage": 16510
+      }
+    ]
   },
   {
     "id": "1-1-009",
@@ -16173,7 +18135,20 @@
       "地面 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/a130256db96a999b3a26933b297751dee0be88dc1ce622b500048d3480ce1454.png",
-    "name_en": "Charizard"
+    "name_en": "Charizard",
+    "move_category": "特殊",
+    "move_accuracy": 100,
+    "move_damage": 12150,
+    "moves": [
+      {
+        "name": "噴射火焰",
+        "type": "火",
+        "category": "特殊",
+        "power": 90,
+        "accuracy": 100,
+        "damage": 12150
+      }
+    ]
   },
   {
     "id": "1-1-010",
@@ -16217,7 +18192,20 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/91d2fff2afc7f7fbdd3e879f0a4a12babf191a3093528c364ddbb8314a4d4e7c.png",
-    "name_en": "Blastoise"
+    "name_en": "Blastoise",
+    "move_category": "特殊",
+    "move_accuracy": 80,
+    "move_damage": 15400,
+    "moves": [
+      {
+        "name": "水炮",
+        "type": "水",
+        "category": "特殊",
+        "power": 110,
+        "accuracy": 80,
+        "damage": 15400
+      }
+    ]
   },
   {
     "id": "1-1-011",
@@ -16257,7 +18245,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/bde19e8eae7b989b89c487337358a2b4ba64fead9e0b1908ceb8280264c1f015.png",
-    "name_en": "Vaporeon"
+    "name_en": "Vaporeon",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17550
   },
   {
     "id": "1-1-012",
@@ -16297,7 +18288,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/2002919b8cfc281d57c9dd017ca9334b90531478f4942378f2de22977b36de57.png",
-    "name_en": "Flareon"
+    "name_en": "Flareon",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17550
   },
   {
     "id": "1-1-013",
@@ -16337,7 +18331,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/e3d459dca06ce2ab9a98268c195a64e385149334d759093cb9db9301b4b32df5.png",
-    "name_en": "Umbreon"
+    "name_en": "Umbreon",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17550
   },
   {
     "id": "1-1-014",
@@ -16377,7 +18374,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/3962ea74c99b54b2f1db951c22aed49c5632646b0f4b89547c1b83976bcd410c.png",
-    "name_en": "Glaceon"
+    "name_en": "Glaceon",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17550
   },
   {
     "id": "1-1-015",
@@ -16417,7 +18417,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/9ded05651b554026d5c204d39c7cc2aba394330da87a84ff6314145f4a5f53fb.png",
-    "name_en": "Pidgeot"
+    "name_en": "Pidgeot",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17550
   },
   {
     "id": "1-1-016",
@@ -16470,7 +18473,10 @@
       "格鬥 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/97e41806bf3ef65f6853c094a5da06081c9d11d1a404f638f1826ef2ae8211dc.png",
-    "name_en": "Gengar"
+    "name_en": "Gengar",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 23625
   },
   {
     "id": "1-1-017",
@@ -16510,7 +18516,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/33846516a614928048debb443169109a110dc2fa034f2a8409fd189220fe698d.png",
-    "name_en": "Arcanine"
+    "name_en": "Arcanine",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17550
   },
   {
     "id": "1-1-018",
@@ -16550,7 +18559,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/5f4ed9a879e781f23b1bf84772f8505ffa8322900ac6de81335d2b29b574c87b.png",
-    "name_en": "Rhyperior"
+    "name_en": "Rhyperior",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17550
   },
   {
     "id": "1-1-019",
@@ -16595,7 +18607,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/57f91183b55f87b5c646ac98ce9ef26cb67b7c61ed3c81134e4894b4db9eb408.png",
-    "name_en": "Pikachu"
+    "name_en": "Pikachu",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 25650
   },
   {
     "id": "1-1-020",
@@ -16635,7 +18650,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/5d27884dc5ba69725d1be12e961608887a31cb104b1a3d111c9c2309ab184c22.png",
-    "name_en": "Flygon"
+    "name_en": "Flygon",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17550
   },
   {
     "id": "1-1-021",
@@ -16684,7 +18702,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/6c8ed8150f67a9c7fc3cad494a8cb2a1e267bba9605571b78bfc9594d4ba748d.png",
-    "name_en": "Rillaboom"
+    "name_en": "Rillaboom",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 25650
   },
   {
     "id": "1-1-022",
@@ -16733,7 +18754,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/7ac9bdeaefa01f7a5344fe875042d43067d5d01cd8f4227bb751e9cbdcc4dc6e.png",
-    "name_en": "Cinderace"
+    "name_en": "Cinderace",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 25650
   },
   {
     "id": "1-1-023",
@@ -16779,7 +18803,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/563028e254c7773a0ea91cae0e2a1cf75e27a042011b9ccc059e425b3f622fb6.png",
-    "name_en": "Inteleon"
+    "name_en": "Inteleon",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 25650
   },
   {
     "id": "1-1-024",
@@ -16825,7 +18852,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/9d3821c00656700eb96e53b1814f20dd9c99f3c8618fd59ac2f21601c15267cc.png",
-    "name_en": "Obstagoon"
+    "name_en": "Obstagoon",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18225
   },
   {
     "id": "1-1-025",
@@ -16876,7 +18906,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/1bda0fe54ed773845a557051d468faa8a0ca7e5a9ead2a575f143710149886f6.png",
-    "name_en": "Keldeo"
+    "name_en": "Keldeo",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 19575
   },
   {
     "id": "1-1-026",
@@ -16923,7 +18956,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/b54c831fa4e1a88a2b31ef70b3ba752067301a1660533567a96a8cf96a9c8de7.png",
-    "name_en": "Sprigatito"
+    "name_en": "Sprigatito",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6500
   },
   {
     "id": "1-1-027",
@@ -16970,7 +19006,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/8ddd19f11aa5e25a587c482ebf915e74d6e97c3a6871c956971d27524248cb2f.png",
-    "name_en": "Floragato"
+    "name_en": "Floragato",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 10500
   },
   {
     "id": "1-1-028",
@@ -17017,7 +19056,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/44c9199ba9aa7c7d2f7804b0676db9091f005d95d4a2c83f687e5b2a5f3d4187.png",
-    "name_en": "Fuecoco"
+    "name_en": "Fuecoco",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6500
   },
   {
     "id": "1-1-029",
@@ -17064,7 +19106,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/af54eeef6f0f77599d94a4912a4a3c924c4cce0bef5c80f08adb228616de4a83.png",
-    "name_en": "Crocalor"
+    "name_en": "Crocalor",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 10500
   },
   {
     "id": "1-1-030",
@@ -17108,7 +19153,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/3e97b78c4faafd33b88888768e59381c6d39efe633098a97ae4e9c8ee49ffb3f.png",
-    "name_en": "Quaxly"
+    "name_en": "Quaxly",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6500
   },
   {
     "id": "1-1-031",
@@ -17152,7 +19200,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/8760ec8d72ead48c2a7afa719a6344e22b5bfda74f78c479b4344bbb5d2e7078.png",
-    "name_en": "Quaxwell"
+    "name_en": "Quaxwell",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 10500
   },
   {
     "id": "1-1-032",
@@ -17192,7 +19243,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/23755d0642d84aff9958be2d3962e3b5e6801160845efbd5d8501912bfc08b07.png",
-    "name_en": "Grookey"
+    "name_en": "Grookey",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-1-033",
@@ -17232,7 +19286,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/7357ed5ebb3d6190b44458cef5600e53474d9196cd6e010c3c85904139c1220d.png",
-    "name_en": "Thwackey"
+    "name_en": "Thwackey",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-1-034",
@@ -17281,7 +19338,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/bb8ae93fbaa8034da4b9269a9a671fa3d481a40b126b2e3a634bfb68447423ad.png",
-    "name_en": "Rillaboom"
+    "name_en": "Rillaboom",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 19000
   },
   {
     "id": "1-1-035",
@@ -17321,7 +19381,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/2de0cb9080b4bcb64de737a5dfea46cc7affeb6c0152f356b298184b815aee26.png",
-    "name_en": "Scorbunny"
+    "name_en": "Scorbunny",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-1-036",
@@ -17361,7 +19424,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/968f335d770daeb0f95008d7416f74a8b79ef451b91801fa7896737b61d13313.png",
-    "name_en": "Raboot"
+    "name_en": "Raboot",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-1-037",
@@ -17410,7 +19476,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/08fe985a73de4d71adc9124f08eaa45247c6d1dc71707349b23dc1ee29e255c6.png",
-    "name_en": "Cinderace"
+    "name_en": "Cinderace",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 19000
   },
   {
     "id": "1-1-038",
@@ -17450,7 +19519,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/0b22053d24cfc3b1ab5fbcff7b240dd90a48d1785e53e36b98a05a0ee172ba46.png",
-    "name_en": "Sobble"
+    "name_en": "Sobble",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-1-039",
@@ -17490,7 +19562,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/0bac8ea22d2dc025affa315368a2c4706836d3fe2fdeb746670a1ebc7ac40dbd.png",
-    "name_en": "Drizzile"
+    "name_en": "Drizzile",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 17000
   },
   {
     "id": "1-1-040",
@@ -17536,7 +19611,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/210435649ed7fa1ec670ba84ec820788a39f051061b488ef9a15e6a991fe5619.png",
-    "name_en": "Inteleon"
+    "name_en": "Inteleon",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 19000
   },
   {
     "id": "1-1-041",
@@ -17576,7 +19654,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/23e117dc37dfd609593ae500ddbc1e6943aa450ea3ad3027b67d309b97ac41d7.png",
-    "name_en": "Dedenne"
+    "name_en": "Dedenne",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-1-042",
@@ -17621,7 +19702,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/dcd5b08cd49121ca05670901349c9790a1b5165557d8d1a626cbcdbccc83603a.png",
-    "name_en": "Pikachu"
+    "name_en": "Pikachu",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 14250
   },
   {
     "id": "1-1-043",
@@ -17661,7 +19745,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/cbf00ec2712f2992c2b8cedd7fec60da791d19b1365465134712b4fe66ede0ed.png",
-    "name_en": "Raichu"
+    "name_en": "Raichu",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-1-044",
@@ -17701,7 +19788,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/14ef7c29af5ff0428559f38e5719c451a02a52ae749e82379710341ddeec2783.png",
-    "name_en": "Eevee"
+    "name_en": "Eevee",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-1-045",
@@ -17743,7 +19833,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/dec252c1cbaf55ebe1ea592df908744cac73c87aab22324d60a392bfe6de2292.png",
-    "name_en": "Jolteon"
+    "name_en": "Jolteon",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 9750
   },
   {
     "id": "1-1-046",
@@ -17786,7 +19879,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/9207f7a0805321361e04973f51c843cec3714ee2c2031315a294bb0f8d1bb8a1.png",
-    "name_en": "Espeon"
+    "name_en": "Espeon",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 9750
   },
   {
     "id": "1-1-047",
@@ -17833,7 +19929,10 @@
     ],
     "immunities": [],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/a8a8cb4798a7af7ad306dcfc27953f1da20409ec96c37218939895387ce07093.png",
-    "name_en": "Leafeon"
+    "name_en": "Leafeon",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 9750
   },
   {
     "id": "1-1-048",
@@ -17878,7 +19977,10 @@
       "龍 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/345e880a707ed3c119b09edaaf9b7b018f07d90b91db86a467cce74805597bf4.png",
-    "name_en": "Sylveon"
+    "name_en": "Sylveon",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 9750
   },
   {
     "id": "1-1-049",
@@ -17918,7 +20020,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/b0169c8297ad3b7f25e3973a2435a92937288aa905dc35a41f1a7edf94c9586b.png",
-    "name_en": "Sneasel"
+    "name_en": "Sneasel",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-1-050",
@@ -17968,7 +20073,10 @@
       "超能力 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/98db4bed6c084be24b38cc421014530ccc12878c7c7e7744c4228cf5721dc19e.png",
-    "name_en": "Weavile"
+    "name_en": "Weavile",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 10125
   },
   {
     "id": "1-1-051",
@@ -18008,7 +20116,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/0d21dfb66feb1ae00ef2dd637ee4b26db7f53a319522f06d42a4c6ebbcb59895.png",
-    "name_en": "Golett"
+    "name_en": "Golett",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-1-052",
@@ -18048,7 +20159,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/9ed0bf3ee15631b121300dea2edcf6bf8dd2970414be2c13b9be8789f1b39977.png",
-    "name_en": "Golurk"
+    "name_en": "Golurk",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-1-053",
@@ -18088,7 +20202,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/b9ec9192847943c0e7489f63920583a24b4ef871d4bec1037691e3811a3343e1.png",
-    "name_en": "Slowpoke"
+    "name_en": "Slowpoke",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-1-054",
@@ -18128,7 +20245,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/df6e54aab95a7436e144ab1ccf31eb2da8b7c624ef19f3aa73bac9717167fd72.png",
-    "name_en": "Slowbro"
+    "name_en": "Slowbro",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-1-055",
@@ -18168,7 +20288,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/b5334cb0b4176d83211a8c9c4dc5657096fcb5b6bf96e771bf8a47779d1328ec.png",
-    "name_en": "Mudbray"
+    "name_en": "Mudbray",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 6000
   },
   {
     "id": "1-1-056",
@@ -18208,7 +20331,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/44ebb515626787c831d834d7627482ac3111b6a5d28a4258433d1453f3a2e36b.png",
-    "name_en": "Mudsdale"
+    "name_en": "Mudsdale",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-1-057",
@@ -18248,7 +20374,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/cd83cd5005d8824ce7831cbd137c32977ea48d734ab743e37ff3e2a55ed0eefd.png",
-    "name_en": "Galarian Zigzagoon"
+    "name_en": "Galarian Zigzagoon",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-1-058",
@@ -18288,7 +20417,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/c792ab2b130915e79b0c05fd7f64f3c99985045cd0193cb34e775394a36b4d62.png",
-    "name_en": "Galarian Linoone"
+    "name_en": "Galarian Linoone",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-1-059",
@@ -18334,7 +20466,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/f7ca5cf68836f03b4b8e57f0bce7b32fb861bc354673de691404a5c57c70df64.png",
-    "name_en": "Obstagoon"
+    "name_en": "Obstagoon",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 8775
   },
   {
     "id": "1-1-060",
@@ -18374,7 +20509,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/0cf5d406fa0bc482ed69d175b551ed54ab7b4f122603ed97d520efd8899d858e.png",
-    "name_en": "Grubbin"
+    "name_en": "Grubbin",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-1-061",
@@ -18414,7 +20552,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/56ff02c5dca4381b7a4516e90f5b7a22e3f29059c58c3becf660fd18d1c4a1a2.png",
-    "name_en": "Charjabug"
+    "name_en": "Charjabug",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-1-062",
@@ -18454,7 +20595,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/ad448335f650449c9875333f5c46061b946075a8b1fbf0a604152c493d4a7927.png",
-    "name_en": "Vikavolt"
+    "name_en": "Vikavolt",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-1-063",
@@ -18494,7 +20638,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/d3bad481ea63faffc0880345044264dfe1f4eebd79cfc4f0a0943f758b5c1208.png",
-    "name_en": "Doduo"
+    "name_en": "Doduo",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-1-064",
@@ -18534,7 +20681,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/2916431a5b7df557f7c8b59868d2886f65dc176d736ea855a3ea28791e879727.png",
-    "name_en": "Dodrio"
+    "name_en": "Dodrio",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-1-065",
@@ -18574,7 +20724,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/d3c3f35f3f479d83e0f45a97156c7cde4eb90b044d9eb858d561685f090a50f8.png",
-    "name_en": "Gossifleur"
+    "name_en": "Gossifleur",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 5200
   },
   {
     "id": "1-1-066",
@@ -18614,7 +20767,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/2c00b34447ab19518321d89afc6b48915d0d0570b931876d04186f84b29182b7.png",
-    "name_en": "Eldegoss"
+    "name_en": "Eldegoss",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 4400
   },
   {
     "id": "1-1-067",
@@ -18654,7 +20810,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/465792b586e5f29c1d30afe0048716978470c7298319319f5a4324d9034218b2.png",
-    "name_en": "Turtonator"
+    "name_en": "Turtonator",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 4400
   },
   {
     "id": "1-1-068",
@@ -18694,7 +20853,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/c6004b916479baf6da0486b3a3ac7754488abf1b8ed06a930d58afad4b1fcad5.png",
-    "name_en": "Cramorant"
+    "name_en": "Cramorant",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 4400
   },
   {
     "id": "1-1-069",
@@ -18734,7 +20896,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/91dd485578a80a73f8753a0744f6c64cf23edc0c55d464ebc1c6bf8bfb92c02d.png",
-    "name_en": "Snom"
+    "name_en": "Snom",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 4400
   },
   {
     "id": "1-1-070",
@@ -18774,7 +20939,10 @@
       "幽靈 (0.0x)"
     ],
     "image": "https://www.pokemonmezastar.com.tw/uploads/images/672b979e7a73b73723f43f5b3a4ce164e3faf7935b399b7782d9c83255a30a96.png",
-    "name_en": "Frosmoth"
+    "name_en": "Frosmoth",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 4400
   },
   {
     "id": "SP-001",
@@ -18828,7 +20996,10 @@
       "毒 (0.0x)"
     ],
     "image": "https://img.pokemondb.net/sprites/home/normal/jirachi.png",
-    "name_en": "Jirachi"
+    "name_en": "Jirachi",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 26250
   },
   {
     "id": "SP-002",
@@ -18880,7 +21051,10 @@
     ],
     "immunities": [],
     "image": "https://img.pokemondb.net/sprites/home/normal/celebi.png",
-    "name_en": "Celebi"
+    "name_en": "Celebi",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 26250
   },
   {
     "id": "SP-003",
@@ -18934,7 +21108,10 @@
     ],
     "immunities": [],
     "image": "https://img.pokemondb.net/sprites/home/normal/urshifu-rapid-strike.png",
-    "name_en": "Urshifu (Rapid Strike)"
+    "name_en": "Urshifu (Rapid Strike)",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 34200
   },
   {
     "id": "SP-004",
@@ -18983,7 +21160,10 @@
       "超能力 (0.0x)"
     ],
     "image": "https://img.pokemondb.net/sprites/home/normal/urshifu-single-strike.png",
-    "name_en": "Urshifu (Single Strike)"
+    "name_en": "Urshifu (Single Strike)",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 34200
   },
   {
     "id": "SP-005",
@@ -19033,7 +21213,10 @@
       "地面 (0.0x)"
     ],
     "image": "https://img.pokemondb.net/sprites/home/normal/dragonite.png",
-    "name_en": "Dragonite"
+    "name_en": "Dragonite",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 31500
   },
   {
     "id": "SP-006",
@@ -19077,7 +21260,10 @@
     ],
     "immunities": [],
     "image": "https://img.pokemondb.net/sprites/home/normal/pikachu-cap.png",
-    "name_en": "Pikachu (Cap)"
+    "name_en": "Pikachu (Cap)",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 26325
   },
   {
     "id": "SP-007",
@@ -19127,7 +21313,10 @@
     ],
     "immunities": [],
     "image": "https://img.pokemondb.net/sprites/home/normal/charizard-megax.png",
-    "name_en": "Charizard (Mega X)"
+    "name_en": "Charizard (Mega X)",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 38025
   },
   {
     "id": "SP-008",
@@ -19177,7 +21366,10 @@
     ],
     "immunities": [],
     "image": "https://img.pokemondb.net/sprites/home/normal/mewtwo.png",
-    "name_en": "Mewtwo (Armored)"
+    "name_en": "Mewtwo (Armored)",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 34200
   },
   {
     "id": "R-1-1",
@@ -19221,7 +21413,10 @@
       "鋼 (0.5x)"
     ],
     "immunities": [],
-    "image": "https://webassets-pokemonmezastar.marv.jp/assets/img/ver2/pm_en_R-1-1_f.jpg"
+    "image": "https://webassets-pokemonmezastar.marv.jp/assets/img/ver2/pm_en_R-1-1_f.jpg",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 12100
   },
   {
     "id": "R-1-2",
@@ -19275,7 +21470,10 @@
     "immunities": [
       "毒 (0.0x)"
     ],
-    "image": "https://webassets-pokemonmezastar.marv.jp/assets/img/ver2/pm_en_R-1-2_f.jpg"
+    "image": "https://webassets-pokemonmezastar.marv.jp/assets/img/ver2/pm_en_R-1-2_f.jpg",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 13800
   },
   {
     "id": "R-1-3",
@@ -19317,7 +21515,10 @@
     "immunities": [
       "幽靈 (0.0x)"
     ],
-    "image": "https://webassets-pokemonmezastar.marv.jp/assets/img/ver2/pm_en_R-1-3_f.jpg"
+    "image": "https://webassets-pokemonmezastar.marv.jp/assets/img/ver2/pm_en_R-1-3_f.jpg",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 13800
   },
   {
     "id": "R-2-1",
@@ -19362,7 +21563,10 @@
       "鋼 (0.5x)"
     ],
     "immunities": [],
-    "image": "https://webassets-pokemonmezastar.marv.jp/assets/publish/20260330110000/pm_en_R-2-1_f.jpg"
+    "image": "https://webassets-pokemonmezastar.marv.jp/assets/publish/20260330110000/pm_en_R-2-1_f.jpg",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 20300
   },
   {
     "id": "R-2-2",
@@ -19415,7 +21619,10 @@
     "immunities": [
       "地面 (0.0x)"
     ],
-    "image": "https://webassets-pokemonmezastar.marv.jp/assets/publish/20260330110000/pm_en_R-2-2_f.jpg"
+    "image": "https://webassets-pokemonmezastar.marv.jp/assets/publish/20260330110000/pm_en_R-2-2_f.jpg",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 20250
   },
   {
     "id": "R-2-3",
@@ -19468,6 +21675,9 @@
       "一般 (0.0x)",
       "格鬥 (0.0x)"
     ],
-    "image": "https://webassets-pokemonmezastar.marv.jp/assets/publish/20260330110000/pm_en_R-2-3_f.jpg"
+    "image": "https://webassets-pokemonmezastar.marv.jp/assets/publish/20260330110000/pm_en_R-2-3_f.jpg",
+    "move_category": "物理",
+    "move_accuracy": 100,
+    "move_damage": 18750
   }
 ]
