@@ -15,78 +15,109 @@ from mezastar_data import load_cards, DATA_DIR, sort_cards_chronological
 
 COLLECTION_FILE = os.path.join(DATA_DIR, "my_collection.json")
 
+def get_card_alias_map() -> Tuple[Dict[str, str], Dict[str, Set[str]]]:
+    """
+    建立卡匣標準 ID 與別名雙向映射表。
+    alias_to_canonical: {'1-001': '1-1-001', '001': '1-1-001', '1-1-001': '1-1-001'}
+    canonical_to_aliases: {'1-1-001': {'1-1-001', '1-001', '001'}}
+    """
+    all_cards = load_cards()
+    alias_to_canonical: Dict[str, str] = {}
+    canonical_to_aliases: Dict[str, Set[str]] = {}
+
+    for c in all_cards:
+        cid = c.get("id", "")
+        if not cid:
+            continue
+        aliases = {cid, cid.strip()}
+        parts = cid.split("-")
+        if len(parts) >= 2:
+            aliases.add(f"{parts[0]}-{parts[-1]}")
+            aliases.add(parts[-1])
+        
+        canonical_to_aliases[cid] = aliases
+        for a in aliases:
+            if a not in alias_to_canonical:
+                alias_to_canonical[a] = cid
+
+    return alias_to_canonical, canonical_to_aliases
+
+def normalize_collection_ids(raw_ids: Set[str]) -> Set[str]:
+    """將任意舊格式或別名 ID 自動轉化為標準規範 ID"""
+    alias_map, _ = get_card_alias_map()
+    normalized: Set[str] = set()
+    for rid in raw_ids:
+        rid_str = str(rid).strip()
+        if rid_str in alias_map:
+            normalized.add(alias_map[rid_str])
+        else:
+            normalized.add(rid_str)
+    return normalized
+
 def load_user_collection_ids() -> Set[str]:
-    """載入使用者已擁有卡匣的 ID 集合"""
+    """載入使用者已擁有卡匣的 ID 集合 (自動進行 ID 標準化)"""
     if os.path.exists(COLLECTION_FILE):
         try:
             with open(COLLECTION_FILE, "r", encoding="utf-8") as f:
                 data = json.load(f)
+                raw_ids: Set[str] = set()
                 if isinstance(data, list):
-                    return set(data)
+                    raw_ids = set(data)
                 elif isinstance(data, dict):
                     if "owned_ids" in data and isinstance(data["owned_ids"], list):
-                        return set(data["owned_ids"])
+                        raw_ids = set(data["owned_ids"])
                     elif "cards" in data and isinstance(data["cards"], list):
-                        return {c.get("id") for c in data["cards"] if isinstance(c, dict) and "id" in c}
+                        raw_ids = {c.get("id") for c in data["cards"] if isinstance(c, dict) and "id" in c}
+                if raw_ids:
+                    return normalize_collection_ids(raw_ids)
         except Exception as e:
             print(f"Error loading collection: {e}")
-    # 預設擁有部分卡匣方便初次體驗
-    default_ids = {"1-002", "1-004", "3-001", "DC1-001", "GS1-001", "5-001"}
-    return default_ids
+    # 預設擁有部分卡匣
+    return set()
 
 def save_user_collection_ids(owned_ids: Set[str]) -> bool:
-    """儲存使用者已擁有卡匣的 ID 集合至本機/儲存檔"""
+    """儲存使用者已擁有卡匣的 ID 集合至本機/儲存檔 (自動儲存標準 ID)"""
     try:
+        norm_ids = normalize_collection_ids(owned_ids)
         os.makedirs(DATA_DIR, exist_ok=True)
         with open(COLLECTION_FILE, "w", encoding="utf-8") as f:
-            json.dump(sorted(list(owned_ids)), f, ensure_ascii=False, indent=2)
+            json.dump(sorted(list(norm_ids)), f, ensure_ascii=False, indent=2)
         return True
     except Exception as e:
         print(f"Error saving collection: {e}")
         return False
 
 def get_user_cards(owned_ids: Set[str] | None = None) -> List[Dict[str, Any]]:
-    """取得使用者目前所持有的所有卡匣完整資訊 (支援各版本卡匣 ID 智能模糊匹配)"""
+    """取得使用者目前所持有的所有卡匣完整資訊 (依照最新發行時間與編號排序)"""
     if owned_ids is None:
         owned_ids = load_user_collection_ids()
+    norm_ids = normalize_collection_ids(owned_ids)
     all_cards = load_cards()
     
-    # 建立多維度快速查詢映射
     id_map = {c.get("id"): c for c in all_cards}
-    
-    # 建立簡短 ID 與尾碼映射 (如 '1-001' 或 '001' 可對應至 '1-1-001')
-    suffix_map: Dict[str, Dict[str, Any]] = {}
-    for c in all_cards:
-        cid = c.get("id", "")
-        parts = cid.split("-")
-        if len(parts) >= 2:
-            suffix_map[f"{parts[0]}-{parts[-1]}"] = c
-            suffix_map[parts[-1]] = c
-    
-    matched_cards: List[Dict[str, Any]] = []
-    seen_card_ids: Set[str] = set()
-
-    for oid in owned_ids:
-        oid_clean = str(oid).strip()
-        if oid_clean in id_map:
-            card = id_map[oid_clean]
-            if card["id"] not in seen_card_ids:
-                matched_cards.append(card)
-                seen_card_ids.add(card["id"])
-        elif oid_clean in suffix_map:
-            card = suffix_map[oid_clean]
-            if card["id"] not in seen_card_ids:
-                matched_cards.append(card)
-                seen_card_ids.add(card["id"])
-                
+    matched_cards = [id_map[cid] for cid in norm_ids if cid in id_map]
     return sort_cards_chronological(matched_cards)
 
 def toggle_card_ownership(card_id: str, owned_ids: Set[str]) -> Set[str]:
-    """切換卡匣擁有狀態並自動存檔"""
-    if card_id in owned_ids:
-        owned_ids.remove(card_id)
+    """
+    切換卡匣擁有狀態並自動存檔。
+    若該卡匣或其任何別名已存在，則徹底移除所有別名；否則加入標準 ID。
+    """
+    alias_map, canonical_aliases = get_card_alias_map()
+    canonical_id = alias_map.get(card_id.strip(), card_id.strip())
+    related_aliases = canonical_aliases.get(canonical_id, {card_id.strip()})
+
+    # 檢查是否已在 owned_ids 中 (包含別名)
+    existing_in_owned = related_aliases.intersection(owned_ids)
+
+    if existing_in_owned or canonical_id in owned_ids:
+        # 徹底清除該卡的所有別名與標準 ID
+        owned_ids.difference_update(related_aliases)
+        owned_ids.discard(canonical_id)
     else:
-        owned_ids.add(card_id)
+        # 加入標準 ID
+        owned_ids.add(canonical_id)
+
     save_user_collection_ids(owned_ids)
     return owned_ids
 

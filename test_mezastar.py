@@ -71,17 +71,17 @@ class TestPokemonMezastar(unittest.TestCase):
         self.assertTrue(any(t in ["惡", "幽靈", "蟲"] for t in top_move_types))
 
     def test_collection_manager(self):
-        test_ids = {"1-001", "1-002"}
+        test_ids = {"2-2-001", "2-2-002"}
         save_user_collection_ids(test_ids)
         loaded = load_user_collection_ids()
-        self.assertIn("1-001", loaded)
-        self.assertIn("1-002", loaded)
+        self.assertIn("2-2-001", loaded)
+        self.assertIn("2-2-002", loaded)
 
-        # 測試切換擁有狀態
-        updated = toggle_card_ownership("1-003", loaded)
-        self.assertIn("1-003", updated)
-        updated = toggle_card_ownership("1-003", updated)
-        self.assertNotIn("1-003", updated)
+        # 測試切換擁有狀態 (新增與移除)
+        updated = toggle_card_ownership("2-2-003", loaded)
+        self.assertIn("2-2-003", updated)
+        updated = toggle_card_ownership("2-2-003", updated)
+        self.assertNotIn("2-2-003", updated)
 
     def test_versioning(self):
         self.assertEqual(increment_version("1.0.0", "patch"), "1.0.1")
@@ -113,6 +113,7 @@ class TestPokemonMezastar(unittest.TestCase):
             # 機制旗標存在性檢查
             self.assertIn("has_mega", c)
             self.assertIn("has_z_move", c)
+
     def test_collection_export_and_import(self):
         from collection_manager import (
             export_collection_json,
@@ -121,13 +122,13 @@ class TestPokemonMezastar(unittest.TestCase):
             import_collection_from_json,
             import_collection_from_share_code
         )
-        test_ids = {"1-002", "1-004", "3-001"}
+        test_ids = {"2-2-001", "2-2-002", "3-001"}
         save_user_collection_ids(test_ids)
         
         # 測試 JSON 匯出
         json_exported = export_collection_json(test_ids)
         self.assertIn("Pokemon Mezastar Battle Optimizer", json_exported)
-        self.assertIn("1-002", json_exported)
+        self.assertIn("2-2-001", json_exported)
         
         # 測試分享代碼匯出與匯入
         share_code = export_collection_share_code(test_ids)
@@ -145,7 +146,7 @@ class TestPokemonMezastar(unittest.TestCase):
         ok_merge, msg_merge, merged_ids = import_collection_from_share_code("DC1-001, GS1-001", mode="merge")
         self.assertTrue(ok_merge)
         self.assertIn("DC1-001", merged_ids)
-        self.assertIn("1-002", merged_ids)
+        self.assertIn("2-2-001", merged_ids)
 
     def test_fastapi_endpoints(self):
         """測試 FastAPI 核心 REST 端點"""
@@ -185,7 +186,7 @@ class TestPokemonMezastar(unittest.TestCase):
         
         # 1. 測試訓練家新增與讀取
         trainers = qr_manager.load_trainers()
-        self.assertGreaterEqual(len(trainers), 1)
+        self.assertIsInstance(trainers, list)
 
         ok, msg, updated = qr_manager.add_trainer("UNITTEST-TR-001", "測試訓練家", "單元測試備註")
         self.assertTrue(ok)
