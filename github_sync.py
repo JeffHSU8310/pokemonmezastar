@@ -51,20 +51,43 @@ def increment_version(current_ver: str, part: str = "patch") -> str:
 CONFIG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "user_config.json")
 
 def get_saved_github_token() -> str:
-    """從本地設定檔或環境變數讀取已儲存的 GitHub Token"""
-    if os.environ.get("GITHUB_TOKEN"):
-        return os.environ.get("GITHUB_TOKEN", "").strip()
+    """從本地設定檔、環境變數或 Streamlit secrets.toml 讀取已儲存的 GitHub Token"""
+    # 1. 優先從環境變數讀取
+    env_tok = os.environ.get("GITHUB_TOKEN", "").strip()
+    if env_tok:
+        return env_tok
+    # 2. 從本機設定檔讀取
     if os.path.exists(CONFIG_FILE):
         try:
             with open(CONFIG_FILE, "r", encoding="utf-8") as f:
                 cfg = json.load(f)
-                return str(cfg.get("github_token", "")).strip()
+                tok = str(cfg.get("github_token", "")).strip()
+                if tok:
+                    return tok
+        except Exception:
+            pass
+    # 3. 嘗試讀取 Streamlit secrets.toml
+    secrets_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".streamlit", "secrets.toml")
+    if os.path.exists(secrets_path):
+        try:
+            with open(secrets_path, "r", encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if line.startswith("GITHUB_TOKEN"):
+                        tok = line.split("=", 1)[-1].strip().strip('"').strip("'")
+                        if tok:
+                            return tok
         except Exception:
             pass
     return ""
 
 def save_github_token(token: str) -> bool:
-    """將 GitHub Token 永久儲存至本地設定檔"""
+    """將 GitHub Token 同時永久儲存至本地設定檔與 .streamlit/secrets.toml"""
+    if not token or not token.strip():
+        return False
+    token = token.strip()
+    success = False
+    # 1. 存入 data/user_config.json
     try:
         os.makedirs(os.path.dirname(CONFIG_FILE), exist_ok=True)
         cfg = {}
@@ -74,14 +97,29 @@ def save_github_token(token: str) -> bool:
                     cfg = json.load(f)
             except Exception:
                 cfg = {}
-        cfg["github_token"] = token.strip()
+        cfg["github_token"] = token
         cfg["token_updated_at"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         with open(CONFIG_FILE, "w", encoding="utf-8") as f:
             json.dump(cfg, f, ensure_ascii=False, indent=2)
-        return True
+        success = True
     except Exception as e:
-        print(f"Error saving token: {e}")
-        return False
+        print(f"Error saving token to config: {e}")
+    # 2. 同步存入 .streamlit/secrets.toml（雙重保險）
+    try:
+        streamlit_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".streamlit")
+        os.makedirs(streamlit_dir, exist_ok=True)
+        secrets_path = os.path.join(streamlit_dir, "secrets.toml")
+        existing_lines = []
+        if os.path.exists(secrets_path):
+            with open(secrets_path, "r", encoding="utf-8") as f:
+                existing_lines = [l for l in f.readlines() if not l.strip().startswith("GITHUB_TOKEN")]
+        existing_lines.append(f'GITHUB_TOKEN = "{token}"\n')
+        with open(secrets_path, "w", encoding="utf-8") as f:
+            f.writelines(existing_lines)
+        success = True
+    except Exception as e:
+        print(f"Error saving token to secrets.toml: {e}")
+    return success
 
 def clear_saved_github_token() -> bool:
     """清除已儲存的 GitHub Token"""

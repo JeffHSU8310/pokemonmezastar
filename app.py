@@ -73,19 +73,18 @@ def render_html(html_str: str):
     else:
         st.markdown(clean_html, unsafe_allow_html=True)
 
-# 針對 6.1 吋智慧型手機 (iPhone / Android) 與電腦深度調優的響應式 CSS 樣式
+# 全域 CSS 樣式
 st.markdown("""
 <style>
-    /* 頁面整體邊距微調：預留頂部 header 空間，確保標題 100% 完整顯示絕不被遮擋 */
+    /* 頁面整體邊距：預留頂部 header + Tab 列空間 */
     .block-container {
-        padding-top: 3.8rem !important;
+        padding-top: 6rem !important;
         padding-bottom: 2rem !important;
         padding-left: 0.8rem !important;
         padding-right: 0.8rem !important;
         max-width: 100% !important;
     }
     
-    /* 標題在手機與電腦螢幕上的字級適配 */
     .mobile-title {
         font-size: 1.45rem;
         font-weight: 800;
@@ -98,8 +97,6 @@ st.markdown("""
         color: #666;
         margin-bottom: 0.6rem;
     }
-
-    /* 手機卡匣卡片樣式 */
     .card-box {
         border-radius: 10px;
         padding: 10px;
@@ -108,8 +105,6 @@ st.markdown("""
         box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         margin-bottom: 8px;
     }
-    
-    /* 屬性標籤適應手機尺寸 */
     .type-badge {
         display: inline-block;
         padding: 2px 6px;
@@ -120,8 +115,6 @@ st.markdown("""
         margin-right: 2px;
         margin-bottom: 2px;
     }
-    
-    /* 寶可能量標籤 */
     .energy-badge {
         background: linear-gradient(135deg, #FF6B6B, #FF8E53);
         color: white;
@@ -130,13 +123,11 @@ st.markdown("""
         border-radius: 6px;
         font-size: 0.75rem;
     }
-
     .star-badge {
         color: #FFB300;
         font-weight: bold;
         font-size: 0.95rem;
     }
-
     .tag-badge {
         display: inline-block;
         padding: 1px 5px;
@@ -148,8 +139,6 @@ st.markdown("""
         margin-bottom: 2px;
         border: 1px solid #dee2e6;
     }
-
-    /* 緊湊六維體質排版 */
     .stat-compact {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -161,8 +150,6 @@ st.markdown("""
         border-radius: 6px;
         margin: 4px 0;
     }
-
-    /* 手機大按鈕好按 (觸控優化) */
     .stButton > button {
         border-radius: 8px !important;
         font-weight: bold !important;
@@ -170,128 +157,146 @@ st.markdown("""
         padding: 0.3rem 0.5rem !important;
         min-height: 38px !important;
     }
-
-    /* 頁籤在手機上的水平捲動與字級 */
     .stTabs [data-baseweb="tab-list"] {
         gap: 4px !important;
         overflow-x: auto !important;
         white-space: nowrap !important;
-        background-color: #FFFFFF !important;
     }
     .stTabs [data-baseweb="tab"] {
         padding: 6px 10px !important;
         font-size: 0.85rem !important;
     }
-
-    /* 📌 頂部分頁導覽列固定吸頂 (Sticky Tabs) */
-    div[data-testid="stTabs"] > div:first-child,
-    div[data-baseweb="tab-list"],
-    .stTabs [data-baseweb="tab-list"] {
-        position: -webkit-sticky !important;
-        position: sticky !important;
-        top: 2.875rem !important;
-        z-index: 999 !important;
-        background-color: #FFFFFF !important;
-        padding: 6px 4px !important;
-        border-bottom: 2px solid #E0E0E0 !important;
-        box-shadow: 0 4px 6px -2px rgba(0, 0, 0, 0.08) !important;
-    }
 </style>
 """, unsafe_allow_html=True)
 
 # ==============================================================================
-# 🚀 輕量穿透注入 (雙擊頂部回最上面 & 懸浮按鈕，完全不干擾滾輪)
+# 🚀 JS 穿透父層 DOM：強制 fixed 吸頂分頁列 + 回頂部懸浮按鈕
 # ==============================================================================
 import streamlit.components.v1 as components
 
 components.html("""
 <script>
 (function() {
-    try {
-        const parentDoc = window.parent.document;
-        const parentWin = window.parent;
+    var HEADER_H = 46; // Streamlit header 高度 (px)
 
-        // 1. 注入懸浮按鈕樣式
-        const styleId = "mezastar-btt-pure-style";
-        if (!parentDoc.getElementById(styleId)) {
-            const styleEl = parentDoc.createElement("style");
-            styleEl.id = styleId;
-            styleEl.innerHTML = `
-                header[data-testid="stHeader"] {
-                    cursor: pointer !important;
-                }
-                #mezastar-back-to-top {
-                    position: fixed !important;
-                    bottom: 24px !important;
-                    right: 24px !important;
-                    width: 48px !important;
-                    height: 48px !important;
-                    border-radius: 50% !important;
-                    background: #E53935 !important;
-                    color: #FFFFFF !important;
-                    display: flex !important;
-                    align-items: center !important;
-                    justify-content: center !important;
-                    font-size: 22px !important;
-                    box-shadow: 0 4px 12px rgba(0,0,0,0.25) !important;
-                    cursor: pointer !important;
-                    z-index: 999999 !important;
-                    user-select: none !important;
-                    border: 2px solid #FFFFFF !important;
-                    transition: transform 0.2s ease !important;
-                }
-                #mezastar-back-to-top:hover {
-                    transform: scale(1.1) !important;
-                }
-            `;
-            parentDoc.head.appendChild(styleEl);
-        }
-
-        // 2. 平滑回頂部
-        function scrollToTopMezastar() {
-            parentWin.scrollTo({ top: 0, behavior: "smooth" });
-            const mainSec = parentDoc.querySelector("section.main") || parentDoc.querySelector('[data-testid="stMain"]');
-            if (mainSec) {
-                mainSec.scrollTo({ top: 0, behavior: "smooth" });
-            }
-        }
-
-        // 3. 掛載懸浮回頂按鈕
-        let bttBtn = parentDoc.getElementById("mezastar-back-to-top");
-        if (!bttBtn) {
-            bttBtn = parentDoc.createElement("div");
-            bttBtn.id = "mezastar-back-to-top";
-            bttBtn.title = "點擊回到最上方";
-            bttBtn.innerHTML = "🔝";
-            bttBtn.onclick = scrollToTopMezastar;
-            parentDoc.body.appendChild(bttBtn);
-        }
-
-        // 4. 頂部 Header 雙擊秒回頂部
-        let lastTap = 0;
-        function onHeaderDoubleTap(e) {
-            const now = new Date().getTime();
-            if (now - lastTap < 400 && now - lastTap > 0) {
-                scrollToTopMezastar();
-            }
-            lastTap = now;
-        }
-
-        const headerEl = parentDoc.querySelector('header[data-testid="stHeader"]');
-        if (headerEl) {
-            headerEl.addEventListener("dblclick", scrollToTopMezastar);
-            headerEl.addEventListener("click", onHeaderDoubleTap);
-            headerEl.addEventListener("touchend", onHeaderDoubleTap);
-        }
-
-        // 5. 鍵盤 Home 鍵回頂部
-        parentWin.addEventListener("keydown", function(e) {
-            if (e.key === "Home") scrollToTopMezastar();
-        });
-
-    } catch (err) {
-        console.warn(err);
+    function applyFixedTab(tabEl) {
+        tabEl.style.cssText = [
+            "position: fixed !important",
+            "top: " + HEADER_H + "px !important",
+            "left: 0 !important",
+            "right: 0 !important",
+            "width: 100% !important",
+            "z-index: 99998 !important",
+            "background: #FFFFFF !important",
+            "box-shadow: 0 3px 8px rgba(0,0,0,0.12) !important",
+            "padding: 4px 12px !important",
+            "box-sizing: border-box !important"
+        ].join(";");
     }
+
+    function setupFixedTabs(doc) {
+        // Streamlit 的 Tab 清單容器（試多種 selector）
+        var selectors = [
+            '[data-baseweb="tab-list"]',
+            '.stTabs [data-testid="stTabsNav"]',
+            '[role="tablist"]'
+        ];
+        var tabList = null;
+        for (var i = 0; i < selectors.length; i++) {
+            tabList = doc.querySelector(selectors[i]);
+            if (tabList) break;
+        }
+        if (!tabList) return false;
+        applyFixedTab(tabList);
+        return true;
+    }
+
+    function init() {
+        try {
+            var parentDoc = window.parent.document;
+            var parentWin = window.parent;
+
+            // --- 注入樣式 ---
+            var styleId = "meza-fixed-style";
+            if (!parentDoc.getElementById(styleId)) {
+                var s = parentDoc.createElement("style");
+                s.id = styleId;
+                s.innerHTML =
+                    "#meza-btt{position:fixed!important;bottom:22px!important;right:22px!important;" +
+                    "width:46px!important;height:46px!important;border-radius:50%!important;" +
+                    "background:#E53935!important;color:#fff!important;display:flex!important;" +
+                    "align-items:center!important;justify-content:center!important;" +
+                    "font-size:21px!important;box-shadow:0 3px 10px rgba(0,0,0,.3)!important;" +
+                    "cursor:pointer!important;z-index:999999!important;border:2px solid #fff!important;" +
+                    "transition:transform .2s!important;}" +
+                    "#meza-btt:hover{transform:scale(1.12)!important;}";
+                parentDoc.head.appendChild(s);
+            }
+
+            // --- 回頂部按鈕 ---
+            if (!parentDoc.getElementById("meza-btt")) {
+                var btn = parentDoc.createElement("div");
+                btn.id = "meza-btt";
+                btn.title = "回到最頂端";
+                btn.innerHTML = "🔝";
+                btn.onclick = function() {
+                    var main = parentDoc.querySelector('[data-testid="stMain"]') ||
+                               parentDoc.querySelector("section.main");
+                    if (main) main.scrollTo({top:0, behavior:"smooth"});
+                    parentWin.scrollTo({top:0, behavior:"smooth"});
+                };
+                parentDoc.body.appendChild(btn);
+            }
+
+            // --- 強制 fixed 吸頂：立即執行 + 重試機制 ---
+            var attempts = 0;
+            function tryFix() {
+                if (setupFixedTabs(parentDoc)) return; // 成功就停
+                if (++attempts < 30) setTimeout(tryFix, 300); // 最多重試 9 秒
+            }
+            tryFix();
+
+            // --- 每次 Streamlit rerun 後重新執行 ---
+            var observer = new MutationObserver(function() { tryFix(); });
+            observer.observe(parentDoc.body, {childList: true, subtree: true});
+
+            // --- Header 雙擊回頂部 ---
+            var lastTap = 0;
+            function onTap() {
+                var now = Date.now();
+                if (now - lastTap < 400) {
+                    var main = parentDoc.querySelector('[data-testid="stMain"]') ||
+                               parentDoc.querySelector("section.main");
+                    if (main) main.scrollTo({top:0, behavior:"smooth"});
+                    parentWin.scrollTo({top:0, behavior:"smooth"});
+                }
+                lastTap = now;
+            }
+            var header = parentDoc.querySelector('header[data-testid="stHeader"]');
+            if (header) {
+                header.addEventListener("dblclick", onTap);
+                header.addEventListener("click", onTap);
+                header.addEventListener("touchend", onTap);
+            }
+            parentWin.addEventListener("keydown", function(e) {
+                if (e.key === "Home") {
+                    var main = parentDoc.querySelector('[data-testid="stMain"]') ||
+                               parentDoc.querySelector("section.main");
+                    if (main) main.scrollTo({top:0, behavior:"smooth"});
+                }
+            });
+
+        } catch(e) { console.warn("meza-fix:", e); }
+    }
+
+    // 等 parent DOM 就緒
+    if (document.readyState === "complete") {
+        init();
+    } else {
+        window.addEventListener("load", init);
+    }
+    // 也在 iframe 載入後嘗試
+    setTimeout(init, 500);
 })();
 </script>
 """, height=0)
