@@ -284,10 +284,42 @@ if hasattr(st, "dialog"):
     @st.dialog("🔍 寶可夢 Mezastar 卡匣詳細資料")
     def show_card_details_modal(c: Dict[str, Any]):
         render_card_detail_content(c)
+
+    @st.dialog("⚠️ 確認移出卡匣")
+    def confirm_remove_card_dialog(c: Dict[str, Any]):
+        st.warning(f"確定要將 **【{c.get('name')}】** ({c.get('series')} • `{c.get('id')}`) 從您的卡匣庫存中移出嗎？")
+        c_left, c_right = st.columns(2)
+        with c_left:
+            if st.button("❌ 取消", key=f"dlg_cancel_rem_{c.get('id')}", use_container_width=True):
+                st.rerun()
+        with c_right:
+            if st.button("🗑️ 確認移出", key=f"dlg_confirm_rem_{c.get('id')}", type="primary", use_container_width=True):
+                st.session_state.owned_ids = toggle_card_ownership(c["id"], st.session_state.owned_ids)
+                st.rerun()
+
+    @st.dialog("⚠️ 確認刪除訓練家")
+    def confirm_delete_trainer_dialog(tr: Dict[str, Any]):
+        st.warning(f"確定要刪除訓練家 **【{tr.get('name')}】** (ID: `{tr.get('id')}`) 嗎？此操作無法復原。")
+        c_left, c_right = st.columns(2)
+        with c_left:
+            if st.button("❌ 取消", key=f"dlg_cancel_del_tr_{tr.get('id')}", use_container_width=True):
+                st.rerun()
+        with c_right:
+            if st.button("🗑️ 確認刪除", key=f"dlg_confirm_del_tr_{tr.get('id')}", type="primary", use_container_width=True):
+                delete_trainer(tr["id"])
+                st.rerun()
 else:
     def show_card_details_modal(c: Dict[str, Any]):
         with st.expander(f"🔍 【詳細數據】{c.get('name')} ({c.get('id')})", expanded=True):
             render_card_detail_content(c)
+
+    def confirm_remove_card_dialog(c: Dict[str, Any]):
+        st.session_state.owned_ids = toggle_card_ownership(c["id"], st.session_state.owned_ids)
+        st.rerun()
+
+    def confirm_delete_trainer_dialog(tr: Dict[str, Any]):
+        delete_trainer(tr["id"])
+        st.rerun()
 
 # 側邊欄：手機選單抽屜
 with st.sidebar:
@@ -563,8 +595,7 @@ with tabs[1]:
                             show_card_details_modal(c)
                     with sub_c2:
                         if st.button("🗑️ 移出", key=f"btn_my_del_{c_id}", use_container_width=True, type="secondary"):
-                            st.session_state.owned_ids = toggle_card_ownership(c_id, st.session_state.owned_ids)
-                            st.rerun()
+                            confirm_remove_card_dialog(c)
 
     # 展開從全圖鑑快速勾選卡匣
     with st.expander("➕ 展開全圖鑑快速勾選/新增持有卡匣", expanded=False):
@@ -712,8 +743,7 @@ with tabs[2]:
                         st.button("✅ 使用中", key=f"btn_act_dis_{idx}_{tr_id}", disabled=True, use_container_width=True)
                 with col_t3:
                     if st.button("🗑️ 刪除", key=f"btn_del_tr_{idx}_{tr_id}", use_container_width=True):
-                        delete_trainer(tr_id)
-                        st.rerun()
+                        confirm_delete_trainer_dialog(tr)
                 
                 # 單一訓練家 QR Code 展開
                 with st.expander(f"🔍 查看【{tr_name}】專屬 QR Code", expanded=False):

@@ -308,7 +308,7 @@ def main(page: ft.Page):
                                           tooltip="設為目前",
                                           on_click=lambda e, tr_id=tid: on_set_active_trainer(tr_id)),
                             ft.IconButton(icon=ft.Icons.DELETE_OUTLINE, icon_color=ft.Colors.RED_500, tooltip="刪除",
-                                          on_click=lambda e, tr_id=tid: on_delete_trainer(tr_id))
+                                          on_click=lambda e, tr_id=tid, tr_name=tname: on_delete_trainer(tr_id, tr_name))
                         ])
                     ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
                     padding=8,
@@ -342,10 +342,26 @@ def main(page: ft.Page):
         show_toast("✅ 已切換目前訓練家！")
         refresh_trainers_view()
 
-    def on_delete_trainer(tid: str):
-        delete_trainer(tid)
-        show_toast("已刪除訓練家")
-        refresh_trainers_view()
+    def confirm_delete_trainer_flet(tid: str, tname: str):
+        def on_confirm_del(e):
+            delete_trainer(tid)
+            page.close(dlg_del)
+            show_toast(f"已刪除訓練家【{tname}】")
+            refresh_trainers_view()
+
+        dlg_del = ft.AlertDialog(
+            title=ft.Text("⚠️ 確認刪除訓練家"),
+            content=ft.Text(f"確定要刪除訓練家【{tname}】(ID: {tid}) 嗎？此操作無法復原。"),
+            actions=[
+                ft.TextButton("❌ 取消", on_click=lambda e: page.close(dlg_del)),
+                ft.ElevatedButton("🗑️ 確認刪除", bgcolor=ft.Colors.RED_600, color=ft.Colors.WHITE, on_click=on_confirm_del),
+            ],
+            actions_alignment=ft.MainAxisAlignment.END
+        )
+        page.open(dlg_del)
+
+    def on_delete_trainer(tid: str, tname: str):
+        confirm_delete_trainer_flet(tid, tname)
 
     trainer_view = ft.Container(
         content=ft.Column([
@@ -455,7 +471,7 @@ def main(page: ft.Page):
                                 icon=ft.Icons.DELETE_OUTLINE,
                                 icon_color=ft.Colors.RED_500,
                                 tooltip="移出收藏",
-                                on_click=lambda e, card_id=cid: remove_from_collection(card_id)
+                                on_click=lambda e, card_id=cid, card_name=c.get('name', ''): remove_from_collection(card_id, card_name)
                             )
                         ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
                         padding=8,
@@ -467,10 +483,24 @@ def main(page: ft.Page):
         collection_list_col.controls = cards_controls
         page.update()
 
-    def remove_from_collection(card_id: str):
-        toggle_card_ownership(card_id, owned_ids)
-        show_toast(f"已將 {card_id} 移出卡庫")
-        refresh_collection_view()
+    def remove_from_collection(card_id: str, card_name: str = ""):
+        c_title = f"【{card_name}】({card_id})" if card_name else f"卡匣 ({card_id})"
+        def on_confirm_rem_card(e):
+            toggle_card_ownership(card_id, owned_ids)
+            page.close(dlg_rem_card)
+            show_toast(f"已將 {c_title} 移出卡庫")
+            refresh_collection_view()
+
+        dlg_rem_card = ft.AlertDialog(
+            title=ft.Text("⚠️ 確認移出卡匣"),
+            content=ft.Text(f"確定要將 {c_title} 從您的卡匣庫存中移出嗎？"),
+            actions=[
+                ft.TextButton("❌ 取消", on_click=lambda e: page.close(dlg_rem_card)),
+                ft.ElevatedButton("🗑️ 確認移出", bgcolor=ft.Colors.RED_600, color=ft.Colors.WHITE, on_click=on_confirm_rem_card),
+            ],
+            actions_alignment=ft.MainAxisAlignment.END
+        )
+        page.open(dlg_rem_card)
 
     # 備份代碼與分享
     share_code_field = ft.TextField(
