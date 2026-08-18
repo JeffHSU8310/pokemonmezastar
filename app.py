@@ -594,15 +594,54 @@ tabs = st.tabs([
 with tabs[0]:
     # 手機上採用卡片式下拉選單
     with st.container():
-        boss_options = ["自訂"] + [f"{c['name']} ({c['series']} - {c['id']}) ⚡{c.get('energy', 100)}" for c in all_cards]
-        selected_boss_idx = st.selectbox("🎯 選擇對手 Boss:", options=range(len(boss_options)), format_func=lambda x: boss_options[x])
+        # 1. 快速星數切換按鈕
+        star_filter = st.radio(
+            "🎯 選擇對手 Boss ⭐ 星級快選:",
+            options=["全部", "6★", "5★", "4★", "3★", "2★", "特別"],
+            horizontal=True,
+            key="battle_boss_star_filter"
+        )
+        
+        # 2. 搜尋關鍵字輸入框
+        search_query = st.text_input("🔍 搜尋 Boss 名稱 / 編號 (輸入關鍵字即時篩選):", placeholder="例如: 雙、超夢、噴火龍、2-2-001...", key="battle_boss_search_input")
+        
+        # 3. 根據星級與關鍵字即時篩選卡匣
+        filtered_boss_cards = all_cards
+        if star_filter == "6★":
+            filtered_boss_cards = [c for c in filtered_boss_cards if c.get("star") == 6]
+        elif star_filter == "5★":
+            filtered_boss_cards = [c for c in filtered_boss_cards if c.get("star") == 5]
+        elif star_filter == "4★":
+            filtered_boss_cards = [c for c in filtered_boss_cards if c.get("star") == 4]
+        elif star_filter == "3★":
+            filtered_boss_cards = [c for c in filtered_boss_cards if c.get("star") == 3]
+        elif star_filter == "2★":
+            filtered_boss_cards = [c for c in filtered_boss_cards if c.get("star") == 2]
+        elif star_filter == "特別":
+            filtered_boss_cards = [c for c in filtered_boss_cards if "特別" in c.get("series", "") or c.get("star") == 1 or "特別" in str(c.get("special", "")) or c.get("id", "").startswith("SP-") or c.get("id", "").startswith("R-") or c.get("id", "").startswith("1-P-")]
+            
+        if search_query.strip():
+            sq = search_query.strip().lower()
+            filtered_boss_cards = [c for c in filtered_boss_cards if sq in c.get("name", "").lower() or sq in c.get("id", "").lower()]
+            
+        # 4. Boss 候選下拉選單 (第一項始終為「自訂」)
+        boss_options = ["自訂"] + [f"{c['name']} ({c['series']} - {c['id']}) ⚡{c.get('energy', 100)}" for c in filtered_boss_cards]
+        
+        # 下拉選單
+        count_label = f" (符合條件 {len(filtered_boss_cards)} 隻)" if (star_filter != "全部" or search_query.strip()) else ""
+        selected_boss_idx = st.selectbox(
+            f"📋 對手 Boss 下拉選單{count_label}:",
+            options=range(len(boss_options)),
+            format_func=lambda x: boss_options[x],
+            key=f"battle_boss_select_{star_filter}_{search_query}"
+        )
         
         if selected_boss_idx == 0:
-            boss_name = st.text_input("輸入 Boss 名稱:", value="超夢")
+            boss_name = st.text_input("輸入 Boss 名稱:", value=search_query.strip() if search_query.strip() else "超夢")
             default_t1 = "超能力"
             default_t2 = "無"
         else:
-            picked_c = all_cards[selected_boss_idx - 1]
+            picked_c = filtered_boss_cards[selected_boss_idx - 1]
             boss_name = picked_c["name"]
             default_t1 = picked_c["types"][0] if len(picked_c["types"]) > 0 else "一般"
             default_t2 = picked_c["types"][1] if len(picked_c["types"]) > 1 else "無"
