@@ -594,7 +594,7 @@ tabs = st.tabs([
 with tabs[0]:
     # 手機上採用卡片式下拉選單
     with st.container():
-        boss_options = ["🔍 自訂目標 Boss..."] + [f"{c['name']} ({c['series']} - {c['id']}) ⚡{c.get('energy', 100)}" for c in all_cards]
+        boss_options = ["自訂"] + [f"{c['name']} ({c['series']} - {c['id']}) ⚡{c.get('energy', 100)}" for c in all_cards]
         selected_boss_idx = st.selectbox("🎯 選擇對手 Boss:", options=range(len(boss_options)), format_func=lambda x: boss_options[x])
         
         if selected_boss_idx == 0:
@@ -875,7 +875,7 @@ with tabs[2]:
         <div style="background: linear-gradient(135deg, #FFF8E1, #FFECB3); border: 2px solid #FFA000; border-radius: 12px; padding: 12px; margin-bottom: 12px; text-align:center;">
             <div style="font-size:0.85rem; color:#E65100; font-weight:bold;">👑 目前選用訓練家</div>
             <div style="font-size:1.2rem; font-weight:800; color:#212121; margin:2px 0;">{t_name}</div>
-            <div style="font-size:0.8rem; color:#616161; font-family:monospace;">ID: {t_id}</div>
+            <div style="font-size:0.8rem; color:#616161; font-family:monospace; word-break:break-all; overflow-wrap:anywhere; line-height:1.4; padding:0 4px;">ID: {t_id}</div>
             {f"<div style='font-size:0.75rem; color:#757575; margin-top:2px;'>{t_notes}</div>" if t_notes else ""}
         </div>
         """)
@@ -945,7 +945,7 @@ with tabs[2]:
                 col_t1, col_t2, col_t3 = st.columns([3, 1.2, 1])
                 with col_t1:
                     status_badge = "👑 **[目前使用中]** " if tr_active else ""
-                    st.markdown(f"{status_badge}**{tr_name}** (`{tr_id}`)")
+                    st.markdown(f"{status_badge}**{tr_name}**<div style='font-size:0.75rem; color:#757575; word-break:break-all; font-family:monospace;'>ID: {tr_id}</div>", unsafe_allow_html=True)
                     if tr_notes:
                         st.caption(f"備註: {tr_notes}")
                 with col_t2:
