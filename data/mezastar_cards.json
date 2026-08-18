@@ -26936,8 +26936,8 @@
     "id": "R-1-1",
     "name": "皮卡丘",
     "name_en": "Pikachu",
-    "series": "常規卡匣 (Regular Tags)",
-    "star": 5,
+    "series": "特別系列",
+    "star": 1,
     "energy": 96,
     "types": [
       "電"
@@ -26959,9 +26959,10 @@
       "accuracy": "必中",
       "damage": 10140
     },
-    "special": "常規卡匣",
+    "special": "1星特別卡",
     "special_mechanics": [
-      "常規卡匣"
+      "常規卡匣",
+      "特別卡匣"
     ],
     "has_mega": false,
     "has_z_move": false,
@@ -27008,8 +27009,8 @@
     "id": "R-1-2",
     "name": "路卡利歐",
     "name_en": "Lucario",
-    "series": "常規卡匣 (Regular Tags)",
-    "star": 5,
+    "series": "特別系列",
+    "star": 1,
     "energy": 102,
     "types": [
       "格鬥",
@@ -27032,9 +27033,10 @@
       "accuracy": "必中",
       "damage": 11514
     },
-    "special": "常規卡匣",
+    "special": "1星特別卡",
     "special_mechanics": [
-      "常規卡匣"
+      "常規卡匣",
+      "特別卡匣"
     ],
     "has_mega": false,
     "has_z_move": false,
@@ -27090,8 +27092,8 @@
     "id": "R-1-3",
     "name": "卡比獸",
     "name_en": "Snorlax",
-    "series": "常規卡匣 (Regular Tags)",
-    "star": 5,
+    "series": "特別系列",
+    "star": 1,
     "energy": 104,
     "types": [
       "一般"
@@ -27113,9 +27115,10 @@
       "accuracy": "必中",
       "damage": 17100
     },
-    "special": "常規卡匣",
+    "special": "1星特別卡",
     "special_mechanics": [
-      "常規卡匣"
+      "常規卡匣",
+      "特別卡匣"
     ],
     "has_mega": false,
     "has_z_move": false,
@@ -27160,8 +27163,8 @@
     "id": "R-2-1",
     "name": "皮卡丘",
     "name_en": "Pikachu",
-    "series": "常規卡匣 (Regular Tags)",
-    "star": 5,
+    "series": "特別系列",
+    "star": 1,
     "energy": 102,
     "types": [
       "電"
@@ -27183,10 +27186,11 @@
       "accuracy": "必中",
       "damage": 10764
     },
-    "special": "超極巨化",
+    "special": "1星特別卡",
     "special_mechanics": [
       "超極巨化",
-      "常規卡匣"
+      "常規卡匣",
+      "特別卡匣"
     ],
     "has_mega": false,
     "has_z_move": false,
@@ -27233,8 +27237,8 @@
     "id": "R-2-2",
     "name": "噴火龍",
     "name_en": "Charizard",
-    "series": "常規卡匣 (Regular Tags)",
-    "star": 5,
+    "series": "特別系列",
+    "star": 1,
     "energy": 126,
     "types": [
       "火",
@@ -27257,10 +27261,11 @@
       "accuracy": "必中",
       "damage": 18096
     },
-    "special": "超極巨化",
+    "special": "1星特別卡",
     "special_mechanics": [
       "超極巨化",
-      "常規卡匣"
+      "常規卡匣",
+      "特別卡匣"
     ],
     "has_mega": false,
     "has_z_move": false,
@@ -27314,8 +27319,8 @@
     "id": "R-2-3",
     "name": "耿鬼",
     "name_en": "Gengar",
-    "series": "常規卡匣 (Regular Tags)",
-    "star": 5,
+    "series": "特別系列",
+    "star": 1,
     "energy": 118,
     "types": [
       "幽靈",
@@ -27338,10 +27343,11 @@
       "accuracy": "必中",
       "damage": 21372
     },
-    "special": "超極巨化",
+    "special": "1星特別卡",
     "special_mechanics": [
       "超極巨化",
-      "常規卡匣"
+      "常規卡匣",
+      "特別卡匣"
     ],
     "has_mega": false,
     "has_z_move": false,
@@ -27395,7 +27401,7 @@
     "id": "1-P-001",
     "name": "皮卡丘",
     "series": "特別系列",
-    "star": 5,
+    "star": 1,
     "energy": 100,
     "types": [
       "電"
@@ -27417,7 +27423,7 @@
       "accuracy": "必中",
       "damage": 16660
     },
-    "special": "特別卡",
+    "special": "1星特別卡",
     "special_mechanics": [
       "特別卡匣"
     ],
@@ -27467,7 +27473,7 @@
     "id": "1-P-002",
     "name": "路卡利歐",
     "series": "特別系列",
-    "star": 5,
+    "star": 1,
     "energy": 94,
     "types": [
       "格鬥",
@@ -27490,7 +27496,7 @@
       "accuracy": "必中",
       "damage": 23408
     },
-    "special": "特別卡",
+    "special": "1星特別卡",
     "special_mechanics": [
       "特別卡匣"
     ],
@@ -27549,7 +27555,7 @@
     "id": "1-P-003",
     "name": "達克萊伊",
     "series": "特別系列",
-    "star": 5,
+    "star": 1,
     "energy": 98,
     "types": [
       "惡"
@@ -27564,7 +27570,7 @@
     "move_type": "惡",
     "move_power": 80,
     "second_move": {},
-    "special": "特別卡",
+    "special": "1星特別卡",
     "special_mechanics": [
       "特別卡匣"
     ],
@@ -27609,7 +27615,7 @@
     "id": "1-P-004",
     "name": "時拉比",
     "series": "特別系列",
-    "star": 5,
+    "star": 1,
     "energy": 106,
     "types": [
       "超能力",
@@ -27625,7 +27631,7 @@
     "move_type": "草",
     "move_power": 130,
     "second_move": {},
-    "special": "特別卡",
+    "special": "1星特別卡",
     "special_mechanics": [
       "特別卡匣"
     ],
@@ -27676,7 +27682,7 @@
     "id": "1-P-005",
     "name": "夢幻",
     "series": "特別系列",
-    "star": 5,
+    "star": 1,
     "energy": 118,
     "types": [
       "超能力"
@@ -27691,7 +27697,7 @@
     "move_type": "超能力",
     "move_power": 90,
     "second_move": {},
-    "special": "特別卡",
+    "special": "1星特別卡",
     "special_mechanics": [
       "特別卡匣"
     ],
@@ -27734,7 +27740,7 @@
     "id": "1-P-006",
     "name": "武道熊師(一擊流)",
     "series": "特別系列",
-    "star": 5,
+    "star": 1,
     "energy": 120,
     "types": [
       "格鬥",
@@ -27750,7 +27756,7 @@
     "move_type": "惡",
     "move_power": 80,
     "second_move": {},
-    "special": "特別卡",
+    "special": "1星特別卡",
     "special_mechanics": [
       "特別卡匣"
     ],
@@ -27796,7 +27802,7 @@
     "id": "1-P-007",
     "name": "暴鯉龍",
     "series": "特別系列",
-    "star": 5,
+    "star": 1,
     "energy": 134,
     "types": [
       "水",
@@ -27812,7 +27818,7 @@
     "move_type": "水",
     "move_power": 80,
     "second_move": {},
-    "special": "特別卡",
+    "special": "1星特別卡",
     "special_mechanics": [
       "特別卡匣"
     ],
@@ -27859,7 +27865,7 @@
     "id": "1-P-008",
     "name": "酋雷姆",
     "series": "特別系列",
-    "star": 5,
+    "star": 1,
     "energy": 104,
     "types": [
       "龍",
@@ -27875,7 +27881,7 @@
     "move_type": "冰",
     "move_power": 110,
     "second_move": {},
-    "special": "特別卡",
+    "special": "1星特別卡",
     "special_mechanics": [
       "特別卡匣"
     ],
@@ -27921,7 +27927,7 @@
     "id": "1-P-009",
     "name": "快龍",
     "series": "特別系列",
-    "star": 5,
+    "star": 1,
     "energy": 118,
     "types": [
       "龍",
@@ -27944,7 +27950,7 @@
       "accuracy": "必中",
       "damage": 30240
     },
-    "special": "特別卡",
+    "special": "1星特別卡",
     "special_mechanics": [
       "特別卡匣"
     ],
@@ -28001,7 +28007,7 @@
     "id": "1-P-010",
     "name": "武道熊師(連擊流)",
     "series": "特別系列",
-    "star": 5,
+    "star": 1,
     "energy": 120,
     "types": [
       "格鬥",
@@ -28017,7 +28023,7 @@
     "move_type": "水",
     "move_power": 75,
     "second_move": {},
-    "special": "特別卡",
+    "special": "1星特別卡",
     "special_mechanics": [
       "特別卡匣"
     ],
@@ -28067,7 +28073,7 @@
     "id": "1-P-011",
     "name": "基格爾德",
     "series": "特別系列",
-    "star": 5,
+    "star": 1,
     "energy": 128,
     "types": [
       "龍",
@@ -28083,7 +28089,7 @@
     "move_type": "龍",
     "move_power": 100,
     "second_move": {},
-    "special": "特別卡",
+    "special": "1星特別卡",
     "special_mechanics": [
       "特別卡匣"
     ],
@@ -28129,7 +28135,7 @@
     "id": "1-P-012",
     "name": "蒼響(劍之王)",
     "series": "特別系列",
-    "star": 5,
+    "star": 1,
     "energy": 108,
     "types": [
       "妖精",
@@ -28145,7 +28151,7 @@
     "move_type": "鋼",
     "move_power": 100,
     "second_move": {},
-    "special": "特別卡",
+    "special": "1星特別卡",
     "special_mechanics": [
       "特別卡匣"
     ],
@@ -28197,7 +28203,7 @@
     "id": "1-P-013",
     "name": "藏瑪然特(盾之王)",
     "series": "特別系列",
-    "star": 5,
+    "star": 1,
     "energy": 108,
     "types": [
       "格鬥",
@@ -28213,7 +28219,7 @@
     "move_type": "鋼",
     "move_power": 100,
     "second_move": {},
-    "special": "特別卡",
+    "special": "1星特別卡",
     "special_mechanics": [
       "特別卡匣"
     ],
