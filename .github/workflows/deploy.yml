@@ -25,6 +25,7 @@ jobs:
       run: |
         sudo apt-get update
         xargs -a packages.txt sudo apt-get install -y
+        ldconfig -p | grep -q "libgthread-2.0.so.0"
 
     - name: Install Dependencies
       run: |

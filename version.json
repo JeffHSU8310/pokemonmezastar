@@ -1,7 +1,12 @@
 {
-  "version": "2.7.4",
-  "last_updated": "2026-08-21 01:23:00",
+  "version": "2.7.5",
+  "last_updated": "2026-08-21 01:28:00",
   "history": [
+    {
+      "version": "2.7.5",
+      "timestamp": "2026-08-21 01:28:00",
+      "message": "補上 Debian Trixie 的 libglib2.0-0t64，提供 OpenCV 所需的 libgthread-2.0.so.0"
+    },
     {
       "version": "2.7.4",
       "timestamp": "2026-08-21 01:23:00",
