@@ -1,7 +1,12 @@
 {
-  "version": "2.7.2",
-  "last_updated": "2026-08-21 01:12:00",
+  "version": "2.7.3",
+  "last_updated": "2026-08-21 01:18:00",
   "history": [
+    {
+      "version": "2.7.3",
+      "timestamp": "2026-08-21 01:18:00",
+      "message": "移除 Streamlit Debian 套件源不相容的 libglib2.0-0，並新增系統套件安裝驗證"
+    },
     {
       "version": "2.7.2",
       "timestamp": "2026-08-21 01:12:00",
