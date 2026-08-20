@@ -12,6 +12,8 @@ import cv2
 import numpy as np
 import requests
 
+from recognition_learning import learning_adjustments
+
 
 def decode_image(image_bytes: bytes) -> np.ndarray:
     image = cv2.imdecode(np.frombuffer(image_bytes, np.uint8), cv2.IMREAD_COLOR)
@@ -143,6 +145,7 @@ def _visual_score(query_descriptor, card: Dict[str, Any]) -> float:
 
 def recognize_card(image_bytes: bytes, cards: List[Dict[str, Any]], top_n: int = 3) -> Dict[str, Any]:
     image = decode_image(image_bytes)
+    learned_adjustments = learning_adjustments(image_bytes)
     texts, ocr_confidence, warning = extract_ocr(image)
     star, star_confidence = detect_star_count(image, texts)
     _, query_descriptor = _orb_descriptor(image)
@@ -179,12 +182,18 @@ def recognize_card(image_bytes: bytes, cards: List[Dict[str, Any]], top_n: int =
             components.append((star_match, 0.08 * max(0.5, star_confidence)))
         weight = sum(item[1] for item in components)
         score = sum(value * part_weight for value, part_weight in components) / weight if weight else 0.0
+        learned_score = learned_adjustments.get(card_id, 0.0)
+        if learned_score > 0.58:
+            score = max(score, min(0.92, learned_score * 0.90))
+        elif learned_score < 0.0:
+            score *= max(0.55, 1.0 + learned_score * 0.70)
         ranked.append({
             "card": card,
             "score": round(score, 4),
             "text_score": round(text_score, 4),
             "visual_score": round(visual_score, 4),
             "star_match": bool(star_match),
+            "learned_score": round(learned_score, 4),
             "evidence": evidence,
         })
     ranked.sort(key=lambda item: item["score"], reverse=True)

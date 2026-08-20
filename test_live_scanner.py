@@ -17,23 +17,36 @@ class LiveScannerTests(unittest.TestCase):
         image[:, ::8] = 255
         image[::8, :] = 255
         scanner.ingest(image)
-        image_bytes, error = scanner.capture_current()
+        image_bytes, error, sharpness = scanner.capture_current()
         self.assertIsNotNone(image_bytes)
         self.assertIsNone(error)
+        self.assertGreater(sharpness, 48.0)
 
     def test_dark_frame_is_rejected(self):
         scanner = LiveCardScanner()
         image = np.zeros((360, 480, 3), dtype=np.uint8)
         image[:, ::8] = 20
         scanner.ingest(image)
-        image_bytes, error = scanner.capture_current()
+        image_bytes, error, _ = scanner.capture_current()
         self.assertIsNone(image_bytes)
         self.assertIn("光線不足", error)
 
     def test_capture_before_camera_frame_is_rejected(self):
-        image_bytes, error = LiveCardScanner().capture_current()
+        image_bytes, error, _ = LiveCardScanner().capture_current()
         self.assertIsNone(image_bytes)
         self.assertIn("尚未取得畫面", error)
+
+    def test_capture_selects_sharpest_recent_frame(self):
+        scanner = LiveCardScanner()
+        blurred = np.full((360, 480, 3), 120, dtype=np.uint8)
+        sharp = blurred.copy()
+        sharp[:, ::6] = 255
+        scanner.ingest(sharp)
+        scanner.ingest(blurred)
+        image_bytes, error, sharpness = scanner.capture_current()
+        self.assertIsNotNone(image_bytes)
+        self.assertIsNone(error)
+        self.assertGreater(sharpness, 48.0)
 
 
 if __name__ == "__main__":
