@@ -370,15 +370,25 @@ def load_trainers() -> List[Dict[str, Any]]:
     return default_trainers
 
 def save_trainers(trainers: List[Dict[str, Any]]) -> bool:
-    """儲存訓練家清單至持久化 JSON 檔案"""
+    """以原子取代方式儲存訓練家資料，避免中途中斷破壞 JSON。"""
+    temp_path = f"{TRAINERS_FILE}.tmp.{os.getpid()}.{time.time_ns()}"
     try:
         os.makedirs(DATA_DIR, exist_ok=True)
-        with open(TRAINERS_FILE, "w", encoding="utf-8") as f:
+        with open(temp_path, "w", encoding="utf-8") as f:
             json.dump(trainers, f, ensure_ascii=False, indent=2)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(temp_path, TRAINERS_FILE)
         return True
     except Exception as e:
         print(f"Error saving trainers: {e}")
         return False
+    finally:
+        if os.path.exists(temp_path):
+            try:
+                os.remove(temp_path)
+            except OSError:
+                pass
 
 def add_trainer(qr_id: str, name: str, notes: str = "", avatar_color: str = "#4CAF50") -> Tuple[bool, str, List[Dict[str, Any]]]:
     """新增一組訓練家"""

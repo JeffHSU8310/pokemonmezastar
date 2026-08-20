@@ -76,16 +76,26 @@ def load_user_collection_ids() -> Set[str]:
     return set()
 
 def save_user_collection_ids(owned_ids: Set[str]) -> bool:
-    """儲存使用者已擁有卡匣的 ID 集合至本機/儲存檔 (自動儲存標準 ID)"""
+    """以原子取代方式儲存收藏，避免中途中斷留下半份 JSON。"""
+    temp_path = f"{COLLECTION_FILE}.tmp.{os.getpid()}.{time.time_ns()}"
     try:
         norm_ids = normalize_collection_ids(owned_ids)
         os.makedirs(DATA_DIR, exist_ok=True)
-        with open(COLLECTION_FILE, "w", encoding="utf-8") as f:
+        with open(temp_path, "w", encoding="utf-8") as f:
             json.dump(sorted(list(norm_ids)), f, ensure_ascii=False, indent=2)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(temp_path, COLLECTION_FILE)
         return True
     except Exception as e:
         print(f"Error saving collection: {e}")
         return False
+    finally:
+        if os.path.exists(temp_path):
+            try:
+                os.remove(temp_path)
+            except OSError:
+                pass
 
 def get_user_cards(owned_ids: Set[str] | None = None) -> List[Dict[str, Any]]:
     """取得使用者目前所持有的所有卡匣完整資訊 (依照最新發行時間與編號排序)"""

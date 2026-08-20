@@ -40,6 +40,7 @@ from github_sync import (
     get_git_status,
     load_version_info,
     pull_all_user_data_from_github,
+    restore_user_data_snapshot_locally,
     sync_all_user_data_to_github,
     get_saved_github_token,
     save_github_token,
@@ -333,12 +334,9 @@ if "github_auto_synced" not in st.session_state:
         # 從同一個 GitHub commit 拉取並驗證卡匣庫與訓練家資料
         sync_ok, content_c, content_t, sync_commit, _ = pull_all_user_data_from_github(token=auto_token)
         if sync_ok:
-            imp_ok, _, new_ids = import_collection_from_json(content_c, mode="overwrite")
-            parsed_trainers = json.loads(content_t)
-            if imp_ok and isinstance(parsed_trainers, list):
+            restore_ok, new_ids, parsed_trainers, _ = restore_user_data_snapshot_locally(content_c, content_t)
+            if restore_ok:
                 st.session_state.owned_ids = new_ids
-                save_user_collection_ids(new_ids)
-                save_trainers(parsed_trainers)
                 github_loaded = True
                 st.session_state["github_sync_commit"] = sync_commit
     except Exception:
@@ -1413,21 +1411,15 @@ with tabs[6]:
             with st.spinner("正在直連 GitHub main 下載最新檔案..."):
                 sync_ok, content_c, content_t, sync_commit, sync_msg = pull_all_user_data_from_github(token=active_token)
                 if sync_ok:
-                    imp_ok, _, new_ids = import_collection_from_json(content_c, mode="overwrite")
-                    try:
-                        t_data = json.loads(content_t)
-                    except Exception:
-                        t_data = None
-                    if imp_ok and isinstance(t_data, list):
+                    restore_ok, new_ids, t_data, restore_msg = restore_user_data_snapshot_locally(content_c, content_t)
+                    if restore_ok:
                         st.session_state.owned_ids = new_ids
-                        save_user_collection_ids(new_ids)
-                        save_trainers(t_data)
                         st.session_state["github_sync_commit"] = sync_commit
                         st.balloons()
                         st.success(f"🎉 已從 GitHub commit `{sync_commit[:7]}` 完整驗證並還原 {len(new_ids)} 款卡匣與 {len(t_data)} 組訓練家資料！")
                         st.rerun()
                     else:
-                        st.error("❌ 雲端資料格式驗證失敗，未覆蓋本機資料")
+                        st.error(f"❌ 本機還原失敗：{restore_msg}")
                 else:
                     st.error(f"❌ 拉取失敗：{sync_msg}")
 
