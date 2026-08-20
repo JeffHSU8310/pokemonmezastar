@@ -12,6 +12,9 @@ import numpy as np
 
 
 def frame_quality(image: np.ndarray) -> Tuple[float, float]:
+    scale = min(1.0, 480.0 / max(image.shape[:2]))
+    if scale < 1.0:
+        image = cv2.resize(image, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     sharpness = float(cv2.Laplacian(gray, cv2.CV_64F).var())
     brightness = float(gray.mean())
@@ -24,52 +27,37 @@ class LiveCardScanner:
     def __init__(self):
         self._lock = threading.Lock()
         self._latest: Optional[np.ndarray] = None
-        self._previous_gray: Optional[np.ndarray] = None
-        self._stable_frames = 0
-        self._last_capture_at = 0.0
+        self._last_analysis_at = 0.0
         self._sharpness = 0.0
         self._brightness = 0.0
 
     def ingest(self, image: np.ndarray) -> None:
-        preview_gray = cv2.resize(
-            cv2.cvtColor(image, cv2.COLOR_BGR2GRAY),
-            (160, 120),
-            interpolation=cv2.INTER_AREA,
-        )
         sharpness, brightness = frame_quality(image)
         with self._lock:
-            if self._previous_gray is None:
-                motion = 255.0
-            else:
-                motion = float(cv2.absdiff(preview_gray, self._previous_gray).mean())
-            self._stable_frames = self._stable_frames + 1 if motion < 11.0 else 0
-            self._previous_gray = preview_gray
             self._latest = image.copy()
             self._sharpness = sharpness
             self._brightness = brightness
 
     def recv(self, frame: av.VideoFrame) -> av.VideoFrame:
-        self.ingest(frame.to_ndarray(format="bgr24"))
+        # 預覽串流不做連續辨識；每 0.2 秒更新一次待掃描影格即可。
+        now = time.monotonic()
+        if now - self._last_analysis_at >= 0.2:
+            self._last_analysis_at = now
+            self.ingest(frame.to_ndarray(format="bgr24"))
         return frame
 
-    def status(self) -> Tuple[float, float, int]:
+    def capture_current(self) -> Tuple[Optional[bytes], Optional[str]]:
         with self._lock:
-            return self._sharpness, self._brightness, self._stable_frames
-
-    def pop_candidate(self, minimum_interval: float = 2.0) -> Optional[bytes]:
-        now = time.monotonic()
-        with self._lock:
-            ready = (
-                self._latest is not None
-                and self._stable_frames >= 5
-                and self._sharpness >= 48.0
-                and 32.0 <= self._brightness <= 235.0
-                and now - self._last_capture_at >= minimum_interval
-            )
-            if not ready:
-                return None
+            if self._latest is None:
+                return None, "相機尚未取得畫面，請稍候再按掃描"
+            if self._brightness < 32.0:
+                return None, "光線不足，請移到較亮的位置"
+            if self._brightness > 235.0:
+                return None, "畫面過亮，請避開卡匣反光"
+            if self._sharpness < 48.0:
+                return None, "畫面尚未對焦，請靠近卡匣並保持穩定"
             image = self._latest.copy()
-            self._last_capture_at = now
-            self._stable_frames = 0
         encoded, buffer = cv2.imencode(".jpg", image, [cv2.IMWRITE_JPEG_QUALITY, 92])
-        return buffer.tobytes() if encoded else None
+        if not encoded:
+            return None, "無法擷取目前畫面，請重新掃描"
+        return buffer.tobytes(), None

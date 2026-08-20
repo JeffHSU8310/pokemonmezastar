@@ -10,8 +10,6 @@ import os
 import json
 import textwrap
 import importlib
-import hashlib
-import time
 import github_sync as github_sync_module
 from streamlit_webrtc import WebRtcMode, webrtc_streamer
 
@@ -609,113 +607,60 @@ tabs = st.tabs([
 # TAB 1: ⚔️ 智慧對戰推薦 (Battle Lineup Optimizer) - 手機直立版
 # ==============================================================================
 with tabs[0]:
-    with st.expander("📷 開始相機辨識寶可夢", expanded=False):
-        st.caption("將卡匣正面放滿畫面、避免反光；會綜合文字、編號、星數與卡面圖案比對。")
-        scan_mode = st.radio(
-            "相機模式",
-            options=["即時掃描（免按快門）", "拍照辨識"],
-            horizontal=True,
-            key="camera_scan_mode",
-        )
-        camera_photo = None
-        camera_digest = None
+    camera_enabled = bool(st.session_state.get("scan_camera_enabled", False))
+    with st.expander("📷 開始相機辨識寶可夢", expanded=camera_enabled):
+        st.caption("先開啟相機並對準卡匣；只有按下掃描按鈕才會執行辨識，相機權限於同一工作階段只確認一次。")
+        open_col, close_col = st.columns(2)
+        if open_col.button("📷 開啟相機", type="primary", use_container_width=True, key="open_scan_camera", disabled=camera_enabled):
+            st.session_state.scan_camera_enabled = True
+            st.session_state.pop("scan_camera_message", None)
+            st.rerun()
+        if close_col.button("⏹️ 關閉相機", use_container_width=True, key="close_scan_camera", disabled=not camera_enabled):
+            st.session_state.scan_camera_enabled = False
+            st.rerun()
 
-        if scan_mode.startswith("即時掃描"):
-            start_col, stop_col = st.columns(2)
-            if start_col.button("▶️ 開始連續掃描", type="primary", use_container_width=True, key="start_live_scan"):
-                st.session_state.live_scan_enabled = True
-                st.session_state.pop("live_scan_message", None)
-                st.session_state.pop("camera_recognition", None)
-                st.rerun()
-            if stop_col.button("⏹️ 停止掃描", use_container_width=True, key="stop_live_scan"):
-                st.session_state.live_scan_enabled = False
-                st.rerun()
-
-            live_enabled = bool(st.session_state.get("live_scan_enabled", False))
-            live_status = st.empty()
-            if live_enabled:
-                live_context = webrtc_streamer(
-                    key="mezastar_live_card_scanner",
-                    mode=WebRtcMode.SENDRECV,
-                    rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},
-                    media_stream_constraints={
-                        "video": {
-                            "facingMode": {"ideal": "environment"},
-                            "width": {"ideal": 1280},
-                            "height": {"ideal": 720},
-                        },
-                        "audio": False,
-                    },
-                    desired_playing_state=True,
-                    video_processor_factory=LiveCardScanner,
-                    async_processing=True,
-                    media_toggle_controls=False,
-                    video_html_attrs={"autoPlay": True, "controls": False, "muted": True},
-                )
-                if not live_context.state.playing:
-                    live_status.info("正在取得相機權限並啟動後鏡頭…")
-                elif live_context.video_processor:
-                    deadline = time.monotonic() + 30.0
-                    attempts = 0
-                    best_result = None
-                    while live_context.state.playing and time.monotonic() < deadline:
-                        sharpness, brightness, stable_frames = live_context.video_processor.status()
-                        if brightness < 32:
-                            guide = "光線不足，請移到較亮的位置"
-                        elif brightness > 235:
-                            guide = "畫面過亮，請避開反光"
-                        elif sharpness < 48:
-                            guide = "請靠近卡匣並等待對焦"
-                        elif stable_frames < 5:
-                            guide = "請保持手機與卡匣穩定"
-                        else:
-                            guide = "畫面清楚，正在自動辨識…"
-                        live_status.info(f"🔍 掃描中：{guide}")
-
-                        live_bytes = live_context.video_processor.pop_candidate()
-                        if live_bytes:
-                            attempts += 1
-                            result = recognize_card(live_bytes, all_cards, top_n=3)
-                            result_score = result.get("candidates", [{}])[0].get("score", 0.0) if result.get("candidates") else 0.0
-                            best_score = best_result.get("candidates", [{}])[0].get("score", 0.0) if best_result else -1.0
-                            if result_score > best_score:
-                                best_result = result
-                            if result.get("confidence") in ("中", "高") or attempts >= 3:
-                                st.session_state.camera_recognition = best_result
-                                st.session_state.camera_recognition_source = "live"
-                                st.session_state.live_scan_enabled = False
-                                st.rerun()
-                        time.sleep(0.15)
-
-                    st.session_state.live_scan_enabled = False
-                    if best_result:
-                        st.session_state.camera_recognition = best_result
-                        st.session_state.camera_recognition_source = "live"
-                    else:
-                        st.session_state.live_scan_message = "30 秒內未取得清楚穩定的畫面，請調整距離、光線後重新掃描。"
-                    st.rerun()
-            if st.session_state.get("live_scan_message"):
-                st.warning(st.session_state.live_scan_message)
+        if not camera_enabled:
+            st.info("相機目前關閉。點一次「開啟相機」並允許權限後，即可連續對準、掃描多張卡匣。")
         else:
-            st.session_state.live_scan_enabled = False
-            camera_photo = st.camera_input("拍攝機台畫面或實體卡匣", key="battle_camera_photo")
-            if camera_photo is not None:
-                camera_bytes = camera_photo.getvalue()
-                camera_digest = hashlib.sha256(camera_bytes).hexdigest()
-                if st.button("🔎 開始辨識", type="primary", use_container_width=True, key="run_camera_recognition"):
-                    with st.spinner("正在讀取文字、星數並比對卡面…第一次辨識會較久"):
-                        st.session_state.camera_recognition = recognize_card(camera_bytes, all_cards, top_n=3)
-                        st.session_state.camera_recognition_digest = camera_digest
-                        st.session_state.camera_recognition_source = "photo"
+            live_context = webrtc_streamer(
+                key="mezastar_persistent_card_camera",
+                mode=WebRtcMode.SENDRECV,
+                rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},
+                media_stream_constraints={
+                    "video": {
+                        "facingMode": {"ideal": "environment"},
+                        "width": {"ideal": 1280},
+                        "height": {"ideal": 720},
+                    },
+                    "audio": False,
+                },
+                desired_playing_state=True,
+                video_processor_factory=LiveCardScanner,
+                async_processing=True,
+                media_toggle_controls=False,
+                video_html_attrs={"autoPlay": True, "controls": False, "muted": True},
+            )
+            if not live_context.state.playing:
+                st.info("正在取得相機權限並啟動後鏡頭…")
+            elif not live_context.video_processor:
+                st.info("相機已啟動，正在準備預覽畫面…")
+            else:
+                st.success("相機已就緒。請先對準卡匣，再按下方按鈕；不會自動連續掃描。")
+                if st.button("🔎 掃描目前畫面", type="primary", use_container_width=True, key="scan_current_camera_frame"):
+                    frame_bytes, frame_error = live_context.video_processor.capture_current()
+                    if frame_error:
+                        st.session_state.scan_camera_message = frame_error
+                    else:
+                        st.session_state.pop("scan_camera_message", None)
+                        with st.spinner("正在辨識目前畫面…相機會保持開啟"):
+                            st.session_state.camera_recognition = recognize_card(frame_bytes, all_cards, top_n=3)
+                            st.session_state.camera_recognition_source = "camera"
+
+        if st.session_state.get("scan_camera_message"):
+            st.warning(st.session_state.scan_camera_message)
 
         camera_result = st.session_state.get("camera_recognition")
-        current_digest = st.session_state.get("camera_recognition_digest")
-        result_source = st.session_state.get("camera_recognition_source")
-        show_camera_result = camera_result and (
-            result_source == "live"
-            or (camera_photo is not None and current_digest == camera_digest)
-        )
-        if show_camera_result:
+        if camera_result:
             if camera_result.get("warning"):
                 st.warning(camera_result["warning"])
             info_parts = [f"整體信心：{camera_result.get('confidence', '低')}"]
