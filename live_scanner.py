@@ -8,11 +8,13 @@ import time
 from typing import Optional, Tuple
 
 import av
-import cv2
 import numpy as np
+
+from vision_runtime import cv2, require_opencv
 
 
 def frame_quality(image: np.ndarray) -> Tuple[float, float]:
+    require_opencv()
     scale = min(1.0, 480.0 / max(image.shape[:2]))
     if scale < 1.0:
         image = cv2.resize(image, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA)

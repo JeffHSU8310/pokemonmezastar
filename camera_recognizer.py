@@ -8,14 +8,15 @@ from functools import lru_cache
 import re
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
-import cv2
 import numpy as np
 import requests
 
 from recognition_learning import learning_adjustments
+from vision_runtime import cv2, require_opencv
 
 
 def decode_image(image_bytes: bytes) -> np.ndarray:
+    require_opencv()
     image = cv2.imdecode(np.frombuffer(image_bytes, np.uint8), cv2.IMREAD_COLOR)
     if image is None:
         raise ValueError("無法讀取相機圖片，請重新拍攝")
@@ -28,19 +29,30 @@ def normalize_text(value: Any) -> str:
 
 @lru_cache(maxsize=1)
 def _ocr_engine():
-    from rapidocr_onnxruntime import RapidOCR
+    from rapidocr import RapidOCR
 
     return RapidOCR()
+
+
+def _parse_ocr_output(output: Any) -> Tuple[List[str], List[float]]:
+    """同時支援新版 RapidOCROutput 與舊版 tuple，避免部署升級造成中斷。"""
+    if hasattr(output, "txts"):
+        texts = [str(value).strip() for value in (output.txts or ()) if str(value).strip()]
+        scores = [float(value) for value in (output.scores or ())]
+        return texts, scores
+
+    result, _ = output
+    if not result:
+        return [], []
+    texts = [str(row[1]).strip() for row in result if len(row) >= 3 and str(row[1]).strip()]
+    scores = [float(row[2]) for row in result if len(row) >= 3]
+    return texts, scores
 
 
 def extract_ocr(image: np.ndarray) -> Tuple[List[str], float, Optional[str]]:
     """回傳 OCR 文字、平均信心與警告；OCR 故障時仍可繼續影像比對。"""
     try:
-        result, _ = _ocr_engine()(image)
-        if not result:
-            return [], 0.0, None
-        texts = [str(row[1]).strip() for row in result if len(row) >= 3 and str(row[1]).strip()]
-        scores = [float(row[2]) for row in result if len(row) >= 3]
+        texts, scores = _parse_ocr_output(_ocr_engine()(image))
         return texts, (sum(scores) / len(scores) if scores else 0.0), None
     except Exception as exc:
         return [], 0.0, f"OCR 暫時無法使用：{exc}"
@@ -56,6 +68,7 @@ def _star_from_text(texts: Iterable[str]) -> Optional[int]:
 
 
 def detect_star_count(image: np.ndarray, ocr_texts: Iterable[str] = ()) -> Tuple[Optional[int], float]:
+    require_opencv()
     text_count = _star_from_text(ocr_texts)
     if text_count:
         return text_count, 0.95
@@ -104,6 +117,7 @@ def _text_score(card: Dict[str, Any], texts: Iterable[str]) -> Tuple[float, str]
 
 
 def _orb_descriptor(image: np.ndarray):
+    require_opencv()
     scale = min(1.0, 720.0 / max(image.shape[:2]))
     if scale < 1.0:
         image = cv2.resize(image, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA)

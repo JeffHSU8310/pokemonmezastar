@@ -4,10 +4,19 @@ from unittest.mock import patch
 import cv2
 import numpy as np
 
-from camera_recognizer import detect_star_count, normalize_text, recognize_card
+from camera_recognizer import _parse_ocr_output, detect_star_count, normalize_text, recognize_card
 
 
 class CameraRecognizerTests(unittest.TestCase):
+    def test_parses_current_rapidocr_output(self):
+        class Output:
+            txts = ("蒼響", "2-2-001")
+            scores = (0.91, 0.97)
+
+        texts, scores = _parse_ocr_output(Output())
+        self.assertEqual(texts, ["蒼響", "2-2-001"])
+        self.assertEqual(scores, [0.91, 0.97])
+
     def test_normalize_text_keeps_card_id_and_chinese(self):
         self.assertEqual(normalize_text(" 2-2-001 蒼響! "), "22001蒼響")
 

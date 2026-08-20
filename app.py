@@ -28,6 +28,7 @@ from mezastar_data import (
 from recommender import recommend_best_lineup, evaluate_card_performance
 from camera_recognizer import recognize_card
 from live_scanner import LiveCardScanner
+from vision_runtime import opencv_available, opencv_error_message
 from recognition_learning import learning_example_count, record_confirmation
 from recommendation_learning import recommendation_feedback_count, record_recommendation_feedback
 from collection_manager import (
@@ -615,11 +616,17 @@ tabs = st.tabs([
 # ==============================================================================
 with tabs[0]:
     camera_enabled = bool(st.session_state.get("scan_camera_enabled", False))
+    camera_runtime_ready = opencv_available()
+    if camera_enabled and not camera_runtime_ready:
+        st.session_state.scan_camera_enabled = False
+        camera_enabled = False
     with st.expander("📷 開始相機辨識寶可夢", expanded=camera_enabled):
         st.caption("先開啟相機並對準卡匣；只有按下掃描按鈕才會執行辨識，相機權限於同一工作階段只確認一次。")
         st.caption(f"🧠 已累積 {learning_example_count()} 筆確認學習特徵（不保存原始照片）")
+        if not camera_runtime_ready:
+            st.error(opencv_error_message() or "相機影像引擎目前無法使用，其他功能仍可正常操作。")
         open_col, close_col = st.columns(2)
-        if open_col.button("📷 開啟相機", type="primary", use_container_width=True, key="open_scan_camera", disabled=camera_enabled):
+        if open_col.button("📷 開啟相機", type="primary", use_container_width=True, key="open_scan_camera", disabled=camera_enabled or not camera_runtime_ready):
             st.session_state.scan_camera_enabled = True
             st.session_state.pop("scan_camera_message", None)
             st.rerun()
@@ -627,7 +634,9 @@ with tabs[0]:
             st.session_state.scan_camera_enabled = False
             st.rerun()
 
-        if not camera_enabled:
+        if not camera_runtime_ready:
+            st.info("部署環境修復後即可重新開啟相機；圖鑑、收藏與推薦功能不受影響。")
+        elif not camera_enabled:
             st.info("相機目前關閉。點一次「開啟相機」並允許權限後，即可連續對準、掃描多張卡匣。")
         else:
             live_context = webrtc_streamer(

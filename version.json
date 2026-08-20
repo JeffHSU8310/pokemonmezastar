@@ -1,7 +1,12 @@
 {
-  "version": "2.7.0",
-  "last_updated": "2026-08-21 00:39:31",
+  "version": "2.7.1",
+  "last_updated": "2026-08-21 01:05:00",
   "history": [
+    {
+      "version": "2.7.1",
+      "timestamp": "2026-08-21 01:05:00",
+      "message": "修正 Streamlit Cloud 的 cv2 套件衝突，升級 OCR 執行環境並加入跨 Python 版本部署驗證"
+    },
     {
       "version": "2.7.0",
       "timestamp": "2026-08-21 00:39:31",
