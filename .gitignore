@@ -14,4 +14,5 @@ Thumbs.db
 
 # 使用者本機私鑰設定 - 不上傳 (由使用者手動設定)
 data/user_config.json
+data/recognition_learning.json
 .streamlit/secrets.toml

@@ -28,6 +28,7 @@ from mezastar_data import (
 from recommender import recommend_best_lineup, evaluate_card_performance
 from camera_recognizer import recognize_card
 from live_scanner import LiveCardScanner
+from recognition_learning import learning_example_count, record_confirmation
 from collection_manager import (
     load_user_collection_ids,
     save_user_collection_ids,
@@ -610,6 +611,7 @@ with tabs[0]:
     camera_enabled = bool(st.session_state.get("scan_camera_enabled", False))
     with st.expander("📷 開始相機辨識寶可夢", expanded=camera_enabled):
         st.caption("先開啟相機並對準卡匣；只有按下掃描按鈕才會執行辨識，相機權限於同一工作階段只確認一次。")
+        st.caption(f"🧠 已累積 {learning_example_count()} 筆確認學習特徵（不保存原始照片）")
         open_col, close_col = st.columns(2)
         if open_col.button("📷 開啟相機", type="primary", use_container_width=True, key="open_scan_camera", disabled=camera_enabled):
             st.session_state.scan_camera_enabled = True
@@ -629,8 +631,14 @@ with tabs[0]:
                 media_stream_constraints={
                     "video": {
                         "facingMode": {"ideal": "environment"},
-                        "width": {"ideal": 1280},
-                        "height": {"ideal": 720},
+                        "width": {"ideal": 1920},
+                        "height": {"ideal": 1080},
+                        "frameRate": {"ideal": 15, "max": 24},
+                        "advanced": [
+                            {"focusMode": "continuous"},
+                            {"exposureMode": "continuous"},
+                            {"whiteBalanceMode": "continuous"},
+                        ],
                     },
                     "audio": False,
                 },
@@ -645,16 +653,19 @@ with tabs[0]:
             elif not live_context.video_processor:
                 st.info("相機已啟動，正在準備預覽畫面…")
             else:
-                st.success("相機已就緒。請先對準卡匣，再按下方按鈕；不會自動連續掃描。")
+                st.success("相機已就緒並要求連續自動對焦。先讓卡匣填滿畫面、等待清楚，再按掃描。")
                 if st.button("🔎 掃描目前畫面", type="primary", use_container_width=True, key="scan_current_camera_frame"):
-                    frame_bytes, frame_error = live_context.video_processor.capture_current()
+                    frame_bytes, frame_error, focus_score = live_context.video_processor.capture_current()
                     if frame_error:
                         st.session_state.scan_camera_message = frame_error
                     else:
                         st.session_state.pop("scan_camera_message", None)
+                        st.session_state.pop("recognition_learning_message", None)
                         with st.spinner("正在辨識目前畫面…相機會保持開啟"):
                             st.session_state.camera_recognition = recognize_card(frame_bytes, all_cards, top_n=3)
                             st.session_state.camera_recognition_source = "camera"
+                            st.session_state.camera_last_frame_bytes = frame_bytes
+                            st.session_state.camera_focus_score = focus_score
 
         if st.session_state.get("scan_camera_message"):
             st.warning(st.session_state.scan_camera_message)
@@ -668,7 +679,12 @@ with tabs[0]:
                 info_parts.append(f"偵測星數：{camera_result['detected_star']}★")
             if camera_result.get("ocr_text"):
                 info_parts.append(f"文字：{camera_result['ocr_text']}")
+            if st.session_state.get("camera_focus_score"):
+                info_parts.append(f"對焦清晰度：{st.session_state.camera_focus_score:.0f}")
             st.info("｜".join(info_parts))
+
+            if st.session_state.get("recognition_learning_message"):
+                st.success(st.session_state.recognition_learning_message)
 
             if camera_result.get("confidence") == "低":
                 st.warning("辨識信心偏低，請確認候選；可將卡匣靠近、對焦並避開反光後重拍。")
@@ -680,10 +696,64 @@ with tabs[0]:
                     if card.get("image"):
                         st.image(card["image"], use_container_width=True)
                     st.markdown(f"**{card.get('name', '未知')}**  ")
-                    st.caption(f"{card.get('id', '')}｜{card.get('star', '?')}★｜相符 {candidate['score'] * 100:.0f}%")
-                    if st.button("套用為 Boss", key=f"camera_pick_{card.get('id')}", use_container_width=True):
+                    learned_label = "｜🧠 學習加權" if candidate.get("learned_score", 0.0) > 0.58 else ""
+                    st.caption(f"{card.get('id', '')}｜{card.get('star', '?')}★｜相符 {candidate['score'] * 100:.0f}%{learned_label}")
+                    if st.button("確認並套用", key=f"camera_pick_{card.get('id')}", use_container_width=True):
+                        learned_frame = st.session_state.get("camera_last_frame_bytes")
+                        if learned_frame:
+                            predicted_id = str(camera_result.get("candidates", [{}])[0].get("card", {}).get("id", ""))
+                            try:
+                                learned_count = record_confirmation(
+                                    learned_frame,
+                                    correct_card_id=str(card.get("id")),
+                                    rejected_card_id=predicted_id,
+                                )
+                                st.session_state.recognition_learning_message = f"已學習這次確認，目前共 {learned_count} 筆特徵"
+                            except Exception as exc:
+                                st.session_state.recognition_learning_message = f"已套用卡匣，但學習資料暫時無法保存：{exc}"
                         st.session_state.camera_selected_boss_id = str(card.get("id"))
                         st.rerun()
+
+            with st.expander("前三個都不正確？手動指定並讓系統學習", expanded=False):
+                correction_query = st.text_input(
+                    "搜尋正確的寶可夢名稱或卡匣編號",
+                    key="recognition_correction_query",
+                    placeholder="例如：超夢、2-2-001",
+                ).strip().lower()
+                correction_cards = all_cards
+                if correction_query:
+                    correction_cards = [
+                        item for item in all_cards
+                        if correction_query in str(item.get("name", "")).lower()
+                        or correction_query in str(item.get("name_en", "")).lower()
+                        or correction_query in str(item.get("id", "")).lower()
+                    ]
+                correction_cards = correction_cards[:80]
+                if correction_cards:
+                    correction_index = st.selectbox(
+                        "正確卡匣",
+                        options=range(len(correction_cards)),
+                        format_func=lambda value: f"{correction_cards[value]['name']}（{correction_cards[value]['id']}｜{correction_cards[value].get('star', '?')}★）",
+                        key=f"recognition_correction_select_{correction_query}",
+                    )
+                    corrected_card = correction_cards[correction_index]
+                    if st.button("🧠 記住正確答案並套用", type="primary", use_container_width=True, key="save_recognition_correction"):
+                        learned_frame = st.session_state.get("camera_last_frame_bytes")
+                        if learned_frame:
+                            predicted_id = str(camera_result.get("candidates", [{}])[0].get("card", {}).get("id", ""))
+                            try:
+                                learned_count = record_confirmation(
+                                    learned_frame,
+                                    correct_card_id=str(corrected_card.get("id")),
+                                    rejected_card_id=predicted_id,
+                                )
+                                st.session_state.recognition_learning_message = f"已修正並學習，目前共 {learned_count} 筆特徵"
+                            except Exception as exc:
+                                st.session_state.recognition_learning_message = f"已套用卡匣，但學習資料暫時無法保存：{exc}"
+                        st.session_state.camera_selected_boss_id = str(corrected_card.get("id"))
+                        st.rerun()
+                else:
+                    st.warning("找不到符合條件的卡匣，請調整名稱或編號。")
 
         selected_camera_id = st.session_state.get("camera_selected_boss_id")
         if selected_camera_id:
