@@ -39,8 +39,7 @@ from scraper import add_custom_card, fetch_online_pokemon_metadata, batch_import
 from github_sync import (
     get_git_status,
     load_version_info,
-    push_file_to_github_api,
-    pull_file_from_github_api,
+    pull_all_user_data_from_github,
     sync_all_user_data_to_github,
     get_saved_github_token,
     save_github_token,
@@ -331,21 +330,17 @@ if "github_auto_synced" not in st.session_state:
 
     github_loaded = False
     try:
-        # 1. 從 GitHub 拉取最新卡匣庫
-        ok_c, content_c, _ = pull_file_from_github_api("data/my_collection.json", token=auto_token)
-        if ok_c and content_c.strip():
+        # 從同一個 GitHub commit 拉取並驗證卡匣庫與訓練家資料
+        sync_ok, content_c, content_t, sync_commit, _ = pull_all_user_data_from_github(token=auto_token)
+        if sync_ok:
             imp_ok, _, new_ids = import_collection_from_json(content_c, mode="overwrite")
-            if imp_ok and new_ids:
-                st.session_state.owned_ids = new_ids
-                # 同步寫回本機（供斷網備用）
-                save_user_collection_ids(new_ids)
-                github_loaded = True
-        # 2. 從 GitHub 拉取最新訓練家 ID 與 QR Code
-        ok_t, content_t, _ = pull_file_from_github_api("data/trainers.json", token=auto_token)
-        if ok_t and content_t.strip():
             parsed_trainers = json.loads(content_t)
-            if isinstance(parsed_trainers, list):
+            if imp_ok and isinstance(parsed_trainers, list):
+                st.session_state.owned_ids = new_ids
+                save_user_collection_ids(new_ids)
                 save_trainers(parsed_trainers)
+                github_loaded = True
+                st.session_state["github_sync_commit"] = sync_commit
     except Exception:
         pass
 
@@ -567,9 +562,9 @@ with st.sidebar:
     st.write(f"🌿 分支: `{git_info['branch']}`")
     st.markdown("[🔗 開啟 GitHub 雲端資料庫檔案](https://github.com/JeffHSU8310/pokemonmezastar/blob/main/data/my_collection.json)")
     if git_info["has_changes"]:
-        st.warning(f"⚠️ {len(git_info['changed_files'])} 處變更待同步")
+        st.warning(f"⚠️ GitHub 連線驗證失敗：{git_info.get('error', '未知錯誤')}")
     else:
-        st.success("✅ 雲端完全同步")
+        st.success(f"✅ GitHub 已連線並驗證最新 commit `{git_info['commit']}`")
 
 # 主標題 (手機適配)
 render_html("""
@@ -1416,31 +1411,25 @@ with tabs[6]:
         st.caption("在換新手機、更換電腦或清除瀏覽器快取後，點擊下方按鈕即可秒還原所有卡匣與訓練家！")
         if st.button("📥 一鍵自 GitHub 雲端拉取並還原", use_container_width=True, type="primary"):
             with st.spinner("正在直連 GitHub main 下載最新檔案..."):
-                ok_c, content_c, msg_c = pull_file_from_github_api("data/my_collection.json", token=active_token)
-                ok_t, content_t, msg_t = pull_file_from_github_api("data/trainers.json", token=active_token)
-                
-                success_count = 0
-                if ok_c:
+                sync_ok, content_c, content_t, sync_commit, sync_msg = pull_all_user_data_from_github(token=active_token)
+                if sync_ok:
                     imp_ok, _, new_ids = import_collection_from_json(content_c, mode="overwrite")
-                    if imp_ok:
-                        st.session_state.owned_ids = new_ids
-                        save_user_collection_ids(new_ids)
-                        success_count += 1
-                if ok_t:
                     try:
                         t_data = json.loads(content_t)
-                        if isinstance(t_data, list):
-                            save_trainers(t_data)
-                            success_count += 1
                     except Exception:
-                        pass
-                
-                if success_count > 0:
-                    st.balloons()
-                    st.success(f"🎉 成功自 GitHub 雲端完全還原！載入共 {len(st.session_state.owned_ids)} 款實體卡匣與最新訓練家資料！")
-                    st.rerun()
+                        t_data = None
+                    if imp_ok and isinstance(t_data, list):
+                        st.session_state.owned_ids = new_ids
+                        save_user_collection_ids(new_ids)
+                        save_trainers(t_data)
+                        st.session_state["github_sync_commit"] = sync_commit
+                        st.balloons()
+                        st.success(f"🎉 已從 GitHub commit `{sync_commit[:7]}` 完整驗證並還原 {len(new_ids)} 款卡匣與 {len(t_data)} 組訓練家資料！")
+                        st.rerun()
+                    else:
+                        st.error("❌ 雲端資料格式驗證失敗，未覆蓋本機資料")
                 else:
-                    st.error(f"❌ 拉取失敗: {msg_c}")
+                    st.error(f"❌ 拉取失敗：{sync_msg}")
 
     st.divider()
 

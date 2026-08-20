@@ -1,7 +1,12 @@
 {
-  "version": "2.2.0",
-  "last_updated": "2026-08-17 15:15:06",
+  "version": "2.2.1",
+  "last_updated": "2026-08-20 22:45:16",
   "history": [
+    {
+      "version": "2.2.1",
+      "timestamp": "2026-08-20 22:45:16",
+      "message": "強化 GitHub 雲端同步：多檔原子提交、commit 鎖定下載、SHA 讀回驗證、衝突重試與空收藏還原"
+    },
     {
       "version": "2.2.0",
       "timestamp": "2026-08-17 15:15:06",

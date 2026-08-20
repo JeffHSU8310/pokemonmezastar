@@ -235,18 +235,23 @@ def import_collection_from_json(json_str: str, mode: str = "merge") -> Tuple[boo
     try:
         data = json.loads(json_str)
         incoming_ids: Set[str] = set()
+        recognized_format = False
         
         if isinstance(data, list):
+            recognized_format = True
             incoming_ids = {str(item).strip() for item in data if isinstance(item, (str, int))}
         elif isinstance(data, dict):
             if "owned_ids" in data and isinstance(data["owned_ids"], list):
+                recognized_format = True
                 incoming_ids = {str(item).strip() for item in data["owned_ids"]}
             elif "cards_summary" in data and isinstance(data["cards_summary"], list):
+                recognized_format = True
                 incoming_ids = {str(c.get("id")).strip() for c in data["cards_summary"] if isinstance(c, dict) and "id" in c}
             elif "cards" in data and isinstance(data["cards"], list):
+                recognized_format = True
                 incoming_ids = {str(c.get("id")).strip() for c in data["cards"] if isinstance(c, dict) and "id" in c}
         
-        if not incoming_ids:
+        if not recognized_format:
             return False, "未能從檔案中解析出有效的卡匣編號清單", set()
 
         all_cards = load_cards()
