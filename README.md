@@ -25,6 +25,7 @@
    - 完整計算 18 種屬性相剋倍率（含雙屬性 4x 極限弱點、抵抗與無效）。
    - 支援 Mezastar 特殊機制加乘：**極巨化 (Dynamax)、超級進化 (Mega Evolution)、Z招式 (Z-Move)、太晶化 (Terastal)、雙重衝刺 (Double Rush)**。
    - 計算本系招式一致加成 (STAB) 與攻防綜合能力，自動推薦傷害最高、防守最穩的 TOP 3 出戰隊伍與出招戰術！
+   - 可回報實戰勝敗與最佳表現卡匣；系統會針對相同 Boss 屬性學習卡匣及搭配效果，並以保守上限調整後續推薦。
 
 2. **🎒 個人卡匣庫雲端管理 (My Collection)**
    - 一鍵勾選/標記您實際持有的實體卡匣。
@@ -33,7 +34,8 @@
 
 3. **🌐 網路資料抓取與擴充 (Web Scraper & PokeAPI)**
    - 支援聯網查詢寶可夢官方資料庫 (PokeAPI)，自動取得屬性、各項能力值與官方立繪圖片。
-   - 支援隨時自訂與擴充最新彈別卡匣資料。
+   - 每 12 小時自動交叉比對台灣與國際版 Mezastar 官方網站；只有雙方同卡號確認的新卡才會加入。
+   - 採嚴格 append-only 寫入：既有卡號、內容及順序永遠不覆寫，單一來源新卡會留待下次確認。
 
 4. **🔄 本機與 GitHub 自動版本記錄與同步 (Git Auto-Sync)**
    - 每次修改資料或更新卡匣，自動記錄新版次 (Semantic Versioning) 與變更說明。
@@ -91,9 +93,10 @@ pokemonmezastar/
 ├── app.py                      # Streamlit 網頁主程式 (UI 介面)
 ├── mezastar_data.py            # 18 屬性相剋矩陣與核心卡匣資料
 ├── recommender.py              # 智慧對戰陣容推薦核心演算法
+├── recommendation_learning.py  # 推薦勝敗回饋與保守權重學習
 ├── camera_recognizer.py        # 相機 OCR、星數與卡面影像混合辨識
 ├── collection_manager.py       # 個人收藏庫管理模組
-├── scraper.py                  # 網路資料抓取與 PokeAPI 連線模組
+├── scraper.py                  # 雙官方來源、append-only 更新與 PokeAPI 模組
 ├── github_sync.py              # GitHub 自動同步與版本控制模組
 ├── sync_and_push.ps1           # PowerShell 一鍵同步腳本
 ├── sync_and_push.bat           # Windows CMD 一鍵同步腳本
