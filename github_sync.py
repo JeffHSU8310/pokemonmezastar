@@ -328,6 +328,37 @@ def pull_all_user_data_from_github(token: Optional[str] = None) -> Tuple[bool, s
         return False, "", "", head_sha, f"雲端資料格式驗證失敗：{e}"
     return True, collection_content, trainers_content, head_sha, f"已從 commit {head_sha[:7]} 完整下載並驗證兩份資料"
 
+def restore_user_data_snapshot_locally(
+    collection_content: str,
+    trainers_content: str
+) -> Tuple[bool, set, List[Dict[str, Any]], str]:
+    """驗證後原子寫入本機；第二份寫入失敗時回滾第一份。"""
+    from collection_manager import load_user_collection_ids, save_user_collection_ids
+    from qr_manager import load_trainers, save_trainers
+
+    try:
+        collection_data = json.loads(collection_content)
+        trainers_data = json.loads(trainers_content)
+        if not isinstance(collection_data, list) or not all(isinstance(x, (str, int)) for x in collection_data):
+            raise ValueError("收藏資料格式不是 ID 清單")
+        if not isinstance(trainers_data, list) or not all(isinstance(x, dict) for x in trainers_data):
+            raise ValueError("訓練家資料格式不是物件清單")
+        new_ids = {str(item).strip() for item in collection_data}
+    except Exception as e:
+        return False, set(), [], f"資料格式驗證失敗：{e}"
+
+    previous_ids = load_user_collection_ids()
+    previous_trainers = load_trainers()
+    if not save_user_collection_ids(new_ids):
+        return False, set(), [], "收藏資料寫入本機失敗，原資料未變更"
+    if not save_trainers(trainers_data):
+        collection_rolled_back = save_user_collection_ids(previous_ids)
+        trainers_rolled_back = save_trainers(previous_trainers)
+        if collection_rolled_back and trainers_rolled_back:
+            return False, set(), [], "訓練家資料寫入失敗，已還原原本資料"
+        return False, set(), [], "訓練家資料寫入失敗，且本機回滾未完整完成；請勿關閉頁面並重新下載"
+    return True, new_ids, trainers_data, "本機資料已原子寫入"
+
 def sync_all_user_data_to_github(
     owned_ids: List[str],
     trainers: List[Dict[str, Any]],

@@ -1,10 +1,13 @@
 import base64
 import json
+import os
+import tempfile
 import unittest
 from unittest.mock import Mock, call, patch
 
 import collection_manager
 import github_sync
+import qr_manager
 
 
 def response(status_code, payload):
@@ -16,6 +19,23 @@ def response(status_code, payload):
 
 
 class TestSyncReliability(unittest.TestCase):
+    def test_local_data_writers_replace_files_atomically(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            collection_path = os.path.join(temp_dir, "collection.json")
+            trainers_path = os.path.join(temp_dir, "trainers.json")
+            with patch.object(collection_manager, "COLLECTION_FILE", collection_path), \
+                 patch.object(collection_manager, "DATA_DIR", temp_dir), \
+                 patch.object(collection_manager, "normalize_collection_ids", side_effect=lambda ids: ids), \
+                 patch.object(qr_manager, "TRAINERS_FILE", trainers_path), \
+                 patch.object(qr_manager, "DATA_DIR", temp_dir):
+                self.assertTrue(collection_manager.save_user_collection_ids({"B", "A"}))
+                self.assertTrue(qr_manager.save_trainers([{"id": "T1"}]))
+            with open(collection_path, encoding="utf-8") as f:
+                self.assertEqual(json.load(f), ["A", "B"])
+            with open(trainers_path, encoding="utf-8") as f:
+                self.assertEqual(json.load(f), [{"id": "T1"}])
+            self.assertFalse(any(".tmp." in name for name in os.listdir(temp_dir)))
+
     def test_empty_collection_is_valid_for_overwrite(self):
         with patch.object(collection_manager, "load_cards", return_value=[]), \
              patch.object(collection_manager, "load_user_collection_ids", return_value={"old"}), \
@@ -76,6 +96,19 @@ class TestSyncReliability(unittest.TestCase):
             ok, _, _, error = github_sync._pull_file_at_ref("data/my_collection.json", "commit1", "token")
         self.assertFalse(ok)
         self.assertIn("SHA", error)
+
+    def test_local_restore_rolls_back_if_second_file_fails(self):
+        with patch.object(collection_manager, "load_user_collection_ids", return_value={"old"}), \
+             patch.object(qr_manager, "load_trainers", return_value=[{"id": "old"}]), \
+             patch.object(collection_manager, "save_user_collection_ids", side_effect=[True, True]) as save_collection, \
+             patch.object(qr_manager, "save_trainers", side_effect=[False, True]) as save_trainers:
+            ok, _, _, message = github_sync.restore_user_data_snapshot_locally(
+                '["new"]', '[{"id":"new"}]'
+            )
+        self.assertFalse(ok)
+        self.assertIn("已還原", message)
+        self.assertEqual(save_collection.call_args_list, [call({"new"}), call({"old"})])
+        self.assertEqual(save_trainers.call_args_list, [call([{"id": "new"}]), call([{"id": "old"}])])
 
 
 if __name__ == "__main__":
