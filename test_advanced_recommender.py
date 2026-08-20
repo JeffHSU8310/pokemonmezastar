@@ -1,0 +1,65 @@
+"""Focused tests for the battle optimizer; these tests never touch user data."""
+
+import unittest
+
+from recommender import evaluate_card_performance, recommend_best_lineup
+
+
+def card(name, *, atk=100, sp_atk=100, defense=100, sp_def=100, speed=100,
+         move_type="一般", category="物理", power=100, accuracy=100, hp=150,
+         types=None, special="無"):
+    return {
+        "id": name, "name": name, "series": "TEST", "star": 5, "energy": 120,
+        "types": types or [move_type], "hp": hp, "atk": atk, "def": defense,
+        "sp_atk": sp_atk, "sp_def": sp_def, "spd": speed,
+        "move_name": f"{name}招式", "move_type": move_type, "move_power": power,
+        "move_category": category, "move_accuracy": accuracy, "special": special,
+        "special_mechanics": [],
+    }
+
+
+class TestAdvancedRecommender(unittest.TestCase):
+    def test_physical_move_uses_attack(self):
+        physical = card("物攻型", atk=200, sp_atk=20, category="物理")
+        result = evaluate_card_performance(physical, ["一般"])
+        self.assertEqual(result["attack_stat"], 200)
+        special = card("特攻型", atk=200, sp_atk=20, category="特殊")
+        self.assertEqual(evaluate_card_performance(special, ["一般"])["attack_stat"], 20)
+
+    def test_accuracy_is_part_of_expected_damage(self):
+        reliable = card("穩定", power=100, accuracy=100)
+        risky = card("賭博", power=120, accuracy=50)
+        result = recommend_best_lineup(candidate_cards=[reliable, risky], boss_types=["一般"], team_size=1)
+        self.assertEqual(result["top_team"][0]["card"]["name"], "穩定")
+
+    def test_boss_defense_changes_best_move(self):
+        attacker = card("雙刀", atk=150, sp_atk=150, category="物理")
+        attacker["moves"] = [
+            {"name": "物理招", "type": "一般", "category": "物理", "power": 100, "accuracy": 100},
+            {"name": "特殊招", "type": "一般", "category": "特殊", "power": 100, "accuracy": 100},
+        ]
+        boss = card("高防Boss", defense=250, sp_def=50)
+        result = evaluate_card_performance(attacker, ["一般"], boss_card=boss)
+        self.assertEqual(result["best_move_name"], "特殊招")
+        self.assertEqual(result["boss_defense_stat"], 50)
+
+    def test_three_card_optimizer_assigns_roles_and_unique_names(self):
+        candidates = [
+            card("高速主攻", atk=190, speed=200, power=120),
+            card("機制爆發", atk=180, power=115, special="超極巨化"),
+            card("耐久收尾", atk=110, defense=220, sp_def=220, hp=260),
+            card("一般候選", atk=130, power=100),
+        ]
+        boss = card("Boss", atk=160, sp_atk=160, hp=300, speed=140)
+        result = recommend_best_lineup(candidate_cards=candidates, boss_types=["一般"], boss_card=boss)
+        team = result["top_team"]
+        self.assertEqual(len(team), 3)
+        self.assertEqual(len({item["card"]["name"] for item in team}), 3)
+        self.assertEqual([item["assigned_role"] for item in team],
+                         ["主攻手（第1棒）", "爆發手（第2棒）", "收尾手（第3棒）"])
+        self.assertIn("team_score", result)
+        self.assertIn("team_synergy", result)
+
+
+if __name__ == "__main__":
+    unittest.main()

@@ -811,8 +811,10 @@ with tabs[0]:
         
         camera_boss_id = st.session_state.get("camera_selected_boss_id")
         camera_boss = next((card for card in all_cards if str(card.get("id")) == camera_boss_id), None)
+        boss_card = None
         if camera_boss:
             picked_c = camera_boss
+            boss_card = picked_c
             boss_name = picked_c["name"]
             default_t1 = picked_c["types"][0] if len(picked_c["types"]) > 0 else "一般"
             default_t2 = picked_c["types"][1] if len(picked_c["types"]) > 1 else "無"
@@ -822,6 +824,7 @@ with tabs[0]:
             default_t2 = "無"
         else:
             picked_c = filtered_boss_cards[selected_boss_idx - 1]
+            boss_card = picked_c
             boss_name = picked_c["name"]
             default_t1 = picked_c["types"][0] if len(picked_c["types"]) > 0 else "一般"
             default_t2 = picked_c["types"][1] if len(picked_c["types"]) > 1 else "無"
@@ -879,16 +882,21 @@ with tabs[0]:
         user_cards=candidates,
         boss_types=boss_types,
         boss_name=boss_name,
-        team_size=3
+        team_size=3,
+        boss_card={**boss_card, "types": boss_types} if boss_card else None
     )
 
     if not result.get("recommended_team"):
         st.warning(f"⚠️ {result.get('message', '未找到合適的推薦卡匣！')}")
     else:
         st.markdown(f"#### 🏆 最佳黃金出戰陣容 (Top 3) — *{source_label}*")
+        st.caption(
+            f"陣容總評 {result.get('team_score', 0):g} 分｜"
+            f"組合加成 {result.get('team_synergy', 0):+g}｜已納入命中率、攻擊分類、Boss 防禦與三卡互補"
+        )
         
         # 針對 6.1" 手機直立螢幕：每張推薦卡片垂直排列，資訊高度整合且好讀
-        role_badges = ["👑 主攻先鋒 (第1棒)", "⚡ 副攻爆發 (第2棒)", "🛡️ 穩健收尾 (第3棒)"]
+        role_badges = ["👑 主攻手 (第1棒)", "⚡ 爆發手 (第2棒)", "🛡️ 收尾手 (第3棒)"]
         
         for idx, rec in enumerate(result["recommended_team"]):
             c = rec["card"]
@@ -896,6 +904,7 @@ with tabs[0]:
             sec_move = c.get("second_move", {})
             sec_move_html = f"<div style='font-size:0.75rem; color:#666;'>副招: {sec_move.get('name')} ({sec_move.get('type')}) [威力:{sec_move.get('power')}]</div>" if sec_move else ""
             tags_html = ' '.join([f'<span class="tag-badge">{t}</span>' for t in rec['tags']])
+            survival_label = "免疫" if rec["incoming_damage"] <= 0.1 else f"{rec['survival_hits']} 擊"
             
             render_html(f"""
             <div class="card-box" style="border-left: 5px solid {TYPE_COLORS.get(rec['best_move_type'], '#E53935')};">
@@ -915,14 +924,15 @@ with tabs[0]:
 
                 <div style="background:#F1F8E9; border-radius:6px; padding:6px; font-size:0.8rem; margin-bottom:4px;">
                     <div style="display:flex; justify-content:space-between;">
-                        <span>⚔️ <b>出戰招式:</b> {rec['best_move_name']} ({rec['best_move_type']})</span>
+                        <span>⚔️ <b>出戰招式:</b> {rec['best_move_name']} ({rec['best_move_type']}／{rec['best_move_category']})</span>
                         <span style="color:#D32F2F; font-weight:bold; font-size:0.95rem;">💥 {rec['type_mult']}x 倍率</span>
                     </div>
                     {sec_move_html}
                     <div style="display:flex; justify-content:space-between; margin-top:2px;">
-                        <span>⚡ <b>綜合戰力值:</b> <b style="color:#1E88E5;">{rec['damage_score']} pts</b></span>
-                        <span style="color:#555;">🛡️ 生存: {rec['survival_score']} pts</span>
+                        <span>⚡ <b>期望傷害:</b> <b style="color:#1E88E5;">{rec['expected_damage']}</b>（命中 {rec['move_accuracy']:g}%）</span>
+                        <span style="color:#555;">🛡️ 可承受: {survival_label}</span>
                     </div>
+                    <div style="font-size:0.75rem; color:#555; margin-top:2px;">角色評分 {rec['role_score']}｜預估 {rec['expected_ko_turns']} 回合擊倒 Boss</div>
                 </div>
 
                 <div class="stat-compact">
@@ -955,10 +965,12 @@ with tabs[0]:
                     "星級": f"{c.get('star')}⭐",
                     "能量": c.get("energy", 100),
                     "編號": f"{c.get('series')} {c.get('id')}",
-                    "招式": f"{rec['best_move_name']} ({rec['best_move_type']})",
+                    "招式": f"{rec['best_move_name']} ({rec['best_move_type']}／{rec['best_move_category']})",
+                    "命中": f"{rec['move_accuracy']:g}%",
                     "剋制": f"{rec['type_mult']}x",
                     "機制": c.get("special", "無"),
-                    "評分": rec["damage_score"]
+                    "期望傷害": rec["expected_damage"],
+                    "綜合評分": rec["overall_score"]
                 })
             st.dataframe(pd.DataFrame(rank_data), use_container_width=True)
 
