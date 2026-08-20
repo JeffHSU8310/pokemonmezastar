@@ -5,6 +5,7 @@ from math import ceil
 from typing import Any, Dict, List, Optional
 
 from mezastar_data import TYPES, calculate_type_effectiveness, get_weaknesses
+from recommendation_learning import learned_pair_adjustment, recommendation_learning_adjustments
 
 
 SPECIAL_MULTIPLIERS = {
@@ -181,7 +182,7 @@ def _weakness_set(card):
     return {move_type for move_type in TYPES if calculate_type_effectiveness(move_type, card_types) > 1.0}
 
 
-def _team_synergy(team):
+def _team_synergy(team, pair_adjustments=None):
     synergy = max(0, len({item["best_move_type"] for item in team}) - 1) * 1.5
     mechanics = {str(item["card"].get("special")) for item in team
                  if item["card"].get("special") not in (None, "", "無")}
@@ -191,6 +192,10 @@ def _team_synergy(team):
         synergy -= len(set.intersection(*weakness_sets)) * 4.0
     for left, right in combinations(weakness_sets, 2):
         synergy -= len(left & right) * 0.35
+    if pair_adjustments:
+        synergy += learned_pair_adjustment(
+            [item["card"].get("id") for item in team], pair_adjustments
+        )
     return synergy
 
 
@@ -215,14 +220,14 @@ def _assign_scores(evaluated, boss_card):
                                       + .10 * reliability + .05 * mechanic, 1)
 
 
-def _optimize_three_card_team(evaluated):
+def _optimize_three_card_team(evaluated, pair_adjustments=None):
     shortlist = sorted(evaluated, key=lambda item: max(item["overall_score"], *item["role_scores"].values()),
                        reverse=True)[:24]
     best_team, best_score, best_synergy = None, float("-inf"), 0.0
     for group in combinations(shortlist, 3):
         if len({item["card"].get("name") for item in group}) < 3:
             continue
-        synergy = _team_synergy(list(group))
+        synergy = _team_synergy(list(group), pair_adjustments)
         for ordered in permutations(group):
             role_total = sum(ordered[i]["role_scores"][ROLE_NAMES[i]] for i in range(3)) / 3.0
             if role_total + synergy > best_score:
@@ -239,7 +244,7 @@ def _optimize_three_card_team(evaluated):
 
 
 def recommend_best_lineup(user_cards=None, boss_name="未知目標", boss_types=None, boss_move_type=None,
-                          team_size=3, candidate_cards=None, boss_card=None):
+                          team_size=3, candidate_cards=None, boss_card=None, learning_path=None):
     """Recommend a role-aware team against the selected Boss."""
     cards_pool = user_cards if user_cards is not None else (candidate_cards or [])
     boss_types = boss_types or ["一般"]
@@ -251,9 +256,25 @@ def recommend_best_lineup(user_cards=None, boss_name="未知目標", boss_types=
 
     evaluated = [evaluate_card_performance(card, boss_types, boss_move_type, boss_card) for card in cards_pool]
     _assign_scores(evaluated, boss_card)
+    learning = recommendation_learning_adjustments(
+        boss_types, **({"path": learning_path} if learning_path is not None else {})
+    )
+    for item in evaluated:
+        adjustment = float(learning["card_adjustments"].get(str(item["card"].get("id")), 0.0))
+        item["learning_adjustment"] = round(adjustment, 2)
+        item["overall_score"] = round(item["overall_score"] + adjustment, 1)
+        item["role_scores"] = {
+            role: round(score + adjustment, 1) for role, score in item["role_scores"].items()
+        }
+        if adjustment >= 0.5:
+            item["tags"].append("🧠 實戰勝率加權")
+        elif adjustment <= -0.5:
+            item["tags"].append("🧠 實戰回饋降權")
     evaluated.sort(key=lambda item: item["overall_score"], reverse=True)
     if team_size == 3 and len(evaluated) >= 3:
-        selected, team_score, team_synergy = _optimize_three_card_team(evaluated)
+        selected, team_score, team_synergy = _optimize_three_card_team(
+            evaluated, learning["pair_adjustments"]
+        )
     else:
         selected = [dict(item) for item in evaluated[:team_size]]
         for index, item in enumerate(selected):
@@ -261,6 +282,9 @@ def recommend_best_lineup(user_cards=None, boss_name="未知目標", boss_types=
             item["assigned_role"], item["role_score"] = role, item["role_scores"].get(role, item["overall_score"])
         team_score = round(sum(item["overall_score"] for item in selected) / max(1, len(selected)), 1)
         team_synergy = 0.0
+    team_learning_adjustment = learned_pair_adjustment(
+        [item["card"].get("id") for item in selected], learning["pair_adjustments"]
+    )
 
     weaknesses = get_weaknesses(boss_types)
     tactics = [f"🎯 **Boss 弱點屬性**：{'、'.join(weaknesses) if weaknesses else '無明顯弱點'}"]
@@ -268,9 +292,14 @@ def recommend_best_lineup(user_cards=None, boss_name="未知目標", boss_types=
         tactics.append(f"**{item['assigned_role']}**：**{item['card'].get('name', '未知')}** 使用「{item['best_move_name']}」"
                        f"（{item['best_move_type']}／{item['best_move_category']}，命中 {item['move_accuracy']:g}%），"
                        f"期望傷害 {item['expected_damage']:g}、預估 {item['expected_ko_turns']} 回合擊倒。")
-    tactics.append(f"🧩 **陣容總評**：{team_score:g} 分（組合加成 {team_synergy:+g}）")
+    tactics.append(
+        f"🧩 **陣容總評**：{team_score:g} 分（組合加成 {team_synergy:+g}，"
+        f"實戰學習 {team_learning_adjustment:+g}）"
+    )
     return {"success": True, "boss_name": boss_name, "boss_types": boss_types,
             "boss_weaknesses": weaknesses, "boss_card": boss_card,
             "recommended_team": selected, "top_team": selected, "recommendations": evaluated,
             "all_ranked": evaluated, "team_score": team_score, "team_synergy": team_synergy,
+            "team_learning_adjustment": round(team_learning_adjustment, 1),
+            "matching_feedback_count": learning["matching_feedback_count"],
             "strategy": "\n\n".join(tactics), "tactics": tactics}

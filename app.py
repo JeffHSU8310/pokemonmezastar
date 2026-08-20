@@ -29,6 +29,7 @@ from recommender import recommend_best_lineup, evaluate_card_performance
 from camera_recognizer import recognize_card
 from live_scanner import LiveCardScanner
 from recognition_learning import learning_example_count, record_confirmation
+from recommendation_learning import recommendation_feedback_count, record_recommendation_feedback
 from collection_manager import (
     load_user_collection_ids,
     save_user_collection_ids,
@@ -41,7 +42,12 @@ from collection_manager import (
     import_collection_from_json,
     import_collection_from_share_code
 )
-from scraper import add_custom_card, fetch_online_pokemon_metadata, batch_import_cards
+from scraper import (
+    add_custom_card,
+    fetch_online_pokemon_metadata,
+    batch_import_cards,
+    scheduled_official_update,
+)
 from github_sync import (
     get_git_status,
     load_version_info,
@@ -892,7 +898,8 @@ with tabs[0]:
         st.markdown(f"#### 🏆 最佳黃金出戰陣容 (Top 3) — *{source_label}*")
         st.caption(
             f"陣容總評 {result.get('team_score', 0):g} 分｜"
-            f"組合加成 {result.get('team_synergy', 0):+g}｜已納入命中率、攻擊分類、Boss 防禦與三卡互補"
+            f"組合加成 {result.get('team_synergy', 0):+g}｜"
+            f"🧠 相同屬性實戰回饋 {result.get('matching_feedback_count', 0)} 筆"
         )
         
         # 針對 6.1" 手機直立螢幕：每張推薦卡片垂直排列，資訊高度整合且好讀
@@ -950,6 +957,39 @@ with tabs[0]:
             
             if st.button(f"🔍 查看 {c.get('name')} 詳細數據與大圖", key=f"btn_rec_detail_{idx}_{c_id}", use_container_width=True):
                 show_card_details_modal(c)
+
+        st.markdown("##### 🧠 推薦結果學習")
+        st.caption(
+            f"完成實戰後回報勝敗，系統會學習相同 Boss 屬性下的卡匣與搭配效果。"
+            f"目前累積 {recommendation_feedback_count()} 場；加權有上限，避免少量結果造成誤判。"
+        )
+        if st.session_state.get("recommendation_learning_message"):
+            st.success(st.session_state.pop("recommendation_learning_message"))
+        feedback_team = result["recommended_team"]
+        feedback_options = {"沒有特別突出": ""}
+        feedback_options.update({item["card"]["name"]: item["card"]["id"] for item in feedback_team})
+        best_performer_name = st.selectbox(
+            "本場表現最佳（可不選）:",
+            options=list(feedback_options),
+            key=f"recommend_best_{boss_name}_{'_'.join(boss_types)}",
+        )
+        feedback_win_col, feedback_loss_col = st.columns(2)
+        feedback_args = {
+            "boss_name": boss_name,
+            "boss_types": boss_types,
+            "team_card_ids": [item["card"]["id"] for item in feedback_team],
+            "best_card_id": feedback_options[best_performer_name] or None,
+        }
+        if feedback_win_col.button("👍 勝利／推薦有效", type="primary", use_container_width=True,
+                                   key=f"recommend_win_{boss_name}_{'_'.join(boss_types)}"):
+            count = record_recommendation_feedback(won=True, **feedback_args)
+            st.session_state.recommendation_learning_message = f"已記錄勝利並更新推薦權重，目前共 {count} 場"
+            st.rerun()
+        if feedback_loss_col.button("👎 失敗／需要調整", use_container_width=True,
+                                    key=f"recommend_loss_{boss_name}_{'_'.join(boss_types)}"):
+            count = record_recommendation_feedback(won=False, **feedback_args)
+            st.session_state.recommendation_learning_message = f"已記錄失敗並降低本組合權重，目前共 {count} 場"
+            st.rerun()
 
         with st.expander("💡 展開查看實戰策略指引"):
             for t_msg in result.get("tactics", []):
@@ -1416,6 +1456,21 @@ with tabs[5]:
     st.markdown("#### 🌐 官方卡匣一鍵自動更新與網路擴充")
     
     from scraper import fetch_and_sync_official_new_cards
+
+    if "official_auto_update_result" not in st.session_state:
+        with st.spinner("正在執行每日官方新卡安全檢查..."):
+            st.session_state.official_auto_update_result = scheduled_official_update(auto_push=True)
+    auto_update_result = st.session_state.official_auto_update_result
+    if auto_update_result.get("new_count", 0) and not st.session_state.get("official_auto_update_applied"):
+        st.session_state.official_auto_update_applied = True
+        st.rerun()
+    if auto_update_result.get("success"):
+        if auto_update_result.get("new_count", 0):
+            st.success(f"🤖 自動新增 {auto_update_result['new_count']} 款雙官方確認的新卡匣")
+        else:
+            st.caption(f"🤖 自動檢查：{auto_update_result.get('sync_message', '已完成')} ")
+    else:
+        st.warning(f"🤖 自動檢查暫時失敗：{auto_update_result.get('error', '未知錯誤')}；圖鑑未修改")
     
     render_html("""
     <div style="background: linear-gradient(135deg, #E8F5E9, #C8E6C9); border: 1.5px solid #81C784; border-radius: 10px; padding: 12px; margin-bottom: 12px;">
@@ -1423,15 +1478,17 @@ with tabs[5]:
             🚀 官方最新彈別一鍵自動聯網抓取 (免人工輸入)
         </div>
         <div style="font-size: 0.8rem; color: #2E7D32; line-height: 1.4;">
-            未來當台灣官方機台推出<b>【銀河第3彈】、【銀河第4彈】或最新特別彈</b>時，只要點擊下方按鈕，系統就會<b>自動連線台灣官方網站 (pokemonmezastar.com.tw)</b>，自動偵測最新卡表、抓取官方實體卡匣立繪、生成屬性與體質數據，並自動同步儲存至雲端！
+            系統每 12 小時自動比對<b>台灣官方網站</b>與<b>國際官方網站</b>。只有兩邊都有相同新卡號時才新增資料與官方圖片；既有卡號永遠跳過，不覆寫、不重排。
         </div>
     </div>
     """)
     
     if st.button("🚀 立即一鍵自動掃描並抓取官方最新卡匣", use_container_width=True, type="primary"):
-        with st.spinner("正在自動連線台灣寶可夢官方網站掃描全彈別資料庫 (pokemonmezastar.com.tw)..."):
-            crawl_res = fetch_and_sync_official_new_cards(start_id=1, end_id=20, auto_push=True)
-            if crawl_res.get("new_count", 0) > 0:
+        with st.spinner("正在比對台灣與國際版寶可夢官方網站..."):
+            crawl_res = fetch_and_sync_official_new_cards(auto_push=True)
+            if not crawl_res.get("success"):
+                st.error(f"❌ {crawl_res.get('error', '官方資料更新失敗')}；為保護原始圖鑑，本次沒有寫入任何資料。")
+            elif crawl_res.get("new_count", 0) > 0:
                 st.balloons()
                 st.success(f"🎉 太棒了！成功發現並自動收錄 **{crawl_res['new_count']}** 款官方全新卡匣！")
                 st.info(f"☁️ 雲端狀態：{crawl_res['sync_message']}")
@@ -1440,7 +1497,9 @@ with tabs[5]:
                         st.write(f"• **{sname}** | 編號 `{cid}` | **{cname}**")
                 st.rerun()
             else:
-                st.success("✅ 官方網站掃描完成！目前資料庫已是官方最新版本（共 428 款卡匣），無任何遺漏！")
+                st.success(f"✅ 雙官方網站掃描完成！目前圖鑑共 {len(load_cards())} 款，既有資料完全未變更。")
+                if crawl_res.get("pending_count", 0):
+                    st.warning(f"有 {crawl_res['pending_count']} 款僅在台灣官網出現，等待國際官網確認後才會安全加入。")
                 st.info(f"📌 掃描範圍包含：{', '.join([f'{s[0]} ({s[1]}款)' for s in crawl_res.get('scanned_series', [])])}")
 
     st.markdown("---")
