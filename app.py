@@ -9,6 +9,8 @@ from typing import List, Dict, Any, Set
 import os
 import json
 import textwrap
+import importlib
+import github_sync as github_sync_module
 
 from mezastar_data import (
     TYPES,
@@ -39,8 +41,6 @@ from scraper import add_custom_card, fetch_online_pokemon_metadata, batch_import
 from github_sync import (
     get_git_status,
     load_version_info,
-    pull_all_user_data_from_github,
-    restore_user_data_snapshot_locally,
     sync_all_user_data_to_github,
     get_saved_github_token,
     save_github_token,
@@ -56,6 +56,25 @@ from qr_manager import (
     generate_qr_base64,
     decode_qr_from_bytes
 )
+
+# Streamlit Cloud 可能在部署切換時保留舊版模組快取；先重載，再安全取得新版同步 API。
+if not all(hasattr(github_sync_module, name) for name in (
+    "pull_all_user_data_from_github",
+    "restore_user_data_snapshot_locally"
+)):
+    importlib.invalidate_caches()
+    github_sync_module = importlib.reload(github_sync_module)
+
+pull_all_user_data_from_github = getattr(github_sync_module, "pull_all_user_data_from_github", None)
+restore_user_data_snapshot_locally = getattr(github_sync_module, "restore_user_data_snapshot_locally", None)
+
+if pull_all_user_data_from_github is None:
+    def pull_all_user_data_from_github(token=None):
+        return False, "", "", "", "同步模組正在更新，請稍候重新整理頁面"
+
+if restore_user_data_snapshot_locally is None:
+    def restore_user_data_snapshot_locally(collection_content, trainers_content):
+        return False, set(), [], "同步模組正在更新，請稍候重新整理頁面"
 
 # 設定頁面資訊
 st.set_page_config(
