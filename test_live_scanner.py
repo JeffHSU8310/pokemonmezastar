@@ -11,22 +11,29 @@ class LiveScannerTests(unittest.TestCase):
         self.assertEqual(sharpness, 0.0)
         self.assertAlmostEqual(brightness, 120.0)
 
-    def test_stable_detailed_frame_becomes_candidate(self):
+    def test_detailed_frame_can_be_captured_manually(self):
         scanner = LiveCardScanner()
         image = np.zeros((360, 480, 3), dtype=np.uint8)
         image[:, ::8] = 255
         image[::8, :] = 255
-        for _ in range(7):
-            scanner.ingest(image)
-        self.assertIsNotNone(scanner.pop_candidate(minimum_interval=0.0))
+        scanner.ingest(image)
+        image_bytes, error = scanner.capture_current()
+        self.assertIsNotNone(image_bytes)
+        self.assertIsNone(error)
 
     def test_dark_frame_is_rejected(self):
         scanner = LiveCardScanner()
         image = np.zeros((360, 480, 3), dtype=np.uint8)
         image[:, ::8] = 20
-        for _ in range(7):
-            scanner.ingest(image)
-        self.assertIsNone(scanner.pop_candidate(minimum_interval=0.0))
+        scanner.ingest(image)
+        image_bytes, error = scanner.capture_current()
+        self.assertIsNone(image_bytes)
+        self.assertIn("光線不足", error)
+
+    def test_capture_before_camera_frame_is_rejected(self):
+        image_bytes, error = LiveCardScanner().capture_current()
+        self.assertIsNone(image_bytes)
+        self.assertIn("尚未取得畫面", error)
 
 
 if __name__ == "__main__":
