@@ -10,6 +10,7 @@ import os
 import json
 import textwrap
 import importlib
+import hashlib
 import github_sync as github_sync_module
 
 from mezastar_data import (
@@ -25,6 +26,7 @@ from mezastar_data import (
     sort_cards_chronological
 )
 from recommender import recommend_best_lineup, evaluate_card_performance
+from camera_recognizer import recognize_card
 from collection_manager import (
     load_user_collection_ids,
     save_user_collection_ids,
@@ -604,6 +606,54 @@ tabs = st.tabs([
 # TAB 1: ⚔️ 智慧對戰推薦 (Battle Lineup Optimizer) - 手機直立版
 # ==============================================================================
 with tabs[0]:
+    with st.expander("📷 開始相機辨識寶可夢", expanded=False):
+        st.caption("將卡匣正面放滿畫面、避免反光；會綜合文字、編號、星數與卡面圖案比對。")
+        camera_photo = st.camera_input("拍攝機台畫面或實體卡匣", key="battle_camera_photo")
+        if camera_photo is not None:
+            camera_bytes = camera_photo.getvalue()
+            camera_digest = hashlib.sha256(camera_bytes).hexdigest()
+            if st.button("🔎 開始辨識", type="primary", use_container_width=True, key="run_camera_recognition"):
+                with st.spinner("正在讀取文字、星數並比對卡面…第一次辨識會較久"):
+                    st.session_state.camera_recognition = recognize_card(camera_bytes, all_cards, top_n=3)
+                    st.session_state.camera_recognition_digest = camera_digest
+
+        camera_result = st.session_state.get("camera_recognition")
+        current_digest = st.session_state.get("camera_recognition_digest")
+        if camera_result and camera_photo is not None and current_digest == camera_digest:
+            if camera_result.get("warning"):
+                st.warning(camera_result["warning"])
+            info_parts = [f"整體信心：{camera_result.get('confidence', '低')}"]
+            if camera_result.get("detected_star"):
+                info_parts.append(f"偵測星數：{camera_result['detected_star']}★")
+            if camera_result.get("ocr_text"):
+                info_parts.append(f"文字：{camera_result['ocr_text']}")
+            st.info("｜".join(info_parts))
+
+            if camera_result.get("confidence") == "低":
+                st.warning("辨識信心偏低，請確認候選；可將卡匣靠近、對焦並避開反光後重拍。")
+            st.markdown("##### 最接近的 3 張卡匣")
+            candidate_columns = st.columns(len(camera_result.get("candidates", [])) or 1)
+            for index, candidate in enumerate(camera_result.get("candidates", [])):
+                card = candidate["card"]
+                with candidate_columns[index]:
+                    if card.get("image"):
+                        st.image(card["image"], use_container_width=True)
+                    st.markdown(f"**{card.get('name', '未知')}**  ")
+                    st.caption(f"{card.get('id', '')}｜{card.get('star', '?')}★｜相符 {candidate['score'] * 100:.0f}%")
+                    if st.button("套用為 Boss", key=f"camera_pick_{card.get('id')}", use_container_width=True):
+                        st.session_state.camera_selected_boss_id = str(card.get("id"))
+                        st.rerun()
+
+        selected_camera_id = st.session_state.get("camera_selected_boss_id")
+        if selected_camera_id:
+            selected_camera_card = next((card for card in all_cards if str(card.get("id")) == selected_camera_id), None)
+            if selected_camera_card:
+                action_col, clear_col = st.columns([3, 1])
+                action_col.success(f"已套用：{selected_camera_card['name']}（{selected_camera_card['id']}）")
+                if clear_col.button("清除", key="clear_camera_boss", use_container_width=True):
+                    st.session_state.pop("camera_selected_boss_id", None)
+                    st.rerun()
+
     # 手機上採用卡片式下拉選單
     with st.container():
         # 1. 快速星數切換按鈕
@@ -648,7 +698,14 @@ with tabs[0]:
             key=f"battle_boss_select_{star_filter}_{search_query}"
         )
         
-        if selected_boss_idx == 0:
+        camera_boss_id = st.session_state.get("camera_selected_boss_id")
+        camera_boss = next((card for card in all_cards if str(card.get("id")) == camera_boss_id), None)
+        if camera_boss:
+            picked_c = camera_boss
+            boss_name = picked_c["name"]
+            default_t1 = picked_c["types"][0] if len(picked_c["types"]) > 0 else "一般"
+            default_t2 = picked_c["types"][1] if len(picked_c["types"]) > 1 else "無"
+        elif selected_boss_idx == 0:
             boss_name = st.text_input("輸入 Boss 名稱:", value=search_query.strip() if search_query.strip() else "超夢")
             default_t1 = "超能力"
             default_t2 = "無"
@@ -662,10 +719,10 @@ with tabs[0]:
     with col_t1:
         type_options = ["無"] + TYPES
         t1_idx = TYPES.index(default_t1) if default_t1 in TYPES else 0
-        boss_type1 = st.selectbox("第一屬性:", options=TYPES, index=t1_idx)
+        boss_type1 = st.selectbox("第一屬性:", options=TYPES, index=t1_idx, key=f"battle_type1_{camera_boss_id or boss_name}")
     with col_t2:
         t2_idx = type_options.index(default_t2) if default_t2 in type_options else 0
-        boss_type2 = st.selectbox("第二屬性:", options=type_options, index=t2_idx)
+        boss_type2 = st.selectbox("第二屬性:", options=type_options, index=t2_idx, key=f"battle_type2_{camera_boss_id or boss_name}")
 
     # 候選卡匣來源選擇 (手機單選按鈕)
     search_scope = st.radio("出戰卡匣來源:", options=["從我的卡匣庫 (實體卡)", "從全卡匣圖鑑庫 (全卡)"], horizontal=True)
