@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.10", "3.13"]
+        python-version: ["3.10", "3.13", "3.14"]
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
@@ -38,7 +38,7 @@ jobs:
 
         providers = set(packages_distributions().get("cv2", []))
         assert providers == {"opencv-python"}, f"cv2 套件衝突：{providers}"
-        assert cv2.__version__ == "4.12.0"
+        assert cv2.__version__ == "5.0.0"
         assert RapidOCR and recognize_card and LiveCardScanner and onnxruntime
         PY
 
