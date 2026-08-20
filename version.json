@@ -1,7 +1,12 @@
 {
-  "version": "2.3.1",
-  "last_updated": "2026-08-20 23:20:20",
+  "version": "2.4.0",
+  "last_updated": "2026-08-20 23:28:09",
   "history": [
+    {
+      "version": "2.4.0",
+      "timestamp": "2026-08-20 23:28:09",
+      "message": "新增 QR Code 式 WebRTC 即時卡匣掃描，自動對焦取樣與辨識後停止相機"
+    },
     {
       "version": "2.3.1",
       "timestamp": "2026-08-20 23:20:20",
