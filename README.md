@@ -6,6 +6,13 @@
 
 專為《寶可夢 Mezastar (Pokémon MEZASTAR)》設計的**智慧對戰陣容推薦引擎、個人雲端卡匣管理平台與自動資料抓取系統**。
 
+### 📷 手機相機卡匣辨識
+
+- 在「⚔️ 陣容推薦」展開「開始相機辨識寶可夢」，直接拍攝機台畫面或實體卡匣。
+- 系統會在本機綜合 OCR 文字／編號、星數與卡面圖案，列出最接近的三張卡匣。
+- 點選正確候選後會自動套用 Boss 屬性，立即產生最佳 Top 3 出戰陣容。
+- 建議讓卡匣正面填滿畫面、保持對焦並避開燈光反射；低信心結果必須人工確認。
+
 ---
 
 ## 🌟 核心特色
@@ -80,6 +87,7 @@ pokemonmezastar/
 ├── app.py                      # Streamlit 網頁主程式 (UI 介面)
 ├── mezastar_data.py            # 18 屬性相剋矩陣與核心卡匣資料
 ├── recommender.py              # 智慧對戰陣容推薦核心演算法
+├── camera_recognizer.py        # 相機 OCR、星數與卡面影像混合辨識
 ├── collection_manager.py       # 個人收藏庫管理模組
 ├── scraper.py                  # 網路資料抓取與 PokeAPI 連線模組
 ├── github_sync.py              # GitHub 自動同步與版本控制模組
