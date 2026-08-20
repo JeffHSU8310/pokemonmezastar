@@ -9,8 +9,9 @@ from pathlib import Path
 import threading
 from typing import Any, Dict, Optional
 
-import cv2
 import numpy as np
+
+from vision_runtime import cv2, require_opencv
 
 
 DEFAULT_LEARNING_PATH = Path(__file__).resolve().parent / "data" / "recognition_learning.json"
@@ -18,6 +19,7 @@ _FILE_LOCK = threading.Lock()
 
 
 def _decode(image_bytes: bytes) -> np.ndarray:
+    require_opencv()
     image = cv2.imdecode(np.frombuffer(image_bytes, np.uint8), cv2.IMREAD_COLOR)
     if image is None:
         raise ValueError("無法建立學習特徵")

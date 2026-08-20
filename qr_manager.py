@@ -6,18 +6,12 @@ import base64
 from typing import List, Dict, Any, Optional, Tuple, Set
 import qrcode
 from PIL import Image
-
-# 安全防禦性載入 cv2 (防止在無 GUI 的 Linux 雲端環境報錯)
-try:
-    import cv2
-    import numpy as np
-    HAS_CV2 = True
-except Exception as e:
-    cv2 = None
-    np = None
-    HAS_CV2 = False
+import numpy as np
 
 from mezastar_data import DATA_DIR
+from vision_runtime import cv2, opencv_available
+
+HAS_CV2 = opencv_available()
 
 TRAINERS_FILE = os.path.join(DATA_DIR, "trainers.json")
 SUPPORT_POKEMON_FILE = os.path.join(DATA_DIR, "support_pokemon.json")
