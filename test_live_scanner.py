@@ -20,6 +20,21 @@ class LiveScannerTests(unittest.TestCase):
         self.assertIn("photo_bytes = photographed_card.getvalue()", app_source)
         self.assertIn('camera_recognition_source = "photo"', app_source)
 
+    def test_pokedex_supports_live_scan_photo_and_collection_add(self):
+        app_source = (Path(__file__).parent / "app.py").read_text(encoding="utf-8")
+        self.assertIn('"📷 掃描或拍照尋找卡匣"', app_source)
+        self.assertIn('key="mezastar_pokedex_card_camera_v2106"', app_source)
+        self.assertIn('pokedex_photo = st.camera_input(', app_source)
+        self.assertIn('"➕ 加入我的卡匣庫"', app_source)
+        self.assertIn('on_click=confirm_pokedex_recognition', app_source)
+        self.assertIn("pokedex_focus_card_id", app_source)
+
+    def test_pokedex_recognition_uses_separate_camera_state(self):
+        app_source = (Path(__file__).parent / "app.py").read_text(encoding="utf-8")
+        self.assertIn("pokedex_scan_camera_enabled", app_source)
+        self.assertIn("pokedex_camera_recognition", app_source)
+        self.assertIn("st.session_state.scan_camera_enabled = False", app_source)
+
     def test_blank_frame_is_not_sharp(self):
         sharpness, brightness = frame_quality(np.full((240, 320, 3), 120, dtype=np.uint8))
         self.assertEqual(sharpness, 0.0)

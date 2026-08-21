@@ -568,6 +568,29 @@ else:
         delete_trainer(tr["id"])
         st.rerun()
 
+
+def confirm_pokedex_recognition(card_id: str, add_to_collection: bool = False):
+    """Confirm a catalog recognition, learn it, focus search, and optionally add it."""
+    card_id = str(card_id)
+    result = st.session_state.get("pokedex_camera_recognition") or {}
+    frame_bytes = st.session_state.get("pokedex_camera_last_frame_bytes")
+    predicted_id = str(result.get("candidates", [{}])[0].get("card", {}).get("id", ""))
+    if frame_bytes:
+        try:
+            learned_count = record_confirmation(
+                frame_bytes,
+                correct_card_id=card_id,
+                rejected_card_id=predicted_id,
+            )
+            st.session_state.pokedex_recognition_message = f"已確認並學習，目前共 {learned_count} 筆特徵"
+        except Exception as exc:
+            st.session_state.pokedex_recognition_message = f"已找到卡匣；學習資料暫時無法保存：{exc}"
+    if add_to_collection and card_id not in st.session_state.owned_ids:
+        st.session_state.owned_ids = toggle_card_ownership(card_id, st.session_state.owned_ids)
+        st.session_state.pokedex_recognition_message = "已加入我的卡匣庫，並將圖鑑搜尋定位到這張卡匣"
+    st.session_state.pokedex_focus_card_id = card_id
+    st.session_state.pk_search = card_id
+
 # 側邊欄：手機選單抽屜
 with st.sidebar:
     st.markdown("### 📱 Mezastar 手機對戰小助手")
@@ -648,6 +671,7 @@ with tabs[0]:
             open_col, close_col = st.columns(2)
             if open_col.button("📷 開啟相機", type="primary", use_container_width=True, key="open_scan_camera", disabled=camera_enabled or not camera_runtime_ready):
                 st.session_state.scan_camera_enabled = True
+                st.session_state.pokedex_scan_camera_enabled = False
                 st.session_state.pop("scan_camera_message", None)
                 st.rerun()
             if close_col.button("⏹️ 關閉相機", use_container_width=True, key="close_scan_camera", disabled=not camera_enabled):
@@ -1465,6 +1489,205 @@ with tabs[4]:
         pokedex_star_filter = st.multiselect("⭐ 星級篩選:", options=[6, 5, 4, 3, 2, 1], default=[6, 5, 4, 3, 2, 1], key="pk_star_filter")
     with col_pk2:
         pokedex_search = st.text_input("🔍 搜尋名稱/編號/屬性/招式:", value="", placeholder="例如: 蒼響, 2-2-001, 鋼...", key="pk_search")
+    focused_pokedex_card_id = st.session_state.get("pokedex_focus_card_id")
+    if focused_pokedex_card_id and pokedex_search.strip() != focused_pokedex_card_id:
+        st.session_state.pop("pokedex_focus_card_id", None)
+        focused_pokedex_card_id = None
+
+    pokedex_camera_enabled = bool(st.session_state.get("pokedex_scan_camera_enabled", False))
+    pokedex_camera_ready = opencv_available()
+    if pokedex_camera_enabled and not pokedex_camera_ready:
+        st.session_state.pokedex_scan_camera_enabled = False
+        pokedex_camera_enabled = False
+    pokedex_mode_value = st.session_state.get("pokedex_recognition_mode", "🎥 即時取景掃描")
+    with st.expander(
+        "📷 掃描或拍照尋找卡匣",
+        expanded=pokedex_camera_enabled or pokedex_mode_value == "📸 拍照辨識",
+    ):
+        pokedex_recognition_mode = st.radio(
+            "選擇辨識方式",
+            ["🎥 即時取景掃描", "📸 拍照辨識"],
+            horizontal=True,
+            key="pokedex_recognition_mode",
+        )
+        st.caption("辨識成功後可直接定位圖鑑，或按「＋加入我的卡匣庫」。相機權限由瀏覽器記住，不會連續自動辨識。")
+        st.caption(f"🧠 已累積 {learning_example_count()} 筆確認學習特徵（不保存原始照片）")
+        if not pokedex_camera_ready:
+            st.error(opencv_error_message() or "相機影像引擎目前無法使用，文字搜尋仍可正常操作。")
+
+        if pokedex_recognition_mode == "🎥 即時取景掃描":
+            open_col, close_col = st.columns(2)
+            if open_col.button(
+                "📷 開啟相機",
+                type="primary",
+                use_container_width=True,
+                key="open_pokedex_camera",
+                disabled=pokedex_camera_enabled or not pokedex_camera_ready,
+            ):
+                st.session_state.pokedex_scan_camera_enabled = True
+                st.session_state.scan_camera_enabled = False
+                st.session_state.pop("pokedex_scan_camera_message", None)
+                st.rerun()
+            if close_col.button(
+                "⏹️ 關閉相機",
+                use_container_width=True,
+                key="close_pokedex_camera",
+                disabled=not pokedex_camera_enabled,
+            ):
+                st.session_state.pokedex_scan_camera_enabled = False
+                st.rerun()
+
+            if not pokedex_camera_ready:
+                st.info("相機目前無法啟動；可繼續使用上方文字搜尋。")
+            elif not pokedex_camera_enabled:
+                st.info("點一次開啟相機，對準卡匣並等待清楚對焦後，再按掃描目前畫面。")
+            else:
+                pokedex_live_context = webrtc_streamer(
+                    key="mezastar_pokedex_card_camera_v2106",
+                    mode=WebRtcMode.SENDRECV,
+                    rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},
+                    media_stream_constraints={
+                        "video": {
+                            "facingMode": {"ideal": "environment"},
+                            "width": {"min": 960, "ideal": 1280},
+                            "height": {"min": 540, "ideal": 720},
+                            "frameRate": {"min": 20, "ideal": 30, "max": 30},
+                            "resizeMode": {"ideal": "none"},
+                            "advanced": [
+                                {"focusMode": "continuous"},
+                                {"exposureMode": "continuous"},
+                                {"whiteBalanceMode": "continuous"},
+                            ],
+                        },
+                        "audio": False,
+                    },
+                    desired_playing_state=True,
+                    video_processor_factory=LiveCardScanner,
+                    async_processing=False,
+                    sendback_video=True,
+                    media_toggle_controls=False,
+                    video_html_attrs={
+                        "autoPlay": True,
+                        "controls": False,
+                        "muted": True,
+                        "playsInline": True,
+                        "style": {
+                            "display": "block", "width": "100%", "maxWidth": "340px",
+                            "maxHeight": "255px", "objectFit": "contain", "margin": "0 auto",
+                            "borderRadius": "10px", "background": "#111111",
+                            "border": "3px solid #26A69A", "boxSizing": "border-box",
+                        },
+                    },
+                )
+                if not pokedex_live_context.state.playing:
+                    st.info("正在取得相機權限並啟動後鏡頭…")
+                elif not pokedex_live_context.video_processor:
+                    st.info("相機已啟動，正在準備預覽畫面…")
+                else:
+                    width, height = pokedex_live_context.video_processor.latest_resolution
+                    resolution_label = f"（擷取 {width}×{height}）" if width else ""
+                    st.success(f"相機已連續自動對焦{resolution_label}。卡匣清楚後再按下方按鈕。")
+                    if st.button(
+                        "🔎 掃描目前畫面",
+                        type="primary",
+                        use_container_width=True,
+                        key="scan_pokedex_camera_frame",
+                    ):
+                        frame_bytes, frame_error, focus_score = pokedex_live_context.video_processor.capture_current()
+                        if frame_error:
+                            st.session_state.pokedex_scan_camera_message = frame_error
+                        else:
+                            st.session_state.pop("pokedex_scan_camera_message", None)
+                            with st.spinner("正在全圖鑑中比對卡匣…"):
+                                st.session_state.pokedex_camera_recognition = recognize_card(
+                                    frame_bytes, all_cards, top_n=3
+                                )
+                            st.session_state.pokedex_camera_last_frame_bytes = frame_bytes
+                            st.session_state.pokedex_camera_source = "live"
+                            st.session_state.pokedex_camera_focus_score = focus_score
+        elif pokedex_camera_ready:
+            st.caption("拍攝後再按辨識；照片只在目前工作階段的記憶體中使用，不會寫入檔案或資料庫。")
+            pokedex_photo = st.camera_input(
+                "📸 拍攝卡匣照片",
+                key="pokedex_photographed_card_input",
+                help="讓卡匣填滿畫面、文字清楚並避開反光後拍攝。",
+                resolution="1080p",
+                width=340,
+            )
+            if pokedex_photo is not None and st.button(
+                "🔎 辨識這張照片",
+                type="primary",
+                use_container_width=True,
+                key="recognize_pokedex_photo",
+            ):
+                photo_bytes = pokedex_photo.getvalue()
+                with st.spinner("正在全圖鑑中比對照片…"):
+                    st.session_state.pokedex_camera_recognition = recognize_card(
+                        photo_bytes, all_cards, top_n=3
+                    )
+                st.session_state.pokedex_camera_last_frame_bytes = photo_bytes
+                st.session_state.pokedex_camera_source = "photo"
+                st.session_state.pokedex_camera_focus_score = None
+
+        if st.session_state.get("pokedex_scan_camera_message"):
+            st.warning(st.session_state.pokedex_scan_camera_message)
+        if st.session_state.get("pokedex_recognition_message"):
+            st.success(st.session_state.pokedex_recognition_message)
+
+        pokedex_camera_result = st.session_state.get("pokedex_camera_recognition")
+        if pokedex_camera_result:
+            if pokedex_camera_result.get("warning"):
+                st.warning(pokedex_camera_result["warning"])
+            source_label = "拍照辨識" if st.session_state.get("pokedex_camera_source") == "photo" else "即時取景掃描"
+            result_info = [
+                f"來源：{source_label}",
+                f"整體信心：{pokedex_camera_result.get('confidence', '低')}",
+            ]
+            if pokedex_camera_result.get("detected_star"):
+                result_info.append(f"偵測星數：{pokedex_camera_result['detected_star']}★")
+            if st.session_state.get("pokedex_camera_focus_score"):
+                result_info.append(f"對焦清晰度：{st.session_state.pokedex_camera_focus_score:.0f}")
+            st.info("｜".join(result_info))
+            if pokedex_camera_result.get("confidence") == "低":
+                st.warning("辨識信心偏低，請確認候選；必要時靠近卡匣、重新對焦並避開反光。")
+            st.markdown("##### 全圖鑑中最接近的 3 張卡匣")
+            for index, candidate in enumerate(pokedex_camera_result.get("candidates", []), start=1):
+                card = candidate["card"]
+                image_col, info_col = st.columns([1, 3])
+                with image_col:
+                    if card.get("image"):
+                        st.image(card["image"], use_container_width=True)
+                with info_col:
+                    st.markdown(f"**{index}. {card.get('name', '未知')}**")
+                    st.caption(
+                        f"{card.get('id', '')}｜{card.get('star', '?')}★｜"
+                        f"相符 {candidate['score'] * 100:.0f}%"
+                    )
+                    find_col, add_col = st.columns(2)
+                    find_col.button(
+                        "🔍 找到此卡",
+                        key=f"pokedex_find_recognized_{card.get('id')}",
+                        use_container_width=True,
+                        on_click=confirm_pokedex_recognition,
+                        args=(str(card.get("id")), False),
+                    )
+                    is_owned = str(card.get("id")) in st.session_state.owned_ids
+                    add_col.button(
+                        "✅ 已在我的卡匣庫" if is_owned else "➕ 加入我的卡匣庫",
+                        key=f"pokedex_add_recognized_{card.get('id')}",
+                        type="primary" if not is_owned else "secondary",
+                        disabled=is_owned,
+                        use_container_width=True,
+                        on_click=confirm_pokedex_recognition,
+                        args=(str(card.get("id")), True),
+                    )
+            if st.button("清除辨識結果", key="clear_pokedex_recognition"):
+                for state_key in (
+                    "pokedex_camera_recognition", "pokedex_camera_last_frame_bytes",
+                    "pokedex_recognition_message", "pokedex_camera_focus_score",
+                ):
+                    st.session_state.pop(state_key, None)
+                st.rerun()
 
     # 檢視模式切換 (手機優化：圖鑑卡片模式 vs 數據表格模式)
     view_mode = st.radio("檢視呈現方式:", options=["🗂️ 圖鑑卡片模式 (手機好讀)", "📊 完整數據表格模式"], horizontal=True)
@@ -1472,6 +1695,10 @@ with tabs[4]:
     # 篩選資料
     pokedex_cards = []
     for c in all_cards:
+        if focused_pokedex_card_id:
+            if str(c.get("id")) == focused_pokedex_card_id:
+                pokedex_cards.append(c)
+            continue
         if selected_series != "🌟 全部系列" and c.get("series") != selected_series:
             continue
         if c.get("star", 5) not in pokedex_star_filter:
