@@ -11,6 +11,9 @@ import json
 import textwrap
 import importlib
 import github_sync as github_sync_module
+import recommender as recommender_module
+import camera_recognizer as camera_recognizer_module
+import live_scanner as live_scanner_module
 from streamlit_webrtc import WebRtcMode, webrtc_streamer
 
 from mezastar_data import (
@@ -25,9 +28,16 @@ from mezastar_data import (
     DEFAULT_MEZASTAR_CARDS,
     sort_cards_chronological
 )
-from recommender import recommend_best_lineup, evaluate_card_performance
-from camera_recognizer import recognize_card
-from live_scanner import LiveCardScanner
+# Streamlit Cloud 熱部署會重跑 app.py，但 Python 可能保留已匯入的舊模組。
+# 主動重載這三個本次會直接影響畫面結果的模組，避免新版 UI 搭配舊版
+# 回合公式、辨識池或相機取樣器。相機 key 也會隨版本更新以重建 processor。
+recommender_module = importlib.reload(recommender_module)
+camera_recognizer_module = importlib.reload(camera_recognizer_module)
+live_scanner_module = importlib.reload(live_scanner_module)
+recommend_best_lineup = recommender_module.recommend_best_lineup
+evaluate_card_performance = recommender_module.evaluate_card_performance
+recognize_card = camera_recognizer_module.recognize_card
+LiveCardScanner = live_scanner_module.LiveCardScanner
 from vision_runtime import opencv_available, opencv_error_message
 from recognition_learning import learning_example_count, record_confirmation
 from recommendation_learning import recommendation_feedback_count, record_recommendation_feedback
@@ -640,7 +650,7 @@ with tabs[0]:
             st.info("相機目前關閉。點一次「開啟相機」並允許權限後，即可連續對準、掃描多張卡匣。")
         else:
             live_context = webrtc_streamer(
-                key="mezastar_persistent_card_camera",
+                key="mezastar_persistent_card_camera_v281",
                 # SENDONLY 直接顯示手機本機預覽；不再把影像經伺服器壓縮後回傳，
                 # 可明顯減少方格、延遲與對焦時的拖影。
                 mode=WebRtcMode.SENDONLY,
@@ -945,6 +955,7 @@ with tabs[0]:
         for idx, rec in enumerate(result["recommended_team"]):
             c = rec["card"]
             c_id = c["id"]
+            displayed_ko_turns = max(2, int(rec.get("expected_ko_turns", 2) or 2))
             sec_move = c.get("second_move", {})
             sec_move_html = f"<div style='font-size:0.75rem; color:#666;'>副招: {sec_move.get('name')} ({sec_move.get('type')}) [威力:{sec_move.get('power')}]</div>" if sec_move else ""
             tags_html = ' '.join([f'<span class="tag-badge">{t}</span>' for t in rec['tags']])
@@ -976,7 +987,7 @@ with tabs[0]:
                         <span>⚡ <b>期望傷害:</b> <b style="color:#1E88E5;">{rec['expected_damage']}</b>（命中 {rec['move_accuracy']:g}%）</span>
                         <span style="color:#555;">🛡️ 可承受: {survival_label}</span>
                     </div>
-                    <div style="font-size:0.75rem; color:#555; margin-top:2px;">角色評分 {rec['role_score']}｜單卡持續輸出預估 {rec['expected_ko_turns']} 回合擊倒 Boss</div>
+                    <div style="font-size:0.75rem; color:#555; margin-top:2px;">角色評分 {rec['role_score']}｜單卡持續輸出預估 {displayed_ko_turns} 回合擊倒 Boss</div>
                 </div>
 
                 <div class="stat-compact">
