@@ -16,8 +16,8 @@ SPECIAL_MULTIPLIERS = {
     "特別活動": 1.03, "無": 1.0,
 }
 ROLE_NAMES = ("主攻手（第1棒）", "爆發手（第2棒）", "收尾手（第3棒）")
-BOSS_HP_MULTIPLIER = 8.0
-BOSS_ENERGY_MULTIPLIER = 4.0
+BOSS_HP_MULTIPLIER = 7.0
+BOSS_ENERGY_MULTIPLIER = 3.5
 MIN_BOSS_KO_TURNS = 2
 
 
@@ -307,8 +307,8 @@ def _optimize_three_card_team(evaluated, pair_adjustments=None):
             role_total = sum(ordered[i]["role_scores"][ROLE_NAMES[i]] for i in range(3)) / 3.0
             offense_total = sum(item["offense_score"] for item in ordered) / 3.0
             weakness_total = sum(item["weakness_score"] for item in ordered) / 3.0
-            applied_synergy = synergy * 0.25
-            candidate_score = offense_total * 0.70 + weakness_total * 0.18 + role_total * 0.12 + applied_synergy
+            applied_synergy = synergy * 0.20
+            candidate_score = offense_total * 0.78 + weakness_total * 0.14 + role_total * 0.08 + applied_synergy
             if candidate_score > best_score:
                 best_team, best_score, best_synergy = ordered, candidate_score, applied_synergy
     if best_team is None:
@@ -351,9 +351,9 @@ def recommend_best_lineup(user_cards=None, boss_name="未知目標", boss_types=
             item["tags"].append("🧠 實戰回饋降權")
         item["weakness_score"] = _weakness_score(item)
         item["lineup_score"] = round(
-            item["offense_score"] * 0.72
-            + item["weakness_score"] * 0.18
-            + item["overall_score"] * 0.10,
+            item["offense_score"] * 0.80
+            + item["weakness_score"] * 0.12
+            + item["overall_score"] * 0.08,
             1,
         )
     evaluated.sort(key=lambda item: item["lineup_score"], reverse=True)

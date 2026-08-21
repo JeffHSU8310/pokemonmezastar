@@ -113,6 +113,18 @@ class TestAdvancedRecommender(unittest.TestCase):
             item["expected_ko_turns"] for item in result["top_team"]
         ))
 
+    def test_strong_balanced_team_can_defeat_six_star_boss_in_three_rotations(self):
+        candidates = [
+            card("強攻A", atk=150, power=120),
+            card("強攻B", atk=150, power=120),
+            card("強攻C", atk=150, power=120),
+        ]
+        boss = card("六星Boss", defense=100, sp_def=100, hp=194)
+        boss["star"], boss["energy"] = 6, 206
+        result = recommend_best_lineup(candidate_cards=candidates, boss_types=["一般"], boss_card=boss)
+        self.assertEqual(result["team_expected_ko_turns"], 3)
+        self.assertGreater(result["boss_durability"], boss["hp"] * 10)
+
     def test_boss_ko_estimate_uses_battle_scale_and_never_one_turn(self):
         attacker = card("強力打手", atk=260, power=180)
         boss = card("六星Boss", defense=80, sp_def=80, hp=220)
