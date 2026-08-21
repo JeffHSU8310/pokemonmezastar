@@ -376,33 +376,24 @@ def _team_output_estimate(selected):
 
 
 def _optimize_three_card_team(evaluated, pair_adjustments=None):
-    # 黃金陣容優先保留兩張不同寶可夢的有效弱點打手，再直接最大化
-    # 三張卡的實際合計期望傷害；若收藏只有一隻有效剋制者則退回一張。
-    # 角色分工、額外弱點覆蓋與相性只用於總傷害相同時排序。
-    output_pool = sorted(evaluated, key=lambda item: item["expected_damage"], reverse=True)[:24]
-    counter_pool = sorted(
-        (item for item in evaluated if item["type_mult"] > 1.0),
-        key=lambda item: item["expected_damage"],
-        reverse=True,
-    )[:12]
-    shortlist, seen = [], set()
-    for item in output_pool + counter_pool:
-        identity = str(item["card"].get("id") or id(item))
-        if identity not in seen:
-            seen.add(identity)
-            shortlist.append(item)
-    shortlist = shortlist[:30]
-    distinct_counter_names = {
-        str(item["card"].get("name") or item["card"].get("id"))
-        for item in shortlist if item["type_mult"] > 1.0
-    }
-    required_counter_count = min(2, len(distinct_counter_names))
+    # 黃金陣容直接最大化三張不同寶可夢的合計期望傷害。屬性相剋已經
+    # 反映在 expected_damage 的 1.6 / 2.56 倍率中，不再另設弱點卡張數門檻。
+    # 同名寶可夢只需要保留期望傷害最高的卡面；較低傷害版本不可能改善
+    # 任何合法的三人組。角色、星數、能量、弱點與相性只在總傷害相同時排序。
+    best_by_name = {}
+    for item in evaluated:
+        identity = str(item["card"].get("name") or item["card"].get("id") or id(item))
+        incumbent = best_by_name.get(identity)
+        item_priority = (item["expected_damage"], item["lineup_score"])
+        if incumbent is None or item_priority > (
+            incumbent["expected_damage"], incumbent["lineup_score"]
+        ):
+            best_by_name[identity] = item
+    shortlist = sorted(
+        best_by_name.values(), key=lambda item: item["expected_damage"], reverse=True
+    )[:30]
     best_team, best_priority, best_score, best_synergy = None, None, float("-inf"), 0.0
     for group in combinations(shortlist, 3):
-        if len({item["card"].get("name") for item in group}) < 3:
-            continue
-        if sum(item["type_mult"] > 1.0 for item in group) < required_counter_count:
-            continue
         synergy = _team_synergy(list(group), pair_adjustments)
         team_damage = round(sum(item["expected_damage"] for item in group), 1)
         for ordered in permutations(group):
