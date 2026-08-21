@@ -283,9 +283,9 @@ def _team_output_estimate(selected):
 
 
 def _optimize_three_card_team(evaluated, pair_adjustments=None):
-    # 黃金陣容先保留至少一張有效弱點主攻手，再直接最大化三張卡的實際
-    # 合計期望傷害。角色分工、弱點覆蓋與相性只用於總傷害相同時排序，
-    # 避免較低傷害的第二張弱點卡擠掉真正的高輸出卡。
+    # 黃金陣容優先保留兩張不同寶可夢的有效弱點打手，再直接最大化
+    # 三張卡的實際合計期望傷害；若收藏只有一隻有效剋制者則退回一張。
+    # 角色分工、額外弱點覆蓋與相性只用於總傷害相同時排序。
     output_pool = sorted(evaluated, key=lambda item: item["expected_damage"], reverse=True)[:24]
     counter_pool = sorted(
         (item for item in evaluated if item["type_mult"] > 1.0),
@@ -299,12 +299,16 @@ def _optimize_three_card_team(evaluated, pair_adjustments=None):
             seen.add(identity)
             shortlist.append(item)
     shortlist = shortlist[:30]
-    counter_available = any(item["type_mult"] > 1.0 for item in shortlist)
+    distinct_counter_names = {
+        str(item["card"].get("name") or item["card"].get("id"))
+        for item in shortlist if item["type_mult"] > 1.0
+    }
+    required_counter_count = min(2, len(distinct_counter_names))
     best_team, best_priority, best_score, best_synergy = None, None, float("-inf"), 0.0
     for group in combinations(shortlist, 3):
         if len({item["card"].get("name") for item in group}) < 3:
             continue
-        if counter_available and not any(item["type_mult"] > 1.0 for item in group):
+        if sum(item["type_mult"] > 1.0 for item in group) < required_counter_count:
             continue
         synergy = _team_synergy(list(group), pair_adjustments)
         team_damage = round(sum(item["expected_damage"] for item in group), 1)
@@ -321,6 +325,8 @@ def _optimize_three_card_team(evaluated, pair_adjustments=None):
     if best_team is None:
         best_team = tuple(sorted(evaluated, key=lambda item: item["lineup_score"], reverse=True)[:3])
         best_score = sum(item["overall_score"] for item in best_team) / max(1, len(best_team))
+    # 黃金陣容的棒次以實際期望傷害排序，確保最高輸出者顯示為第一棒。
+    best_team = tuple(sorted(best_team, key=lambda item: item["expected_damage"], reverse=True))
     selected = []
     for index, item in enumerate(best_team):
         result, role = dict(item), ROLE_NAMES[index]
