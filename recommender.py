@@ -26,6 +26,20 @@ def _number(value: Any, default: float) -> float:
         return default
 
 
+def filter_candidate_cards_by_stars(cards: List[Dict[str, Any]], selected_stars) -> List[Dict[str, Any]]:
+    """Filter either collection or catalog candidates while preserving source order."""
+    allowed_stars = {
+        int(_number(value, -1)) for value in (selected_stars or [])
+        if int(_number(value, -1)) > 0
+    }
+    if not allowed_stars:
+        return []
+    return [
+        card for card in cards
+        if int(_number(card.get("star"), -1)) in allowed_stars
+    ]
+
+
 def _accuracy(value: Any) -> float:
     if value in (None, "", "必中", "必定命中", "—", "-"):
         return 1.0
