@@ -86,6 +86,20 @@ class TestAdvancedRecommender(unittest.TestCase):
         )
         self.assertEqual(sum(item["type_mult"] > 1.0 for item in result["top_team"]), 2)
 
+    def test_golden_lineup_maximizes_total_damage_after_one_counter_anchor(self):
+        candidates = [
+            card("高輸出剋制", atk=190, power=135, move_type="火"),
+            card("低輸出剋制", atk=90, power=70, move_type="火"),
+            card("高輸出中性A", atk=240, power=165, move_type="一般"),
+            card("高輸出中性B", atk=225, power=155, move_type="一般"),
+        ]
+        result = recommend_best_lineup(candidate_cards=candidates, boss_types=["草"])
+        self.assertEqual(
+            {item["card"]["name"] for item in result["top_team"]},
+            {"高輸出剋制", "高輸出中性A", "高輸出中性B"},
+        )
+        self.assertEqual(sum(item["type_mult"] > 1.0 for item in result["top_team"]), 1)
+
     def test_star_rating_contributes_to_expected_damage(self):
         low_star = card("二星", atk=150, power=120)
         high_star = card("六星", atk=150, power=120)

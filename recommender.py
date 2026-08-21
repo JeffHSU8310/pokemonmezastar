@@ -283,9 +283,10 @@ def _team_output_estimate(selected):
 
 
 def _optimize_three_card_team(evaluated, pair_adjustments=None):
-    # 同時保留真實輸出最高者與有效剋制者。相剋倍率已直接乘進期望傷害，
-    # 此處再給有限的弱點加權，但不讓低星、低攻擊的剋制卡無條件入選。
-    output_pool = sorted(evaluated, key=lambda item: item["lineup_score"], reverse=True)[:20]
+    # 黃金陣容先保留至少一張有效弱點主攻手，再直接最大化三張卡的實際
+    # 合計期望傷害。角色分工、弱點覆蓋與相性只用於總傷害相同時排序，
+    # 避免較低傷害的第二張弱點卡擠掉真正的高輸出卡。
+    output_pool = sorted(evaluated, key=lambda item: item["expected_damage"], reverse=True)[:24]
     counter_pool = sorted(
         (item for item in evaluated if item["type_mult"] > 1.0),
         key=lambda item: item["expected_damage"],
@@ -298,19 +299,25 @@ def _optimize_three_card_team(evaluated, pair_adjustments=None):
             seen.add(identity)
             shortlist.append(item)
     shortlist = shortlist[:30]
-    best_team, best_score, best_synergy = None, float("-inf"), 0.0
+    counter_available = any(item["type_mult"] > 1.0 for item in shortlist)
+    best_team, best_priority, best_score, best_synergy = None, None, float("-inf"), 0.0
     for group in combinations(shortlist, 3):
         if len({item["card"].get("name") for item in group}) < 3:
             continue
+        if counter_available and not any(item["type_mult"] > 1.0 for item in group):
+            continue
         synergy = _team_synergy(list(group), pair_adjustments)
+        team_damage = round(sum(item["expected_damage"] for item in group), 1)
         for ordered in permutations(group):
             role_total = sum(ordered[i]["role_scores"][ROLE_NAMES[i]] for i in range(3)) / 3.0
             offense_total = sum(item["offense_score"] for item in ordered) / 3.0
             weakness_total = sum(item["weakness_score"] for item in ordered) / 3.0
             applied_synergy = synergy * 0.20
             candidate_score = offense_total * 0.78 + weakness_total * 0.14 + role_total * 0.08 + applied_synergy
-            if candidate_score > best_score:
-                best_team, best_score, best_synergy = ordered, candidate_score, applied_synergy
+            candidate_priority = (team_damage, candidate_score)
+            if best_priority is None or candidate_priority > best_priority:
+                best_team, best_priority = ordered, candidate_priority
+                best_score, best_synergy = candidate_score, applied_synergy
     if best_team is None:
         best_team = tuple(sorted(evaluated, key=lambda item: item["lineup_score"], reverse=True)[:3])
         best_score = sum(item["overall_score"] for item in best_team) / max(1, len(best_team))
