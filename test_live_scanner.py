@@ -1,4 +1,5 @@
 import unittest
+from pathlib import Path
 
 import numpy as np
 
@@ -6,6 +7,12 @@ from live_scanner import LiveCardScanner, frame_quality
 
 
 class LiveScannerTests(unittest.TestCase):
+    def test_camera_component_returns_a_visible_preview_stream(self):
+        app_source = (Path(__file__).parent / "app.py").read_text(encoding="utf-8")
+        self.assertIn("mode=WebRtcMode.SENDRECV", app_source)
+        self.assertIn("sendback_video=True", app_source)
+        self.assertNotIn("mode=WebRtcMode.SENDONLY", app_source)
+
     def test_blank_frame_is_not_sharp(self):
         sharpness, brightness = frame_quality(np.full((240, 320, 3), 120, dtype=np.uint8))
         self.assertEqual(sharpness, 0.0)
