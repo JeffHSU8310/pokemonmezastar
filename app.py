@@ -650,10 +650,11 @@ with tabs[0]:
             st.info("相機目前關閉。點一次「開啟相機」並允許權限後，即可連續對準、掃描多張卡匣。")
         else:
             live_context = webrtc_streamer(
-                key="mezastar_persistent_card_camera_v281",
-                # SENDONLY 直接顯示手機本機預覽；不再把影像經伺服器壓縮後回傳，
-                # 可明顯減少方格、延遲與對焦時的拖影。
-                mode=WebRtcMode.SENDONLY,
+                key="mezastar_persistent_card_camera_v295",
+                # streamlit-webrtc 的 SENDONLY 模式只把手機畫面送到伺服器，前端不會
+                # 建立可見的 <video> 輸出。SENDRECV 將原始影格同步回傳，讓使用者
+                # 能在按下掃描前確認卡匣位置與對焦狀態。
+                mode=WebRtcMode.SENDRECV,
                 rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},
                 media_stream_constraints={
                     "video": {
@@ -672,7 +673,8 @@ with tabs[0]:
                 },
                 desired_playing_state=True,
                 video_processor_factory=LiveCardScanner,
-                async_processing=True,
+                async_processing=False,
+                sendback_video=True,
                 media_toggle_controls=False,
                 video_html_attrs={
                     "autoPlay": True,
@@ -688,6 +690,8 @@ with tabs[0]:
                         "margin": "0 auto",
                         "borderRadius": "10px",
                         "background": "#111111",
+                        "border": "3px solid #EF5350",
+                        "boxSizing": "border-box",
                     },
                 },
             )
@@ -698,7 +702,7 @@ with tabs[0]:
             else:
                 preview_width, preview_height = live_context.video_processor.latest_resolution
                 resolution_label = f"（擷取 {preview_width}×{preview_height}）" if preview_width else ""
-                st.success(f"低延遲相機已就緒並要求連續自動對焦{resolution_label}。讓卡匣填滿畫面、文字清楚後再按掃描。")
+                st.success(f"即時取景已顯示在上方紅框內，相機已要求連續自動對焦{resolution_label}。讓卡匣填滿紅框、文字清楚後再按掃描。")
                 if st.button("🔎 掃描目前畫面", type="primary", use_container_width=True, key="scan_current_camera_frame"):
                     frame_bytes, frame_error, focus_score = live_context.video_processor.capture_current()
                     if frame_error:
