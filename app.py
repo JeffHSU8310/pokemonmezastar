@@ -955,7 +955,8 @@ with tabs[0]:
             f"（約 {result.get('team_expected_ko_attacks', 0)} 次出招）擊倒 Boss**"
         )
         st.caption(
-            "先以 Boss 的相剋弱點屬性決定候選，再於相同剋制層級比較期望傷害、生存、命中、速度與特殊機制。"
+            "相剋倍率直接乘入傷害，並綜合星數、物攻／特攻、招式威力、命中、STAB、能量與特殊機制；"
+            "整隊以合計期望傷害為主，弱點剋制提供額外加權。"
             "整隊擊退回合以三張卡每輪各完成一次攻擊計算。"
         )
         
@@ -969,6 +970,7 @@ with tabs[0]:
             sec_move_html = f"<div style='font-size:0.75rem; color:#666;'>副招: {sec_move.get('name')} ({sec_move.get('type')}) [威力:{sec_move.get('power')}]</div>" if sec_move else ""
             tags_html = ' '.join([f'<span class="tag-badge">{t}</span>' for t in rec['tags']])
             survival_label = "免疫" if rec["incoming_damage"] <= 0.1 else f"{rec['survival_hits']} 擊"
+            attack_stat_label = "物攻" if rec["best_move_category"] == "物理" else "特攻"
             
             render_html(f"""
             <div class="card-box" style="border-left: 5px solid {TYPE_COLORS.get(rec['best_move_type'], '#E53935')};">
@@ -997,6 +999,7 @@ with tabs[0]:
                         <span style="color:#555;">🛡️ 可承受: {survival_label}</span>
                     </div>
                     <div style="font-size:0.75rem; color:#555; margin-top:2px;">角色評分 {rec['role_score']}｜本卡每輪傷害貢獻 {rec['expected_damage']}</div>
+                    <div style="font-size:0.7rem; color:#777;">輸出依據：{attack_stat_label} {rec['attack_stat']:g}｜星級 ×{rec['star_mult']:g}｜STAB ×{rec['stab_mult']:g}</div>
                 </div>
 
                 <div class="stat-compact">

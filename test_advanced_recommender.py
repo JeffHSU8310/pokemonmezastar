@@ -72,21 +72,28 @@ class TestAdvancedRecommender(unittest.TestCase):
         selected_names = {item["card"]["name"] for item in result["top_team"]}
         self.assertEqual(selected_names, {"高輸出A", "高輸出B", "高輸出C"})
 
-    def test_boss_weakness_counters_are_selected_before_neutral_stats(self):
+    def test_high_output_neutral_can_replace_a_very_weak_counter(self):
         candidates = [
-            card("火系剋制A", atk=120, power=90, move_type="火"),
-            card("火系剋制B", atk=115, power=88, move_type="火"),
-            card("火系剋制C", atk=110, power=86, move_type="火"),
-            card("高面板中性A", atk=300, power=190, move_type="一般"),
-            card("高面板中性B", atk=290, power=185, move_type="一般"),
-            card("高面板中性C", atk=280, power=180, move_type="一般"),
+            card("高輸出火A", atk=190, power=135, move_type="火"),
+            card("高輸出火B", atk=175, power=125, move_type="火"),
+            card("低輸出火", atk=60, power=50, move_type="火"),
+            card("高輸出中性", atk=240, power=165, move_type="一般"),
         ]
         result = recommend_best_lineup(candidate_cards=candidates, boss_types=["草"])
         self.assertEqual(
             {item["card"]["name"] for item in result["top_team"]},
-            {"火系剋制A", "火系剋制B", "火系剋制C"},
+            {"高輸出火A", "高輸出火B", "高輸出中性"},
         )
-        self.assertTrue(all(item["type_mult"] > 1.0 for item in result["top_team"]))
+        self.assertEqual(sum(item["type_mult"] > 1.0 for item in result["top_team"]), 2)
+
+    def test_star_rating_contributes_to_expected_damage(self):
+        low_star = card("二星", atk=150, power=120)
+        high_star = card("六星", atk=150, power=120)
+        low_star["star"], high_star["star"] = 2, 6
+        low = evaluate_card_performance(low_star, ["一般"])
+        high = evaluate_card_performance(high_star, ["一般"])
+        self.assertGreater(high["star_mult"], low["star_mult"])
+        self.assertGreater(high["expected_damage"], low["expected_damage"])
 
     def test_team_ko_estimate_uses_combined_three_card_damage(self):
         candidates = [
