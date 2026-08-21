@@ -505,8 +505,8 @@ def render_card_detail_content(c: Dict[str, Any]):
     
     render_html(f"""
     <div style="background:#F5F5F5; border-radius:8px; padding:8px 10px; font-size:0.8rem; margin-bottom:10px;">
-        <div style="color:#D32F2F; margin-bottom:4px;"><b>🎯 弱點 (受到傷害 2x / 4x):</b><br>{weak_str}</div>
-        <div style="color:#2E7D32; margin-bottom:4px;"><b>🛡️ 抵抗 (減免傷害 0.5x / 0.25x):</b><br>{resist_str}</div>
+        <div style="color:#D32F2F; margin-bottom:4px;"><b>🎯 弱點 (屬性表 2x / 4x；傷害換算 1.6x / 2.56x):</b><br>{weak_str}</div>
+        <div style="color:#2E7D32; margin-bottom:4px;"><b>🛡️ 抵抗 (屬性表 0.5x / 0.25x；傷害換算 0.625x / 0.3906x):</b><br>{resist_str}</div>
         {f"<div style='color:#7B1FA2;'><b>🚫 免疫 (無效 0.0x):</b><br>{immune_str}</div>" if immune_str else ""}
     </div>
     """)
@@ -991,7 +991,9 @@ with tabs[0]:
             f"（約 {result.get('team_expected_ko_attacks', 0)} 次出招）擊倒 Boss**"
         )
         st.caption(
-            "相剋倍率直接乘入傷害，並綜合星數、物攻／特攻、招式威力、命中、STAB、能量與特殊機制；"
+            "期望傷害以卡面傷害（對應物攻／特攻 × 招式威力）除以 Boss 防禦／特防，再乘 Mezastar 相剋 1.6 倍階級與命中率；"
+            "精神擊破、精神衝擊與神秘之劍改除物防。卡面傷害已含 Mega 能力值及極巨／Z 輪盤修正，不再重複加乘；"
+            "雙重／組合招式會逐招依各自屬性與攻防分算後相加。星數、能量與特殊機制仍用於卡面能力及同傷害排序；"
             "黃金陣容在有足夠候選時至少保留兩張不同寶可夢的有效弱點打手，"
             "第三張再以整隊合計期望傷害最高為準；"
             "角色能力、弱點覆蓋與組合相性只在總傷害相同時決定排序。"
@@ -1004,11 +1006,27 @@ with tabs[0]:
         for idx, rec in enumerate(result["recommended_team"]):
             c = rec["card"]
             c_id = c["id"]
-            sec_move = c.get("second_move", {})
-            sec_move_html = f"<div style='font-size:0.75rem; color:#666;'>副招: {sec_move.get('name')} ({sec_move.get('type')}) [威力:{sec_move.get('power')}]</div>" if sec_move else ""
+            move_components = rec.get("move_components", [])
+            if rec.get("is_combined_move"):
+                component_text = " ＋ ".join(
+                    f"{move['name']} {move['expected_damage']:g}（{move['type_mult']:g}x）"
+                    for move in move_components
+                )
+                sec_move_html = f"<div style='font-size:0.75rem; color:#5E35B1;'>雙招分算：{component_text}</div>"
+            else:
+                sec_move_html = ""
             tags_html = ' '.join([f'<span class="tag-badge">{t}</span>' for t in rec['tags']])
             survival_label = "免疫" if rec["incoming_damage"] <= 0.1 else f"{rec['survival_hits']} 擊"
             attack_stat_label = "物攻" if rec["best_move_category"] == "物理" else "特攻"
+            defense_stat_label = "物防" if rec.get("defense_key") == "def" else "特防"
+            if rec.get("is_combined_move"):
+                output_basis = "各招卡面傷害 ÷ 對應物防／特防 × 各自相剋倍率，再合計"
+            else:
+                damage_source_label = "卡面傷害" if rec.get("damage_source") == "card_face" else "推算傷害"
+                output_basis = (
+                    f"{damage_source_label} {rec.get('base_damage', 0):g} ÷ Boss {defense_stat_label} "
+                    f"{rec['boss_defense_stat']:g} × 相剋 {rec['type_mult']:g}"
+                )
             
             render_html(f"""
             <div class="card-box" style="border-left: 5px solid {TYPE_COLORS.get(rec['best_move_type'], '#E53935')};">
@@ -1037,7 +1055,7 @@ with tabs[0]:
                         <span style="color:#555;">🛡️ 可承受: {survival_label}</span>
                     </div>
                     <div style="font-size:0.75rem; color:#555; margin-top:2px;">角色評分 {rec['role_score']}｜本卡每輪傷害貢獻 {rec['expected_damage']}</div>
-                    <div style="font-size:0.7rem; color:#777;">輸出依據：{attack_stat_label} {rec['attack_stat']:g}｜星級 ×{rec['star_mult']:g}｜STAB ×{rec['stab_mult']:g}</div>
+                    <div style="font-size:0.7rem; color:#777;">輸出依據：{output_basis}｜主招{attack_stat_label} {rec['attack_stat']:g}</div>
                 </div>
 
                 <div class="stat-compact">
