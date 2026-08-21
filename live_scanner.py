@@ -13,6 +13,21 @@ import numpy as np
 from vision_runtime import cv2, require_opencv
 
 
+def digital_zoom_frame(image: np.ndarray, zoom: float) -> np.ndarray:
+    """Center-crop and resize a frame, providing predictable 1x-3x zoom."""
+    require_opencv()
+    zoom = min(3.0, max(1.0, float(zoom)))
+    if zoom <= 1.001:
+        return image
+    height, width = image.shape[:2]
+    crop_width = max(2, int(round(width / zoom)))
+    crop_height = max(2, int(round(height / zoom)))
+    left = max(0, (width - crop_width) // 2)
+    top = max(0, (height - crop_height) // 2)
+    cropped = image[top:top + crop_height, left:left + crop_width]
+    return cv2.resize(cropped, (width, height), interpolation=cv2.INTER_LINEAR)
+
+
 def frame_quality(image: np.ndarray) -> Tuple[float, float]:
     require_opencv()
     scale = min(1.0, 480.0 / max(image.shape[:2]))
@@ -34,6 +49,14 @@ class LiveCardScanner:
         self._recent_frames = deque(maxlen=12)
         self._last_analysis_at = 0.0
         self._latest_resolution = (0, 0)
+        self._digital_zoom = 1.0
+        self._focus_label = "AUTO"
+
+    def set_controls(self, digital_zoom: float = 1.0, focus_label: str = "AUTO") -> None:
+        """Update preview controls safely from Streamlit's main thread."""
+        with self._lock:
+            self._digital_zoom = min(3.0, max(1.0, float(digital_zoom)))
+            self._focus_label = str(focus_label or "AUTO")
 
     def ingest(self, image: np.ndarray) -> None:
         sharpness, brightness = frame_quality(image)
@@ -43,11 +66,32 @@ class LiveCardScanner:
 
     def recv(self, frame: av.VideoFrame) -> av.VideoFrame:
         # 預覽串流不做連續辨識；每秒最多取樣約 12 張供手動掃描挑選。
+        with self._lock:
+            digital_zoom = self._digital_zoom
+            focus_label = self._focus_label
+        image = digital_zoom_frame(frame.to_ndarray(format="bgr24"), digital_zoom)
         now = time.monotonic()
         if now - self._last_analysis_at >= 1.0 / 12.0:
             self._last_analysis_at = now
-            self.ingest(frame.to_ndarray(format="bgr24"))
-        return frame
+            # 保存沒有提示框與文字的乾淨畫面，避免影響 OCR 與卡面比對。
+            self.ingest(image)
+
+        preview = image.copy()
+        height, width = preview.shape[:2]
+        guide_left, guide_right = int(width * 0.07), int(width * 0.93)
+        guide_top, guide_bottom = int(height * 0.10), int(height * 0.90)
+        cv2.rectangle(preview, (guide_left, guide_top), (guide_right, guide_bottom), (40, 220, 90), 4)
+        cv2.putText(
+            preview,
+            f"ZOOM {digital_zoom:.1f}x | FOCUS {focus_label}",
+            (guide_left + 10, max(32, guide_top - 12)),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            max(0.55, width / 1200.0),
+            (40, 220, 90),
+            2,
+            cv2.LINE_AA,
+        )
+        return av.VideoFrame.from_ndarray(preview, format="bgr24")
 
     @property
     def latest_resolution(self) -> Tuple[int, int]:

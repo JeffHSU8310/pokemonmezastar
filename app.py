@@ -397,6 +397,33 @@ elif "owned_ids" not in st.session_state:
 # 載入卡匣資料
 all_cards = load_cards()
 
+CAMERA_FOCUS_PRESETS = {
+    "連續自動對焦": None,
+    "手動近距（約 12 公分）": 0.12,
+    "手動標準（約 35 公分）": 0.35,
+    "手動遠距（約 1.5 公尺）": 1.5,
+}
+
+
+def camera_advanced_constraints(focus_preset: str):
+    """Return best-effort hardware focus constraints with safe fallbacks."""
+    focus_distance = CAMERA_FOCUS_PRESETS.get(focus_preset)
+    focus_constraint = (
+        {"focusMode": "continuous"}
+        if focus_distance is None
+        else {"focusMode": "manual", "focusDistance": {"ideal": focus_distance}}
+    )
+    return [
+        focus_constraint,
+        {"exposureMode": "continuous"},
+        {"whiteBalanceMode": "continuous"},
+    ]
+
+
+def camera_focus_overlay_label(focus_preset: str) -> str:
+    focus_distance = CAMERA_FOCUS_PRESETS.get(focus_preset)
+    return "AUTO" if focus_distance is None else f"{focus_distance:g}m"
+
 # ==============================================================================
 # 🔍 卡匣詳細資訊與高清大圖彈跳視窗 (Card Detail Modal)
 # ==============================================================================
@@ -683,8 +710,25 @@ with tabs[0]:
             elif not camera_enabled:
                 st.info("相機目前關閉。點一次「開啟相機」並允許權限後，即可連續對準、掃描多張卡匣。")
             else:
+                scan_zoom = st.slider(
+                    "🔍 畫面拉近／拉遠",
+                    min_value=1.0,
+                    max_value=3.0,
+                    value=1.0,
+                    step=0.1,
+                    key="battle_scan_zoom",
+                    help="1.0x 為原始畫面；拉近後，掃描也會使用放大的乾淨影格。",
+                )
+                scan_focus_preset = st.select_slider(
+                    "🎯 對焦模式",
+                    options=list(CAMERA_FOCUS_PRESETS),
+                    value="連續自動對焦",
+                    key="battle_scan_focus_preset",
+                )
+                st.caption("手動焦距會要求手機鏡頭套用；若瀏覽器不支援，會自動保留連續對焦與清晰影格挑選。")
+                scan_focus_index = list(CAMERA_FOCUS_PRESETS).index(scan_focus_preset)
                 live_context = webrtc_streamer(
-                    key="mezastar_persistent_card_camera_v295",
+                    key=f"mezastar_persistent_card_camera_v2111_f{scan_focus_index}",
                     # streamlit-webrtc 的 SENDONLY 模式只把手機畫面送到伺服器，前端不會
                     # 建立可見的 <video> 輸出。SENDRECV 將原始影格同步回傳，讓使用者
                     # 能在按下掃描前確認卡匣位置與對焦狀態。
@@ -697,11 +741,7 @@ with tabs[0]:
                             "height": {"min": 540, "ideal": 720},
                             "frameRate": {"min": 20, "ideal": 30, "max": 30},
                             "resizeMode": {"ideal": "none"},
-                            "advanced": [
-                                {"focusMode": "continuous"},
-                                {"exposureMode": "continuous"},
-                                {"whiteBalanceMode": "continuous"},
-                            ],
+                            "advanced": camera_advanced_constraints(scan_focus_preset),
                         },
                         "audio": False,
                     },
@@ -718,8 +758,8 @@ with tabs[0]:
                         "style": {
                             "display": "block",
                             "width": "100%",
-                            "maxWidth": "340px",
-                            "maxHeight": "255px",
+                            "maxWidth": "100%",
+                            "maxHeight": "520px",
                             "objectFit": "contain",
                             "margin": "0 auto",
                             "borderRadius": "10px",
@@ -734,9 +774,16 @@ with tabs[0]:
                 elif not live_context.video_processor:
                     st.info("相機已啟動，正在準備預覽畫面…")
                 else:
+                    live_context.video_processor.set_controls(
+                        scan_zoom,
+                        camera_focus_overlay_label(scan_focus_preset),
+                    )
                     preview_width, preview_height = live_context.video_processor.latest_resolution
                     resolution_label = f"（擷取 {preview_width}×{preview_height}）" if preview_width else ""
-                    st.success(f"即時取景已顯示在上方紅框內，相機已要求連續自動對焦{resolution_label}。讓卡匣填滿紅框、文字清楚後再按掃描。")
+                    st.success(
+                        f"即時取景已加寬顯示，綠色框是掃描範圍；目前 {scan_zoom:.1f}x、"
+                        f"{scan_focus_preset}{resolution_label}。讓卡匣填滿綠框、文字清楚後再按掃描。"
+                    )
                     if st.button("🔎 掃描目前畫面", type="primary", use_container_width=True, key="scan_current_camera_frame"):
                         frame_bytes, frame_error, focus_score = live_context.video_processor.capture_current()
                         if frame_error:
@@ -1542,8 +1589,25 @@ with tabs[4]:
             elif not pokedex_camera_enabled:
                 st.info("點一次開啟相機，對準卡匣並等待清楚對焦後，再按掃描目前畫面。")
             else:
+                pokedex_scan_zoom = st.slider(
+                    "🔍 畫面拉近／拉遠",
+                    min_value=1.0,
+                    max_value=3.0,
+                    value=1.0,
+                    step=0.1,
+                    key="pokedex_scan_zoom",
+                    help="1.0x 為原始畫面；拉近後，掃描也會使用放大的乾淨影格。",
+                )
+                pokedex_focus_preset = st.select_slider(
+                    "🎯 對焦模式",
+                    options=list(CAMERA_FOCUS_PRESETS),
+                    value="連續自動對焦",
+                    key="pokedex_scan_focus_preset",
+                )
+                st.caption("手動焦距會要求手機鏡頭套用；若瀏覽器不支援，會自動保留連續對焦與清晰影格挑選。")
+                pokedex_focus_index = list(CAMERA_FOCUS_PRESETS).index(pokedex_focus_preset)
                 pokedex_live_context = webrtc_streamer(
-                    key="mezastar_pokedex_card_camera_v2106",
+                    key=f"mezastar_pokedex_card_camera_v2111_f{pokedex_focus_index}",
                     mode=WebRtcMode.SENDRECV,
                     rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},
                     media_stream_constraints={
@@ -1553,11 +1617,7 @@ with tabs[4]:
                             "height": {"min": 540, "ideal": 720},
                             "frameRate": {"min": 20, "ideal": 30, "max": 30},
                             "resizeMode": {"ideal": "none"},
-                            "advanced": [
-                                {"focusMode": "continuous"},
-                                {"exposureMode": "continuous"},
-                                {"whiteBalanceMode": "continuous"},
-                            ],
+                            "advanced": camera_advanced_constraints(pokedex_focus_preset),
                         },
                         "audio": False,
                     },
@@ -1572,8 +1632,8 @@ with tabs[4]:
                         "muted": True,
                         "playsInline": True,
                         "style": {
-                            "display": "block", "width": "100%", "maxWidth": "340px",
-                            "maxHeight": "255px", "objectFit": "contain", "margin": "0 auto",
+                            "display": "block", "width": "100%", "maxWidth": "100%",
+                            "maxHeight": "520px", "objectFit": "contain", "margin": "0 auto",
                             "borderRadius": "10px", "background": "#111111",
                             "border": "3px solid #26A69A", "boxSizing": "border-box",
                         },
@@ -1584,9 +1644,16 @@ with tabs[4]:
                 elif not pokedex_live_context.video_processor:
                     st.info("相機已啟動，正在準備預覽畫面…")
                 else:
+                    pokedex_live_context.video_processor.set_controls(
+                        pokedex_scan_zoom,
+                        camera_focus_overlay_label(pokedex_focus_preset),
+                    )
                     width, height = pokedex_live_context.video_processor.latest_resolution
                     resolution_label = f"（擷取 {width}×{height}）" if width else ""
-                    st.success(f"相機已連續自動對焦{resolution_label}。卡匣清楚後再按下方按鈕。")
+                    st.success(
+                        f"預覽已加寬，綠色框是掃描範圍；目前 {pokedex_scan_zoom:.1f}x、"
+                        f"{pokedex_focus_preset}{resolution_label}。卡匣清楚後再按下方按鈕。"
+                    )
                     if st.button(
                         "🔎 掃描目前畫面",
                         type="primary",
