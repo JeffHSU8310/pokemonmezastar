@@ -1,23 +1,21 @@
 """Pokemon Mezastar battle lineup optimizer."""
 
 from itertools import combinations, permutations
-from math import ceil
+from math import ceil, log2
 from typing import Any, Dict, List, Optional
 
 from mezastar_data import TYPES, calculate_type_effectiveness, get_weaknesses
 from recommendation_learning import learned_pair_adjustment, recommendation_learning_adjustments
 
 
-SPECIAL_MULTIPLIERS = {
-    "超極巨化": 1.15, "雙重衝刺": 1.15, "雙重攻擊": 1.15, "雙重招式": 1.15,
-    "太晶化": 1.12, "極巨化": 1.12, "超級進化": 1.12, "Mega進化": 1.12,
-    "Z招式": 1.12, "原始回歸": 1.12,
-    "連擊": 1.08, "連擊卡匣": 1.08, "組合招式": 1.08, "組合卡匣": 1.08,
-    "特別活動": 1.03, "無": 1.0,
-}
+MEZASTAR_EFFECTIVENESS_STEP = 1.6
+DEFENSE_OVERRIDE_MOVES = {"精神擊破", "精神衝擊", "神秘之劍"}
+COMBINED_MECHANICS = {"雙重招式", "雙重攻擊", "雙重衝刺", "組合招式", "組合卡匣"}
 ROLE_NAMES = ("主攻手（第1棒）", "爆發手（第2棒）", "收尾手（第3棒）")
-BOSS_HP_MULTIPLIER = 7.0
-BOSS_ENERGY_MULTIPLIER = 3.5
+# Removing unsupported STAB/star/mechanic re-multiplication changes the score scale.
+# Keep the existing 2-3 rotation Boss expectation calibrated to the new reference formula.
+BOSS_HP_MULTIPLIER = 4.0
+BOSS_ENERGY_MULTIPLIER = 2.0
 MIN_BOSS_KO_TURNS = 2
 
 
@@ -76,42 +74,103 @@ def _moves(card: Dict[str, Any]) -> List[Dict[str, Any]]:
     return normalized
 
 
-def _special_multiplier(card: Dict[str, Any]) -> float:
+def _mechanics(card: Dict[str, Any]) -> List[str]:
     mechanics = card.get("special_mechanics", [])
     if not isinstance(mechanics, list):
         mechanics = [mechanics]
-    return max((SPECIAL_MULTIPLIERS.get(str(m), 1.0) for m in mechanics + [card.get("special", "無")]), default=1.0)
+    return [str(value) for value in mechanics + [card.get("special", "無")] if value]
 
 
-def _quality_multiplier(card: Dict[str, Any]) -> float:
-    # Stats/damage already carry most of a card's strength; energy is only a tie-breaker.
-    energy = _number(card.get("energy"), 120.0)
-    return 1.0 + min(0.06, max(-0.04, (energy - 120.0) / 1500.0))
+def _mezastar_type_multiplier(move_type: str, defender_types: List[str]) -> float:
+    """Convert the main-series 2x step into Mezastar's 1.6x damage step."""
+    canonical = calculate_type_effectiveness(move_type, defender_types)
+    if canonical <= 0:
+        return 0.0
+    return round(MEZASTAR_EFFECTIVENESS_STEP ** log2(canonical), 4)
 
 
-def _star_multiplier(card: Dict[str, Any]) -> float:
-    """Give rarity a meaningful but non-dominating place in real damage."""
-    star = min(6.0, max(1.0, _number(card.get("star"), 5.0)))
-    return 1.0 + (star - 4.0) * 0.04
+def _fallback_mechanic_multiplier(card: Dict[str, Any], move: Dict[str, Any]) -> float:
+    """Use documented wheel bonuses only when card-face damage is unavailable."""
+    mechanics = set(_mechanics(card))
+    move_name = str(move.get("name", ""))
+    if card.get("has_z_move") or "Z招式" in mechanics:
+        return 1.4
+    if "極巨" in move_name or (
+        len(_moves(card)) == 1
+        and (card.get("has_dynamax") or card.get("has_gigantamax")
+             or mechanics.intersection({"極巨化", "超極巨化"}))
+    ):
+        return 1.2
+    return 1.0
+
+
+def _uses_combined_moves(card: Dict[str, Any]) -> bool:
+    return bool(
+        card.get("has_double_attack")
+        or card.get("has_combo_tag")
+        or set(_mechanics(card)).intersection(COMBINED_MECHANICS)
+    )
+
+
+def _mechanic_score(card: Dict[str, Any]) -> float:
+    mechanics = set(_mechanics(card))
+    if _uses_combined_moves(card):
+        return 100.0
+    if card.get("has_z_move") or "Z招式" in mechanics:
+        return 90.0
+    if card.get("has_dynamax") or card.get("has_gigantamax") or mechanics.intersection({"極巨化", "超極巨化"}):
+        return 85.0
+    if card.get("has_mega") or mechanics.intersection({"超級進化", "Mega進化", "原始回歸"}):
+        return 80.0
+    if any(value not in {"", "無", "常規卡匣"} for value in mechanics):
+        return 55.0
+    return 0.0
 
 
 def _move_expected_damage(move, attacker, defender, defender_types):
     category = move["category"]
     attack_key = "atk" if category == "物理" else "sp_atk"
-    defense_key = "def" if category == "物理" else "sp_def"
+    defense_key = "def" if category == "物理" or move["name"] in DEFENSE_OVERRIDE_MOVES else "sp_def"
     attack_stat = max(1.0, _number(attacker.get(attack_key), 100.0))
     defense_stat = max(1.0, _number((defender or {}).get(defense_key), 100.0))
-    raw_damage = move["damage"] or (move["power"] * attack_stat * 1.3)
-    type_mult = calculate_type_effectiveness(move["type"], defender_types)
-    stab_mult = 1.25 if move["type"] in attacker.get("types", []) else 1.0
-    defense_factor = min(1.6, max(0.55, 100.0 / defense_stat))
-    special_mult = _special_multiplier(attacker)
-    star_mult = _star_multiplier(attacker)
-    expected = (raw_damage / 100.0 * move["accuracy"] * type_mult * stab_mult
-                * defense_factor * special_mult * star_mult * _quality_multiplier(attacker))
+    has_card_face_damage = move["damage"] > 0
+    mechanic_mult = 1.0 if has_card_face_damage else _fallback_mechanic_multiplier(attacker, move)
+    raw_damage = move["damage"] if has_card_face_damage else move["power"] * attack_stat * mechanic_mult
+    canonical_type_mult = calculate_type_effectiveness(move["type"], defender_types)
+    type_mult = _mezastar_type_multiplier(move["type"], defender_types)
+    defense_factor = 100.0 / defense_stat
+    damage_before_accuracy = raw_damage * type_mult / defense_stat
+    expected = damage_before_accuracy * move["accuracy"]
     return {**move, "attack_stat": attack_stat, "defense_stat": defense_stat,
-            "type_mult": type_mult, "stab_mult": stab_mult, "special_mult": special_mult,
-            "star_mult": star_mult, "defense_factor": defense_factor, "expected_damage": expected}
+            "defense_key": defense_key, "canonical_type_mult": canonical_type_mult,
+            "type_mult": type_mult, "stab_mult": 1.0, "special_mult": mechanic_mult,
+            "star_mult": 1.0, "defense_factor": defense_factor, "base_damage": raw_damage,
+            "damage_source": "card_face" if has_card_face_damage else "estimated",
+            "damage_before_accuracy": damage_before_accuracy, "expected_damage": expected}
+
+
+def _best_attack_result(card, evaluated_moves):
+    """Sum separately-evaluated attacks only for double/combo cards."""
+    primary = max(evaluated_moves, key=lambda item: item["expected_damage"])
+    if not _uses_combined_moves(card) or len(evaluated_moves) < 2:
+        return {**primary, "is_combined_move": False, "move_components": [primary]}
+
+    combined = dict(primary)
+    combined["name"] = "＋".join(move["name"] for move in evaluated_moves)
+    combined["type"] = "＋".join(dict.fromkeys(move["type"] for move in evaluated_moves))
+    categories = list(dict.fromkeys(move["category"] for move in evaluated_moves))
+    combined["category"] = categories[0] if len(categories) == 1 else "複合"
+    combined["power"] = sum(move["power"] for move in evaluated_moves)
+    combined["base_damage"] = sum(move["base_damage"] for move in evaluated_moves)
+    combined["expected_damage"] = sum(move["expected_damage"] for move in evaluated_moves)
+    combined["damage_before_accuracy"] = sum(move["damage_before_accuracy"] for move in evaluated_moves)
+    if combined["damage_before_accuracy"] > 0:
+        combined["accuracy"] = combined["expected_damage"] / combined["damage_before_accuracy"]
+    combined["type_mult"] = max(move["type_mult"] for move in evaluated_moves)
+    combined["canonical_type_mult"] = max(move["canonical_type_mult"] for move in evaluated_moves)
+    combined["is_combined_move"] = True
+    combined["move_components"] = evaluated_moves
+    return combined
 
 
 def _boss_moves(boss_card, boss_types):
@@ -129,7 +188,7 @@ def _incoming_damage(card, boss_card, boss_types):
                              "energy": 120, "special": "無"}
     estimates = [_move_expected_damage(move, attacker, card, card.get("types", []) or ["一般"])
                  for move in _boss_moves(boss_card, boss_types)]
-    return max(estimates, key=lambda item: item["expected_damage"])
+    return _best_attack_result(attacker, estimates)
 
 
 def _estimated_boss_durability(boss_card: Optional[Dict[str, Any]]) -> float:
@@ -153,7 +212,7 @@ def evaluate_card_performance(card, boss_types, boss_move_type=None, boss_card=N
     if effective_boss is not None:
         effective_boss["types"] = boss_types
     evaluated_moves = [_move_expected_damage(move, card, effective_boss, boss_types) for move in _moves(card)]
-    best_move = max(evaluated_moves, key=lambda item: item["expected_damage"])
+    best_move = _best_attack_result(card, evaluated_moves)
     incoming_types = [boss_move_type] if boss_move_type and not effective_boss else boss_types
     incoming = _incoming_damage(card, effective_boss, incoming_types)
     hp = max(1.0, _number(card.get("hp"), 100.0))
@@ -162,21 +221,35 @@ def evaluate_card_performance(card, boss_types, boss_move_type=None, boss_card=N
     boss_durability = _estimated_boss_durability(effective_boss)
 
     tags = []
-    if best_move["type_mult"] >= 4:
+    if best_move["type_mult"] >= 2.56:
         tags.append("💥 4倍極限剋制")
-    elif best_move["type_mult"] >= 2:
+    elif best_move["type_mult"] >= 1.6:
         tags.append("🎯 2倍弱點剋制")
-    elif best_move["type_mult"] <= 0.5:
+    elif best_move["type_mult"] <= 0.625:
         tags.append("⚠️ 屬性被抗")
+    if best_move["is_combined_move"]:
+        tags.append("💫 雙招分算後相加")
     if best_move["accuracy"] < 0.85:
         tags.append("🎲 招式命中率偏低")
     mechanics = card.get("special_mechanics", [])
     if isinstance(mechanics, list):
         tags.extend(f"✨ {m}" for m in mechanics if m and m != "無")
-    if incoming["type_mult"] <= 0.5:
+    if incoming["type_mult"] <= 0.625:
         tags.append("🛡️ 絕佳抗性防守")
-    elif incoming["type_mult"] >= 2:
+    elif incoming["type_mult"] >= 1.6:
         tags.append("⚠️ 易被Boss反擊")
+
+    move_components = [
+        {
+            "name": move["name"], "type": move["type"], "category": move["category"],
+            "power": move["power"], "accuracy": round(move["accuracy"] * 100, 1),
+            "attack_stat": move["attack_stat"], "defense_stat": move["defense_stat"],
+            "defense_key": move["defense_key"], "base_damage": round(move["base_damage"], 1),
+            "type_mult": move["type_mult"], "expected_damage": round(move["expected_damage"], 1),
+            "damage_source": move["damage_source"],
+        }
+        for move in best_move["move_components"]
+    ]
 
     return {
         "card": card, "best_move_name": best_move["name"], "best_move_type": best_move["type"],
@@ -184,7 +257,9 @@ def evaluate_card_performance(card, boss_types, boss_move_type=None, boss_card=N
         "move_accuracy": round(best_move["accuracy"] * 100, 1), "attack_stat": best_move["attack_stat"],
         "boss_defense_stat": best_move["defense_stat"], "type_mult": best_move["type_mult"],
         "stab_mult": best_move["stab_mult"], "special_mult": best_move["special_mult"],
-        "star_mult": round(best_move["star_mult"], 2),
+        "star_mult": round(best_move["star_mult"], 2), "base_damage": round(best_move["base_damage"], 1),
+        "defense_key": best_move["defense_key"], "damage_source": best_move["damage_source"],
+        "is_combined_move": best_move["is_combined_move"], "move_components": move_components,
         "expected_damage": round(best_move["expected_damage"], 1),
         "damage_score": round(best_move["expected_damage"], 1),
         # 單張卡匣不顯示一回合擊退 Boss；Boss 耐久已換算到與傷害評分相近的尺度。
@@ -197,7 +272,7 @@ def evaluate_card_performance(card, boss_types, boss_move_type=None, boss_card=N
         "survival_hits": round(survival_hits, 2), "survival_score": round(survival_score, 1),
         "energy": _number(card.get("energy"), 100.0), "speed": _number(card.get("spd"), 100.0),
         "reliability_score": round(best_move["accuracy"] * 100, 1),
-        "mechanic_score": round(min(100.0, (best_move["special_mult"] - 1.0) / 0.15 * 100.0), 1),
+        "mechanic_score": _mechanic_score(card),
         "tags": list(dict.fromkeys(tags)),
     }
 
@@ -233,29 +308,33 @@ def _assign_scores(evaluated, boss_card):
     offense = _normalized([item["expected_damage"] for item in evaluated])
     survival = _normalized([item["survival_score"] for item in evaluated])
     speeds = _normalized([item["speed"] for item in evaluated])
+    energies = _normalized([item["energy"] for item in evaluated])
     boss_speed = _number((boss_card or {}).get("spd"), 120.0)
     for index, item in enumerate(evaluated):
         speed_probability = item["speed"] / max(1.0, item["speed"] + boss_speed) * 100.0
         speed_score = (speeds[index] + speed_probability) / 2.0
         reliability, mechanic = item["reliability_score"], item["mechanic_score"]
-        type_score = min(100.0, item["type_mult"] / 4.0 * 100.0)
+        rarity_score = min(100.0, max(0.0, _number(item["card"].get("star"), 1.0) / 6.0 * 100.0))
+        type_score = min(100.0, item["type_mult"] / 2.56 * 100.0)
         role_scores = {
             ROLE_NAMES[0]: .72 * offense[index] + .10 * speed_score + .10 * reliability + .08 * survival[index],
             ROLE_NAMES[1]: .70 * offense[index] + .12 * mechanic + .10 * type_score + .08 * survival[index],
             ROLE_NAMES[2]: .55 * offense[index] + .25 * survival[index] + .12 * reliability + .08 * speed_score,
         }
         item["offense_score"], item["speed_score"] = round(offense[index], 1), round(speed_score, 1)
+        item["rarity_score"], item["energy_score"] = round(rarity_score, 1), round(energies[index], 1)
         item["role_scores"] = {key: round(value, 1) for key, value in role_scores.items()}
-        item["overall_score"] = round(.70 * offense[index] + .12 * survival[index] + .05 * speed_score
-                                      + .08 * reliability + .05 * mechanic, 1)
+        item["overall_score"] = round(.66 * offense[index] + .12 * survival[index] + .05 * speed_score
+                                      + .07 * reliability + .04 * mechanic + .04 * rarity_score
+                                      + .02 * energies[index], 1)
 
 
 def _weakness_score(item):
     """Reward counters without letting a very weak counter win automatically."""
     multiplier = float(item.get("type_mult", 1.0))
-    if multiplier >= 4.0:
+    if multiplier >= 2.56:
         return 100.0
-    if multiplier >= 2.0:
+    if multiplier >= 1.6:
         return 75.0
     if multiplier > 1.0:
         return 60.0
@@ -316,8 +395,12 @@ def _optimize_three_card_team(evaluated, pair_adjustments=None):
             role_total = sum(ordered[i]["role_scores"][ROLE_NAMES[i]] for i in range(3)) / 3.0
             offense_total = sum(item["offense_score"] for item in ordered) / 3.0
             weakness_total = sum(item["weakness_score"] for item in ordered) / 3.0
+            quality_total = sum(
+                item["rarity_score"] * 0.67 + item["energy_score"] * 0.33 for item in ordered
+            ) / 3.0
             applied_synergy = synergy * 0.20
-            candidate_score = offense_total * 0.78 + weakness_total * 0.14 + role_total * 0.08 + applied_synergy
+            candidate_score = (offense_total * 0.76 + weakness_total * 0.14
+                               + role_total * 0.08 + quality_total * 0.02 + applied_synergy)
             candidate_priority = (team_damage, candidate_score)
             if best_priority is None or candidate_priority > best_priority:
                 best_team, best_priority = ordered, candidate_priority

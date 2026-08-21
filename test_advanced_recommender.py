@@ -115,14 +115,116 @@ class TestAdvancedRecommender(unittest.TestCase):
         self.assertIn("唯一剋制", {item["card"]["name"] for item in result["top_team"]})
         self.assertEqual(sum(item["type_mult"] > 1.0 for item in result["top_team"]), 1)
 
-    def test_star_rating_contributes_to_expected_damage(self):
+    def test_star_rating_does_not_duplicate_card_face_stats(self):
         low_star = card("二星", atk=150, power=120)
         high_star = card("六星", atk=150, power=120)
         low_star["star"], high_star["star"] = 2, 6
         low = evaluate_card_performance(low_star, ["一般"])
         high = evaluate_card_performance(high_star, ["一般"])
-        self.assertGreater(high["star_mult"], low["star_mult"])
-        self.assertGreater(high["expected_damage"], low["expected_damage"])
+        self.assertEqual(high["star_mult"], 1.0)
+        self.assertEqual(high["expected_damage"], low["expected_damage"])
+
+    def test_star_rating_remains_a_tiebreaker_not_a_damage_multiplier(self):
+        low_star = card("二星", atk=150, power=120)
+        high_star = card("六星", atk=150, power=120)
+        low_star["star"], high_star["star"] = 2, 6
+        result = recommend_best_lineup(
+            candidate_cards=[low_star, high_star], boss_types=["一般"], team_size=1
+        )
+        self.assertEqual(result["top_team"][0]["card"]["name"], "六星")
+
+    def test_mezastar_type_effectiveness_uses_1_point_6_steps(self):
+        attacker = card("火打手", atk=100, power=100, move_type="火")
+        single = evaluate_card_performance(attacker, ["草"])
+        double = evaluate_card_performance(attacker, ["草", "鋼"])
+        resisted = evaluate_card_performance(attacker, ["水"])
+        self.assertEqual(single["type_mult"], 1.6)
+        self.assertEqual(double["type_mult"], 2.56)
+        self.assertEqual(resisted["type_mult"], 0.625)
+
+    def test_damage_divides_directly_by_the_matching_boss_defense(self):
+        attacker = card("物理打手", atk=100, power=100)
+        high_defense = card("高防Boss", defense=200)
+        low_defense = card("低防Boss", defense=25)
+        high_result = evaluate_card_performance(attacker, ["一般"], boss_card=high_defense)
+        low_result = evaluate_card_performance(attacker, ["一般"], boss_card=low_defense)
+        self.assertEqual(high_result["expected_damage"], 50.0)
+        self.assertEqual(low_result["expected_damage"], 400.0)
+
+    def test_card_face_damage_is_not_multiplied_by_hidden_bonuses_again(self):
+        attacker = card("卡面傷害", atk=100, power=100, special="Z招式")
+        attacker["star"], attacker["energy"] = 6, 200
+        attacker["has_z_move"] = True
+        attacker["special_mechanics"] = ["Z招式"]
+        attacker["move_damage"] = 12000
+        result = evaluate_card_performance(attacker, ["一般"])
+        self.assertEqual(result["base_damage"], 12000)
+        self.assertEqual(result["special_mult"], 1.0)
+        self.assertEqual(result["expected_damage"], 120.0)
+
+    def test_missing_z_move_damage_uses_documented_wheel_bonus(self):
+        attacker = card("Z推算", atk=100, power=100, special="Z招式")
+        attacker["has_z_move"] = True
+        attacker["special_mechanics"] = ["Z招式"]
+        result = evaluate_card_performance(attacker, ["一般"])
+        self.assertEqual(result["damage_source"], "estimated")
+        self.assertEqual(result["special_mult"], 1.4)
+        self.assertEqual(result["expected_damage"], 140.0)
+
+    def test_special_defense_override_moves_target_physical_defense(self):
+        attacker = card("特殊例外", atk=20, sp_atk=200, power=100, category="特殊")
+        attacker["move_name"] = "精神衝擊"
+        boss = card("防禦差Boss", defense=200, sp_def=50)
+        result = evaluate_card_performance(attacker, ["一般"], boss_card=boss)
+        self.assertEqual(result["defense_key"], "def")
+        self.assertEqual(result["boss_defense_stat"], 200)
+        self.assertEqual(result["expected_damage"], 100.0)
+
+    def test_double_moves_apply_effectiveness_separately_then_sum(self):
+        attacker = card("雙招", atk=100, sp_atk=100, power=100, move_type="火")
+        attacker["has_double_attack"] = True
+        attacker["special"] = "雙重招式"
+        attacker["special_mechanics"] = ["雙重招式", "雙重攻擊"]
+        attacker["moves"] = [
+            {"name": "雙招招式", "type": "火", "category": "物理", "power": 100,
+             "accuracy": 100, "damage": 10000},
+            {"name": "水副招", "type": "水", "category": "特殊", "power": 100,
+             "accuracy": 100, "damage": 10000},
+        ]
+        result = evaluate_card_performance(attacker, ["草"])
+        self.assertTrue(result["is_combined_move"])
+        self.assertEqual([move["type_mult"] for move in result["move_components"]], [1.6, 0.625])
+        self.assertEqual(result["expected_damage"], 222.5)
+
+    def test_double_move_boss_sums_incoming_damage_too(self):
+        defender = card("防守方", defense=100, sp_def=100)
+        boss = card("雙招Boss", atk=100, sp_atk=100)
+        boss["has_double_attack"] = True
+        boss["special"] = "雙重招式"
+        boss["special_mechanics"] = ["雙重招式"]
+        boss["moves"] = [
+            {"name": "雙招Boss招式", "type": "一般", "category": "物理", "power": 100,
+             "accuracy": 100, "damage": 10000},
+            {"name": "特殊副招", "type": "一般", "category": "特殊", "power": 100,
+             "accuracy": 100, "damage": 10000},
+        ]
+        result = evaluate_card_performance(defender, ["一般"], boss_card=boss)
+        self.assertEqual(result["incoming_damage"], 200.0)
+
+    def test_regular_and_gigantamax_move_options_are_not_summed(self):
+        attacker = card("極巨卡", atk=100, power=100, move_type="火", special="超極巨化")
+        attacker["has_gigantamax"] = True
+        attacker["special_mechanics"] = ["超極巨化"]
+        attacker["moves"] = [
+            {"name": "極巨卡招式", "type": "火", "category": "物理", "power": 100,
+             "accuracy": 100, "damage": 10000},
+            {"name": "超極巨火焰", "type": "火", "category": "物理", "power": 130,
+             "accuracy": 100, "damage": 15600},
+        ]
+        result = evaluate_card_performance(attacker, ["一般"])
+        self.assertFalse(result["is_combined_move"])
+        self.assertEqual(result["best_move_name"], "超極巨火焰")
+        self.assertEqual(result["expected_damage"], 156.0)
 
     def test_team_ko_estimate_uses_combined_three_card_damage(self):
         candidates = [
@@ -152,7 +254,7 @@ class TestAdvancedRecommender(unittest.TestCase):
         boss["star"], boss["energy"] = 6, 206
         result = recommend_best_lineup(candidate_cards=candidates, boss_types=["一般"], boss_card=boss)
         self.assertEqual(result["team_expected_ko_turns"], 3)
-        self.assertGreater(result["boss_durability"], boss["hp"] * 10)
+        self.assertGreater(result["boss_durability"], boss["hp"] * 7)
 
     def test_boss_ko_estimate_uses_battle_scale_and_never_one_turn(self):
         attacker = card("強力打手", atk=260, power=180)
