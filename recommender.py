@@ -242,25 +242,69 @@ def _assign_scores(evaluated, boss_card):
                                       + .08 * reliability + .05 * mechanic, 1)
 
 
+def _weakness_priority(item):
+    """Sort counters before every neutral/resisted option, then compare strength."""
+    multiplier = float(item.get("type_mult", 1.0))
+    return (multiplier > 1.0, multiplier)
+
+
+def _team_output_estimate(selected):
+    """Estimate complete-team rotations and individual attacks to defeat the Boss."""
+    team_damage = round(sum(item["expected_damage"] for item in selected), 1)
+    boss_durability = round(max((item["boss_durability"] for item in selected), default=0.0), 1)
+    if not selected:
+        return team_damage, boss_durability, 0, 0
+
+    complete_rotations = int(boss_durability // max(1.0, team_damage))
+    accumulated = complete_rotations * team_damage
+    attack_count = complete_rotations * len(selected)
+    if accumulated < boss_durability:
+        for item in selected:
+            accumulated += item["expected_damage"]
+            attack_count += 1
+            if accumulated >= boss_durability:
+                break
+    rotation_count = max(1, ceil(attack_count / len(selected)))
+    return team_damage, boss_durability, rotation_count, attack_count
+
+
 def _optimize_three_card_team(evaluated, pair_adjustments=None):
-    shortlist = sorted(evaluated, key=lambda item: max(item["overall_score"], *item["role_scores"].values()),
-                       reverse=True)[:24]
-    best_team, best_score, best_synergy = None, float("-inf"), 0.0
+    # Boss 弱點剋制是硬性第一順位。先保留剋制倍率最高的候選，再於相同
+    # 剋制層級內比較傷害、角色分工、生存與機制，避免高面板的中性招式
+    # 把火／地面等真正相剋招式擠出候選池。
+    shortlist = sorted(
+        evaluated,
+        key=lambda item: (
+            *_weakness_priority(item),
+            item["expected_damage"],
+            max(item["overall_score"], *item["role_scores"].values()),
+        ),
+        reverse=True,
+    )[:24]
+    best_team, best_priority, best_score, best_synergy = None, None, float("-inf"), 0.0
     for group in combinations(shortlist, 3):
         if len({item["card"].get("name") for item in group}) < 3:
             continue
         synergy = _team_synergy(list(group), pair_adjustments)
+        counter_count = sum(item["type_mult"] > 1.0 for item in group)
+        counter_strength = sum(item["type_mult"] for item in group if item["type_mult"] > 1.0)
         for ordered in permutations(group):
             role_total = sum(ordered[i]["role_scores"][ROLE_NAMES[i]] for i in range(3)) / 3.0
             offense_total = sum(item["offense_score"] for item in ordered) / 3.0
-            # 角色分工仍決定出場順序，但隊伍入選以輸出為主；組合相性只做
+            # 弱點剋制層級相同時，角色分工與輸出決定排序；組合相性只做
             # 小幅微調，避免為了防守互補換入傷害明顯較低的卡匣。
             applied_synergy = synergy * 0.35
             candidate_score = role_total * 0.75 + offense_total * 0.25 + applied_synergy
-            if candidate_score > best_score:
-                best_team, best_score, best_synergy = ordered, candidate_score, applied_synergy
+            candidate_priority = (counter_count, counter_strength, candidate_score)
+            if best_priority is None or candidate_priority > best_priority:
+                best_team, best_priority = ordered, candidate_priority
+                best_score, best_synergy = candidate_score, applied_synergy
     if best_team is None:
-        best_team = tuple(sorted(evaluated, key=lambda item: item["overall_score"], reverse=True)[:3])
+        best_team = tuple(sorted(
+            evaluated,
+            key=lambda item: (*_weakness_priority(item), item["overall_score"]),
+            reverse=True,
+        )[:3])
         best_score = sum(item["overall_score"] for item in best_team) / max(1, len(best_team))
     selected = []
     for index, item in enumerate(best_team):
@@ -297,7 +341,10 @@ def recommend_best_lineup(user_cards=None, boss_name="未知目標", boss_types=
             item["tags"].append("🧠 實戰勝率加權")
         elif adjustment <= -0.5:
             item["tags"].append("🧠 實戰回饋降權")
-    evaluated.sort(key=lambda item: item["overall_score"], reverse=True)
+    evaluated.sort(
+        key=lambda item: (*_weakness_priority(item), item["overall_score"]),
+        reverse=True,
+    )
     if team_size == 3 and len(evaluated) >= 3:
         selected, team_score, team_synergy = _optimize_three_card_team(
             evaluated, learning["pair_adjustments"]
@@ -312,13 +359,20 @@ def recommend_best_lineup(user_cards=None, boss_name="未知目標", boss_types=
     team_learning_adjustment = learned_pair_adjustment(
         [item["card"].get("id") for item in selected], learning["pair_adjustments"]
     )
+    team_expected_damage, boss_durability, team_expected_ko_turns, team_expected_ko_attacks = (
+        _team_output_estimate(selected)
+    )
 
     weaknesses = get_weaknesses(boss_types)
     tactics = [f"🎯 **Boss 弱點屬性**：{'、'.join(weaknesses) if weaknesses else '無明顯弱點'}"]
     for item in selected:
         tactics.append(f"**{item['assigned_role']}**：**{item['card'].get('name', '未知')}** 使用「{item['best_move_name']}」"
                        f"（{item['best_move_type']}／{item['best_move_category']}，命中 {item['move_accuracy']:g}%），"
-                       f"期望傷害 {item['expected_damage']:g}、預估 {item['expected_ko_turns']} 回合擊倒。")
+                       f"本輪期望傷害貢獻 {item['expected_damage']:g}。")
+    tactics.append(
+        f"⚔️ **整隊擊退估算**：三張卡每輪各攻擊一次，合計期望傷害 {team_expected_damage:g}，"
+        f"預估 {team_expected_ko_turns} 輪、約 {team_expected_ko_attacks} 次出招擊倒 Boss。"
+    )
     tactics.append(
         f"🧩 **陣容總評**：{team_score:g} 分（組合加成 {team_synergy:+g}，"
         f"實戰學習 {team_learning_adjustment:+g}）"
@@ -327,6 +381,10 @@ def recommend_best_lineup(user_cards=None, boss_name="未知目標", boss_types=
             "boss_weaknesses": weaknesses, "boss_card": boss_card,
             "recommended_team": selected, "top_team": selected, "recommendations": evaluated,
             "all_ranked": evaluated, "team_score": team_score, "team_synergy": team_synergy,
+            "team_expected_damage": team_expected_damage,
+            "team_expected_ko_turns": team_expected_ko_turns,
+            "team_expected_ko_attacks": team_expected_ko_attacks,
+            "boss_durability": boss_durability,
             "team_learning_adjustment": round(team_learning_adjustment, 1),
             "matching_feedback_count": learning["matching_feedback_count"],
             "strategy": "\n\n".join(tactics), "tactics": tactics}
