@@ -1,6 +1,7 @@
 """Focused tests for the battle optimizer; these tests never touch user data."""
 
 import unittest
+from math import ceil
 
 from recommender import evaluate_card_performance, recommend_best_lineup
 
@@ -70,6 +71,40 @@ class TestAdvancedRecommender(unittest.TestCase):
         result = recommend_best_lineup(candidate_cards=candidates, boss_types=["一般"])
         selected_names = {item["card"]["name"] for item in result["top_team"]}
         self.assertEqual(selected_names, {"高輸出A", "高輸出B", "高輸出C"})
+
+    def test_boss_weakness_counters_are_selected_before_neutral_stats(self):
+        candidates = [
+            card("火系剋制A", atk=120, power=90, move_type="火"),
+            card("火系剋制B", atk=115, power=88, move_type="火"),
+            card("火系剋制C", atk=110, power=86, move_type="火"),
+            card("高面板中性A", atk=300, power=190, move_type="一般"),
+            card("高面板中性B", atk=290, power=185, move_type="一般"),
+            card("高面板中性C", atk=280, power=180, move_type="一般"),
+        ]
+        result = recommend_best_lineup(candidate_cards=candidates, boss_types=["草"])
+        self.assertEqual(
+            {item["card"]["name"] for item in result["top_team"]},
+            {"火系剋制A", "火系剋制B", "火系剋制C"},
+        )
+        self.assertTrue(all(item["type_mult"] > 1.0 for item in result["top_team"]))
+
+    def test_team_ko_estimate_uses_combined_three_card_damage(self):
+        candidates = [
+            card("隊員A", atk=150, power=110),
+            card("隊員B", atk=145, power=108),
+            card("隊員C", atk=140, power=106),
+        ]
+        boss = card("六星Boss", defense=120, sp_def=120, hp=280)
+        boss["star"], boss["energy"] = 6, 220
+        result = recommend_best_lineup(candidate_cards=candidates, boss_types=["一般"], boss_card=boss)
+        combined = round(sum(item["expected_damage"] for item in result["top_team"]), 1)
+        self.assertEqual(result["team_expected_damage"], combined)
+        self.assertEqual(result["team_expected_ko_turns"], ceil(result["boss_durability"] / combined))
+        self.assertGreaterEqual(result["team_expected_ko_attacks"], result["team_expected_ko_turns"])
+        self.assertLessEqual(result["team_expected_ko_attacks"], result["team_expected_ko_turns"] * 3)
+        self.assertLess(result["team_expected_ko_turns"], min(
+            item["expected_ko_turns"] for item in result["top_team"]
+        ))
 
     def test_boss_ko_estimate_uses_battle_scale_and_never_one_turn(self):
         attacker = card("強力打手", atk=260, power=180)

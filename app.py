@@ -878,14 +878,19 @@ with tabs[0]:
             default_t1 = picked_c["types"][0] if len(picked_c["types"]) > 0 else "一般"
             default_t2 = picked_c["types"][1] if len(picked_c["types"]) > 1 else "無"
 
+    # 正式 Boss 以卡匣 ID 隔離屬性選單狀態；否則先搜尋同名自訂 Boss
+    # 再選正式卡匣時，Streamlit 會沿用自訂 Boss 的舊屬性。
+    boss_type_state_key = str(boss_card.get("id")) if boss_card else f"custom_{boss_name}"
     col_t1, col_t2 = st.columns(2)
     with col_t1:
         type_options = ["無"] + TYPES
         t1_idx = TYPES.index(default_t1) if default_t1 in TYPES else 0
-        boss_type1 = st.selectbox("第一屬性:", options=TYPES, index=t1_idx, key=f"battle_type1_{camera_boss_id or boss_name}")
+        boss_type1 = st.selectbox("第一屬性:", options=TYPES, index=t1_idx,
+                                  key=f"battle_type1_{boss_type_state_key}")
     with col_t2:
         t2_idx = type_options.index(default_t2) if default_t2 in type_options else 0
-        boss_type2 = st.selectbox("第二屬性:", options=type_options, index=t2_idx, key=f"battle_type2_{camera_boss_id or boss_name}")
+        boss_type2 = st.selectbox("第二屬性:", options=type_options, index=t2_idx,
+                                  key=f"battle_type2_{boss_type_state_key}")
 
     # 候選卡匣來源選擇 (手機單選按鈕)
     search_scope = st.radio("出戰卡匣來源:", options=["從我的卡匣庫 (實體卡)", "從全卡匣圖鑑庫 (全卡)"], horizontal=True)
@@ -944,9 +949,14 @@ with tabs[0]:
             f"組合加成 {result.get('team_synergy', 0):+g}｜"
             f"🧠 相同屬性實戰回饋 {result.get('matching_feedback_count', 0)} 筆"
         )
+        st.markdown(
+            f"**⚔️ 整隊合計期望傷害 {result.get('team_expected_damage', 0):g}｜"
+            f"預估 {result.get('team_expected_ko_turns', 0)} 輪"
+            f"（約 {result.get('team_expected_ko_attacks', 0)} 次出招）擊倒 Boss**"
+        )
         st.caption(
-            "評分以期望傷害為主（綜合評分占 70%），再考量生存、命中、速度與特殊機制。"
-            "擊退回合以 Boss 的 HP、能量及星級換算戰鬥耐久，代表單卡持續輸出的保守估算，最少為 2 回合。"
+            "先以 Boss 的相剋弱點屬性決定候選，再於相同剋制層級比較期望傷害、生存、命中、速度與特殊機制。"
+            "整隊擊退回合以三張卡每輪各完成一次攻擊計算。"
         )
         
         # 針對 6.1" 手機直立螢幕：每張推薦卡片垂直排列，資訊高度整合且好讀
@@ -955,7 +965,6 @@ with tabs[0]:
         for idx, rec in enumerate(result["recommended_team"]):
             c = rec["card"]
             c_id = c["id"]
-            displayed_ko_turns = max(2, int(rec.get("expected_ko_turns", 2) or 2))
             sec_move = c.get("second_move", {})
             sec_move_html = f"<div style='font-size:0.75rem; color:#666;'>副招: {sec_move.get('name')} ({sec_move.get('type')}) [威力:{sec_move.get('power')}]</div>" if sec_move else ""
             tags_html = ' '.join([f'<span class="tag-badge">{t}</span>' for t in rec['tags']])
@@ -987,7 +996,7 @@ with tabs[0]:
                         <span>⚡ <b>期望傷害:</b> <b style="color:#1E88E5;">{rec['expected_damage']}</b>（命中 {rec['move_accuracy']:g}%）</span>
                         <span style="color:#555;">🛡️ 可承受: {survival_label}</span>
                     </div>
-                    <div style="font-size:0.75rem; color:#555; margin-top:2px;">角色評分 {rec['role_score']}｜單卡持續輸出預估 {displayed_ko_turns} 回合擊倒 Boss</div>
+                    <div style="font-size:0.75rem; color:#555; margin-top:2px;">角色評分 {rec['role_score']}｜本卡每輪傷害貢獻 {rec['expected_damage']}</div>
                 </div>
 
                 <div class="stat-compact">
