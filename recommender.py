@@ -17,6 +17,7 @@ ROLE_NAMES = ("主攻手（第1棒）", "爆發手（第2棒）", "收尾手（�
 BOSS_HP_MULTIPLIER = 4.0
 BOSS_ENERGY_MULTIPLIER = 2.0
 MIN_BOSS_KO_TURNS = 2
+RECOMMENDATION_EXCLUDED_CARD_IDS = frozenset({"SP-006", "SP-007", "SP-008"})
 
 
 def _number(value: Any, default: float) -> float:
@@ -37,6 +38,14 @@ def filter_candidate_cards_by_stars(cards: List[Dict[str, Any]], selected_stars)
     return [
         card for card in cards
         if int(_number(card.get("star"), -1)) in allowed_stars
+    ]
+
+
+def filter_recommendation_exclusions(cards: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """Exclude temporarily disabled cards from every recommendation result."""
+    return [
+        card for card in cards
+        if str(card.get("id", "")).strip().upper() not in RECOMMENDATION_EXCLUDED_CARD_IDS
     ]
 
 
@@ -426,10 +435,15 @@ def _optimize_three_card_team(evaluated, pair_adjustments=None):
 def recommend_best_lineup(user_cards=None, boss_name="未知目標", boss_types=None, boss_move_type=None,
                           team_size=3, candidate_cards=None, boss_card=None, learning_path=None):
     """Recommend a role-aware team against the selected Boss."""
-    cards_pool = user_cards if user_cards is not None else (candidate_cards or [])
+    source_cards = user_cards if user_cards is not None else (candidate_cards or [])
+    cards_pool = filter_recommendation_exclusions(source_cards)
     boss_types = boss_types or ["一般"]
     if not cards_pool:
-        message = "您目前尚未在「我的卡匣庫存」中標記擁有的卡匣，請先勾選擁有的卡匣！"
+        message = (
+            "目前可用的候選卡匣皆已暫停推薦，請調整卡匣來源或星級篩選。"
+            if source_cards else
+            "您目前尚未在「我的卡匣庫存」中標記擁有的卡匣，請先勾選擁有的卡匣！"
+        )
         return {"success": False, "boss_name": boss_name, "boss_types": boss_types,
                 "recommended_team": [], "top_team": [], "recommendations": [],
                 "strategy": message, "tactics": [message], "message": message}

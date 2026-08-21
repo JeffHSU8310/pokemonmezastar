@@ -4,8 +4,10 @@ import unittest
 from math import ceil
 
 from recommender import (
+    RECOMMENDATION_EXCLUDED_CARD_IDS,
     evaluate_card_performance,
     filter_candidate_cards_by_stars,
+    filter_recommendation_exclusions,
     recommend_best_lineup,
 )
 
@@ -24,6 +26,33 @@ def card(name, *, atk=100, sp_atk=100, defense=100, sp_def=100, speed=100,
 
 
 class TestAdvancedRecommender(unittest.TestCase):
+    def test_temporarily_disabled_cards_never_enter_recommendations(self):
+        excluded = [card(card_id, atk=999, power=999) for card_id in sorted(RECOMMENDATION_EXCLUDED_CARD_IDS)]
+        eligible = [card("一般A"), card("一般B"), card("一般C")]
+        candidates = excluded + eligible
+
+        result = recommend_best_lineup(candidate_cards=candidates, boss_types=["一般"])
+
+        self.assertTrue(result["success"])
+        self.assertEqual(
+            {item["card"]["id"] for item in result["top_team"]},
+            {"一般A", "一般B", "一般C"},
+        )
+        self.assertTrue(
+            RECOMMENDATION_EXCLUDED_CARD_IDS.isdisjoint(
+                item["card"]["id"] for item in result["all_ranked"]
+            )
+        )
+        self.assertEqual(len(candidates), 6)
+
+    def test_exclusion_filter_normalizes_card_id_and_handles_all_excluded(self):
+        disabled = card(" sp-006 ")
+        self.assertEqual(filter_recommendation_exclusions([disabled]), [])
+        result = recommend_best_lineup(candidate_cards=[disabled], boss_types=["一般"])
+        self.assertFalse(result["success"])
+        self.assertEqual(result["top_team"], [])
+        self.assertIn("暫停推薦", result["message"])
+
     def test_lineup_star_filter_applies_to_any_candidate_source(self):
         candidates = [card("六星"), card("五星"), card("四星")]
         candidates[0]["star"], candidates[1]["star"], candidates[2]["star"] = 6, 5, 4
