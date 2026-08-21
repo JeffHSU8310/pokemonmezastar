@@ -16,6 +16,9 @@ SPECIAL_MULTIPLIERS = {
     "特別活動": 1.03, "無": 1.0,
 }
 ROLE_NAMES = ("主攻手（第1棒）", "爆發手（第2棒）", "收尾手（第3棒）")
+BOSS_HP_MULTIPLIER = 8.0
+BOSS_ENERGY_MULTIPLIER = 4.0
+MIN_BOSS_KO_TURNS = 2
 
 
 def _number(value: Any, default: float) -> float:
@@ -122,6 +125,20 @@ def _incoming_damage(card, boss_card, boss_types):
     return max(estimates, key=lambda item: item["expected_damage"])
 
 
+def _estimated_boss_durability(boss_card: Optional[Dict[str, Any]]) -> float:
+    """Convert card HP/energy to a battle-scale Boss durability estimate.
+
+    Card HP and the recommender's expected-damage score use different scales.
+    Comparing them directly made nearly every attacker look like a one-turn KO.
+    """
+    boss = boss_card or {}
+    hp = max(1.0, _number(boss.get("hp"), 150.0))
+    energy = max(1.0, _number(boss.get("energy"), 120.0))
+    star = max(1.0, _number(boss.get("star"), 5.0))
+    rarity_multiplier = 1.0 + max(0.0, star - 4.0) * 0.15
+    return (hp * BOSS_HP_MULTIPLIER + energy * BOSS_ENERGY_MULTIPLIER) * rarity_multiplier
+
+
 def evaluate_card_performance(card, boss_types, boss_move_type=None, boss_card=None):
     """Evaluate one card with correct attack class, accuracy and Boss defenses."""
     boss_types = boss_types or ["一般"]
@@ -135,7 +152,7 @@ def evaluate_card_performance(card, boss_types, boss_move_type=None, boss_card=N
     hp = max(1.0, _number(card.get("hp"), 100.0))
     survival_hits = hp / max(1.0, incoming["expected_damage"])
     survival_score = min(300.0, survival_hits * 100.0)
-    boss_hp = max(1.0, _number((effective_boss or {}).get("hp"), 150.0))
+    boss_durability = _estimated_boss_durability(effective_boss)
 
     tags = []
     if best_move["type_mult"] >= 4:
@@ -162,7 +179,12 @@ def evaluate_card_performance(card, boss_types, boss_move_type=None, boss_card=N
         "stab_mult": best_move["stab_mult"], "special_mult": best_move["special_mult"], "star_mult": 1.0,
         "expected_damage": round(best_move["expected_damage"], 1),
         "damage_score": round(best_move["expected_damage"], 1),
-        "expected_ko_turns": ceil(boss_hp / max(1.0, best_move["expected_damage"])),
+        # 單張卡匣不顯示一回合擊退 Boss；Boss 耐久已換算到與傷害評分相近的尺度。
+        "boss_durability": round(boss_durability, 1),
+        "expected_ko_turns": max(
+            MIN_BOSS_KO_TURNS,
+            ceil(boss_durability / max(1.0, best_move["expected_damage"])),
+        ),
         "incoming_damage": round(incoming["expected_damage"], 1), "defensive_mult": incoming["type_mult"],
         "survival_hits": round(survival_hits, 2), "survival_score": round(survival_score, 1),
         "energy": _number(card.get("energy"), 100.0), "speed": _number(card.get("spd"), 100.0),
@@ -210,14 +232,14 @@ def _assign_scores(evaluated, boss_card):
         reliability, mechanic = item["reliability_score"], item["mechanic_score"]
         type_score = min(100.0, item["type_mult"] / 4.0 * 100.0)
         role_scores = {
-            ROLE_NAMES[0]: .60 * offense[index] + .18 * speed_score + .12 * reliability + .10 * survival[index],
-            ROLE_NAMES[1]: .58 * offense[index] + .17 * mechanic + .13 * type_score + .12 * survival[index],
-            ROLE_NAMES[2]: .35 * offense[index] + .40 * survival[index] + .15 * reliability + .10 * speed_score,
+            ROLE_NAMES[0]: .72 * offense[index] + .10 * speed_score + .10 * reliability + .08 * survival[index],
+            ROLE_NAMES[1]: .70 * offense[index] + .12 * mechanic + .10 * type_score + .08 * survival[index],
+            ROLE_NAMES[2]: .55 * offense[index] + .25 * survival[index] + .12 * reliability + .08 * speed_score,
         }
         item["offense_score"], item["speed_score"] = round(offense[index], 1), round(speed_score, 1)
         item["role_scores"] = {key: round(value, 1) for key, value in role_scores.items()}
-        item["overall_score"] = round(.55 * offense[index] + .20 * survival[index] + .10 * speed_score
-                                      + .10 * reliability + .05 * mechanic, 1)
+        item["overall_score"] = round(.70 * offense[index] + .12 * survival[index] + .05 * speed_score
+                                      + .08 * reliability + .05 * mechanic, 1)
 
 
 def _optimize_three_card_team(evaluated, pair_adjustments=None):
@@ -230,8 +252,13 @@ def _optimize_three_card_team(evaluated, pair_adjustments=None):
         synergy = _team_synergy(list(group), pair_adjustments)
         for ordered in permutations(group):
             role_total = sum(ordered[i]["role_scores"][ROLE_NAMES[i]] for i in range(3)) / 3.0
-            if role_total + synergy > best_score:
-                best_team, best_score, best_synergy = ordered, role_total + synergy, synergy
+            offense_total = sum(item["offense_score"] for item in ordered) / 3.0
+            # 角色分工仍決定出場順序，但隊伍入選以輸出為主；組合相性只做
+            # 小幅微調，避免為了防守互補換入傷害明顯較低的卡匣。
+            applied_synergy = synergy * 0.35
+            candidate_score = role_total * 0.75 + offense_total * 0.25 + applied_synergy
+            if candidate_score > best_score:
+                best_team, best_score, best_synergy = ordered, candidate_score, applied_synergy
     if best_team is None:
         best_team = tuple(sorted(evaluated, key=lambda item: item["overall_score"], reverse=True)[:3])
         best_score = sum(item["overall_score"] for item in best_team) / max(1, len(best_team))

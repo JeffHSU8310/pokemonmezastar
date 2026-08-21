@@ -641,14 +641,17 @@ with tabs[0]:
         else:
             live_context = webrtc_streamer(
                 key="mezastar_persistent_card_camera",
-                mode=WebRtcMode.SENDRECV,
+                # SENDONLY 直接顯示手機本機預覽；不再把影像經伺服器壓縮後回傳，
+                # 可明顯減少方格、延遲與對焦時的拖影。
+                mode=WebRtcMode.SENDONLY,
                 rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},
                 media_stream_constraints={
                     "video": {
                         "facingMode": {"ideal": "environment"},
-                        "width": {"ideal": 1920},
-                        "height": {"ideal": 1080},
-                        "frameRate": {"ideal": 15, "max": 24},
+                        "width": {"min": 960, "ideal": 1280},
+                        "height": {"min": 540, "ideal": 720},
+                        "frameRate": {"min": 20, "ideal": 30, "max": 30},
+                        "resizeMode": {"ideal": "none"},
                         "advanced": [
                             {"focusMode": "continuous"},
                             {"exposureMode": "continuous"},
@@ -661,14 +664,31 @@ with tabs[0]:
                 video_processor_factory=LiveCardScanner,
                 async_processing=True,
                 media_toggle_controls=False,
-                video_html_attrs={"autoPlay": True, "controls": False, "muted": True},
+                video_html_attrs={
+                    "autoPlay": True,
+                    "controls": False,
+                    "muted": True,
+                    "playsInline": True,
+                    "style": {
+                        "display": "block",
+                        "width": "100%",
+                        "maxWidth": "340px",
+                        "maxHeight": "255px",
+                        "objectFit": "contain",
+                        "margin": "0 auto",
+                        "borderRadius": "10px",
+                        "background": "#111111",
+                    },
+                },
             )
             if not live_context.state.playing:
                 st.info("正在取得相機權限並啟動後鏡頭…")
             elif not live_context.video_processor:
                 st.info("相機已啟動，正在準備預覽畫面…")
             else:
-                st.success("相機已就緒並要求連續自動對焦。先讓卡匣填滿畫面、等待清楚，再按掃描。")
+                preview_width, preview_height = live_context.video_processor.latest_resolution
+                resolution_label = f"（擷取 {preview_width}×{preview_height}）" if preview_width else ""
+                st.success(f"低延遲相機已就緒並要求連續自動對焦{resolution_label}。讓卡匣填滿畫面、文字清楚後再按掃描。")
                 if st.button("🔎 掃描目前畫面", type="primary", use_container_width=True, key="scan_current_camera_frame"):
                     frame_bytes, frame_error, focus_score = live_context.video_processor.capture_current()
                     if frame_error:
@@ -678,9 +698,10 @@ with tabs[0]:
                         st.session_state.pop("recognition_learning_message", None)
                         with st.spinner("正在辨識目前畫面…相機會保持開啟"):
                             st.session_state.camera_recognition = recognize_card(frame_bytes, all_cards, top_n=3)
-                            st.session_state.camera_recognition_source = "camera"
-                            st.session_state.camera_last_frame_bytes = frame_bytes
-                            st.session_state.camera_focus_score = focus_score
+                        st.session_state.camera_recognition_source = "camera"
+                        st.session_state.camera_last_frame_bytes = frame_bytes
+                        st.session_state.camera_focus_score = focus_score
+                        st.session_state.camera_capture_resolution = live_context.video_processor.latest_resolution
 
         if st.session_state.get("scan_camera_message"):
             st.warning(st.session_state.scan_camera_message)
@@ -696,6 +717,9 @@ with tabs[0]:
                 info_parts.append(f"文字：{camera_result['ocr_text']}")
             if st.session_state.get("camera_focus_score"):
                 info_parts.append(f"對焦清晰度：{st.session_state.camera_focus_score:.0f}")
+            capture_resolution = st.session_state.get("camera_capture_resolution")
+            if capture_resolution and capture_resolution[0]:
+                info_parts.append(f"掃描解析度：{capture_resolution[0]}×{capture_resolution[1]}")
             st.info("｜".join(info_parts))
 
             if st.session_state.get("recognition_learning_message"):
@@ -910,6 +934,10 @@ with tabs[0]:
             f"組合加成 {result.get('team_synergy', 0):+g}｜"
             f"🧠 相同屬性實戰回饋 {result.get('matching_feedback_count', 0)} 筆"
         )
+        st.caption(
+            "評分以期望傷害為主（綜合評分占 70%），再考量生存、命中、速度與特殊機制。"
+            "擊退回合以 Boss 的 HP、能量及星級換算戰鬥耐久，代表單卡持續輸出的保守估算，最少為 2 回合。"
+        )
         
         # 針對 6.1" 手機直立螢幕：每張推薦卡片垂直排列，資訊高度整合且好讀
         role_badges = ["👑 主攻手 (第1棒)", "⚡ 爆發手 (第2棒)", "🛡️ 收尾手 (第3棒)"]
@@ -948,7 +976,7 @@ with tabs[0]:
                         <span>⚡ <b>期望傷害:</b> <b style="color:#1E88E5;">{rec['expected_damage']}</b>（命中 {rec['move_accuracy']:g}%）</span>
                         <span style="color:#555;">🛡️ 可承受: {survival_label}</span>
                     </div>
-                    <div style="font-size:0.75rem; color:#555; margin-top:2px;">角色評分 {rec['role_score']}｜預估 {rec['expected_ko_turns']} 回合擊倒 Boss</div>
+                    <div style="font-size:0.75rem; color:#555; margin-top:2px;">角色評分 {rec['role_score']}｜單卡持續輸出預估 {rec['expected_ko_turns']} 回合擊倒 Boss</div>
                 </div>
 
                 <div class="stat-compact">

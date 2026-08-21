@@ -29,21 +29,30 @@ class LiveCardScanner:
 
     def __init__(self):
         self._lock = threading.Lock()
-        self._recent_frames = deque(maxlen=6)
+        # 約保留最近一秒的高頻影格。按下掃描時從中挑選最清楚的一張，
+        # 避免剛好取到手機鏡頭仍在重新對焦的單一模糊畫面。
+        self._recent_frames = deque(maxlen=12)
         self._last_analysis_at = 0.0
+        self._latest_resolution = (0, 0)
 
     def ingest(self, image: np.ndarray) -> None:
         sharpness, brightness = frame_quality(image)
         with self._lock:
             self._recent_frames.append((sharpness, brightness, image.copy()))
+            self._latest_resolution = (int(image.shape[1]), int(image.shape[0]))
 
     def recv(self, frame: av.VideoFrame) -> av.VideoFrame:
-        # 預覽串流不做連續辨識；每 0.2 秒更新一次待掃描影格即可。
+        # 預覽串流不做連續辨識；每秒最多取樣約 12 張供手動掃描挑選。
         now = time.monotonic()
-        if now - self._last_analysis_at >= 0.2:
+        if now - self._last_analysis_at >= 1.0 / 12.0:
             self._last_analysis_at = now
             self.ingest(frame.to_ndarray(format="bgr24"))
         return frame
+
+    @property
+    def latest_resolution(self) -> Tuple[int, int]:
+        with self._lock:
+            return self._latest_resolution
 
     def capture_current(self) -> Tuple[Optional[bytes], Optional[str], float]:
         with self._lock:
@@ -59,7 +68,8 @@ class LiveCardScanner:
             if sharpness < 48.0:
                 return None, f"畫面尚未對焦（清晰度 {sharpness:.0f}），請靠近卡匣、等待自動對焦並保持穩定", sharpness
             image = image.copy()
-        encoded, buffer = cv2.imencode(".jpg", image, [cv2.IMWRITE_JPEG_QUALITY, 92])
+        # 辨識使用原始相機影格，不沿用 WebRTC 回傳預覽的壓縮畫面。
+        encoded, buffer = cv2.imencode(".jpg", image, [cv2.IMWRITE_JPEG_QUALITY, 97])
         if not encoded:
             return None, "無法擷取目前畫面，請重新掃描", sharpness
         return buffer.tobytes(), None, sharpness

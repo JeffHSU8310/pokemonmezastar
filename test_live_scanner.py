@@ -21,6 +21,7 @@ class LiveScannerTests(unittest.TestCase):
         self.assertIsNotNone(image_bytes)
         self.assertIsNone(error)
         self.assertGreater(sharpness, 48.0)
+        self.assertEqual(scanner.latest_resolution, (480, 360))
 
     def test_dark_frame_is_rejected(self):
         scanner = LiveCardScanner()
