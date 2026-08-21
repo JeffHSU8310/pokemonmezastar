@@ -89,6 +89,12 @@ def _quality_multiplier(card: Dict[str, Any]) -> float:
     return 1.0 + min(0.06, max(-0.04, (energy - 120.0) / 1500.0))
 
 
+def _star_multiplier(card: Dict[str, Any]) -> float:
+    """Give rarity a meaningful but non-dominating place in real damage."""
+    star = min(6.0, max(1.0, _number(card.get("star"), 5.0)))
+    return 1.0 + (star - 4.0) * 0.04
+
+
 def _move_expected_damage(move, attacker, defender, defender_types):
     category = move["category"]
     attack_key = "atk" if category == "物理" else "sp_atk"
@@ -100,11 +106,12 @@ def _move_expected_damage(move, attacker, defender, defender_types):
     stab_mult = 1.25 if move["type"] in attacker.get("types", []) else 1.0
     defense_factor = min(1.6, max(0.55, 100.0 / defense_stat))
     special_mult = _special_multiplier(attacker)
+    star_mult = _star_multiplier(attacker)
     expected = (raw_damage / 100.0 * move["accuracy"] * type_mult * stab_mult
-                * defense_factor * special_mult * _quality_multiplier(attacker))
+                * defense_factor * special_mult * star_mult * _quality_multiplier(attacker))
     return {**move, "attack_stat": attack_stat, "defense_stat": defense_stat,
             "type_mult": type_mult, "stab_mult": stab_mult, "special_mult": special_mult,
-            "defense_factor": defense_factor, "expected_damage": expected}
+            "star_mult": star_mult, "defense_factor": defense_factor, "expected_damage": expected}
 
 
 def _boss_moves(boss_card, boss_types):
@@ -176,7 +183,8 @@ def evaluate_card_performance(card, boss_types, boss_move_type=None, boss_card=N
         "best_move_power": best_move["power"], "best_move_category": best_move["category"],
         "move_accuracy": round(best_move["accuracy"] * 100, 1), "attack_stat": best_move["attack_stat"],
         "boss_defense_stat": best_move["defense_stat"], "type_mult": best_move["type_mult"],
-        "stab_mult": best_move["stab_mult"], "special_mult": best_move["special_mult"], "star_mult": 1.0,
+        "stab_mult": best_move["stab_mult"], "special_mult": best_move["special_mult"],
+        "star_mult": round(best_move["star_mult"], 2),
         "expected_damage": round(best_move["expected_damage"], 1),
         "damage_score": round(best_move["expected_damage"], 1),
         # 單張卡匣不顯示一回合擊退 Boss；Boss 耐久已換算到與傷害評分相近的尺度。
@@ -242,10 +250,16 @@ def _assign_scores(evaluated, boss_card):
                                       + .08 * reliability + .05 * mechanic, 1)
 
 
-def _weakness_priority(item):
-    """Sort counters before every neutral/resisted option, then compare strength."""
+def _weakness_score(item):
+    """Reward counters without letting a very weak counter win automatically."""
     multiplier = float(item.get("type_mult", 1.0))
-    return (multiplier > 1.0, multiplier)
+    if multiplier >= 4.0:
+        return 100.0
+    if multiplier >= 2.0:
+        return 75.0
+    if multiplier > 1.0:
+        return 60.0
+    return 0.0
 
 
 def _team_output_estimate(selected):
@@ -269,42 +283,36 @@ def _team_output_estimate(selected):
 
 
 def _optimize_three_card_team(evaluated, pair_adjustments=None):
-    # Boss 弱點剋制是硬性第一順位。先保留剋制倍率最高的候選，再於相同
-    # 剋制層級內比較傷害、角色分工、生存與機制，避免高面板的中性招式
-    # 把火／地面等真正相剋招式擠出候選池。
-    shortlist = sorted(
-        evaluated,
-        key=lambda item: (
-            *_weakness_priority(item),
-            item["expected_damage"],
-            max(item["overall_score"], *item["role_scores"].values()),
-        ),
+    # 同時保留真實輸出最高者與有效剋制者。相剋倍率已直接乘進期望傷害，
+    # 此處再給有限的弱點加權，但不讓低星、低攻擊的剋制卡無條件入選。
+    output_pool = sorted(evaluated, key=lambda item: item["lineup_score"], reverse=True)[:20]
+    counter_pool = sorted(
+        (item for item in evaluated if item["type_mult"] > 1.0),
+        key=lambda item: item["expected_damage"],
         reverse=True,
-    )[:24]
-    best_team, best_priority, best_score, best_synergy = None, None, float("-inf"), 0.0
+    )[:12]
+    shortlist, seen = [], set()
+    for item in output_pool + counter_pool:
+        identity = str(item["card"].get("id") or id(item))
+        if identity not in seen:
+            seen.add(identity)
+            shortlist.append(item)
+    shortlist = shortlist[:30]
+    best_team, best_score, best_synergy = None, float("-inf"), 0.0
     for group in combinations(shortlist, 3):
         if len({item["card"].get("name") for item in group}) < 3:
             continue
         synergy = _team_synergy(list(group), pair_adjustments)
-        counter_count = sum(item["type_mult"] > 1.0 for item in group)
-        counter_strength = sum(item["type_mult"] for item in group if item["type_mult"] > 1.0)
         for ordered in permutations(group):
             role_total = sum(ordered[i]["role_scores"][ROLE_NAMES[i]] for i in range(3)) / 3.0
             offense_total = sum(item["offense_score"] for item in ordered) / 3.0
-            # 弱點剋制層級相同時，角色分工與輸出決定排序；組合相性只做
-            # 小幅微調，避免為了防守互補換入傷害明顯較低的卡匣。
-            applied_synergy = synergy * 0.35
-            candidate_score = role_total * 0.75 + offense_total * 0.25 + applied_synergy
-            candidate_priority = (counter_count, counter_strength, candidate_score)
-            if best_priority is None or candidate_priority > best_priority:
-                best_team, best_priority = ordered, candidate_priority
-                best_score, best_synergy = candidate_score, applied_synergy
+            weakness_total = sum(item["weakness_score"] for item in ordered) / 3.0
+            applied_synergy = synergy * 0.25
+            candidate_score = offense_total * 0.70 + weakness_total * 0.18 + role_total * 0.12 + applied_synergy
+            if candidate_score > best_score:
+                best_team, best_score, best_synergy = ordered, candidate_score, applied_synergy
     if best_team is None:
-        best_team = tuple(sorted(
-            evaluated,
-            key=lambda item: (*_weakness_priority(item), item["overall_score"]),
-            reverse=True,
-        )[:3])
+        best_team = tuple(sorted(evaluated, key=lambda item: item["lineup_score"], reverse=True)[:3])
         best_score = sum(item["overall_score"] for item in best_team) / max(1, len(best_team))
     selected = []
     for index, item in enumerate(best_team):
@@ -341,10 +349,14 @@ def recommend_best_lineup(user_cards=None, boss_name="未知目標", boss_types=
             item["tags"].append("🧠 實戰勝率加權")
         elif adjustment <= -0.5:
             item["tags"].append("🧠 實戰回饋降權")
-    evaluated.sort(
-        key=lambda item: (*_weakness_priority(item), item["overall_score"]),
-        reverse=True,
-    )
+        item["weakness_score"] = _weakness_score(item)
+        item["lineup_score"] = round(
+            item["offense_score"] * 0.72
+            + item["weakness_score"] * 0.18
+            + item["overall_score"] * 0.10,
+            1,
+        )
+    evaluated.sort(key=lambda item: item["lineup_score"], reverse=True)
     if team_size == 3 and len(evaluated) >= 3:
         selected, team_score, team_synergy = _optimize_three_card_team(
             evaluated, learning["pair_adjustments"]
