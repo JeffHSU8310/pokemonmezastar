@@ -43,12 +43,12 @@ class TestAdvancedRecommender(unittest.TestCase):
                 item["card"]["id"] for item in result["all_ranked"]
             )
         )
-        self.assertEqual(len(candidates), 6)
+        self.assertEqual(len(candidates), 12)
 
     def test_exclusion_filter_normalizes_card_id_and_handles_all_excluded(self):
-        disabled = card(" sp-006 ")
-        self.assertEqual(filter_recommendation_exclusions([disabled]), [])
-        result = recommend_best_lineup(candidate_cards=[disabled], boss_types=["一般"])
+        disabled = [card(" sp-001 "), card("Sp-009")]
+        self.assertEqual(filter_recommendation_exclusions(disabled), [])
+        result = recommend_best_lineup(candidate_cards=disabled, boss_types=["一般"])
         self.assertFalse(result["success"])
         self.assertEqual(result["top_team"], [])
         self.assertIn("暫停推薦", result["message"])

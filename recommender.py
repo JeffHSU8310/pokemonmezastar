@@ -17,7 +17,9 @@ ROLE_NAMES = ("主攻手（第1棒）", "爆發手（第2棒）", "收尾手（�
 BOSS_HP_MULTIPLIER = 4.0
 BOSS_ENERGY_MULTIPLIER = 2.0
 MIN_BOSS_KO_TURNS = 2
-RECOMMENDATION_EXCLUDED_CARD_IDS = frozenset({"SP-006", "SP-007", "SP-008"})
+RECOMMENDATION_EXCLUDED_CARD_IDS = frozenset(
+    f"SP-{number:03d}" for number in range(1, 10)
+)
 
 
 def _number(value: Any, default: float) -> float:
