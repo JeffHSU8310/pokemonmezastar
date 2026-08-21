@@ -103,7 +103,7 @@ class TestAdvancedRecommender(unittest.TestCase):
         )
         self.assertEqual(sum(item["type_mult"] > 1.0 for item in result["top_team"]), 2)
 
-    def test_golden_lineup_keeps_two_counters_before_maximizing_total_damage(self):
+    def test_golden_lineup_maximizes_damage_without_counter_quota(self):
         candidates = [
             card("高輸出剋制", atk=190, power=135, move_type="火"),
             card("低輸出剋制", atk=90, power=70, move_type="火"),
@@ -113,15 +113,15 @@ class TestAdvancedRecommender(unittest.TestCase):
         result = recommend_best_lineup(candidate_cards=candidates, boss_types=["草"])
         self.assertEqual(
             {item["card"]["name"] for item in result["top_team"]},
-            {"高輸出剋制", "低輸出剋制", "高輸出中性A"},
+            {"高輸出剋制", "高輸出中性A", "高輸出中性B"},
         )
-        self.assertEqual(sum(item["type_mult"] > 1.0 for item in result["top_team"]), 2)
+        self.assertEqual(sum(item["type_mult"] > 1.0 for item in result["top_team"]), 1)
         self.assertEqual(
             result["top_team"][0]["expected_damage"],
             max(item["expected_damage"] for item in result["top_team"]),
         )
 
-    def test_golden_lineup_falls_back_to_one_counter_when_only_one_exists(self):
+    def test_counter_is_selected_when_its_expected_damage_is_top_three(self):
         candidates = [
             card("唯一剋制", atk=160, power=120, move_type="火"),
             card("中性A", atk=240, power=165, move_type="一般"),
@@ -131,6 +131,24 @@ class TestAdvancedRecommender(unittest.TestCase):
         result = recommend_best_lineup(candidate_cards=candidates, boss_types=["草"])
         self.assertIn("唯一剋制", {item["card"]["name"] for item in result["top_team"]})
         self.assertEqual(sum(item["type_mult"] > 1.0 for item in result["top_team"]), 1)
+
+    def test_golden_lineup_can_select_zero_counters_for_higher_total_damage(self):
+        candidates = [
+            card("低輸出剋制", atk=80, power=60, move_type="火"),
+            card("高輸出中性A", atk=300, power=180, move_type="一般"),
+            card("高輸出中性B", atk=280, power=170, move_type="一般"),
+            card("高輸出中性C", atk=260, power=160, move_type="一般"),
+        ]
+        result = recommend_best_lineup(candidate_cards=candidates, boss_types=["草"])
+        self.assertEqual(
+            {item["card"]["name"] for item in result["top_team"]},
+            {"高輸出中性A", "高輸出中性B", "高輸出中性C"},
+        )
+        self.assertEqual(sum(item["type_mult"] > 1.0 for item in result["top_team"]), 0)
+        self.assertEqual(
+            result["team_expected_damage"],
+            round(sum(item["expected_damage"] for item in result["top_team"]), 1),
+        )
 
     def test_star_rating_does_not_duplicate_card_face_stats(self):
         low_star = card("二星", atk=150, power=120)
