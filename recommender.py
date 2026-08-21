@@ -355,7 +355,7 @@ def _assign_scores(evaluated, boss_card):
 
 
 def _weakness_score(item):
-    """Reward counters without letting a very weak counter win automatically."""
+    """Map Mezastar weakness multipliers to the primary recommendation score."""
     multiplier = float(item.get("type_mult", 1.0))
     if multiplier >= 2.56:
         return 100.0
@@ -364,6 +364,15 @@ def _weakness_score(item):
     if multiplier > 1.0:
         return 60.0
     return 0.0
+
+
+def _recommendation_priority(item):
+    """Order cards by Boss weakness, expected damage, then overall score."""
+    return (
+        item["weakness_score"],
+        item["expected_damage"],
+        item["overall_score"],
+    )
 
 
 def _team_output_estimate(selected):
@@ -387,21 +396,17 @@ def _team_output_estimate(selected):
 
 
 def _optimize_three_card_team(evaluated, pair_adjustments=None):
-    # 黃金陣容直接最大化三張不同寶可夢的合計期望傷害。屬性相剋已經
-    # 反映在 expected_damage 的 1.6 / 2.56 倍率中，不再另設弱點卡張數門檻。
-    # 同名寶可夢只需要保留期望傷害最高的卡面；較低傷害版本不可能改善
-    # 任何合法的三人組。角色、星數、能量、弱點與相性只在總傷害相同時排序。
+    # 固定依序比較：Boss 弱點剋制、合計期望傷害、綜合評分。
+    # 同名寶可夢僅保留依相同規則排序最高的卡面。
     best_by_name = {}
     for item in evaluated:
         identity = str(item["card"].get("name") or item["card"].get("id") or id(item))
         incumbent = best_by_name.get(identity)
-        item_priority = (item["expected_damage"], item["lineup_score"])
-        if incumbent is None or item_priority > (
-            incumbent["expected_damage"], incumbent["lineup_score"]
-        ):
+        item_priority = _recommendation_priority(item)
+        if incumbent is None or item_priority > _recommendation_priority(incumbent):
             best_by_name[identity] = item
     shortlist = sorted(
-        best_by_name.values(), key=lambda item: item["expected_damage"], reverse=True
+        best_by_name.values(), key=_recommendation_priority, reverse=True
     )[:30]
     best_team, best_priority, best_score, best_synergy = None, None, float("-inf"), 0.0
     for group in combinations(shortlist, 3):
@@ -417,15 +422,15 @@ def _optimize_three_card_team(evaluated, pair_adjustments=None):
             applied_synergy = synergy * 0.20
             candidate_score = (offense_total * 0.76 + weakness_total * 0.14
                                + role_total * 0.08 + quality_total * 0.02 + applied_synergy)
-            candidate_priority = (team_damage, candidate_score)
+            overall_total = round(sum(item["overall_score"] for item in group), 1)
+            candidate_priority = (weakness_total, team_damage, overall_total, candidate_score)
             if best_priority is None or candidate_priority > best_priority:
                 best_team, best_priority = ordered, candidate_priority
                 best_score, best_synergy = candidate_score, applied_synergy
     if best_team is None:
-        best_team = tuple(sorted(evaluated, key=lambda item: item["lineup_score"], reverse=True)[:3])
+        best_team = tuple(sorted(evaluated, key=_recommendation_priority, reverse=True)[:3])
         best_score = sum(item["overall_score"] for item in best_team) / max(1, len(best_team))
-    # 黃金陣容的棒次以實際期望傷害排序，確保最高輸出者顯示為第一棒。
-    best_team = tuple(sorted(best_team, key=lambda item: item["expected_damage"], reverse=True))
+    best_team = tuple(sorted(best_team, key=_recommendation_priority, reverse=True))
     selected = []
     for index, item in enumerate(best_team):
         result, role = dict(item), ROLE_NAMES[index]
@@ -473,7 +478,7 @@ def recommend_best_lineup(user_cards=None, boss_name="未知目標", boss_types=
             + item["overall_score"] * 0.08,
             1,
         )
-    evaluated.sort(key=lambda item: item["lineup_score"], reverse=True)
+    evaluated.sort(key=_recommendation_priority, reverse=True)
     if team_size == 3 and len(evaluated) >= 3:
         selected, team_score, team_synergy = _optimize_three_card_team(
             evaluated, learning["pair_adjustments"]

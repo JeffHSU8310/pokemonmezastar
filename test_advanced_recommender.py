@@ -118,7 +118,7 @@ class TestAdvancedRecommender(unittest.TestCase):
         selected_names = {item["card"]["name"] for item in result["top_team"]}
         self.assertEqual(selected_names, {"高輸出A", "高輸出B", "高輸出C"})
 
-    def test_high_output_neutral_can_replace_a_very_weak_counter(self):
+    def test_boss_weakness_has_priority_over_neutral_expected_damage(self):
         candidates = [
             card("高輸出火A", atk=190, power=135, move_type="火"),
             card("高輸出火B", atk=175, power=125, move_type="火"),
@@ -128,11 +128,11 @@ class TestAdvancedRecommender(unittest.TestCase):
         result = recommend_best_lineup(candidate_cards=candidates, boss_types=["草"])
         self.assertEqual(
             {item["card"]["name"] for item in result["top_team"]},
-            {"高輸出火A", "高輸出火B", "高輸出中性"},
+            {"高輸出火A", "高輸出火B", "低輸出火"},
         )
-        self.assertEqual(sum(item["type_mult"] > 1.0 for item in result["top_team"]), 2)
+        self.assertEqual(sum(item["type_mult"] > 1.0 for item in result["top_team"]), 3)
 
-    def test_golden_lineup_maximizes_damage_without_counter_quota(self):
+    def test_expected_damage_breaks_ties_after_boss_weakness(self):
         candidates = [
             card("高輸出剋制", atk=190, power=135, move_type="火"),
             card("低輸出剋制", atk=90, power=70, move_type="火"),
@@ -142,12 +142,12 @@ class TestAdvancedRecommender(unittest.TestCase):
         result = recommend_best_lineup(candidate_cards=candidates, boss_types=["草"])
         self.assertEqual(
             {item["card"]["name"] for item in result["top_team"]},
-            {"高輸出剋制", "高輸出中性A", "高輸出中性B"},
+            {"高輸出剋制", "低輸出剋制", "高輸出中性A"},
         )
-        self.assertEqual(sum(item["type_mult"] > 1.0 for item in result["top_team"]), 1)
+        self.assertEqual(sum(item["type_mult"] > 1.0 for item in result["top_team"]), 2)
         self.assertEqual(
-            result["top_team"][0]["expected_damage"],
-            max(item["expected_damage"] for item in result["top_team"]),
+            result["top_team"][2]["card"]["name"],
+            "高輸出中性A",
         )
 
     def test_counter_is_selected_when_its_expected_damage_is_top_three(self):
@@ -161,7 +161,7 @@ class TestAdvancedRecommender(unittest.TestCase):
         self.assertIn("唯一剋制", {item["card"]["name"] for item in result["top_team"]})
         self.assertEqual(sum(item["type_mult"] > 1.0 for item in result["top_team"]), 1)
 
-    def test_golden_lineup_can_select_zero_counters_for_higher_total_damage(self):
+    def test_one_counter_is_selected_before_all_high_damage_neutral_cards(self):
         candidates = [
             card("低輸出剋制", atk=80, power=60, move_type="火"),
             card("高輸出中性A", atk=300, power=180, move_type="一般"),
@@ -171,12 +171,25 @@ class TestAdvancedRecommender(unittest.TestCase):
         result = recommend_best_lineup(candidate_cards=candidates, boss_types=["草"])
         self.assertEqual(
             {item["card"]["name"] for item in result["top_team"]},
-            {"高輸出中性A", "高輸出中性B", "高輸出中性C"},
+            {"低輸出剋制", "高輸出中性A", "高輸出中性B"},
         )
-        self.assertEqual(sum(item["type_mult"] > 1.0 for item in result["top_team"]), 0)
+        self.assertEqual(sum(item["type_mult"] > 1.0 for item in result["top_team"]), 1)
         self.assertEqual(
             result["team_expected_damage"],
             round(sum(item["expected_damage"] for item in result["top_team"]), 1),
+        )
+
+    def test_overall_score_breaks_ties_after_weakness_and_expected_damage(self):
+        candidates = [
+            card("高綜合", atk=150, power=120, move_type="火", defense=300, sp_def=300, hp=400),
+            card("一般綜合A", atk=150, power=120, move_type="火"),
+            card("一般綜合B", atk=150, power=120, move_type="火"),
+            card("低綜合", atk=150, power=120, move_type="火", defense=30, sp_def=30, hp=50),
+        ]
+        result = recommend_best_lineup(candidate_cards=candidates, boss_types=["草"])
+        self.assertEqual(
+            [item["card"]["name"] for item in result["top_team"]],
+            ["高綜合", "一般綜合A", "一般綜合B"],
         )
 
     def test_star_rating_does_not_duplicate_card_face_stats(self):
