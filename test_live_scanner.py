@@ -13,6 +13,13 @@ class LiveScannerTests(unittest.TestCase):
         self.assertIn("sendback_video=True", app_source)
         self.assertNotIn("mode=WebRtcMode.SENDONLY", app_source)
 
+    def test_photo_recognition_uses_an_in_memory_camera_capture(self):
+        app_source = (Path(__file__).parent / "app.py").read_text(encoding="utf-8")
+        self.assertIn("photographed_card = st.camera_input(", app_source)
+        self.assertIn('resolution="1080p"', app_source)
+        self.assertIn("photo_bytes = photographed_card.getvalue()", app_source)
+        self.assertIn('camera_recognition_source = "photo"', app_source)
+
     def test_blank_frame_is_not_sharp(self):
         sharpness, brightness = frame_quality(np.full((240, 320, 3), 120, dtype=np.uint8))
         self.assertEqual(sharpness, 0.0)

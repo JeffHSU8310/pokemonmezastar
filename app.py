@@ -630,92 +630,122 @@ with tabs[0]:
     if camera_enabled and not camera_runtime_ready:
         st.session_state.scan_camera_enabled = False
         camera_enabled = False
-    with st.expander("📷 開始相機辨識寶可夢", expanded=camera_enabled):
-        st.caption("先開啟相機並對準卡匣；只有按下掃描按鈕才會執行辨識，相機權限於同一工作階段只確認一次。")
+    camera_mode_value = st.session_state.get("camera_recognition_mode", "🎥 即時取景掃描")
+    with st.expander("📷 開始相機辨識寶可夢", expanded=camera_enabled or camera_mode_value == "📸 拍照辨識"):
+        recognition_mode = st.radio(
+            "選擇辨識方式",
+            ["🎥 即時取景掃描", "📸 拍照辨識"],
+            horizontal=True,
+            key="camera_recognition_mode",
+        )
+        st.caption("相機權限由手機瀏覽器管理，本程式無法代替使用者同意；將此網站的相機權限設為允許，可減少重複詢問。")
         st.caption(f"🧠 已累積 {learning_example_count()} 筆確認學習特徵（不保存原始照片）")
         if not camera_runtime_ready:
             st.error(opencv_error_message() or "相機影像引擎目前無法使用，其他功能仍可正常操作。")
-        open_col, close_col = st.columns(2)
-        if open_col.button("📷 開啟相機", type="primary", use_container_width=True, key="open_scan_camera", disabled=camera_enabled or not camera_runtime_ready):
-            st.session_state.scan_camera_enabled = True
-            st.session_state.pop("scan_camera_message", None)
-            st.rerun()
-        if close_col.button("⏹️ 關閉相機", use_container_width=True, key="close_scan_camera", disabled=not camera_enabled):
-            st.session_state.scan_camera_enabled = False
-            st.rerun()
+        if recognition_mode == "🎥 即時取景掃描":
+            st.caption("先開啟相機並對準卡匣；只有按下掃描按鈕才會執行辨識，相機會在同一工作階段保持開啟。")
+            open_col, close_col = st.columns(2)
+            if open_col.button("📷 開啟相機", type="primary", use_container_width=True, key="open_scan_camera", disabled=camera_enabled or not camera_runtime_ready):
+                st.session_state.scan_camera_enabled = True
+                st.session_state.pop("scan_camera_message", None)
+                st.rerun()
+            if close_col.button("⏹️ 關閉相機", use_container_width=True, key="close_scan_camera", disabled=not camera_enabled):
+                st.session_state.scan_camera_enabled = False
+                st.rerun()
 
-        if not camera_runtime_ready:
-            st.info("部署環境修復後即可重新開啟相機；圖鑑、收藏與推薦功能不受影響。")
-        elif not camera_enabled:
-            st.info("相機目前關閉。點一次「開啟相機」並允許權限後，即可連續對準、掃描多張卡匣。")
-        else:
-            live_context = webrtc_streamer(
-                key="mezastar_persistent_card_camera_v295",
-                # streamlit-webrtc 的 SENDONLY 模式只把手機畫面送到伺服器，前端不會
-                # 建立可見的 <video> 輸出。SENDRECV 將原始影格同步回傳，讓使用者
-                # 能在按下掃描前確認卡匣位置與對焦狀態。
-                mode=WebRtcMode.SENDRECV,
-                rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},
-                media_stream_constraints={
-                    "video": {
-                        "facingMode": {"ideal": "environment"},
-                        "width": {"min": 960, "ideal": 1280},
-                        "height": {"min": 540, "ideal": 720},
-                        "frameRate": {"min": 20, "ideal": 30, "max": 30},
-                        "resizeMode": {"ideal": "none"},
-                        "advanced": [
-                            {"focusMode": "continuous"},
-                            {"exposureMode": "continuous"},
-                            {"whiteBalanceMode": "continuous"},
-                        ],
-                    },
-                    "audio": False,
-                },
-                desired_playing_state=True,
-                video_processor_factory=LiveCardScanner,
-                async_processing=False,
-                sendback_video=True,
-                media_toggle_controls=False,
-                video_html_attrs={
-                    "autoPlay": True,
-                    "controls": False,
-                    "muted": True,
-                    "playsInline": True,
-                    "style": {
-                        "display": "block",
-                        "width": "100%",
-                        "maxWidth": "340px",
-                        "maxHeight": "255px",
-                        "objectFit": "contain",
-                        "margin": "0 auto",
-                        "borderRadius": "10px",
-                        "background": "#111111",
-                        "border": "3px solid #EF5350",
-                        "boxSizing": "border-box",
-                    },
-                },
-            )
-            if not live_context.state.playing:
-                st.info("正在取得相機權限並啟動後鏡頭…")
-            elif not live_context.video_processor:
-                st.info("相機已啟動，正在準備預覽畫面…")
+            if not camera_runtime_ready:
+                st.info("部署環境修復後即可重新開啟相機；圖鑑、收藏與推薦功能不受影響。")
+            elif not camera_enabled:
+                st.info("相機目前關閉。點一次「開啟相機」並允許權限後，即可連續對準、掃描多張卡匣。")
             else:
-                preview_width, preview_height = live_context.video_processor.latest_resolution
-                resolution_label = f"（擷取 {preview_width}×{preview_height}）" if preview_width else ""
-                st.success(f"即時取景已顯示在上方紅框內，相機已要求連續自動對焦{resolution_label}。讓卡匣填滿紅框、文字清楚後再按掃描。")
-                if st.button("🔎 掃描目前畫面", type="primary", use_container_width=True, key="scan_current_camera_frame"):
-                    frame_bytes, frame_error, focus_score = live_context.video_processor.capture_current()
-                    if frame_error:
-                        st.session_state.scan_camera_message = frame_error
-                    else:
-                        st.session_state.pop("scan_camera_message", None)
-                        st.session_state.pop("recognition_learning_message", None)
-                        with st.spinner("正在辨識目前畫面…相機會保持開啟"):
-                            st.session_state.camera_recognition = recognize_card(frame_bytes, all_cards, top_n=3)
-                        st.session_state.camera_recognition_source = "camera"
-                        st.session_state.camera_last_frame_bytes = frame_bytes
-                        st.session_state.camera_focus_score = focus_score
-                        st.session_state.camera_capture_resolution = live_context.video_processor.latest_resolution
+                live_context = webrtc_streamer(
+                    key="mezastar_persistent_card_camera_v295",
+                    # streamlit-webrtc 的 SENDONLY 模式只把手機畫面送到伺服器，前端不會
+                    # 建立可見的 <video> 輸出。SENDRECV 將原始影格同步回傳，讓使用者
+                    # 能在按下掃描前確認卡匣位置與對焦狀態。
+                    mode=WebRtcMode.SENDRECV,
+                    rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},
+                    media_stream_constraints={
+                        "video": {
+                            "facingMode": {"ideal": "environment"},
+                            "width": {"min": 960, "ideal": 1280},
+                            "height": {"min": 540, "ideal": 720},
+                            "frameRate": {"min": 20, "ideal": 30, "max": 30},
+                            "resizeMode": {"ideal": "none"},
+                            "advanced": [
+                                {"focusMode": "continuous"},
+                                {"exposureMode": "continuous"},
+                                {"whiteBalanceMode": "continuous"},
+                            ],
+                        },
+                        "audio": False,
+                    },
+                    desired_playing_state=True,
+                    video_processor_factory=LiveCardScanner,
+                    async_processing=False,
+                    sendback_video=True,
+                    media_toggle_controls=False,
+                    video_html_attrs={
+                        "autoPlay": True,
+                        "controls": False,
+                        "muted": True,
+                        "playsInline": True,
+                        "style": {
+                            "display": "block",
+                            "width": "100%",
+                            "maxWidth": "340px",
+                            "maxHeight": "255px",
+                            "objectFit": "contain",
+                            "margin": "0 auto",
+                            "borderRadius": "10px",
+                            "background": "#111111",
+                            "border": "3px solid #EF5350",
+                            "boxSizing": "border-box",
+                        },
+                    },
+                )
+                if not live_context.state.playing:
+                    st.info("正在取得相機權限並啟動後鏡頭…")
+                elif not live_context.video_processor:
+                    st.info("相機已啟動，正在準備預覽畫面…")
+                else:
+                    preview_width, preview_height = live_context.video_processor.latest_resolution
+                    resolution_label = f"（擷取 {preview_width}×{preview_height}）" if preview_width else ""
+                    st.success(f"即時取景已顯示在上方紅框內，相機已要求連續自動對焦{resolution_label}。讓卡匣填滿紅框、文字清楚後再按掃描。")
+                    if st.button("🔎 掃描目前畫面", type="primary", use_container_width=True, key="scan_current_camera_frame"):
+                        frame_bytes, frame_error, focus_score = live_context.video_processor.capture_current()
+                        if frame_error:
+                            st.session_state.scan_camera_message = frame_error
+                        else:
+                            st.session_state.pop("scan_camera_message", None)
+                            st.session_state.pop("recognition_learning_message", None)
+                            with st.spinner("正在辨識目前畫面…相機會保持開啟"):
+                                st.session_state.camera_recognition = recognize_card(frame_bytes, all_cards, top_n=3)
+                            st.session_state.camera_recognition_source = "live"
+                            st.session_state.camera_last_frame_bytes = frame_bytes
+                            st.session_state.camera_focus_score = focus_score
+                            st.session_state.camera_capture_resolution = live_context.video_processor.latest_resolution
+        elif camera_runtime_ready:
+            st.caption("拍攝完成後按下辨識。本程式不會把原始照片寫入檔案或資料庫，照片只在目前工作階段記憶體中使用。")
+            photographed_card = st.camera_input(
+                "📸 拍攝卡匣照片",
+                key="photographed_card_input",
+                help="讓卡匣填滿畫面、文字清楚並避開反光後拍攝。",
+                resolution="1080p",
+                width=340,
+            )
+            if photographed_card is not None:
+                st.success("照片已拍攝。確認畫面清楚後按下辨識；離開工作階段後原始照片不會保留。")
+                if st.button("🔎 辨識這張照片", type="primary", use_container_width=True, key="recognize_photographed_card"):
+                    photo_bytes = photographed_card.getvalue()
+                    st.session_state.pop("scan_camera_message", None)
+                    st.session_state.pop("recognition_learning_message", None)
+                    with st.spinner("正在辨識拍攝的照片…"):
+                        st.session_state.camera_recognition = recognize_card(photo_bytes, all_cards, top_n=3)
+                    st.session_state.camera_recognition_source = "photo"
+                    st.session_state.camera_last_frame_bytes = photo_bytes
+                    st.session_state.camera_focus_score = None
+                    st.session_state.camera_capture_resolution = None
 
         if st.session_state.get("scan_camera_message"):
             st.warning(st.session_state.scan_camera_message)
@@ -724,7 +754,9 @@ with tabs[0]:
         if camera_result:
             if camera_result.get("warning"):
                 st.warning(camera_result["warning"])
-            info_parts = [f"整體信心：{camera_result.get('confidence', '低')}"]
+            recognition_source = st.session_state.get("camera_recognition_source")
+            source_label = "拍照辨識" if recognition_source == "photo" else "即時取景掃描"
+            info_parts = [f"來源：{source_label}", f"整體信心：{camera_result.get('confidence', '低')}"]
             if camera_result.get("detected_star"):
                 info_parts.append(f"偵測星數：{camera_result['detected_star']}★")
             if camera_result.get("ocr_text"):
