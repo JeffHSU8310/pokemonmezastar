@@ -1,7 +1,12 @@
 {
-  "version": "2.8.0",
-  "last_updated": "2026-08-21 09:12:38",
+  "version": "2.8.1",
+  "last_updated": "2026-08-21 09:25:26",
   "history": [
+    {
+      "version": "2.8.1",
+      "timestamp": "2026-08-21 09:25:26",
+      "message": "修正 Streamlit 熱部署沿用舊推薦模組，確保單卡擊退 Boss 最少顯示 2 回合"
+    },
     {
       "version": "2.8.0",
       "timestamp": "2026-08-21 09:12:38",
