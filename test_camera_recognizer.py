@@ -46,6 +46,22 @@ class CameraRecognizerTests(unittest.TestCase):
         self.assertEqual(result["candidates"][0]["card"]["id"], "RIGHT")
         self.assertGreater(result["candidates"][0]["learned_score"], 0.9)
 
+    @patch("camera_recognizer.detect_star_count", return_value=(6, 0.8))
+    @patch("camera_recognizer._visual_score", return_value=0.1)
+    @patch("camera_recognizer.learning_adjustments", return_value={})
+    @patch("camera_recognizer.extract_ocr", return_value=([], 0.0, None))
+    def test_reliable_star_count_limits_visual_search_pool(self, _ocr, _learning, visual, _star):
+        cards = [
+            {"id": f"S6-{index}", "name": f"六星{index}", "star": 6}
+            for index in range(70)
+        ] + [
+            {"id": f"S5-{index}", "name": f"五星{index}", "star": 5}
+            for index in range(120)
+        ]
+        image_bytes = cv2.imencode(".jpg", np.zeros((200, 200, 3), dtype=np.uint8))[1].tobytes()
+        recognize_card(image_bytes, cards)
+        self.assertEqual(visual.call_count, 70)
+
 
 if __name__ == "__main__":
     unittest.main()

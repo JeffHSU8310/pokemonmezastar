@@ -170,17 +170,28 @@ def recognize_card(image_bytes: bytes, cards: List[Dict[str, Any]], top_n: int =
         text_ranked.append((score, evidence, card))
     text_ranked.sort(key=lambda row: row[0], reverse=True)
 
-    # OCR 有明顯線索時只比對最相關卡匣；否則用星數縮小影像搜尋範圍。
+    # OCR 有線索時只比對最相關卡匣；OCR 不清楚但星數可信時，先以星數
+    # 縮小卡面搜尋範圍。這可把手機首次掃描常見的 447 次遠端圖像比對
+    # 降到約 70～100 次，同時保留沒有任何線索時的完整圖鑑後備搜尋。
     best_text = text_ranked[0][0] if text_ranked else 0.0
     if best_text >= 0.60:
         visual_pool = [row[2] for row in text_ranked[:60]]
+    elif best_text >= 0.42:
+        visual_pool = [row[2] for row in text_ranked[:120]]
+    elif star and star_confidence >= 0.45:
+        visual_pool = [
+            card for card in cards
+            if int(card.get("star", 0) or 0) == star
+        ]
+        if not visual_pool:
+            visual_pool = list(cards)
     else:
-        # OCR 不清楚時完整搜尋圖鑑，避免錯誤星數造成真正卡匣被排除。
+        # OCR 與星數都沒有可信線索時才完整搜尋，避免真正卡匣被排除。
         visual_pool = list(cards)
     visual_ids = {str(card.get("id")) for card in visual_pool}
 
     visual_scores: Dict[str, float] = {}
-    with ThreadPoolExecutor(max_workers=10) as executor:
+    with ThreadPoolExecutor(max_workers=min(16, max(1, len(visual_pool)))) as executor:
         jobs = {executor.submit(_visual_score, query_descriptor, card): card for card in visual_pool}
         for future in as_completed(jobs):
             card = jobs[future]

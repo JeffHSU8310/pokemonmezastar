@@ -60,6 +60,26 @@ class TestAdvancedRecommender(unittest.TestCase):
         self.assertIn("team_score", result)
         self.assertIn("team_synergy", result)
 
+    def test_high_output_remains_primary_team_selection_factor(self):
+        candidates = [
+            card("高輸出A", atk=220, power=135, defense=90, sp_def=90),
+            card("高輸出B", atk=205, power=130, defense=95, sp_def=95),
+            card("高輸出C", atk=195, power=125, defense=100, sp_def=100),
+            card("低輸出坦克", atk=105, power=85, defense=350, sp_def=350, hp=500),
+        ]
+        result = recommend_best_lineup(candidate_cards=candidates, boss_types=["一般"])
+        selected_names = {item["card"]["name"] for item in result["top_team"]}
+        self.assertEqual(selected_names, {"高輸出A", "高輸出B", "高輸出C"})
+
+    def test_boss_ko_estimate_uses_battle_scale_and_never_one_turn(self):
+        attacker = card("強力打手", atk=260, power=180)
+        boss = card("六星Boss", defense=80, sp_def=80, hp=220)
+        boss["star"] = 6
+        boss["energy"] = 210
+        result = evaluate_card_performance(attacker, ["一般"], boss_card=boss)
+        self.assertGreater(result["boss_durability"], boss["hp"])
+        self.assertGreaterEqual(result["expected_ko_turns"], 2)
+
 
 if __name__ == "__main__":
     unittest.main()
