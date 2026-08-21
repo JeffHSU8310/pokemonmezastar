@@ -87,6 +87,8 @@ class LiveCardScanner:
             if sharpness < 48.0:
                 return None, f"畫面尚未對焦（清晰度 {sharpness:.0f}），請靠近卡匣、等待自動對焦並保持穩定", sharpness
             image = image.copy()
+            # 下一次掃描只能使用擷取完成後的新影格，避免換卡時挑到上一張卡。
+            self._recent_frames.clear()
         # 辨識使用原始相機影格，不沿用 WebRTC 回傳預覽的壓縮畫面。
         encoded, buffer = cv2.imencode(".jpg", image, [cv2.IMWRITE_JPEG_QUALITY, 97])
         if not encoded:

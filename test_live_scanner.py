@@ -25,7 +25,7 @@ class LiveScannerTests(unittest.TestCase):
     def test_pokedex_supports_live_scan_photo_and_collection_add(self):
         app_source = (Path(__file__).parent / "app.py").read_text(encoding="utf-8")
         self.assertIn('"📷 掃描或拍照尋找卡匣"', app_source)
-        self.assertIn('key="mezastar_pokedex_card_camera_v2112_hd"', app_source)
+        self.assertIn('"mezastar_pokedex_card_camera_v2113_hd_"', app_source)
         self.assertIn('pokedex_photo = st.camera_input(', app_source)
         self.assertIn('"➕ 加入我的卡匣庫"', app_source)
         self.assertIn('on_click=confirm_pokedex_recognition', app_source)
@@ -52,6 +52,15 @@ class LiveScannerTests(unittest.TestCase):
         self.assertNotIn(".video_processor.set_controls(", app_source)
         self.assertNotIn("digital_zoom_frame", scanner_source)
         self.assertIn('image = frame.to_ndarray(format="bgr24")', scanner_source)
+
+    def test_successful_scan_refreshes_hd_stream_and_discards_old_frames(self):
+        app_source = (Path(__file__).parent / "app.py").read_text(encoding="utf-8")
+        scanner_source = (Path(__file__).parent / "live_scanner.py").read_text(encoding="utf-8")
+        self.assertIn('advance_camera_stream_generation("battle_camera_stream_generation")', app_source)
+        self.assertIn('advance_camera_stream_generation("pokedex_camera_stream_generation")', app_source)
+        self.assertIn('"mezastar_persistent_card_camera_v2113_hd_"', app_source)
+        self.assertIn('"mezastar_pokedex_card_camera_v2113_hd_"', app_source)
+        self.assertIn("self._recent_frames.clear()", scanner_source)
 
     def test_blank_frame_is_not_sharp(self):
         sharpness, brightness = frame_quality(np.full((240, 320, 3), 120, dtype=np.uint8))
@@ -95,6 +104,18 @@ class LiveScannerTests(unittest.TestCase):
         self.assertIsNotNone(image_bytes)
         self.assertIsNone(error)
         self.assertGreater(sharpness, 48.0)
+
+    def test_capture_clears_previous_card_frames(self):
+        scanner = LiveCardScanner()
+        image = np.full((360, 480, 3), 120, dtype=np.uint8)
+        image[:, ::6] = 255
+        scanner.ingest(image)
+        first_bytes, first_error, _ = scanner.capture_current()
+        second_bytes, second_error, _ = scanner.capture_current()
+        self.assertIsNotNone(first_bytes)
+        self.assertIsNone(first_error)
+        self.assertIsNone(second_bytes)
+        self.assertIn("尚未取得畫面", second_error)
 
 
 if __name__ == "__main__":

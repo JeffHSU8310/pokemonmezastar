@@ -432,6 +432,11 @@ def camera_preview_style(zoom: float, border_color: str):
         "transition": "transform 80ms linear",
     }
 
+
+def advance_camera_stream_generation(state_key: str) -> None:
+    """Force a fresh WebRTC track without making the user close the camera."""
+    st.session_state[state_key] = int(st.session_state.get(state_key, 0)) + 1
+
 # ==============================================================================
 # 🔍 卡匣詳細資訊與高清大圖彈跳視窗 (Card Detail Modal)
 # ==============================================================================
@@ -707,6 +712,7 @@ with tabs[0]:
             if open_col.button("📷 開啟相機", type="primary", use_container_width=True, key="open_scan_camera", disabled=camera_enabled or not camera_runtime_ready):
                 st.session_state.scan_camera_enabled = True
                 st.session_state.pokedex_scan_camera_enabled = False
+                advance_camera_stream_generation("battle_camera_stream_generation")
                 st.session_state.pop("scan_camera_message", None)
                 st.rerun()
             if close_col.button("⏹️ 關閉相機", use_container_width=True, key="close_scan_camera", disabled=not camera_enabled):
@@ -728,7 +734,10 @@ with tabs[0]:
                     help="只在手機端放大預覽，不裁切或重採樣辨識影格，因此不會降低掃描解析度。",
                 )
                 live_context = webrtc_streamer(
-                    key="mezastar_persistent_card_camera_v2112_hd",
+                    key=(
+                        "mezastar_persistent_card_camera_v2113_hd_"
+                        f"{int(st.session_state.get('battle_camera_stream_generation', 0))}"
+                    ),
                     # streamlit-webrtc 的 SENDONLY 模式只把手機畫面送到伺服器，前端不會
                     # 建立可見的 <video> 輸出。SENDRECV 將原始影格同步回傳，讓使用者
                     # 能在按下掃描前確認卡匣位置與對焦狀態。
@@ -775,6 +784,10 @@ with tabs[0]:
                             st.session_state.camera_last_frame_bytes = frame_bytes
                             st.session_state.camera_focus_score = focus_score
                             st.session_state.camera_capture_resolution = live_context.video_processor.latest_resolution
+                            # OCR/圖像比對期間 WebRTC 可能因處理負載自動降畫質。
+                            # 辨識完成後換一條全新 HD track，使用者不必手動關閉再開啟。
+                            advance_camera_stream_generation("battle_camera_stream_generation")
+                            st.rerun()
         elif camera_runtime_ready:
             st.caption("拍攝完成後按下辨識。本程式不會把原始照片寫入檔案或資料庫，照片只在目前工作階段記憶體中使用。")
             photographed_card = st.camera_input(
@@ -1551,6 +1564,7 @@ with tabs[4]:
             ):
                 st.session_state.pokedex_scan_camera_enabled = True
                 st.session_state.scan_camera_enabled = False
+                advance_camera_stream_generation("pokedex_camera_stream_generation")
                 st.session_state.pop("pokedex_scan_camera_message", None)
                 st.rerun()
             if close_col.button(
@@ -1577,7 +1591,10 @@ with tabs[4]:
                     help="只在手機端放大預覽，不裁切或重採樣辨識影格，因此不會降低掃描解析度。",
                 )
                 pokedex_live_context = webrtc_streamer(
-                    key="mezastar_pokedex_card_camera_v2112_hd",
+                    key=(
+                        "mezastar_pokedex_card_camera_v2113_hd_"
+                        f"{int(st.session_state.get('pokedex_camera_stream_generation', 0))}"
+                    ),
                     mode=WebRtcMode.SENDRECV,
                     rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},
                     media_stream_constraints={
@@ -1626,6 +1643,8 @@ with tabs[4]:
                             st.session_state.pokedex_camera_last_frame_bytes = frame_bytes
                             st.session_state.pokedex_camera_source = "live"
                             st.session_state.pokedex_camera_focus_score = focus_score
+                            advance_camera_stream_generation("pokedex_camera_stream_generation")
+                            st.rerun()
         elif pokedex_camera_ready:
             st.caption("拍攝後再按辨識；照片只在目前工作階段的記憶體中使用，不會寫入檔案或資料庫。")
             pokedex_photo = st.camera_input(
