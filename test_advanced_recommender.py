@@ -3,7 +3,11 @@
 import unittest
 from math import ceil
 
-from recommender import evaluate_card_performance, recommend_best_lineup
+from recommender import (
+    evaluate_card_performance,
+    filter_candidate_cards_by_stars,
+    recommend_best_lineup,
+)
 
 
 def card(name, *, atk=100, sp_atk=100, defense=100, sp_def=100, speed=100,
@@ -20,6 +24,19 @@ def card(name, *, atk=100, sp_atk=100, defense=100, sp_def=100, speed=100,
 
 
 class TestAdvancedRecommender(unittest.TestCase):
+    def test_lineup_star_filter_applies_to_any_candidate_source(self):
+        candidates = [card("六星"), card("五星"), card("四星")]
+        candidates[0]["star"], candidates[1]["star"], candidates[2]["star"] = 6, 5, 4
+        self.assertEqual(
+            [item["name"] for item in filter_candidate_cards_by_stars(candidates, [6])],
+            ["六星"],
+        )
+        self.assertEqual(
+            [item["name"] for item in filter_candidate_cards_by_stars(candidates, [6, 5])],
+            ["六星", "五星"],
+        )
+        self.assertEqual(filter_candidate_cards_by_stars(candidates, []), [])
+
     def test_physical_move_uses_attack(self):
         physical = card("物攻型", atk=200, sp_atk=20, category="物理")
         result = evaluate_card_performance(physical, ["一般"])

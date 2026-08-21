@@ -36,6 +36,7 @@ camera_recognizer_module = importlib.reload(camera_recognizer_module)
 live_scanner_module = importlib.reload(live_scanner_module)
 recommend_best_lineup = recommender_module.recommend_best_lineup
 evaluate_card_performance = recommender_module.evaluate_card_performance
+filter_candidate_cards_by_stars = recommender_module.filter_candidate_cards_by_stars
 recognize_card = camera_recognizer_module.recognize_card
 LiveCardScanner = live_scanner_module.LiveCardScanner
 from vision_runtime import opencv_available, opencv_error_message
@@ -928,8 +929,17 @@ with tabs[0]:
         boss_type2 = st.selectbox("第二屬性:", options=type_options, index=t2_idx,
                                   key=f"battle_type2_{boss_type_state_key}")
 
-    # 候選卡匣來源選擇 (手機單選按鈕)
+    # 候選卡匣來源與高星級篩選（同時適用收藏及全圖鑑）
     search_scope = st.radio("出戰卡匣來源:", options=["從我的卡匣庫 (實體卡)", "從全卡匣圖鑑庫 (全卡)"], horizontal=True)
+    lineup_star_filter = st.multiselect(
+        "⭐ 出戰星級:",
+        options=[6, 5],
+        default=[6, 5],
+        format_func=lambda star: f"{star}⭐",
+        max_selections=2,
+        key="lineup_star_filter",
+        help="可只選 6 星、只選 5 星，或同時使用 6 星與 5 星卡匣。",
+    )
 
     # 組合 Boss 屬性
     boss_types = [boss_type1]
@@ -961,11 +971,14 @@ with tabs[0]:
 
     # 決定候選卡匣
     if "我的卡匣庫" in search_scope:
-        candidates = get_user_cards(st.session_state.owned_ids)
-        source_label = f"我的收藏 ({len(candidates)}張)"
+        source_candidates = get_user_cards(st.session_state.owned_ids)
+        source_name = "我的收藏"
     else:
-        candidates = all_cards
-        source_label = f"全圖鑑 ({len(candidates)}張)"
+        source_candidates = all_cards
+        source_name = "全圖鑑"
+    candidates = filter_candidate_cards_by_stars(source_candidates, lineup_star_filter)
+    star_label = "＋".join(f"{star}⭐" for star in sorted(lineup_star_filter, reverse=True)) or "未選星級"
+    source_label = f"{source_name}｜{star_label}（{len(candidates)}張）"
 
     # 執行推薦
     result = recommend_best_lineup(
@@ -976,7 +989,11 @@ with tabs[0]:
         boss_card={**boss_card, "types": boss_types} if boss_card else None
     )
 
-    if not result.get("recommended_team"):
+    if not lineup_star_filter:
+        st.warning("⚠️ 請至少選擇 6⭐ 或 5⭐，才能產生出戰陣容。")
+    elif not candidates:
+        st.warning(f"⚠️ {source_name}中沒有符合 {star_label} 的卡匣，請調整星級或卡匣來源。")
+    elif not result.get("recommended_team"):
         st.warning(f"⚠️ {result.get('message', '未找到合適的推薦卡匣！')}")
     else:
         st.markdown(f"#### 🏆 最佳黃金出戰陣容 (Top 3) — *{source_label}*")
