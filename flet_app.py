@@ -41,7 +41,8 @@ from qr_manager import (
     delete_trainer,
     set_active_trainer,
     load_support_pokemon,
-    generate_qr_base64
+    generate_qr_base64,
+    generate_support_qr_base64
 )
 
 def main(page: ft.Page):
@@ -68,8 +69,12 @@ def main(page: ft.Page):
         page.update()
 
     # QR Code 放大顯示 Dialog (適配 Mezastar 機台掃描)
-    def open_qr_dialog(title: str, qr_data_str: str, subtitle: str = ""):
-        qr_b64 = generate_qr_base64(qr_data_str, box_size=14)
+    def open_qr_dialog(title: str, qr_data_str: str = "", subtitle: str = "", qr_payload_base64: str = ""):
+        qr_b64 = (
+            generate_support_qr_base64(qr_payload_base64, box_size=14)
+            if qr_payload_base64
+            else generate_qr_base64(qr_data_str, box_size=14)
+        )
         # 去除 data:image/png;base64, 前綴以傳入 ft.Image(src_base64=...)
         raw_b64 = qr_b64.split(",")[-1]
 
@@ -86,7 +91,12 @@ def main(page: ft.Page):
                         border_radius=10,
                         alignment=ft.alignment.center
                     ),
-                    ft.Text(f"代碼: {qr_data_str}", size=11, color=ft.Colors.GREY_600, selectable=True)
+                    ft.Text(
+                        "資料來源：台灣 Pokémon MEZASTAR 官方網站" if qr_payload_base64 else f"代碼: {qr_data_str}",
+                        size=11,
+                        color=ft.Colors.GREY_600,
+                        selectable=not bool(qr_payload_base64),
+                    )
                 ], horizontal_alignment=ft.CrossAxisAlignment.CENTER, tight=True, spacing=8),
                 width=300,
                 padding=10
@@ -394,7 +404,7 @@ def main(page: ft.Page):
             sp_name = sp.get("name")
             sp_skill = sp.get("skill_name")
             sp_desc = sp.get("skill_desc")
-            sp_qr = sp.get("qr_data", f"MEZASTAR-SP:{sp.get('id')}")
+            sp_qr_payload = sp.get("qr_payload_base64", "")
             sp_series = sp.get("series")
             sp_types = "/".join(sp.get("types", []))
 
@@ -419,7 +429,9 @@ def main(page: ft.Page):
                             icon=ft.Icons.QR_CODE_2,
                             bgcolor=ft.Colors.GREEN_600,
                             color=ft.Colors.WHITE,
-                            on_click=lambda e, n=sp_name, q=sp_qr, s=sp_skill: open_qr_dialog(f"{n} (支援)", q, f"⚡ 支援技能：{s}")
+                            on_click=lambda e, n=sp_name, p=sp_qr_payload, s=sp_skill: open_qr_dialog(
+                                f"{n} (支援)", subtitle=f"⚡ 支援技能：{s}", qr_payload_base64=p
+                            )
                         )
                     ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
                     padding=10,
