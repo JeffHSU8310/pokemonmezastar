@@ -15,12 +15,12 @@ class LiveScannerTests(unittest.TestCase):
         self.assertIn('"maxWidth": "100%"', app_source)
         self.assertIn('"maxHeight": "680px"', app_source)
 
-    def test_photo_recognition_uses_an_in_memory_camera_capture(self):
+    def test_battle_recommendation_has_no_scan_or_photo_controls(self):
         app_source = (Path(__file__).parent / "app.py").read_text(encoding="utf-8")
-        self.assertIn("photographed_card = st.camera_input(", app_source)
-        self.assertIn('resolution="1080p"', app_source)
-        self.assertIn("photo_bytes = photographed_card.getvalue()", app_source)
-        self.assertIn('camera_recognition_source = "photo"', app_source)
+        self.assertNotIn('"📷 開始相機辨識寶可夢"', app_source)
+        self.assertNotIn("photographed_card = st.camera_input(", app_source)
+        self.assertNotIn("mezastar_persistent_card_camera", app_source)
+        self.assertNotIn("camera_selected_boss_id", app_source)
 
     def test_pokedex_supports_live_scan_photo_and_collection_add(self):
         app_source = (Path(__file__).parent / "app.py").read_text(encoding="utf-8")
@@ -35,7 +35,7 @@ class LiveScannerTests(unittest.TestCase):
         app_source = (Path(__file__).parent / "app.py").read_text(encoding="utf-8")
         self.assertIn("pokedex_scan_camera_enabled", app_source)
         self.assertIn("pokedex_camera_recognition", app_source)
-        self.assertIn("st.session_state.scan_camera_enabled = False", app_source)
+        self.assertNotIn("st.session_state.scan_camera_enabled", app_source)
 
     def test_scanner_uses_full_hd_raw_frames_and_preview_only_zoom(self):
         app_source = (Path(__file__).parent / "app.py").read_text(encoding="utf-8")
@@ -56,11 +56,16 @@ class LiveScannerTests(unittest.TestCase):
     def test_successful_scan_refreshes_hd_stream_and_discards_old_frames(self):
         app_source = (Path(__file__).parent / "app.py").read_text(encoding="utf-8")
         scanner_source = (Path(__file__).parent / "live_scanner.py").read_text(encoding="utf-8")
-        self.assertIn('advance_camera_stream_generation("battle_camera_stream_generation")', app_source)
         self.assertIn('advance_camera_stream_generation("pokedex_camera_stream_generation")', app_source)
-        self.assertIn('"mezastar_persistent_card_camera_v2113_hd_"', app_source)
         self.assertIn('"mezastar_pokedex_card_camera_v2113_hd_"', app_source)
         self.assertIn("self._recent_frames.clear()", scanner_source)
+
+    def test_trainer_qr_is_half_size_on_mobile_and_landscape(self):
+        app_source = (Path(__file__).parent / "app.py").read_text(encoding="utf-8")
+        self.assertIn("@media (max-width: 768px), (orientation: landscape)", app_source)
+        self.assertIn("width: 130px !important", app_source)
+        self.assertIn("height: 130px !important", app_source)
+        self.assertIn('class="trainer-qr-primary"', app_source)
 
     def test_blank_frame_is_not_sharp(self):
         sharpness, brightness = frame_quality(np.full((240, 320, 3), 120, dtype=np.uint8))

@@ -76,6 +76,7 @@ from qr_manager import (
     set_active_trainer,
     load_support_pokemon,
     generate_qr_base64,
+    generate_support_qr_base64,
     decode_qr_from_bytes
 )
 
@@ -689,230 +690,6 @@ tabs = st.tabs([
 # TAB 1: ⚔️ 智慧對戰推薦 (Battle Lineup Optimizer) - 手機直立版
 # ==============================================================================
 with tabs[0]:
-    camera_enabled = bool(st.session_state.get("scan_camera_enabled", False))
-    camera_runtime_ready = opencv_available()
-    if camera_enabled and not camera_runtime_ready:
-        st.session_state.scan_camera_enabled = False
-        camera_enabled = False
-    camera_mode_value = st.session_state.get("camera_recognition_mode", "🎥 即時取景掃描")
-    with st.expander("📷 開始相機辨識寶可夢", expanded=camera_enabled or camera_mode_value == "📸 拍照辨識"):
-        recognition_mode = st.radio(
-            "選擇辨識方式",
-            ["🎥 即時取景掃描", "📸 拍照辨識"],
-            horizontal=True,
-            key="camera_recognition_mode",
-        )
-        st.caption("相機權限由手機瀏覽器管理，本程式無法代替使用者同意；將此網站的相機權限設為允許，可減少重複詢問。")
-        st.caption(f"🧠 已累積 {learning_example_count()} 筆確認學習特徵（不保存原始照片）")
-        if not camera_runtime_ready:
-            st.error(opencv_error_message() or "相機影像引擎目前無法使用，其他功能仍可正常操作。")
-        if recognition_mode == "🎥 即時取景掃描":
-            st.caption("先開啟相機並對準卡匣；只有按下掃描按鈕才會執行辨識，相機會在同一工作階段保持開啟。")
-            open_col, close_col = st.columns(2)
-            if open_col.button("📷 開啟相機", type="primary", use_container_width=True, key="open_scan_camera", disabled=camera_enabled or not camera_runtime_ready):
-                st.session_state.scan_camera_enabled = True
-                st.session_state.pokedex_scan_camera_enabled = False
-                advance_camera_stream_generation("battle_camera_stream_generation")
-                st.session_state.pop("scan_camera_message", None)
-                st.rerun()
-            if close_col.button("⏹️ 關閉相機", use_container_width=True, key="close_scan_camera", disabled=not camera_enabled):
-                st.session_state.scan_camera_enabled = False
-                st.rerun()
-
-            if not camera_runtime_ready:
-                st.info("部署環境修復後即可重新開啟相機；圖鑑、收藏與推薦功能不受影響。")
-            elif not camera_enabled:
-                st.info("相機目前關閉。點一次「開啟相機」並允許權限後，即可連續對準、掃描多張卡匣。")
-            else:
-                scan_zoom = st.slider(
-                    "🔍 預覽快速縮放（辨識仍使用原始高解析畫面）",
-                    min_value=1.0,
-                    max_value=2.0,
-                    value=1.0,
-                    step=0.25,
-                    key="battle_scan_zoom",
-                    help="只在手機端放大預覽，不裁切或重採樣辨識影格，因此不會降低掃描解析度。",
-                )
-                live_context = webrtc_streamer(
-                    key=(
-                        "mezastar_persistent_card_camera_v2113_hd_"
-                        f"{int(st.session_state.get('battle_camera_stream_generation', 0))}"
-                    ),
-                    # streamlit-webrtc 的 SENDONLY 模式只把手機畫面送到伺服器，前端不會
-                    # 建立可見的 <video> 輸出。SENDRECV 將原始影格同步回傳，讓使用者
-                    # 能在按下掃描前確認卡匣位置與對焦狀態。
-                    mode=WebRtcMode.SENDRECV,
-                    rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},
-                    media_stream_constraints={
-                        "video": hd_camera_constraints(),
-                        "audio": False,
-                    },
-                    desired_playing_state=True,
-                    video_processor_factory=LiveCardScanner,
-                    async_processing=False,
-                    sendback_video=True,
-                    media_toggle_controls=False,
-                    video_html_attrs={
-                        "autoPlay": True,
-                        "controls": False,
-                        "muted": True,
-                        "playsInline": True,
-                        "style": camera_preview_style(scan_zoom, "#EF5350"),
-                    },
-                )
-                if not live_context.state.playing:
-                    st.info("正在取得相機權限並啟動後鏡頭…")
-                elif not live_context.video_processor:
-                    st.info("相機已啟動，正在準備預覽畫面…")
-                else:
-                    preview_width, preview_height = live_context.video_processor.latest_resolution
-                    resolution_label = f"（擷取 {preview_width}×{preview_height}）" if preview_width else ""
-                    st.success(
-                        f"即時取景已要求 Full HD 並保持連續自動對焦{resolution_label}；"
-                        f"預覽 {scan_zoom:.2f}x。辨識會使用未縮放的原始影格。"
-                    )
-                    if st.button("🔎 掃描目前畫面", type="primary", use_container_width=True, key="scan_current_camera_frame"):
-                        frame_bytes, frame_error, focus_score = live_context.video_processor.capture_current()
-                        if frame_error:
-                            st.session_state.scan_camera_message = frame_error
-                        else:
-                            st.session_state.pop("scan_camera_message", None)
-                            st.session_state.pop("recognition_learning_message", None)
-                            with st.spinner("正在辨識目前畫面…相機會保持開啟"):
-                                st.session_state.camera_recognition = recognize_card(frame_bytes, all_cards, top_n=3)
-                            st.session_state.camera_recognition_source = "live"
-                            st.session_state.camera_last_frame_bytes = frame_bytes
-                            st.session_state.camera_focus_score = focus_score
-                            st.session_state.camera_capture_resolution = live_context.video_processor.latest_resolution
-                            # OCR/圖像比對期間 WebRTC 可能因處理負載自動降畫質。
-                            # 辨識完成後換一條全新 HD track，使用者不必手動關閉再開啟。
-                            advance_camera_stream_generation("battle_camera_stream_generation")
-                            st.rerun()
-        elif camera_runtime_ready:
-            st.caption("拍攝完成後按下辨識。本程式不會把原始照片寫入檔案或資料庫，照片只在目前工作階段記憶體中使用。")
-            photographed_card = st.camera_input(
-                "📸 拍攝卡匣照片",
-                key="photographed_card_input",
-                help="讓卡匣填滿畫面、文字清楚並避開反光後拍攝。",
-                resolution="1080p",
-                width=340,
-            )
-            if photographed_card is not None:
-                st.success("照片已拍攝。確認畫面清楚後按下辨識；離開工作階段後原始照片不會保留。")
-                if st.button("🔎 辨識這張照片", type="primary", use_container_width=True, key="recognize_photographed_card"):
-                    photo_bytes = photographed_card.getvalue()
-                    st.session_state.pop("scan_camera_message", None)
-                    st.session_state.pop("recognition_learning_message", None)
-                    with st.spinner("正在辨識拍攝的照片…"):
-                        st.session_state.camera_recognition = recognize_card(photo_bytes, all_cards, top_n=3)
-                    st.session_state.camera_recognition_source = "photo"
-                    st.session_state.camera_last_frame_bytes = photo_bytes
-                    st.session_state.camera_focus_score = None
-                    st.session_state.camera_capture_resolution = None
-
-        if st.session_state.get("scan_camera_message"):
-            st.warning(st.session_state.scan_camera_message)
-
-        camera_result = st.session_state.get("camera_recognition")
-        if camera_result:
-            if camera_result.get("warning"):
-                st.warning(camera_result["warning"])
-            recognition_source = st.session_state.get("camera_recognition_source")
-            source_label = "拍照辨識" if recognition_source == "photo" else "即時取景掃描"
-            info_parts = [f"來源：{source_label}", f"整體信心：{camera_result.get('confidence', '低')}"]
-            if camera_result.get("detected_star"):
-                info_parts.append(f"偵測星數：{camera_result['detected_star']}★")
-            if camera_result.get("ocr_text"):
-                info_parts.append(f"文字：{camera_result['ocr_text']}")
-            if st.session_state.get("camera_focus_score"):
-                info_parts.append(f"對焦清晰度：{st.session_state.camera_focus_score:.0f}")
-            capture_resolution = st.session_state.get("camera_capture_resolution")
-            if capture_resolution and capture_resolution[0]:
-                info_parts.append(f"掃描解析度：{capture_resolution[0]}×{capture_resolution[1]}")
-            st.info("｜".join(info_parts))
-
-            if st.session_state.get("recognition_learning_message"):
-                st.success(st.session_state.recognition_learning_message)
-
-            if camera_result.get("confidence") == "低":
-                st.warning("辨識信心偏低，請確認候選；可將卡匣靠近、對焦並避開反光後重拍。")
-            st.markdown("##### 最接近的 3 張卡匣")
-            candidate_columns = st.columns(len(camera_result.get("candidates", [])) or 1)
-            for index, candidate in enumerate(camera_result.get("candidates", [])):
-                card = candidate["card"]
-                with candidate_columns[index]:
-                    if card.get("image"):
-                        st.image(card["image"], use_container_width=True)
-                    st.markdown(f"**{card.get('name', '未知')}**  ")
-                    learned_label = "｜🧠 學習加權" if candidate.get("learned_score", 0.0) > 0.58 else ""
-                    st.caption(f"{card.get('id', '')}｜{card.get('star', '?')}★｜相符 {candidate['score'] * 100:.0f}%{learned_label}")
-                    if st.button("確認並套用", key=f"camera_pick_{card.get('id')}", use_container_width=True):
-                        learned_frame = st.session_state.get("camera_last_frame_bytes")
-                        if learned_frame:
-                            predicted_id = str(camera_result.get("candidates", [{}])[0].get("card", {}).get("id", ""))
-                            try:
-                                learned_count = record_confirmation(
-                                    learned_frame,
-                                    correct_card_id=str(card.get("id")),
-                                    rejected_card_id=predicted_id,
-                                )
-                                st.session_state.recognition_learning_message = f"已學習這次確認，目前共 {learned_count} 筆特徵"
-                            except Exception as exc:
-                                st.session_state.recognition_learning_message = f"已套用卡匣，但學習資料暫時無法保存：{exc}"
-                        st.session_state.camera_selected_boss_id = str(card.get("id"))
-                        st.rerun()
-
-            with st.expander("前三個都不正確？手動指定並讓系統學習", expanded=False):
-                correction_query = st.text_input(
-                    "搜尋正確的寶可夢名稱或卡匣編號",
-                    key="recognition_correction_query",
-                    placeholder="例如：超夢、2-2-001",
-                ).strip().lower()
-                correction_cards = all_cards
-                if correction_query:
-                    correction_cards = [
-                        item for item in all_cards
-                        if correction_query in str(item.get("name", "")).lower()
-                        or correction_query in str(item.get("name_en", "")).lower()
-                        or correction_query in str(item.get("id", "")).lower()
-                    ]
-                correction_cards = correction_cards[:80]
-                if correction_cards:
-                    correction_index = st.selectbox(
-                        "正確卡匣",
-                        options=range(len(correction_cards)),
-                        format_func=lambda value: f"{correction_cards[value]['name']}（{correction_cards[value]['id']}｜{correction_cards[value].get('star', '?')}★）",
-                        key=f"recognition_correction_select_{correction_query}",
-                    )
-                    corrected_card = correction_cards[correction_index]
-                    if st.button("🧠 記住正確答案並套用", type="primary", use_container_width=True, key="save_recognition_correction"):
-                        learned_frame = st.session_state.get("camera_last_frame_bytes")
-                        if learned_frame:
-                            predicted_id = str(camera_result.get("candidates", [{}])[0].get("card", {}).get("id", ""))
-                            try:
-                                learned_count = record_confirmation(
-                                    learned_frame,
-                                    correct_card_id=str(corrected_card.get("id")),
-                                    rejected_card_id=predicted_id,
-                                )
-                                st.session_state.recognition_learning_message = f"已修正並學習，目前共 {learned_count} 筆特徵"
-                            except Exception as exc:
-                                st.session_state.recognition_learning_message = f"已套用卡匣，但學習資料暫時無法保存：{exc}"
-                        st.session_state.camera_selected_boss_id = str(corrected_card.get("id"))
-                        st.rerun()
-                else:
-                    st.warning("找不到符合條件的卡匣，請調整名稱或編號。")
-
-        selected_camera_id = st.session_state.get("camera_selected_boss_id")
-        if selected_camera_id:
-            selected_camera_card = next((card for card in all_cards if str(card.get("id")) == selected_camera_id), None)
-            if selected_camera_card:
-                action_col, clear_col = st.columns([3, 1])
-                action_col.success(f"已套用：{selected_camera_card['name']}（{selected_camera_card['id']}）")
-                if clear_col.button("清除", key="clear_camera_boss", use_container_width=True):
-                    st.session_state.pop("camera_selected_boss_id", None)
-                    st.rerun()
-
     # 手機上採用卡片式下拉選單
     with st.container():
         # 1. 快速星數切換按鈕
@@ -957,16 +734,8 @@ with tabs[0]:
             key=f"battle_boss_select_{star_filter}_{search_query}"
         )
         
-        camera_boss_id = st.session_state.get("camera_selected_boss_id")
-        camera_boss = next((card for card in all_cards if str(card.get("id")) == camera_boss_id), None)
         boss_card = None
-        if camera_boss:
-            picked_c = camera_boss
-            boss_card = picked_c
-            boss_name = picked_c["name"]
-            default_t1 = picked_c["types"][0] if len(picked_c["types"]) > 0 else "一般"
-            default_t2 = picked_c["types"][1] if len(picked_c["types"]) > 1 else "無"
-        elif selected_boss_idx == 0:
+        if selected_boss_idx == 0:
             boss_name = st.text_input("輸入 Boss 名稱:", value=search_query.strip() if search_query.strip() else "超夢")
             default_t1 = "超能力"
             default_t2 = "無"
@@ -1324,6 +1093,18 @@ with tabs[1]:
 with tabs[2]:
     st.markdown("#### 👑 訓練家 ID 管理與機台專用 QR Code")
     st.caption("支援上傳相片自動辨識 QR Code、自訂多組訓練家名稱與放大高亮掃描模式！")
+    st.markdown("""
+    <style>
+    .trainer-qr-panel { max-width: 380px; margin: auto; }
+    .trainer-qr-primary { width: 260px; height: 260px; display: block; margin: auto; }
+    .trainer-qr-secondary { width: 200px; height: 200px; display: block; margin: auto; }
+    @media (max-width: 768px), (orientation: landscape) and (max-height: 600px) {
+        .trainer-qr-panel { max-width: 240px; }
+        .trainer-qr-primary { width: 130px !important; height: 130px !important; }
+        .trainer-qr-secondary { width: 100px !important; height: 100px !important; }
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
     trainers_list = load_trainers()
 
@@ -1348,10 +1129,10 @@ with tabs[2]:
         # 快速放大掃描視窗抽屜
         with st.expander("⚡ 點此開啟【機台鏡頭專用 • 超大亮屏掃描 QR Code】", expanded=True):
             st.markdown("""
-            <div style="background:#000000; padding:15px; border-radius:12px; text-align:center; margin:auto; max-width:380px;">
+            <div class="trainer-qr-panel" style="background:#000000; padding:15px; border-radius:12px; text-align:center;">
                 <div style="color:#FFF; font-weight:bold; font-size:0.95rem; margin-bottom:8px;">📱 請將此二維碼對準 Mezastar 機台讀取鏡頭</div>
                 <div style="background:#FFFFFF; padding:12px; border-radius:10px; display:inline-block;">
-            """ + f'<img src="{qr_b64}" style="width:260px; height:260px; display:block; margin:auto;" />' + """
+            """ + f'<img class="trainer-qr-primary" src="{qr_b64}" />' + """
                 </div>
                 <div style="color:#FFD54F; font-size:0.75rem; margin-top:8px;">💡 提示：掃描時請將手機螢幕亮度調高，保持距離機台鏡頭約 5~10 公分。</div>
             </div>
@@ -1427,7 +1208,7 @@ with tabs[2]:
                 # 單一訓練家 QR Code 展開
                 with st.expander(f"🔍 查看【{tr_name}】專屬 QR Code", expanded=False):
                     q_b64 = generate_qr_base64(tr_id, box_size=12)
-                    st.markdown(f'<div style="text-align:center; padding:10px; background:#F5F5F5; border-radius:8px;"><img src="{q_b64}" style="width:200px; height:200px;" /></div>', unsafe_allow_html=True)
+                    st.markdown(f'<div style="text-align:center; padding:10px; background:#F5F5F5; border-radius:8px;"><img class="trainer-qr-secondary" src="{q_b64}" /></div>', unsafe_allow_html=True)
 
 
 # ==============================================================================
@@ -1435,7 +1216,12 @@ with tabs[2]:
 # ==============================================================================
 with tabs[3]:
     st.markdown("#### 🤝 官方支援寶可夢圖鑑與機台專用 QR Code")
-    st.caption("收錄歷代官方全系列支援寶可夢！在機台對戰掃描時，可直接點擊放大 QR Code 召喚神獸支援助戰！")
+    st.caption("僅收錄台灣官方目前公開的支援寶可夢券；QR 內容取自官方票券，不再使用自製文字碼。")
+    st.link_button(
+        "🔗 台灣官方支援寶可夢券資料",
+        "https://www.pokemonmezastar.com.tw/gameplay/tickets",
+        use_container_width=True,
+    )
 
     all_support_pokemon = load_support_pokemon()
 
@@ -1445,7 +1231,7 @@ with tabs[3]:
     with sp_col1:
         sp_sel_series = st.selectbox("📂 彈別系列篩選:", options=sp_series_list, index=0, key="sp_series_filter")
     with sp_col2:
-        sp_kw = st.text_input("🔍 搜尋寶可夢名稱或技能:", value="", placeholder="例如: 噴火龍, 蒼響, 閃電...", key="sp_search_kw")
+        sp_kw = st.text_input("🔍 搜尋寶可夢名稱或技能:", value="", placeholder="例如：拉普拉斯、鋁鋼龍、地震...", key="sp_search_kw")
 
     # 過濾
     filtered_sp = []
@@ -1471,7 +1257,8 @@ with tabs[3]:
             sp_skill = sp.get("skill_name", "")
             sp_desc = sp.get("skill_desc", "")
             sp_series = sp.get("series", "")
-            sp_qr_data = sp.get("qr_data", f"MEZASTAR-SP:{sp_id}")
+            sp_qr_payload = sp.get("qr_payload_base64", "")
+            sp_ticket_url = sp.get("ticket_image_url", "")
             sp_icon = sp.get("icon_url", "")
 
             with sp_cols[j]:
@@ -1500,14 +1287,15 @@ with tabs[3]:
 
                 # 點擊放大 QR Code 抽屜
                 with st.expander(f"📱 點此放大【{sp_name}】機台掃描 QR Code", expanded=False):
-                    sp_qr_b64 = generate_qr_base64(sp_qr_data, box_size=12)
+                    sp_qr_b64 = generate_support_qr_base64(sp_qr_payload, box_size=12)
                     st.markdown(f"""
                     <div style="background:#000000; padding:12px; border-radius:10px; text-align:center;">
-                        <div style="color:#FFF; font-weight:bold; font-size:0.85rem; margin-bottom:6px;">⚡ {sp_name} 支援召喚碼</div>
+                        <div style="color:#FFF; font-weight:bold; font-size:0.85rem; margin-bottom:6px;">⚡ {sp_name} 官方支援寶可夢券</div>
                         <div style="background:#FFFFFF; padding:10px; border-radius:8px; display:inline-block;">
                             <img src="{sp_qr_b64}" style="width:220px; height:220px; display:block; margin:auto;" />
                         </div>
-                        <div style="color:#B0BEC5; font-size:0.7rem; margin-top:6px; font-family:monospace;">代碼: {sp_qr_data}</div>
+                        <div style="color:#B0BEC5; font-size:0.7rem; margin-top:6px;">資料來源：台灣 Pokémon MEZASTAR 官方網站</div>
+                        <a href="{sp_ticket_url}" target="_blank" rel="noopener noreferrer" style="color:#81D4FA; font-size:0.75rem;">查看官方票券原圖</a>
                     </div>
                     """, unsafe_allow_html=True)
 
@@ -1563,7 +1351,6 @@ with tabs[4]:
                 disabled=pokedex_camera_enabled or not pokedex_camera_ready,
             ):
                 st.session_state.pokedex_scan_camera_enabled = True
-                st.session_state.scan_camera_enabled = False
                 advance_camera_stream_generation("pokedex_camera_stream_generation")
                 st.session_state.pop("pokedex_scan_camera_message", None)
                 st.rerun()

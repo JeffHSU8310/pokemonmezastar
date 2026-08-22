@@ -2,6 +2,7 @@
 Unit Tests for Pokemon Mezastar System
 """
 
+import base64
 import unittest
 from mezastar_data import (
     calculate_type_effectiveness,
@@ -206,11 +207,18 @@ class TestPokemonMezastar(unittest.TestCase):
 
         # 4. 測試支援寶可夢資料庫
         sp_list = qr_manager.load_support_pokemon()
-        self.assertGreaterEqual(len(sp_list), 20)
-        charizard_sp = next((sp for sp in sp_list if "噴火龍" in sp["name"]), None)
-        self.assertIsNotNone(charizard_sp)
-        self.assertIn("qr_data", charizard_sp)
-        self.assertIn("skill_name", charizard_sp)
+        self.assertEqual(len(sp_list), 8)
+        self.assertEqual(
+            {sp["name"] for sp in sp_list},
+            {"拉普拉斯", "暴噬龜", "沙漠蜻蜓", "烈咬陸鯊", "蔥遊兵", "謎擬Q", "鋁鋼龍", "鋼鎧鴉"},
+        )
+        for support in sp_list:
+            self.assertIn("qr_payload_base64", support)
+            self.assertIn("pokemonmezastar.com.tw/uploads/images/", support["ticket_image_url"])
+            support_qr = qr_manager.generate_support_qr_bytes(support["qr_payload_base64"], box_size=10)
+            decoded_ok, decoded_value, _ = qr_manager.decode_qr_from_bytes(support_qr)
+            self.assertTrue(decoded_ok, support["name"])
+            self.assertEqual(decoded_value.encode("latin-1"), base64.b64decode(support["qr_payload_base64"]))
 
         # 清理測試資料
         qr_manager.delete_trainer("UNITTEST-TR-001")

@@ -17,228 +17,72 @@ TRAINERS_FILE = os.path.join(DATA_DIR, "trainers.json")
 SUPPORT_POKEMON_FILE = os.path.join(DATA_DIR, "support_pokemon.json")
 
 # ==============================================================================
-# 🗂️ 官方支援寶可夢完整資料庫 (歷代全系列收錄)
+# 🗂️ 台灣官方目前公告的支援寶可夢券
 # ==============================================================================
 DEFAULT_SUPPORT_POKEMON: List[Dict[str, Any]] = [
     {
-        "id": "SP-001",
-        "name": "噴火龍 (超級噴火龍X)",
-        "types": ["火", "龍"],
-        "series": "超級第1彈",
-        "skill_name": "超級爆炎衝擊",
-        "skill_desc": "給予對手極大火屬性傷害，並使我方全隊特攻提升 2 階",
-        "star": 6,
-        "qr_data": "MEZASTAR-SP:CHARIZARD-X-001",
-        "icon_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png"
+        "id": "TW-SP-001", "name": "拉普拉斯", "types": ["水", "冰"],
+        "series": "台灣官方支援寶可夢券", "skill_name": "冷凍光束",
+        "skill_desc": "掃描官方支援寶可夢券後，有機會在對戰中支援攻擊。",
+        "qr_payload_base64": "FmfKZd3aBMqwIUFhUb0Zq1BPS0VNT04wMt0=",
+        "ticket_image_url": "https://www.pokemonmezastar.com.tw/uploads/images/9fff641d4a31b139b959689b5504674825b448574af8189e46a43ce28a74d1a9.jpg",
+        "icon_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/131.png"
     },
     {
-        "id": "SP-002",
-        "name": "甲賀忍蛙 (小智版甲賀忍蛙)",
-        "types": ["水", "惡"],
-        "series": "第1彈",
-        "skill_name": "黃金水手裡劍",
-        "skill_desc": "以極高速度連續攻擊對手，造成大量水屬性傷害並提高我方全體命中率",
-        "star": 6,
-        "qr_data": "MEZASTAR-SP:GRENINJA-ASH-002",
-        "icon_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/658.png"
+        "id": "TW-SP-002", "name": "暴噬龜", "types": ["水", "岩石"],
+        "series": "台灣官方支援寶可夢券", "skill_name": "雙刃頭錘",
+        "skill_desc": "掃描官方支援寶可夢券後，有機會在對戰中支援攻擊。",
+        "qr_payload_base64": "fsAS0IvGRqR6u2E6DVVe0FBPS0VNT04wMt0=",
+        "ticket_image_url": "https://www.pokemonmezastar.com.tw/uploads/images/25715967753f169c2fc5917d501309815d75f0c3a752546aea2708989b0dbea5.png",
+        "icon_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/834.png"
     },
     {
-        "id": "SP-003",
-        "name": "路卡利歐 (超級路卡利歐)",
-        "types": ["格鬥", "鋼"],
-        "series": "第2彈",
-        "skill_name": "波導極限爆發",
-        "skill_desc": "造成格鬥屬性強大傷害，本回合必定造成會心一擊 (Critical Hit)",
-        "star": 6,
-        "qr_data": "MEZASTAR-SP:LUCARIO-MEGA-003",
-        "icon_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/448.png"
+        "id": "TW-SP-003", "name": "沙漠蜻蜓", "types": ["地面", "龍"],
+        "series": "台灣官方支援寶可夢券", "skill_name": "地震",
+        "skill_desc": "掃描官方支援寶可夢券後，有機會在對戰中支援攻擊。",
+        "qr_payload_base64": "mGQW/SxEReLdtCxIl9fGxFBPS0VNT04wMt0=",
+        "ticket_image_url": "https://www.pokemonmezastar.com.tw/uploads/images/6d9afcaa5df87f0e60db9332cccc78f36d88336c43bf5565b42f81672e2995c2.png",
+        "icon_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/330.png"
     },
     {
-        "id": "SP-004",
-        "name": "皮卡丘 (戴著帽子的皮卡丘)",
-        "types": ["電"],
-        "series": "第1彈",
-        "skill_name": "千萬伏特",
-        "skill_desc": "超高威力電屬性招式，並讓對手陷入麻痺狀態",
-        "star": 6,
-        "qr_data": "MEZASTAR-SP:PIKACHU-CAP-004",
-        "icon_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png"
-    },
-    {
-        "id": "SP-005",
-        "name": "烈空坐 (超級烈空坐)",
-        "types": ["龍", "飛行"],
-        "series": "超級第2彈",
-        "skill_name": "畫龍點睛",
-        "skill_desc": "從大氣層俯衝造成毀滅性飛行屬性傷害，全隊攻擊力上升 2 階",
-        "star": 6,
-        "qr_data": "MEZASTAR-SP:RAYQUAZA-MEGA-005",
-        "icon_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/384.png"
-    },
-    {
-        "id": "SP-006",
-        "name": "耿鬼 (超極巨化耿鬼)",
-        "types": ["幽靈", "毒"],
-        "series": "第3彈",
-        "skill_name": "超極巨幻影幽魂",
-        "skill_desc": "製造巨大黑洞造成幽靈屬性重創，封鎖對手下一次反擊",
-        "star": 6,
-        "qr_data": "MEZASTAR-SP:GENGAR-GMAX-006",
-        "icon_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/94.png"
-    },
-    {
-        "id": "SP-007",
-        "name": "達克萊伊",
-        "types": ["惡"],
-        "series": "第4彈",
-        "skill_name": "暗黑洞爆破",
-        "skill_desc": "將對手拉入惡夢空間，造成惡屬性重傷害並降低對手防禦力 2 階",
-        "star": 6,
-        "qr_data": "MEZASTAR-SP:DARKRAI-007",
-        "icon_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/491.png"
-    },
-    {
-        "id": "SP-008",
-        "name": "蒼響 (劍之王)",
-        "types": ["妖精", "鋼"],
-        "series": "超級第3彈",
-        "skill_name": "巨獸斬",
-        "skill_desc": "對極巨化與一般對手均能造成 2 倍斬擊鋼屬性超絕傷害",
-        "star": 6,
-        "qr_data": "MEZASTAR-SP:ZACIAN-CROWNED-008",
-        "icon_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/888.png"
-    },
-    {
-        "id": "SP-009",
-        "name": "藏瑪然特 (盾之王)",
-        "types": ["格鬥", "鋼"],
-        "series": "超級第3彈",
-        "skill_name": "巨獸彈",
-        "skill_desc": "化為鐵壁衝撞造成極大傷害，並使我方全隊防禦與特防大幅提升",
-        "star": 6,
-        "qr_data": "MEZASTAR-SP:ZAMAZENTA-CROWNED-009",
-        "icon_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/889.png"
-    },
-    {
-        "id": "SP-010",
-        "name": "故勒頓 (完全形態)",
-        "types": ["格鬥", "龍"],
-        "series": "雙重衝刺第1彈",
-        "skill_name": "全開猛撞",
-        "skill_desc": "古代恐龍狂暴衝擊，造成巨量格鬥屬性傷害並引發強烈陽光",
-        "star": 6,
-        "qr_data": "MEZASTAR-SP:KORAIDON-APEX-010",
-        "icon_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1007.png"
-    },
-    {
-        "id": "SP-011",
-        "name": "密勒頓 (完全形態)",
-        "types": ["電", "龍"],
-        "series": "雙重衝刺第1彈",
-        "skill_name": "閃電驅馳",
-        "skill_desc": "未來科技高能閃電撞擊，造成巨量電屬性傷害並展開電氣氣場",
-        "star": 6,
-        "qr_data": "MEZASTAR-SP:MIRAIDON-ULTIMATE-011",
-        "icon_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1008.png"
-    },
-    {
-        "id": "SP-012",
-        "name": "超夢 (超級超夢Y)",
-        "types": ["超能力"],
-        "series": "超級第4彈",
-        "skill_name": "精神擊破",
-        "skill_desc": "將強大精神波化為實體重創對手，無視對手的特防提升效果",
-        "star": 6,
-        "qr_data": "MEZASTAR-SP:MEWTWO-MEGAY-012",
-        "icon_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png"
-    },
-    {
-        "id": "SP-013",
-        "name": "萊希拉姆",
-        "types": ["龍", "火"],
-        "series": "雙重衝刺第2彈",
-        "skill_name": "交錯火焰",
-        "skill_desc": "噴射渦輪烈焰，造成火與龍雙重強烈打擊",
-        "star": 6,
-        "qr_data": "MEZASTAR-SP:RESHIRAM-013",
-        "icon_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/643.png"
-    },
-    {
-        "id": "SP-014",
-        "name": "捷克羅姆",
-        "types": ["龍", "電"],
-        "series": "雙重衝刺第2彈",
-        "skill_name": "交錯閃電",
-        "skill_desc": "釋放高壓雷電反衝重擊對手",
-        "star": 6,
-        "qr_data": "MEZASTAR-SP:ZEKROM-014",
-        "icon_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/644.png"
-    },
-    {
-        "id": "SP-015",
-        "name": "基格爾德 (100%完全體)",
-        "types": ["龍", "地面"],
-        "series": "雙重衝刺第3彈",
-        "skill_name": "核心懲罰者",
-        "skill_desc": "在地面刻劃巨大 Z 字射線，造成毀滅性龍屬性打擊",
-        "star": 6,
-        "qr_data": "MEZASTAR-SP:ZYGARDE-COMPLETE-015",
-        "icon_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/718.png"
-    },
-    {
-        "id": "SP-016",
-        "name": "夢幻",
-        "types": ["超能力"],
-        "series": "官方限定活動",
-        "skill_name": "起源超新星",
-        "skill_desc": "召喚宇宙原初能量造成廣域超能力傷害，並恢復我方全體血量",
-        "star": 6,
-        "qr_data": "MEZASTAR-SP:MEW-EVENT-016",
-        "icon_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/151.png"
-    },
-    {
-        "id": "SP-017",
-        "name": "拉帝亞斯 & 拉帝歐斯",
-        "types": ["龍", "超能力"],
-        "series": "雙重衝刺第4彈",
-        "skill_name": "雙重光子爆裂",
-        "skill_desc": "兄妹雙重高速合體射線衝擊，大幅降低對手特防",
-        "star": 6,
-        "qr_data": "MEZASTAR-SP:LATIOS-LATIAS-017",
-        "icon_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/380.png"
-    },
-    {
-        "id": "SP-018",
-        "name": "急凍鳥 / 閃電鳥 / 火焰鳥 (伽勒爾之姿)",
-        "types": ["超能力", "格鬥", "惡"],
-        "series": "雙重衝刺第5彈",
-        "skill_name": "三鳥極限狂瀾",
-        "skill_desc": "三大傳說鳥寶可夢連攜必殺，隨機造成雙倍弱點傷害",
-        "star": 6,
-        "qr_data": "MEZASTAR-SP:GALAR-BIRDS-018",
-        "icon_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/144.png"
-    },
-    {
-        "id": "SP-019",
-        "name": "烈咬陸鯊 (超級烈咬陸鯊)",
-        "types": ["龍", "地面"],
-        "series": "GS第1彈",
-        "skill_name": "大地狂怒破壞",
-        "skill_desc": "引發劇烈地震重創對手，地面屬性威力極大",
-        "star": 6,
-        "qr_data": "MEZASTAR-SP:GARCHOMP-MEGA-019",
+        "id": "TW-SP-004", "name": "烈咬陸鯊", "types": ["龍", "地面"],
+        "series": "台灣官方支援寶可夢券", "skill_name": "地震",
+        "skill_desc": "掃描官方支援寶可夢券後，有機會在對戰中支援攻擊。",
+        "qr_payload_base64": "G0FNFLBE5wPJioLvly17w1BPS0VNT04wMt0=",
+        "ticket_image_url": "https://www.pokemonmezastar.com.tw/uploads/images/0f3ebce4f03e0c8ea2906197038c6f86fc9bcc760cbd230d67189fb2220733d3.png",
         "icon_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/445.png"
     },
     {
-        "id": "SP-020",
-        "name": "班基拉斯 (超級班基拉斯)",
-        "types": ["岩石", "惡"],
-        "series": "GS第1彈",
-        "skill_name": "沙暴巨岩崩塌",
-        "skill_desc": "引發漫天沙暴重擊對手，並大幅強化自身防禦力",
-        "star": 6,
-        "qr_data": "MEZASTAR-SP:TYRANITAR-MEGA-020",
-        "icon_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/248.png"
+        "id": "TW-SP-005", "name": "蔥遊兵", "types": ["格鬥"],
+        "series": "台灣官方支援寶可夢券", "skill_name": "流星突擊",
+        "skill_desc": "掃描官方支援寶可夢券後，有機會在對戰中支援攻擊。",
+        "qr_payload_base64": "dhBJI+YnYnKDEdGaYEl01VBPS0VNT04wMt0=",
+        "ticket_image_url": "https://www.pokemonmezastar.com.tw/uploads/images/be5581d0d3c6965b741a5c6a7576b3b4a0b4f21a71f833846d9ded4edfe11db7.jpg",
+        "icon_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/865.png"
+    },
+    {
+        "id": "TW-SP-006", "name": "謎擬Q", "types": ["幽靈", "妖精"],
+        "series": "台灣官方支援寶可夢券", "skill_name": "暗影爪",
+        "skill_desc": "掃描官方支援寶可夢券後，有機會在對戰中支援攻擊。",
+        "qr_payload_base64": "zE5szsIGPcuZqmEdv12NbFBPS0VNT04wMt0=",
+        "ticket_image_url": "https://www.pokemonmezastar.com.tw/uploads/images/3e770293fcbb4250af4e7b7292a3a363cfbcd69c2fdb8e657a4241ca04dcba51.jpg",
+        "icon_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/778.png"
+    },
+    {
+        "id": "TW-SP-007", "name": "鋁鋼龍", "types": ["鋼", "龍"],
+        "series": "台灣官方支援寶可夢券", "skill_name": "加農光炮",
+        "skill_desc": "掃描官方支援寶可夢券後，有機會在對戰中支援攻擊。",
+        "qr_payload_base64": "fWPx0F+Et4ruXhVoga3WD1BPS0VNT04wMt0=",
+        "ticket_image_url": "https://www.pokemonmezastar.com.tw/uploads/images/02280fc2188e82d64f2ce0c5df03cef7d9aca9d13c7ea24cd1c20f472214b533.png",
+        "icon_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/884.png"
+    },
+    {
+        "id": "TW-SP-008", "name": "鋼鎧鴉", "types": ["飛行", "鋼"],
+        "series": "台灣官方支援寶可夢券", "skill_name": "勇鳥猛攻",
+        "skill_desc": "掃描官方支援寶可夢券後，有機會在對戰中支援攻擊。",
+        "qr_payload_base64": "khfaUOtoL+cnw2RfFeC+rVBPS0VNT04wMt0=",
+        "ticket_image_url": "https://www.pokemonmezastar.com.tw/uploads/images/71167ad9ef70befe000d763121afc90606b4ae86170ff870bb9b2c4dde83a2de.png",
+        "icon_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/823.png"
     }
 ]
 
@@ -279,6 +123,30 @@ def generate_qr_bytes(data_text: str, box_size: int = 12) -> bytes:
     buffered = io.BytesIO()
     img.save(buffered, format="PNG")
     return buffered.getvalue()
+
+
+def generate_support_qr_bytes(payload_base64: str, box_size: int = 12) -> bytes:
+    """由官方票券的原始二進位內容產生高對比 QR，不做文字轉碼。"""
+    payload = base64.b64decode(payload_base64, validate=True)
+    qr = qrcode.QRCode(
+        version=None,
+        error_correction=qrcode.constants.ERROR_CORRECT_M,
+        box_size=box_size,
+        border=4,
+        mask_pattern=0,
+    )
+    qr.add_data(payload, optimize=0)
+    qr.make(fit=True)
+    image = qr.make_image(fill_color="black", back_color="white")
+    buffered = io.BytesIO()
+    image.save(buffered, format="PNG")
+    return buffered.getvalue()
+
+
+def generate_support_qr_base64(payload_base64: str, box_size: int = 12) -> str:
+    """產生可直接顯示的官方支援寶可夢 QR Data URL。"""
+    encoded = base64.b64encode(generate_support_qr_bytes(payload_base64, box_size)).decode("ascii")
+    return f"data:image/png;base64,{encoded}"
 
 def decode_qr_from_bytes(image_bytes: bytes) -> Tuple[bool, str, str]:
     """
